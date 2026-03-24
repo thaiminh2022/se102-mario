@@ -37,5 +37,20 @@
 *.out
 *.app
 
-# debug information files
+# Debug information files
 *.dwo
+
+# Build directories
+bin/
+obj/
+x64/
+x86/
+
+# Visual Studio specific files
+.vs/
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Log files
+*.log
