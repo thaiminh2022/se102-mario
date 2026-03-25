@@ -126,6 +126,59 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\Audio\SFX\1-up.wav" />
+    <Media Include="Assets\Audio\SFX\bowserfalls.wav" />
+    <Media Include="Assets\Audio\SFX\bowserfire.wav" />
+    <Media Include="Assets\Audio\SFX\breakblock.wav" />
+    <Media Include="Assets\Audio\SFX\bump.wav" />
+    <Media Include="Assets\Audio\SFX\coin.wav" />
+    <Media Include="Assets\Audio\SFX\fireball.wav" />
+    <Media Include="Assets\Audio\SFX\fireworks.wav" />
+    <Media Include="Assets\Audio\SFX\flagpole.wav" />
+    <Media Include="Assets\Audio\SFX\gameover.wav" />
+    <Media Include="Assets\Audio\SFX\jump-small.wav" />
+    <Media Include="Assets\Audio\SFX\jump-super.wav" />
+    <Media Include="Assets\Audio\SFX\kick.wav" />
+    <Media Include="Assets\Audio\SFX\mariodie.wav" />
+    <Media Include="Assets\Audio\SFX\pause.wav" />
+    <Media Include="Assets\Audio\SFX\pipe.wav" />
+    <Media Include="Assets\Audio\SFX\powerup.wav" />
+    <Media Include="Assets\Audio\SFX\powerup_appears.wav" />
+    <Media Include="Assets\Audio\SFX\stage_clear.wav" />
+    <Media Include="Assets\Audio\SFX\stomp.wav" />
+    <Media Include="Assets\Audio\SFX\vine.wav" />
+    <Media Include="Assets\Audio\SFX\warning.wav" />
+    <Media Include="Assets\Audio\SFX\world_clear.wav" />
+    <Media Include="Assets\Audio\Soundtracks\01. Ground Theme.mp3" />
+    <Media Include="Assets\Audio\Soundtracks\02. Underground Theme.mp3" />
+    <Media Include="Assets\Audio\Soundtracks\03. Underwater Theme.mp3" />
+    <Media Include="Assets\Audio\Soundtracks\04. Castle Theme.mp3" />
+    <Media Include="Assets\Audio\Soundtracks\05. Invincibility Theme.mp3" />
+    <Media Include="Assets\Audio\Soundtracks\06. Level Complete Theme.mp3" />
+    <Media Include="Assets\Audio\Soundtracks\07. Castle Complete Theme.mp3" />
+    <Media Include="Assets\Audio\Soundtracks\08. Lost A Life Theme.mp3" />
+    <Media Include="Assets\Audio\Soundtracks\09. Game Over Theme.mp3" />
+    <Media Include="Assets\Audio\Soundtracks\10. Into the Pipe Theme.mp3" />
+    <Media Include="Assets\Audio\Soundtracks\11. Saved the Princess (NES).mp3" />
+    <Media Include="Assets\Audio\Soundtracks\12. Ground Theme (Hurry Up!).mp3" />
+    <Media Include="Assets\Audio\Soundtracks\13. Underground Theme (Hurry Up!).mp3" />
+    <Media Include="Assets\Audio\Soundtracks\14. Underwater Theme (Hurry Up!).mp3" />
+    <Media Include="Assets\Audio\Soundtracks\15. Castle Theme (Hurry Up!).mp3" />
+    <Media Include="Assets\Audio\Soundtracks\16. Invincibility Theme (Hurry Up!).mp3" />
+    <Media Include="Assets\Audio\Soundtracks\17. Into the Pipe (Hurry Up!).mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Sprites\background1.png" />
+    <Image Include="Assets\Sprites\background2.png" />
+    <Image Include="Assets\Sprites\background3.png" />
+    <Image Include="Assets\Sprites\blocks.png" />
+    <Image Include="Assets\Sprites\characters.png" />
+    <Image Include="Assets\Sprites\enemies.png" />
+    <Image Include="Assets\Sprites\hud.png" />
+    <Image Include="Assets\Sprites\items.png" />
+    <Image Include="Assets\Sprites\tileset.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets" Condition="Exists('packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets')" />
