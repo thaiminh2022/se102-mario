@@ -1,56 +1,76 @@
-# Prerequisites
+# --- Prerequisites & Dependencies ---
 *.d
+*.dep
 
-# Compiled Object files
-*.slo
-*.lo
+# --- Compiled Objects & Intermediate Files ---
 *.o
 *.obj
-
-# Precompiled Headers
+*.slo
+*.lo
 *.gch
 *.pch
+*.dwo
+*.tlog
+*.lastbuildstate
 
-# Linker files
-*.ilk
-
-# Debugger Files
-*.pdb
-
-# Compiled Dynamic libraries
+# --- Libraries & Executables ---
+# Static and Dynamic libs
+*.lib
+*.a
+*.la
+*.lai
 *.so
+*.so.*
 *.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
 # Executables
 *.exe
 *.out
 *.app
+*.i686
+*.x86_64
 
-# Debug information files
-*.dwo
+# --- Debug & Linker Files ---
+*.pdb
+*.ilk
+*.idb
+*.exp
 
-# Build directories
-bin/
-obj/
+# --- Build Directories ---
+# Common defaults for VS, CMake, and manual builds
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
 x64/
 x86/
+build/
+out/
 
-# Visual Studio specific files
+# --- Visual Studio Specific ---
 .vs/
 *.suo
+*.user
 *.userosscache
 *.sln.docstates
+*.VC.db
+*.VC.opendb
 
-# Log files
+# --- VS Code Specific ---
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# --- CMake (If used) ---
+CMakeCache.txt
+CMakeFiles/
+CMakeSettings.json
+cmake_install.cmake
+install/
+
+# --- Misc ---
 *.log
+.DS_Store (Mac)
