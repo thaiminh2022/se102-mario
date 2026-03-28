@@ -8,11 +8,11 @@
                 "/Zi",
                 "/EHsc",
                 "/nologo",
-                "/Fe${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "/Fe${workspaceFolder}/x64/Debug/se102-mario.exe",
                 "/DUNICODE",
-                "/D_UNICODE",
+                "/D_UNICODE",   
 
-                "${file}",
+                "${workspaceFolder}/main.cpp",
                 "/I", "${workspaceFolder}/packages/Microsoft.DXSDK.D3DX.9.29.952.8/build/native/include",
                 "/link",
                 
