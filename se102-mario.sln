@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11520.95 d18.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "se102-mario", "se102-mario.vcxproj", "{73FD1718-E55D-3DC1-B9DD-F4230FE4385A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73FD1718-E55D-3DC1-B9DD-F4230FE4385A}.Debug|x64.ActiveCfg = Debug|x64
+		{73FD1718-E55D-3DC1-B9DD-F4230FE4385A}.Debug|x64.Build.0 = Debug|x64
+		{73FD1718-E55D-3DC1-B9DD-F4230FE4385A}.Debug|x86.ActiveCfg = Debug|Win32
+		{73FD1718-E55D-3DC1-B9DD-F4230FE4385A}.Debug|x86.Build.0 = Debug|Win32
+		{73FD1718-E55D-3DC1-B9DD-F4230FE4385A}.Release|x64.ActiveCfg = Release|x64
+		{73FD1718-E55D-3DC1-B9DD-F4230FE4385A}.Release|x64.Build.0 = Release|x64
+		{73FD1718-E55D-3DC1-B9DD-F4230FE4385A}.Release|x86.ActiveCfg = Release|Win32
+		{73FD1718-E55D-3DC1-B9DD-F4230FE4385A}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4C1D26A2-C76A-4935-9A0B-84C727211CAA}
+	EndGlobalSection
+EndGlobal
