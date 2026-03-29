@@ -1,6 +1,23 @@
 {
+
     "tasks": [
         {
+            "label": "Copy Assets to Bin",
+            "type": "shell",
+            "command": "xcopy",
+            "args": [
+                "${workspaceFolder}\\Assets",
+                "${workspaceFolder}\\x64\\Debug\\Assets",
+                "/E", // Copies all subdirectories, even if empty
+                "/I", // Assumes the destination is a folder, not a file
+                "/Y", // Automatically overwrites existing files without asking
+                "/D"  // SMART COPY: Only copies files that are newer than the ones in bin!
+            ],
+            "presentation": {
+                "reveal": "silent" // Hides the output so it doesn't clutter your terminal
+            }
+        },
+        {   
             "type": "cppbuild",
             "label": "C/C++: cl.exe build active file",
             "command": "cl.exe",
@@ -27,6 +44,7 @@
                 "d3dcompiler.lib",
                 "dxgi.lib"
             ],
+            "dependsOn": "Copy Assets to Bin",
             "options": {
                 "cwd": "${fileDirname}"
             },

@@ -5,20 +5,12 @@
             "name": "Debug DirectX App (cl.exe)",
             "type": "cppvsdbg",
             "request": "launch",
-            
-            // Points to your new custom compile path (the 'bin' folder)
             "program": "${workspaceFolder}\\x64\\Debug\\se102-mario.exe",
-            
             "args": [],
             "stopAtEntry": false,
-            
-            // Sets the working directory to the 'bin' folder as well
-            "cwd": "${workspaceFolder}",
-            
+            "cwd": "${workspaceFolder}\\x64\\Debug",
             "environment": [],
-            "externalConsole": false,
-            
-            // Matches the label of your build task in tasks.json
+            "console": "internalConsole",
             "preLaunchTask": "C/C++: cl.exe build active file"
         }
     ]
