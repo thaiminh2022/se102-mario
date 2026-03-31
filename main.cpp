@@ -2,30 +2,43 @@
 #include <d3d10.h>
 #include <D3DX10.h>
 
+#include "AssetIDs.h"
 #include "Debug.h"
 #include "Game.h"
+#include "InputManager.h"
+
+#include "LevelLoader.h"
 #include "Textures.h"
-
-#include "Sprite.h"
-#include "Sprites.h"
-
-#include "Animation.h"
-#include "Animations.h"
 
 #define WINDOW_CLASS_NAME L"SampleWindow"
 #define MAIN_WINDOW_TITLE L"02 - Sprite animation"
 #define WINDOW_ICON_PATH L"mario.ico"
 
-#define BACKGROUND_COLOR D3DXCOLOR(200.0f/255, 200.0f/255, 255.0f/255,0.0f)
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
-
+#define BACKGROUND_COLOR D3DXCOLOR(200.0f / 255, 200.0f / 255, 255.0f / 255, 0.0f)
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 320
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	switch (message) {
+
+
+	switch (message)
+	{
 	case WM_DESTROY:
 		PostQuitMessage(0);
+		break;
+	case WM_KEYDOWN:
+		InputManager::GetInstance()->KeyDown(wParam);
+		break;
+	case WM_KEYUP:
+		InputManager::GetInstance()->KeyUp(wParam);
+		break;
+	case WM_KILLFOCUS:
+		InputManager::GetInstance()->ClearAll();
+		break;
+	case WM_ACTIVATE:
+		if (LOWORD(wParam) == WA_INACTIVE)
+			InputManager::GetInstance()->ClearAll();
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
@@ -34,38 +47,33 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-void LoadResources()
-{
-
-}
-
-
 void Update(DWORD dt)
 {
-	
+	auto game = Game::GetInstance();
+	game->GetCurrentScene()->Update(dt);
 }
 
 void Render()
 {
 	auto g = Game::GetInstance();
 
-	ID3D10Device* pD3DDevice = g->GetDirect3DDevice();
-	IDXGISwapChain* pSwapChain = g->GetSwapChain();
-	ID3D10RenderTargetView* pRenderTargetView = g->GetRenderTargetView();
-	ID3DX10Sprite* spriteHandler = g->GetSpriteHandler();
+	ID3D10Device *pD3DDevice = g->GetDirect3DDevice();
+	IDXGISwapChain *pSwapChain = g->GetSwapChain();
+	ID3D10RenderTargetView *pRenderTargetView = g->GetRenderTargetView();
+	ID3DX10Sprite *spriteHandler = g->GetSpriteHandler();
 
 	if (pD3DDevice != NULL)
 	{
-		// clear the background 
+		// clear the background
 		pD3DDevice->ClearRenderTargetView(pRenderTargetView, BACKGROUND_COLOR);
 
 		spriteHandler->Begin(D3DX10_SPRITE_SORT_TEXTURE);
 
 		// Use Alpha blending for transparent sprites
-		FLOAT NewBlendFactor[4] = { 0,0,0,0 };
+		FLOAT NewBlendFactor[4] = {0, 0, 0, 0};
 		pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
-
+		g->GetCurrentScene()->Render();
 
 		spriteHandler->End();
 		pSwapChain->Present(0, 0);
@@ -92,15 +100,17 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 
 	RegisterClassEx(&wc);
 
-	HWND hWnd =
+	RECT wr = { 0, 0, ScreenWidth, ScreenHeight };
+	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
+	HWND hWnd =	
 		CreateWindow(
 			WINDOW_CLASS_NAME,
 			MAIN_WINDOW_TITLE,
 			WS_OVERLAPPEDWINDOW, // WS_EX_TOPMOST | WS_VISIBLE | WS_POPUP,
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
-			ScreenWidth,
-			ScreenHeight,
+			wr.right - wr.left, 
+			wr.bottom - wr.top, 
 			NULL,
 			NULL,
 			hInstance,
@@ -125,6 +135,7 @@ const int MAX_FRAME_RATE = 165;
 
 int Run()
 {
+
 	MSG msg;
 	int done = 0;
 	ULONGLONG frameStart = GetTickCount64();
@@ -134,7 +145,8 @@ int Run()
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
-			if (msg.message == WM_QUIT) done = 1;
+			if (msg.message == WM_QUIT)
+				done = 1;
 
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
@@ -151,6 +163,8 @@ int Run()
 			frameStart = now;
 			Update((DWORD)dt);
 			Render();
+
+			Game::GetInstance()->SwitchScene();
 		}
 		else
 			Sleep((DWORD)(tickPerFrame - dt));
@@ -159,18 +173,30 @@ int Run()
 	return 1;
 }
 
+static void LoadResource()
+{
+	auto t = Textures::GetInstance();
+	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_frames.png");
+}
+
 int WINAPI WinMain(
 	_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPSTR lpCmdLine,
-	_In_ int nCmdShow
-) {
+	_In_ int nCmdShow)
+{
 	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
-	auto game = Game::GetInstance();
-	game->Init(hWnd);
-	LoadResources();
-	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
-	Run();
 
+
+	//SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+	
+	auto g = Game::GetInstance();
+	g->Init(hWnd);
+	LevelLoader::GetInstance()->Init();
+
+	LoadResource();
+
+	g->EnterStartingScene();
+	Run();
 	return 0;
 }

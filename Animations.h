@@ -19,5 +19,9 @@ public:
 
 	void Add(int id, Animation* ani);
 	Animation* Get(int id);
+
+	void Clear() {
+		animations.clear();
+	}
 };
 

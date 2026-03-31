@@ -1,11 +1,13 @@
 #include "Game.h"
 #include "Debug.h"
+#include "Sprites.h"
+#include "Animations.h"
 
-Game* Game::_instance = nullptr;
+Game *Game::_instance = nullptr;
 
 void Game::Init(HWND hWnd)
 {
-	// retrieve client area width & height so that we can create backbuffer height & width accordingly 
+	// retrieve client area width & height so that we can create backbuffer height & width accordingly
 	RECT r;
 	GetClientRect(hWnd, &r);
 
@@ -31,26 +33,26 @@ void Game::Init(HWND hWnd)
 
 	// Create the D3D device and the swap chain
 	HRESULT hr = D3D10CreateDeviceAndSwapChain(NULL,
-		D3D10_DRIVER_TYPE_HARDWARE,
-		NULL,
-		0,
-		D3D10_SDK_VERSION,
-		&swapChainDesc,
-		&swapChain,
-		&device);
+											   D3D10_DRIVER_TYPE_HARDWARE,
+											   NULL,
+											   0,
+											   D3D10_SDK_VERSION,
+											   &swapChainDesc,
+											   &swapChain,
+											   &device);
 
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t*)L"[ERROR] D3D10CreateDeviceAndSwapChain has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut((wchar_t *)L"[ERROR] D3D10CreateDeviceAndSwapChain has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
 	// Get the back buffer from the swapchain
-	ID3D10Texture2D* pBackBuffer;
-	hr = swapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), (LPVOID*)&pBackBuffer);
+	ID3D10Texture2D *pBackBuffer;
+	hr = swapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), (LPVOID *)&pBackBuffer);
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t*)L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut((wchar_t *)L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -60,7 +62,7 @@ void Game::Init(HWND hWnd)
 	pBackBuffer->Release();
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t*)L"[ERROR] CreateRenderTargetView has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut((wchar_t *)L"[ERROR] CreateRenderTargetView has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -77,13 +79,12 @@ void Game::Init(HWND hWnd)
 	viewPort.TopLeftY = 0;
 	device->RSSetViewports(1, &viewPort);
 
-
-	// create the sprite object to handle sprite drawing 
+	// create the sprite object to handle sprite drawing
 	hr = D3DX10CreateSprite(device, 0, &spriteObject);
 
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t*)L"[ERROR] D3DX10CreateSprite has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut((wchar_t *)L"[ERROR] D3DX10CreateSprite has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -91,12 +92,12 @@ void Game::Init(HWND hWnd)
 
 	// Create the projection matrix using the values in the viewport
 	D3DXMatrixOrthoOffCenterLH(&matProjection,
-		(float)viewPort.TopLeftX,
-		(float)viewPort.Width,
-		(float)viewPort.TopLeftY,
-		(float)viewPort.Height,
-		0.1f,
-		10);
+							   (float)viewPort.TopLeftX,
+							   (float)viewPort.Width,
+							   (float)viewPort.TopLeftY,
+							   (float)viewPort.Height,
+							   0.1f,
+							   10);
 	hr = spriteObject->SetProjectionTransform(&matProjection);
 
 	// Initialize the blend state for alpha drawing
@@ -113,13 +114,16 @@ void Game::Init(HWND hWnd)
 	StateDesc.RenderTargetWriteMask[0] = D3D10_COLOR_WRITE_ENABLE_ALL;
 	device->CreateBlendState(&StateDesc, &this->blendStateAlpha);
 
-	DebugOut((wchar_t*)L"[INFO] InitDirectX has been successful\n");
+	DebugOut(L"[INFO] InitDirectX has been successful\n");
+
+
 
 }
 
-void Game::Draw(float x, float y, Texture * tex, RECT * rect)
+void Game::Draw(float x, float y, Texture *tex, RECT *rect)
 {
-	if (tex == NULL) return;
+	if (tex == nullptr)
+		return;
 
 	int spriteWidth = 0;
 	int spriteHeight = 0;
@@ -129,7 +133,7 @@ void Game::Draw(float x, float y, Texture * tex, RECT * rect)
 	// Set the sprite’s shader resource view
 	sprite.pTexture = tex->GetShaderResourceView();
 
-	if (rect == NULL)
+	if (rect == nullptr)
 	{
 		// top-left location in U,V coords
 		sprite.TexCoord.x = 0;
@@ -161,16 +165,22 @@ void Game::Draw(float x, float y, Texture * tex, RECT * rect)
 	sprite.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 	//
-	// Build the rendering matrix based on sprite location 
+	// Build the rendering matrix based on sprite location
 	//
 
 	// The translation matrix to be created
 	D3DXMATRIX matTranslation;
 
 	// Create the translation matrix
-	D3DXMatrixTranslation(&matTranslation, x, (backBufferHeight - y), 0.1f);
 
-	// Scale the sprite to its correct width and height because by default, DirectX draws it with width = height = 1.0f 
+	D3DXMatrixTranslation(
+		&matTranslation,
+		x + spriteWidth * 0.5f,
+		y + spriteHeight * 0.5f,
+		0.1f
+	);
+
+	// Scale the sprite to its correct width and height because by default, DirectX draws it with width = height = 1.0f
 	D3DXMATRIX matScaling;
 	D3DXMatrixScaling(&matScaling, (FLOAT)spriteWidth, (FLOAT)spriteHeight, 1.0f);
 
@@ -180,38 +190,39 @@ void Game::Draw(float x, float y, Texture * tex, RECT * rect)
 	spriteObject->DrawSpritesImmediate(&sprite, 1, 0, 0);
 }
 
-Texture* Game::LoadTexture(LPCWSTR texturePath)
+Texture *Game::LoadTexture(LPCWSTR texturePath)
 {
-	ID3D10Resource* pD3D10Resource = NULL;
-	ID3D10Texture2D* tex = NULL;
+	ID3D10Resource *pD3D10Resource = NULL;
+	ID3D10Texture2D *tex = NULL;
 
 	// Loads the texture into a temporary ID3D10Resource object
 	HRESULT hr = D3DX10CreateTextureFromFile(device,
-		texturePath,
-		NULL, //&info,
-		NULL,
-		&pD3D10Resource,
-		NULL);
+											 texturePath,
+											 NULL, //&info,
+											 NULL,
+											 &pD3D10Resource,
+											 NULL);
 
 	// Make sure the texture was loaded successfully
 	if (FAILED(hr))
 	{
-		DebugOut((wchar_t*)L"[ERROR] Failed to load texture file: %s with error: %d\n", texturePath, hr);
+		DebugOut((wchar_t *)L"[ERROR] Failed to load texture file: %s with error: %d\n", texturePath, hr);
 		return NULL;
 	}
 
 	// Translates the ID3D10Resource object into a ID3D10Texture2D object
-	pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), (LPVOID*)&tex);
+	pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), (LPVOID *)&tex);
 	pD3D10Resource->Release();
 
-	if (!tex) {
-		DebugOut((wchar_t*)L"[ERROR] Failed to convert from ID3D10Resource to ID3D10Texture2D \n");
+	if (!tex)
+	{
+		DebugOut((wchar_t *)L"[ERROR] Failed to convert from ID3D10Resource to ID3D10Texture2D \n");
 		return NULL;
 	}
 
 	//
-	// Create the Share Resource View for this texture 
-	// 	   
+	// Create the Share Resource View for this texture
+	//
 	// Get the texture details
 	D3D10_TEXTURE2D_DESC desc;
 	tex->GetDesc(&desc);
@@ -229,13 +240,44 @@ Texture* Game::LoadTexture(LPCWSTR texturePath)
 	SRVDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
 	SRVDesc.Texture2D.MipLevels = desc.MipLevels;
 
-	ID3D10ShaderResourceView* gSpriteTextureRV = NULL;
+	ID3D10ShaderResourceView *gSpriteTextureRV = NULL;
 
 	device->CreateShaderResourceView(tex, &SRVDesc, &gSpriteTextureRV);
 
 	DebugOut(L"[INFO] Texture loaded Ok from file: %s \n", texturePath);
 
 	return new Texture(tex, gSpriteTextureRV);
+}
+
+void Game::SwitchScene()
+{
+	if (nextSceneID == currentSceneID)
+		return;
+
+	DebugOut(L"[INFO] Switching to scene %d\n", nextSceneID);
+	if (scenes.find(currentSceneID) != scenes.end())
+	{
+		scenes[currentSceneID]->UnLoad();
+	}
+	Sprites::GetInstance()->Clear();
+	Animations::GetInstance()->Clear();
+
+	currentSceneID = nextSceneID;
+	scenes[currentSceneID]->Load();
+}
+
+void Game::IndicateSceneSwitch(int newID)
+{
+	nextSceneID = newID;
+}
+
+void Game::EnterStartingScene()
+{
+	// Enter first scene
+	auto s = new PlayableScene();
+	scenes[s->GetID()] = s;
+	IndicateSceneSwitch(s->GetID());
+	SwitchScene();
 }
 
 Game::~Game()

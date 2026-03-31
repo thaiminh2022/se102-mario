@@ -1,13 +1,14 @@
 #pragma once
 
+#include <Windows.h>
 #include <d3d10.h>
 #include <D3DX10.h>
 
 class Texture
 {
 protected:
-	ID3D10Texture2D* tex;
-	ID3D10ShaderResourceView* rsView;
+	ID3D10Texture2D *tex;
+	ID3D10ShaderResourceView *rsView;
 	int width, height;
 
 public:
@@ -19,7 +20,7 @@ public:
 		height = -1;
 	}
 
-	Texture(ID3D10Texture2D* tex, ID3D10ShaderResourceView* rsview)
+	Texture(ID3D10Texture2D *tex, ID3D10ShaderResourceView *rsview)
 	{
 		this->tex = tex;
 		this->rsView = rsview;
@@ -30,15 +31,19 @@ public:
 		this->height = desc.Height;
 	}
 
-	int GetWidth() const { return width; };
-	int GetHeight() const { return height; };
+	int GetWidth() const { return width; }
+	int GetHeight() const { return height; }
 
-	ID3D10ShaderResourceView* GetShaderResourceView() { return this->rsView; }
+	ID3D10ShaderResourceView *GetShaderResourceView()
+	{
+		return this->rsView;
+	}
 
 	~Texture()
 	{
-		if (rsView != nullptr) this->rsView->Release();
-		if (tex != nullptr) this->tex->Release();
+		if (rsView != nullptr)
+			this->rsView->Release();
+		if (tex != nullptr)
+			this->tex->Release();
 	}
 };
-

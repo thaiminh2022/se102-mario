@@ -21,5 +21,9 @@ public:
 	void Add(int id, int left, int top, int right, int bottom, Texture* tex);
 	Sprite* Get(int id);
 
+	void Clear() {
+		sprites.clear();
+	}
+
 };
 

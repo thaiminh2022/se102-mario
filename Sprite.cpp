@@ -1,7 +1,7 @@
 #include "Sprite.h"
 #include "Game.h"
 
-Sprite::Sprite(int id, int left, int top, int right, int bottom, Texture* tex)
+Sprite::Sprite(int id, int left, int top, int right, int bottom, Texture *tex)
 {
 	this->id = id;
 	this->left = left;
@@ -30,11 +30,22 @@ Sprite::Sprite(int id, int left, int top, int right, int bottom, Texture* tex)
 
 void Sprite::Draw(float x, float y)
 {
-	Game* g = Game::GetInstance();
+	Game *g = Game::GetInstance();
+
+	float spriteWidth = (float)(right - left + 1);
+	float spriteHeight = (float)(bottom - top + 1);
 
 	D3DXMATRIX matTranslation;
-	D3DXMatrixTranslation(&matTranslation, x, (g->GetBackBufferHeight() - y), 0.1f);
+	D3DXMatrixTranslation(
+		&matTranslation,
+		x + spriteWidth * 0.5f,
+		y + spriteHeight * 0.5f,
+		0.1f
+	);
+
 	this->sprite.matWorld = (this->matScaling * matTranslation);
 
 	g->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0);
 }
+
+

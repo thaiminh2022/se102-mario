@@ -10,14 +10,23 @@ Textures::Textures()
 
 void Textures::Add(int id, LPCWSTR filePath)
 {
-	textures[id] = Game::GetInstance()->LoadTexture(filePath);
+	if (pathToTexture.find(filePath) == pathToTexture.end())
+	{
+		pathToTexture[filePath] = id;
+		textures[id] = Game::GetInstance()->LoadTexture(filePath);
+	}
+
 }
 
-Texture* Textures::Get(unsigned int i)
+bool Textures::HaveTextureWithPath(LPCWSTR filePath, int& outID)
 {
-	return nullptr;
+	if (pathToTexture.find(filePath) == pathToTexture.end())
+	{
+		return false;
+	}
+
+	outID = pathToTexture[filePath];
+	return true;
 }
 
-Textures::~Textures()
-{
-}
+

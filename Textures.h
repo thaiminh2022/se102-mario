@@ -11,6 +11,7 @@ class Textures
 	static Textures* _instance;
 
 	unordered_map<int, Texture*> textures;
+	unordered_map<LPCWSTR, int> pathToTexture; // this is for caching
 
 public:
 	static Textures* GetInstance() {
@@ -20,8 +21,7 @@ public:
 	}
 	Textures();
 	void Add(int id, LPCWSTR filePath);
-	Texture* Get(unsigned int i);
-
-	~Textures();
+	bool HaveTextureWithPath(LPCWSTR filePath, int& outID);
+	Texture* Get(int i) { return textures[i]; }
 };
 
