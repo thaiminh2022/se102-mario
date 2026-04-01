@@ -287,4 +287,5 @@ Game::~Game()
 	renderTargetView->Release();
 	blendStateAlpha->Release();
 	spriteObject->Release();
+	delete camera;
 }

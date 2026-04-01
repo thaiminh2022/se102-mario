@@ -40,20 +40,20 @@ void Mario::Update(DWORD dt, vector<GameObject*>* coObjects)
 	auto dtSec = dt / 1000.0f;
 	if (input->IsKeyDown('A'))
 	{
-		vx = -100.0f;
+		velocity.x = -100.0f;
 		state = MarioState::Running;
 	}
 	else if (input->IsKeyDown('D'))
 	{
-		vx = 100.0f;
+		velocity.x = 100.0f;
 		state = MarioState::Running;
 
 	}else
 	{
-		vx = 0;
+		velocity.x = 0;
 		state = MarioState::Idle;
 	}
-	x += vx * dtSec;
+	position += velocity * dtSec;
 
 }
 
@@ -62,7 +62,7 @@ void Mario::Render()
 	float renderX, renderY;
 	Game::GetInstance()
 	->GetCamera()
-	->WorldToScreen(x, y, renderX, renderY);
+	->WorldToScreen(position.x, position.y, renderX, renderY);
 
 	switch (state)
 	{
@@ -73,4 +73,14 @@ void Mario::Render()
 		Animations::GetInstance()->Get(MARIO_IDLE_ANIM_ID)->Render(round(renderX), round(renderY));
 		break;
 	}
+}
+
+RECT Mario::GetBoundingBox()
+{
+	RECT r;
+	r.top = position.y;
+	r.left = position.x;
+	r.bottom = position.y + 16;
+	r.right = position.x + 16;
+	return r;
 }

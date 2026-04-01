@@ -11,21 +11,17 @@ void Tilemap::Render() const
 	const auto cam = g->GetCamera();
 	for (const auto& t : config->tiles)
 	{
-		int left = t->x;
-		int top = t->y;
-		int right = t->x + t->width;
-		int bottom = t->y + t->height;
-		
-		
+		auto b = t.GetBounds();
+		auto pb = t.GetTextureBounds();
 
-		if (!cam->IsInView(left, top, right, bottom))
+		if (!cam->IsInView(b.left, b.top, b.right, b.bottom))
 		{
 			continue;
 		}
 
 		float renderX, renderY;
-		cam->WorldToScreen(t->x, t->y, renderX, renderY);
-		g->Draw(round(renderX), round(renderY), tex, t->px, t->py, t->px + t->width, t->py + t->height);
+		cam->WorldToScreen(t.x, t.y, renderX, renderY);
+		g->Draw(round(renderX), round(renderY), tex, &pb);
 	}
 }
 
@@ -43,4 +39,21 @@ int Tilemap::GetWidth() const
 int Tilemap::GetHeight() const
 {
 	return config->height;
+}
+
+void Tilemap::GetPotentialColliableTiles(RECT r, vector<Tile*>& outTiles) const
+{
+	for (auto tile : config->tiles)
+	{
+		if (!tile.IsCollidable())
+			continue;
+
+		auto bounds = tile.GetBounds();
+		
+		if (bounds.right < r.left || bounds.left > r.right 
+			|| bounds.bottom < r.top || bounds.top > r.bottom)
+			continue;
+
+		outTiles.push_back(&tile);
+	}
 }

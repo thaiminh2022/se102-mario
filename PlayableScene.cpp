@@ -9,12 +9,12 @@ void PlayableScene::Update(DWORD dt)
 	for (const auto& obj : objects)
 	{
 		coObjects.clear();
-		if (obj->HaveCollision())
+		if (obj->IsCollidable())
 		{
 
 			for (auto other : objects)
 			{
-				if (!other->HaveCollision()) continue;
+				if (!other->IsCollidable()) continue;
 				if (other == obj) continue;
 
 				coObjects.push_back(other);
@@ -53,11 +53,12 @@ void PlayableScene::UnLoad()
 		ob = nullptr;
 	}
 	objects.clear();
+	delete player;
+	player = nullptr;
 }
 
 void PlayableScene::Render()
 {
-
 	LevelLoader::GetInstance()->GetTilemapForLevel(0)->Render();
 
 	for (const auto &obj : objects)

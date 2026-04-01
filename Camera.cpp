@@ -5,8 +5,6 @@
 #include "Game.h"
 #include "GameObject.h"
 
-using std::max;
-using std::min;
 
 Camera::Camera()
 {
@@ -51,11 +49,10 @@ void Camera::Update()
 	auto g = Game::GetInstance();
 	if (target == nullptr) return;
 
-	float targetX, targetY;
-	target->GetPosition(targetX, targetY);
+	auto pos = target->position;
 
 	// center camera on target
-	x = targetX - 0.5f * g->GetBackBufferWidth();
+	x = pos.x - 0.5f * g->GetBackBufferWidth();
 
 	// for now, why is fixed
 	//y = targetY - 0.5f * g->GetBackBufferHeight();

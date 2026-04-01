@@ -54,7 +54,7 @@ Tilemap *LevelLoader::ParseLevel(int level)
 
 	// parse background layer
 	auto layer = GetLayerWithIdentifier(layersValue, BACKGROUND_LAYER);
-	vector<Tile*> tiles;
+	vector<Tile> tiles;
 
 	for (const auto& v : layer->gridTiles)
 	{
@@ -63,14 +63,14 @@ Tilemap *LevelLoader::ParseLevel(int level)
 		auto px = static_cast<int>(v.src[0]);
 		auto py = static_cast<int>(v.src[1]);
 
-		auto tile = new Tile;
-		tile->value = -1;
-		tile->x = x;
-		tile->y = y;
-		tile->px = px;
-		tile->py = py;
-		tile->width = static_cast<int>(layer->gridSize);
-		tile->height = static_cast<int>(layer->gridSize);
+		Tile tile; 
+		tile.value = TileType::None;
+		tile.x = x;
+		tile.y = y;
+		tile.px = px;
+		tile.py = py;
+		tile.width = static_cast<int>(layer->gridSize);
+		tile.height = static_cast<int>(layer->gridSize);
 		tiles.push_back(tile);
 	}
 
@@ -86,20 +86,17 @@ Tilemap *LevelLoader::ParseLevel(int level)
 		auto px = static_cast<int>(v.src[0]);
 		auto py = static_cast<int>(v.src[1]);
 
-		auto tile = new Tile;
+		Tile tile;
 		int64_t valueIndex = px + py / layer->gridSize;
-		tile->value = static_cast<int>(layer->intGridCsv[valueIndex]);
-		tile->x = x;
-		tile->y = y;
-		tile->px = px;
-		tile->py = py;
-		tile->width = static_cast<int>(layer->gridSize);
-		tile->height = static_cast<int>(layer->gridSize);
+		tile.value = static_cast<TileType>(layer->intGridCsv[valueIndex]);
+		tile.x = x;
+		tile.y = y;
+		tile.px = px;
+		tile.py = py;
+		tile.width = static_cast<int>(layer->gridSize);
+		tile.height = static_cast<int>(layer->gridSize);
 		tiles.push_back(tile);
 	}
-
-
-	
 
 	// parse dynamic (entity) layer
 	layer = GetLayerWithIdentifier(layersValue, DYNAMIC_LAYER);
