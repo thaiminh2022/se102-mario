@@ -9,8 +9,6 @@ class GameObject
 protected:
 	float x, y;
 	float vx, vy;
-
-
 	bool isDeleted;
 
 public:
@@ -19,6 +17,7 @@ public:
 
 	virtual void Update(DWORD dt, vector<GameObject*>* coObjects = nullptr) = 0;
 	virtual void Render() = 0;
+	virtual bool HaveCollision() { return false; }
 	static bool IsDeleted(const GameObject* o) { return o->isDeleted; }
 	virtual ~GameObject() = default;
 };

@@ -27,7 +27,7 @@ Mario::Mario(float startX, float startY) : GameObject(startX, startY)
 	anims->Add(MARIO_IDLE_ANIM_ID, anim);
 
 	// walk anim
-	anim = new Animation(300);
+	anim = new Animation(100);
 	anim->Add(MARIO_RUN_SPRITE_1);
 	anim->Add(MARIO_RUN_SPRITE_2);
 	anim->Add(MARIO_RUN_SPRITE_3);
@@ -40,16 +40,32 @@ void Mario::Update(DWORD dt, vector<GameObject*>* coObjects)
 	auto dtSec = dt / 1000.0f;
 	if (input->IsKeyDown('A'))
 	{
-		x += -100.0f * dtSec;
+		vx = -100.0f;
+		state = MarioState::Running;
 	}
-	if (input->IsKeyDown('D'))
+	else if (input->IsKeyDown('D'))
 	{
-		x += 100.0f * dtSec;
+		vx = 100.0f;
+		state = MarioState::Running;
+
+	}else
+	{
+		vx = 0;
+		state = MarioState::Idle;
 	}
-	DebugOutTitle(L"Is a down: %d", input->IsKeyDown('a'));
+	x += vx * dtSec;
+
 }
 
 void Mario::Render()
 {
-	Animations::GetInstance()->Get(MARIO_RUN_ANIM_ID)->Render(round(x), round(y));
+	switch (state)
+	{
+	case MarioState::Running:
+		Animations::GetInstance()->Get(MARIO_RUN_ANIM_ID)->Render(round(x), round(y));
+		break;
+	case MarioState::Idle:
+		Animations::GetInstance()->Get(MARIO_IDLE_ANIM_ID)->Render(round(x), round(y));
+		break;
+	}
 }

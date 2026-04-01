@@ -1,10 +1,18 @@
 #pragma once
 #include "GameObject.h"
 
+
+enum MarioState
+{
+	Running,
+	Idle,
+};
+
 class Mario : public GameObject
 {
 public:
 	Mario(float startX, float startY);
+	MarioState state;
 
 	void Update(DWORD dt, vector<GameObject*>* coObjects) override;
 	void Render() override;
