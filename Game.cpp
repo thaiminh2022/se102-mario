@@ -176,7 +176,7 @@ void Game::Draw(float x, float y, Texture *tex, RECT *rect)
 	D3DXMatrixTranslation(
 		&matTranslation,
 		x + spriteWidth * 0.5f,
-		y + spriteHeight * 0.5f,
+		(backBufferHeight - y) - spriteHeight * 0.5f,
 		0.1f
 	);
 

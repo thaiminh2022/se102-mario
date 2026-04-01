@@ -39,7 +39,7 @@ void Sprite::Draw(float x, float y)
 	D3DXMatrixTranslation(
 		&matTranslation,
 		x + spriteWidth * 0.5f,
-		y + spriteHeight * 0.5f,
+		(g->GetBackBufferHeight() - y) - spriteHeight * 0.5f,
 		0.1f
 	);
 

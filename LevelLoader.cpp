@@ -15,10 +15,16 @@
 
 using json = nlohmann::json;
 using namespace std;
-
 LevelLoader *LevelLoader::_instance = nullptr;
+
+
+constexpr auto LEVEL_0_TILESET = L"Assets/Sprites/ground_and_stone_overworld.png";
+
 void LevelLoader::Init()
 {
+	const auto t = Textures::GetInstance();
+	t->Add(-1, LEVEL_0_TILESET);
+
 	tilemaps.push_back(ParseLevel(0));
 }
 
@@ -45,26 +51,34 @@ Tilemap *LevelLoader::ParseLevel(int level)
 	const auto& layersValue = levelData.layerInstances.value;
 	auto t = Textures::GetInstance();
 	
+
+	// parse background layer
+	auto layer = GetLayerWithIdentifier(layersValue, BACKGROUND_LAYER);
+	vector<Tile*> tiles;
+
+	for (const auto& v : layer->gridTiles)
+	{
+		auto x = static_cast<int>(v.px[0]);
+		auto y = static_cast<int>(v.px[1]);
+		auto px = static_cast<int>(v.src[0]);
+		auto py = static_cast<int>(v.src[1]);
+
+		auto tile = new Tile;
+		tile->value = -1;
+		tile->x = x;
+		tile->y = y;
+		tile->px = px;
+		tile->py = py;
+		tile->width = static_cast<int>(layer->gridSize);
+		tile->height = static_cast<int>(layer->gridSize);
+		tiles.push_back(tile);
+	}
+
 	// parse collision layer
-	auto layer = GetLayerWithIdentifier(layersValue, COLLISION_LAYER);
+	layer = GetLayerWithIdentifier(layersValue, COLLISION_LAYER);
 	if (layer == nullptr)
 		return nullptr;
 
-
-	int outID;
-	if (!layer->tilesetRelPath.hasValue)
-	{
-		return nullptr;
-	}
-	
-	auto tilesetPath = layer->tilesetRelPath.value;
-	auto tileSetWStr = wstring(tilesetPath.begin(), tilesetPath.end());
-	if (!t->HaveTextureWithPath(tileSetWStr.c_str(), outID))
-	{
-		outID = -1 - level;
-		t->Add(outID, tileSetWStr.c_str());
-	}
-	vector<Tile*>  tiles;
 	for (const auto &v: layer->autoLayerTiles)
 	{
 		auto x = static_cast<int>(v.px[0]);
@@ -84,25 +98,7 @@ Tilemap *LevelLoader::ParseLevel(int level)
 		tiles.push_back(tile);
 	}
 
-	// parse background layer
-	layer = GetLayerWithIdentifier(layersValue, BACKGROUND_LAYER);
-	for (const auto& v : layer->gridTiles)
-	{
-		auto x = static_cast<int>(v.px[0]);
-		auto y = static_cast<int>(v.px[1]);
-		auto px = static_cast<int>(v.src[0]);
-		auto py = static_cast<int>(v.src[1]);
 
-		Tile tile;
-		tile.value = -1;
-		tile.x = x;
-		tile.y = y;
-		tile.px = px;
-		tile.py = py;
-		tile.width = static_cast<int>(layer->gridSize);
-		tile.height = static_cast<int>(layer->gridSize);
-		tiles.push_back(&tile);
-	}
 	
 
 	// parse dynamic (entity) layer
@@ -110,7 +106,11 @@ Tilemap *LevelLoader::ParseLevel(int level)
 	auto playerStarts = layer->entityInstances[0];
 	int x = static_cast<int>(playerStarts.px[0]);
 	int y = static_cast<int>(playerStarts.px[1]);
-	auto tilemap = new Tilemap(outID, tiles, x, y);
+
+	
+	int outID;
+	t->HaveTextureWithPath(LEVEL_0_TILESET, outID);
+	const auto tilemap = new Tilemap(outID, tiles, x, y);
 
 	return tilemap;
 }
