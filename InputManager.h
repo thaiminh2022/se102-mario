@@ -28,7 +28,7 @@ public:
 	}
 	void KeyDown(unsigned char key);
 	void KeyUp(unsigned char key);
-	bool IsKeyDown(unsigned char key);
+	bool IsKeyDown(unsigned char key) const;
 	void ClearAll();
 };
 

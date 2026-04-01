@@ -4,19 +4,19 @@
 
 InputManager* InputManager::_instance = nullptr;
 
-void InputManager::KeyDown(unsigned char key)
+void InputManager::KeyDown(const unsigned char key)
 {
 	keys[key] = true;
 }
 
-void InputManager::KeyUp(unsigned char key)
+void InputManager::KeyUp(const unsigned char key)
 {
 	keys[key] = false;
 }
 
-bool InputManager::IsKeyDown(unsigned char key)
+bool InputManager::IsKeyDown(const unsigned char key) const
 {
-	DebugOut(L"key: %d: %d\n", key, keys[key]);
+	//DebugOut(L"key: %d: %d\n", key, keys[key]);
 	return keys[key];
 }
 

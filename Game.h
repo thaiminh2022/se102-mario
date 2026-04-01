@@ -5,6 +5,8 @@
 #include "Texture.h"
 #include "Scene.h"
 #include <unordered_map>
+
+#include "Camera.h"
 #include "PlayableScene.h"
 
 using std::unordered_map;
@@ -28,6 +30,12 @@ class Game
 	int nextSceneID;
 	unordered_map<int, Scene *> scenes;
 
+	Camera* camera;
+	Game() : hWnd(nullptr), currentSceneID(0), nextSceneID(0)
+	{
+		camera = new Camera;
+	}
+
 public:
 	static Game *GetInstance()
 	{
@@ -49,21 +57,25 @@ public:
 		Draw(x, y, tex, &rect);
 	}
 
-	Texture *LoadTexture(LPCWSTR texturePath);
+	Texture *LoadTexture(LPCWSTR texturePath) const;
 
-	ID3D10Device *GetDirect3DDevice() { return this->device; }
-	IDXGISwapChain *GetSwapChain() { return this->swapChain; }
-	ID3D10RenderTargetView *GetRenderTargetView() { return this->renderTargetView; }
-	ID3DX10Sprite *GetSpriteHandler() { return this->spriteObject; }
-	ID3D10BlendState *GetAlphaBlending() { return blendStateAlpha; };
+	ID3D10Device *GetDirect3DDevice() const { return this->device; }
+	IDXGISwapChain *GetSwapChain() const { return this->swapChain; }
+	ID3D10RenderTargetView *GetRenderTargetView() const { return this->renderTargetView; }
+	ID3DX10Sprite *GetSpriteHandler() const { return this->spriteObject; }
+	ID3D10BlendState *GetAlphaBlending() const { return blendStateAlpha; };
 
-	int GetBackBufferWidth() { return backBufferWidth; }
-	int GetBackBufferHeight() { return backBufferHeight; }
+	int GetBackBufferWidth() const { return backBufferWidth; }
+	int GetBackBufferHeight() const { return backBufferHeight; }
 	Scene *GetCurrentScene() { return scenes[currentSceneID]; }
 
+	// Scene related
 	void SwitchScene();
 	void IndicateSceneSwitch(int newID);
 	void EnterStartingScene();
+
+	// Camera related	
+	Camera* GetCamera() const { return camera; }
 
 	~Game();
 };

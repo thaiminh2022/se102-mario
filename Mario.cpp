@@ -59,13 +59,18 @@ void Mario::Update(DWORD dt, vector<GameObject*>* coObjects)
 
 void Mario::Render()
 {
+	float renderX, renderY;
+	Game::GetInstance()
+	->GetCamera()
+	->WorldToScreen(x, y, renderX, renderY);
+
 	switch (state)
 	{
 	case MarioState::Running:
-		Animations::GetInstance()->Get(MARIO_RUN_ANIM_ID)->Render(round(x), round(y));
+		Animations::GetInstance()->Get(MARIO_RUN_ANIM_ID)->Render(round(renderX), round(renderY));
 		break;
 	case MarioState::Idle:
-		Animations::GetInstance()->Get(MARIO_IDLE_ANIM_ID)->Render(round(x), round(y));
+		Animations::GetInstance()->Get(MARIO_IDLE_ANIM_ID)->Render(round(renderX), round(renderY));
 		break;
 	}
 }

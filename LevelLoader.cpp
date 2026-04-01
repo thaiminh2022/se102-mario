@@ -108,10 +108,19 @@ Tilemap *LevelLoader::ParseLevel(int level)
 	int y = static_cast<int>(playerStarts.px[1]);
 
 	
+	// re implement this when we have multiple tileset for layer
 	int outID;
 	t->HaveTextureWithPath(LEVEL_0_TILESET, outID);
-	const auto tilemap = new Tilemap(outID, tiles, x, y);
+	const auto config = new TilemapConfig {
+		outID, 
+		tiles, 
+		x, 
+		y, 
+		static_cast<int>(levelData.pxWid), 
+		static_cast<int>(levelData.pxHei)
+	};
 
+	const auto tilemap = new Tilemap(config);
 	return tilemap;
 }
 const LayerInstance* LevelLoader::GetLayerWithIdentifier(

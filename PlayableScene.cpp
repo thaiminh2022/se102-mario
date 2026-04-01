@@ -8,15 +8,23 @@ void PlayableScene::Update(DWORD dt)
 	vector<GameObject*> coObjects;
 	for (const auto& obj : objects)
 	{
-		for (auto other : objects)
+		coObjects.clear();
+		if (obj->HaveCollision())
 		{
-			if (other != obj)
+
+			for (auto other : objects)
+			{
+				if (!other->HaveCollision()) continue;
+				if (other == obj) continue;
+
 				coObjects.push_back(other);
+			}
 		}
 
 		obj->Update(dt, &coObjects);
-		coObjects.clear();
 	}
+	Game::GetInstance()->GetCamera()->Update();
+
 
 	CleanupDeletedObjects();
 }
@@ -24,8 +32,16 @@ void PlayableScene::Update(DWORD dt)
 void PlayableScene::Load()
 {
 	auto tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(0);
-
-	player = new Mario(tilemap->playerStartX, tilemap->playerStartY);
+	auto c = Game::GetInstance()->GetCamera();
+	
+	c->SetWorldSize(tilemap->GetWidth(), tilemap->GetHeight());
+	
+	int startX, startY;
+	tilemap->GetPlayerStartPosition(startX, startY);
+	player = new Mario(startX, startY);
+	
+	c->SetTarget(player);
+	
 	objects.push_back(player);
 }
 

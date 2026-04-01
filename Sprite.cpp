@@ -32,6 +32,7 @@ void Sprite::Draw(float x, float y)
 {
 	Game *g = Game::GetInstance();
 
+
 	float spriteWidth = (float)(right - left + 1);
 	float spriteHeight = (float)(bottom - top + 1);
 

@@ -5,28 +5,34 @@ using std::vector;
 
 struct Tile
 {
-	int value; // for int grid
+	int value; // for int grid (collision, oneway platform, dead zone)
 	int x, y;
 	int px, py;
 	int width, height;
 };
+struct TilemapConfig
+{
+	int textureID;
+	const vector<Tile*> tiles;
+	int playerStartX;
+	int playerStartY;
+	int width;
+	int height;
+};
+
 
 class Tilemap
 {
-	int textureID;
-	vector<Tile*> tiles;
+	TilemapConfig* config;
 	
 public:
-	int playerStartX;
-	int playerStartY;
-
-	Tilemap(int textureID, const vector<Tile*>& tiles, int playerStartX, int playerStartY)
+	explicit Tilemap(TilemapConfig* conf)
 	{
-		this->textureID = textureID;
-		this->tiles = tiles;
-		this->playerStartY = playerStartY;
-		this->playerStartX = playerStartX;
+		config = conf;
 	}
-	void Render();
+	void Render() const;
+	void GetPlayerStartPosition(int& x, int& y) const;
+	int GetWidth() const;
+	int GetHeight() const;
 };
 

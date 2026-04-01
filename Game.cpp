@@ -175,7 +175,7 @@ void Game::Draw(float x, float y, Texture *tex, RECT *rect)
 
 	D3DXMatrixTranslation(
 		&matTranslation,
-		x + spriteWidth * 0.5f,
+		x + spriteWidth * 0.5f ,
 		(backBufferHeight - y) - spriteHeight * 0.5f,
 		0.1f
 	);
@@ -190,7 +190,7 @@ void Game::Draw(float x, float y, Texture *tex, RECT *rect)
 	spriteObject->DrawSpritesImmediate(&sprite, 1, 0, 0);
 }
 
-Texture *Game::LoadTexture(LPCWSTR texturePath)
+Texture *Game::LoadTexture(LPCWSTR texturePath) const
 {
 	ID3D10Resource *pD3D10Resource = NULL;
 	ID3D10Texture2D *tex = NULL;
@@ -198,26 +198,26 @@ Texture *Game::LoadTexture(LPCWSTR texturePath)
 	// Loads the texture into a temporary ID3D10Resource object
 	HRESULT hr = D3DX10CreateTextureFromFile(device,
 											 texturePath,
-											 NULL, //&info,
-											 NULL,
+											 nullptr, //&info,
+										nullptr,
 											 &pD3D10Resource,
-											 NULL);
+											nullptr);
 
 	// Make sure the texture was loaded successfully
 	if (FAILED(hr))
 	{
-		DebugOut((wchar_t *)L"[ERROR] Failed to load texture file: %s with error: %d\n", texturePath, hr);
-		return NULL;
+		DebugOut(L"[ERROR] Failed to load texture file: %s with error: %d\n", texturePath, hr);
+		return nullptr;
 	}
 
 	// Translates the ID3D10Resource object into a ID3D10Texture2D object
-	pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), (LPVOID *)&tex);
+	auto _ = pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), (LPVOID *)&tex);
 	pD3D10Resource->Release();
 
 	if (!tex)
 	{
-		DebugOut((wchar_t *)L"[ERROR] Failed to convert from ID3D10Resource to ID3D10Texture2D \n");
-		return NULL;
+		DebugOut(L"[ERROR] Failed to convert from ID3D10Resource to ID3D10Texture2D \n");
+		return nullptr;
 	}
 
 	//
