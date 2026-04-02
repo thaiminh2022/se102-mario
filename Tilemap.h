@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include <Windows.h>
+#include "Rect.h"
 using std::vector;
 
 enum TileType
@@ -17,9 +17,9 @@ struct Tile
 	int width, height;
 
 	bool IsCollidable() { return value != None; }
-	RECT GetBounds() const
+	Rect GetBounds() const
 	{
-		RECT r;
+		Rect r;
 		r.left = x;
 		r.top = y;
 		r.right = x + width;
@@ -28,9 +28,9 @@ struct Tile
 		return r;
 	}
 
-	RECT GetTextureBounds() const
+	Rect GetTextureBounds() const
 	{
-		RECT r;
+		Rect r;
 		r.left = px;
 		r.top = py;
 		r.right = px + width;
@@ -53,7 +53,7 @@ struct TilemapConfig
 class Tilemap
 {
 	TilemapConfig* config;
-	
+
 public:
 	explicit Tilemap(TilemapConfig* conf)
 	{
@@ -65,7 +65,7 @@ public:
 	int GetHeight() const;
 
 	const vector<Tile>& GetTiles() const { return  config->tiles; }
-	void GetPotentialColliableTiles(RECT r, vector<Tile*>& outTiles) const;
+	void GetPotentialColliableTiles(Rect r, vector<Tile*>& outTiles) const;
 
 };
 

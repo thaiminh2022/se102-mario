@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <json.hpp>
+#include <nloahmann/json.hpp>
 #include <Windows.h>
 #include <vector>
 
@@ -15,15 +15,15 @@ using std::ifstream;
 
 class LevelLoader
 {
-	static LevelLoader *_instance;
+	static LevelLoader* _instance;
 	vector<Tilemap*> tilemaps;
 
 	// Helper
-	static Tilemap *ParseLevel(int level);
+	static Tilemap* ParseLevel(int level);
 	static const LayerInstance* GetLayerWithIdentifier(const vector<LayerInstance>& v, const std::string& identifier);
 
 public:
-	static LevelLoader *GetInstance()
+	static LevelLoader* GetInstance()
 	{
 		if (_instance == nullptr)
 			_instance = new LevelLoader;
@@ -31,6 +31,6 @@ public:
 		return _instance;
 	}
 
-	Tilemap *GetTilemapForLevel(const int level) const { return tilemaps[level]; }
+	Tilemap* GetTilemapForLevel(const int level) const { return tilemaps[level]; }
 	void Init();
 };

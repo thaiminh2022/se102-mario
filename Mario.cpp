@@ -20,7 +20,7 @@ Mario::Mario(float startX, float startY) : GameObject(startX, startY)
 	sprites->Add(MARIO_RUN_SPRITE_2, 32, 0, 47, 15, marioTex);
 	sprites->Add(MARIO_RUN_SPRITE_3, 48, 0, 63, 15, marioTex);
 	sprites->Add(MARIO_IDLE_SPRITE_1, 0, 0, 15, 15, marioTex);
-	
+
 	// idle anim
 	anim = new Animation(300);
 	anim->Add(MARIO_IDLE_SPRITE_1);
@@ -48,7 +48,8 @@ void Mario::Update(DWORD dt, vector<GameObject*>* coObjects)
 		velocity.x = 100.0f;
 		state = MarioState::Running;
 
-	}else
+	}
+	else
 	{
 		velocity.x = 0;
 		state = MarioState::Idle;
@@ -61,8 +62,8 @@ void Mario::Render()
 {
 	float renderX, renderY;
 	Game::GetInstance()
-	->GetCamera()
-	->WorldToScreen(position.x, position.y, renderX, renderY);
+		->GetCamera()
+		->WorldToScreen(position.x, position.y, renderX, renderY);
 
 	switch (state)
 	{
@@ -75,9 +76,9 @@ void Mario::Render()
 	}
 }
 
-RECT Mario::GetBoundingBox()
+Rect Mario::GetBoundingBox()
 {
-	RECT r;
+	Rect r;
 	r.top = position.y;
 	r.left = position.x;
 	r.bottom = position.y + 16;

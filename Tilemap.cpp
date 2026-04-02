@@ -41,7 +41,7 @@ int Tilemap::GetHeight() const
 	return config->height;
 }
 
-void Tilemap::GetPotentialColliableTiles(RECT r, vector<Tile*>& outTiles) const
+void Tilemap::GetPotentialColliableTiles(Rect r, vector<Tile*>& outTiles) const
 {
 	for (auto tile : config->tiles)
 	{
@@ -49,8 +49,8 @@ void Tilemap::GetPotentialColliableTiles(RECT r, vector<Tile*>& outTiles) const
 			continue;
 
 		auto bounds = tile.GetBounds();
-		
-		if (bounds.right < r.left || bounds.left > r.right 
+
+		if (bounds.right < r.left || bounds.left > r.right
 			|| bounds.bottom < r.top || bounds.top > r.bottom)
 			continue;
 

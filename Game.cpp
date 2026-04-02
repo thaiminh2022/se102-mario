@@ -3,7 +3,7 @@
 #include "Sprites.h"
 #include "Animations.h"
 
-Game *Game::_instance = nullptr;
+Game* Game::_instance = nullptr;
 
 void Game::Init(HWND hWnd)
 {
@@ -33,26 +33,26 @@ void Game::Init(HWND hWnd)
 
 	// Create the D3D device and the swap chain
 	HRESULT hr = D3D10CreateDeviceAndSwapChain(NULL,
-											   D3D10_DRIVER_TYPE_HARDWARE,
-											   NULL,
-											   0,
-											   D3D10_SDK_VERSION,
-											   &swapChainDesc,
-											   &swapChain,
-											   &device);
+		D3D10_DRIVER_TYPE_HARDWARE,
+		NULL,
+		0,
+		D3D10_SDK_VERSION,
+		&swapChainDesc,
+		&swapChain,
+		&device);
 
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t *)L"[ERROR] D3D10CreateDeviceAndSwapChain has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut((wchar_t*)L"[ERROR] D3D10CreateDeviceAndSwapChain has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
 	// Get the back buffer from the swapchain
-	ID3D10Texture2D *pBackBuffer;
-	hr = swapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), (LPVOID *)&pBackBuffer);
+	ID3D10Texture2D* pBackBuffer;
+	hr = swapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), (LPVOID*)&pBackBuffer);
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t *)L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut((wchar_t*)L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -62,7 +62,7 @@ void Game::Init(HWND hWnd)
 	pBackBuffer->Release();
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t *)L"[ERROR] CreateRenderTargetView has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut((wchar_t*)L"[ERROR] CreateRenderTargetView has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -84,7 +84,7 @@ void Game::Init(HWND hWnd)
 
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t *)L"[ERROR] D3DX10CreateSprite has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut((wchar_t*)L"[ERROR] D3DX10CreateSprite has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -92,12 +92,12 @@ void Game::Init(HWND hWnd)
 
 	// Create the projection matrix using the values in the viewport
 	D3DXMatrixOrthoOffCenterLH(&matProjection,
-							   (float)viewPort.TopLeftX,
-							   (float)viewPort.Width,
-							   (float)viewPort.TopLeftY,
-							   (float)viewPort.Height,
-							   0.1f,
-							   10);
+		(float)viewPort.TopLeftX,
+		(float)viewPort.Width,
+		(float)viewPort.TopLeftY,
+		(float)viewPort.Height,
+		0.1f,
+		10);
 	hr = spriteObject->SetProjectionTransform(&matProjection);
 
 	// Initialize the blend state for alpha drawing
@@ -120,7 +120,7 @@ void Game::Init(HWND hWnd)
 
 }
 
-void Game::Draw(float x, float y, Texture *tex, RECT *rect)
+void Game::Draw(float x, float y, Texture* tex, RECT* rect)
 {
 	if (tex == nullptr)
 		return;
@@ -175,7 +175,7 @@ void Game::Draw(float x, float y, Texture *tex, RECT *rect)
 
 	D3DXMatrixTranslation(
 		&matTranslation,
-		x + spriteWidth * 0.5f ,
+		x + spriteWidth * 0.5f,
 		(backBufferHeight - y) - spriteHeight * 0.5f,
 		0.1f
 	);
@@ -190,18 +190,18 @@ void Game::Draw(float x, float y, Texture *tex, RECT *rect)
 	spriteObject->DrawSpritesImmediate(&sprite, 1, 0, 0);
 }
 
-Texture *Game::LoadTexture(LPCWSTR texturePath) const
+Texture* Game::LoadTexture(LPCWSTR texturePath) const
 {
-	ID3D10Resource *pD3D10Resource = NULL;
-	ID3D10Texture2D *tex = NULL;
+	ID3D10Resource* pD3D10Resource = NULL;
+	ID3D10Texture2D* tex = NULL;
 
 	// Loads the texture into a temporary ID3D10Resource object
 	HRESULT hr = D3DX10CreateTextureFromFile(device,
-											 texturePath,
-											 nullptr, //&info,
-										nullptr,
-											 &pD3D10Resource,
-											nullptr);
+		texturePath,
+		nullptr, //&info,
+		nullptr,
+		&pD3D10Resource,
+		nullptr);
 
 	// Make sure the texture was loaded successfully
 	if (FAILED(hr))
@@ -211,7 +211,7 @@ Texture *Game::LoadTexture(LPCWSTR texturePath) const
 	}
 
 	// Translates the ID3D10Resource object into a ID3D10Texture2D object
-	auto _ = pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), (LPVOID *)&tex);
+	auto _ = pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), (LPVOID*)&tex);
 	pD3D10Resource->Release();
 
 	if (!tex)
@@ -240,7 +240,7 @@ Texture *Game::LoadTexture(LPCWSTR texturePath) const
 	SRVDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
 	SRVDesc.Texture2D.MipLevels = desc.MipLevels;
 
-	ID3D10ShaderResourceView *gSpriteTextureRV = NULL;
+	ID3D10ShaderResourceView* gSpriteTextureRV = NULL;
 
 	device->CreateShaderResourceView(tex, &SRVDesc, &gSpriteTextureRV);
 

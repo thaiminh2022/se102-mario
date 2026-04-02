@@ -10,8 +10,8 @@
 #include "LevelLoader.h"
 #include "Textures.h"
 
-#define WINDOW_CLASS_NAME L"SampleWindow"
-#define MAIN_WINDOW_TITLE L"02 - Sprite animation"
+#define WINDOW_CLASS_NAME L"MarioGame"
+#define MAIN_WINDOW_TITLE L"Mario"
 #define WINDOW_ICON_PATH L"mario.ico"
 
 #define BACKGROUND_COLOR D3DXCOLOR(200.0f / 255, 200.0f / 255, 255.0f / 255, 0.0f)
@@ -57,10 +57,10 @@ void Render()
 {
 	auto g = Game::GetInstance();
 
-	ID3D10Device *pD3DDevice = g->GetDirect3DDevice();
-	IDXGISwapChain *pSwapChain = g->GetSwapChain();
-	ID3D10RenderTargetView *pRenderTargetView = g->GetRenderTargetView();
-	ID3DX10Sprite *spriteHandler = g->GetSpriteHandler();
+	ID3D10Device* pD3DDevice = g->GetDirect3DDevice();
+	IDXGISwapChain* pSwapChain = g->GetSwapChain();
+	ID3D10RenderTargetView* pRenderTargetView = g->GetRenderTargetView();
+	ID3DX10Sprite* spriteHandler = g->GetSpriteHandler();
 
 	if (pD3DDevice != NULL)
 	{
@@ -70,7 +70,7 @@ void Render()
 		spriteHandler->Begin(D3DX10_SPRITE_SORT_TEXTURE);
 
 		// Use Alpha blending for transparent sprites
-		FLOAT NewBlendFactor[4] = {0, 0, 0, 0};
+		FLOAT NewBlendFactor[4] = { 0, 0, 0, 0 };
 		pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
 		g->GetCurrentScene()->Render();
@@ -102,15 +102,15 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 
 	RECT wr = { 0, 0, ScreenWidth, ScreenHeight };
 	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
-	HWND hWnd =	
+	HWND hWnd =
 		CreateWindow(
 			WINDOW_CLASS_NAME,
 			MAIN_WINDOW_TITLE,
 			WS_OVERLAPPEDWINDOW, // WS_EX_TOPMOST | WS_VISIBLE | WS_POPUP,
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
-			wr.right - wr.left, 
-			wr.bottom - wr.top, 
+			wr.right - wr.left,
+			wr.bottom - wr.top,
 			NULL,
 			NULL,
 			hInstance,
@@ -189,7 +189,7 @@ int WINAPI WinMain(
 
 
 	//SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
-	
+
 	auto g = Game::GetInstance();
 	g->Init(hWnd);
 	LevelLoader::GetInstance()->Init();

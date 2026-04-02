@@ -16,6 +16,6 @@ public:
 
 	void Update(DWORD dt, vector<GameObject*>* coObjects) override;
 	void Render() override;
-	RECT GetBoundingBox() override;
+	Rect GetBoundingBox() override;
 };
 
