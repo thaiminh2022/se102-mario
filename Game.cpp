@@ -120,7 +120,7 @@ void Game::Init(HWND hWnd)
 
 }
 
-void Game::Draw(float x, float y, Texture* tex, RECT* rect)
+void Game::Draw(float x, float y, Texture* tex, Rect* rect)
 {
 	if (tex == nullptr)
 		return;

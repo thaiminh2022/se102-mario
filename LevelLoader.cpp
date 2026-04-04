@@ -36,6 +36,7 @@ const string DYNAMIC_LAYER = "Dynamic";
 
 Tilemap *LevelLoader::ParseLevel(int level)
 {
+	/// PARSE JSON
 	ifstream f(WORLD_PATH);
 	json data  = json::parse(f);
 	const auto& map = data.get<WorldMap>();
@@ -49,72 +50,26 @@ Tilemap *LevelLoader::ParseLevel(int level)
 		return nullptr;
 	}
 	const auto& layersValue = levelData.layerInstances.value;
-	auto t = Textures::GetInstance();
-	
+	/// -----
+	vector<RenderLayer> renderLayers;
+	CollisionLayer collisionLayer;
+	auto r1 = ParseCollisionLayer(layersValue, collisionLayer);
+	auto r2 = ParseBackgroundLayer(layersValue);
+	auto playerStart = ParseEntityLayer(layersValue);
 
-	// parse background layer
-	auto layer = GetLayerWithIdentifier(layersValue, BACKGROUND_LAYER);
-	vector<Tile> tiles;
-
-	for (const auto& v : layer->gridTiles)
-	{
-		auto x = static_cast<int>(v.px[0]);
-		auto y = static_cast<int>(v.px[1]);
-		auto px = static_cast<int>(v.src[0]);
-		auto py = static_cast<int>(v.src[1]);
-
-		Tile tile; 
-		tile.value = TileType::None;
-		tile.x = x;
-		tile.y = y;
-		tile.px = px;
-		tile.py = py;
-		tile.width = static_cast<int>(layer->gridSize);
-		tile.height = static_cast<int>(layer->gridSize);
-		tiles.push_back(tile);
-	}
-
-	// parse collision layer
-	layer = GetLayerWithIdentifier(layersValue, COLLISION_LAYER);
-	if (layer == nullptr)
-		return nullptr;
-
-	for (const auto &v: layer->autoLayerTiles)
-	{
-		auto x = static_cast<int>(v.px[0]);
-		auto y = static_cast<int>(v.px[1]);
-		auto px = static_cast<int>(v.src[0]);
-		auto py = static_cast<int>(v.src[1]);
-
-		Tile tile;
-		int64_t valueIndex = px + py / layer->gridSize;
-		tile.value = static_cast<TileType>(layer->intGridCsv[valueIndex]);
-		tile.x = x;
-		tile.y = y;
-		tile.px = px;
-		tile.py = py;
-		tile.width = static_cast<int>(layer->gridSize);
-		tile.height = static_cast<int>(layer->gridSize);
-		tiles.push_back(tile);
-	}
-
-	// parse dynamic (entity) layer
-	layer = GetLayerWithIdentifier(layersValue, DYNAMIC_LAYER);
-	auto playerStarts = layer->entityInstances[0];
-	int x = static_cast<int>(playerStarts.px[0]);
-	int y = static_cast<int>(playerStarts.px[1]);
+	renderLayers.push_back(r1);
+	renderLayers.push_back(r2);
 
 	
-	// re implement this when we have multiple tileset for layer
-	int outID;
-	t->HaveTextureWithPath(LEVEL_0_TILESET, outID);
 	const auto config = new TilemapConfig {
-		outID, 
-		tiles, 
-		x, 
-		y, 
-		static_cast<int>(levelData.pxWid), 
-		static_cast<int>(levelData.pxHei)
+		playerStart.x,
+		playerStart.y,
+		static_cast<int>(levelData.pxWid),
+		static_cast<int>(levelData.pxHei),
+		16,
+		16,
+		renderLayers,
+		collisionLayer
 	};
 
 	const auto tilemap = new Tilemap(config);
@@ -133,3 +88,101 @@ const LayerInstance* LevelLoader::GetLayerWithIdentifier(
 	}
 	return nullptr;
 }
+
+RenderLayer LevelLoader::ParseCollisionLayer(const vector<LayerInstance>& v, CollisionLayer& col)
+{
+	// collision layer is store as an int grid
+	auto layerData = GetLayerWithIdentifier(v, COLLISION_LAYER);
+	col.tileWidth = 16;
+	col.tileHeight = 16;
+	col.cWidth = layerData->cWid;
+	col.cHeight = layerData->cHei;
+
+	RenderLayer renderLayer;
+	renderLayer.tileWidth = 16;
+	renderLayer.tileHeight = 16;
+	renderLayer.cellWidth = layerData->cWid;
+	renderLayer.cellHeight = layerData->cHei;
+
+	// parse collision
+	for (const auto value: layerData->intGridCsv)
+	{
+		CollisionTileType t = CollisionTileType::None;
+		if (value == 2)
+		{
+			t = CollisionTileType::Ground;
+		}else if (value == 3)
+		{
+			t = CollisionTileType::OneWay;
+		}
+
+		col.cells.push_back(t);
+	}
+
+	int tID = -1;
+	if (!Textures::GetInstance()->HaveTextureWithPath(LEVEL_0_TILESET, tID))
+	{
+		DebugOut(L"[ERROR] Cannot fine tileset, resolve to default: -1");
+	}
+	renderLayer.textureID = tID;
+
+	// parse visual
+	for (const auto& l: layerData->autoLayerTiles)
+	{
+		RenderTile t;
+		t.worldX = l.px[0];
+		t.worldY = l.px[1];
+		t.srcX = l.src[0];
+		t.srcY = l.src[1];
+
+		t.width = 16;
+		t.height = 16;
+		renderLayer.tiles.push_back(t);
+	}
+
+	return renderLayer;
+}
+
+
+
+RenderLayer LevelLoader::ParseBackgroundLayer(const vector<LayerInstance>& v)
+{
+	auto layerData = GetLayerWithIdentifier(v, BACKGROUND_LAYER);
+	auto renderLayer = RenderLayer();
+	int tID = -1;
+
+	if (!Textures::GetInstance()->HaveTextureWithPath(LEVEL_0_TILESET, tID))
+	{
+		DebugOut(L"[ERROR] Cannot fine tileset, resolve to default: -1");
+	}
+	renderLayer.textureID = tID;
+
+	for (auto l : layerData->gridTiles)
+	{
+		RenderTile t;
+		t.worldX = l.px[0];
+		t.worldY= l.px[1];
+		t.srcX = l.src[0];
+		t.srcY = l.src[1];
+
+		t.width = 16;
+		t.height = 16;
+		renderLayer.tiles.push_back(t);
+	}
+	return renderLayer;
+}
+
+Vector2Int LevelLoader::ParseEntityLayer(const vector<LayerInstance>& v)
+{
+	auto layer = GetLayerWithIdentifier(v, DYNAMIC_LAYER);
+	auto entities = layer->entityInstances;
+
+	if (!entities.empty())
+	{
+		auto playerStartEntity = layer->entityInstances[0]; // index 0 is player start
+		return Vector2Int(playerStartEntity.px[0], playerStartEntity.px[1]);
+	}
+
+	return Vector2Int();
+}
+

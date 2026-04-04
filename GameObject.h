@@ -5,6 +5,7 @@
 #include "Collision.h"
 #include "Vector2.h"
 #include "Rect.h"
+#include "Scene.h"
 
 using std::vector;
 
@@ -18,7 +19,7 @@ public:
 	Vector2 velocity;
 	explicit GameObject(float x = 0, float y = 0) { position = Vector2(x, y); isDeleted = false; }
 
-	virtual void Update(DWORD dt, vector<GameObject*>* coObjects = nullptr) = 0;
+	virtual void Update(DWORD dt, vector<GameObject*>& coObjects, SceneContext* ctx = nullptr) = 0;
 	virtual void Render() = 0;
 
 	virtual bool IsCollidable() { return true; }

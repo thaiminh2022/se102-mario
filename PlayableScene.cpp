@@ -1,5 +1,4 @@
 #include "PlayableScene.h"
-
 #include "Game.h"
 
 void PlayableScene::Update(DWORD dt)
@@ -8,6 +7,7 @@ void PlayableScene::Update(DWORD dt)
 	vector<GameObject*> coObjects;
 	for (const auto& obj : objects)
 	{
+		// make co-objects
 		coObjects.clear();
 		if (obj->IsCollidable())
 		{
@@ -21,23 +21,26 @@ void PlayableScene::Update(DWORD dt)
 			}
 		}
 
-		obj->Update(dt, &coObjects);
+		obj->Update(dt, coObjects, ctx);
 	}
 	Game::GetInstance()->GetCamera()->Update();
-
-
 	CleanupDeletedObjects();
 }
 
 void PlayableScene::Load()
 {
-	auto tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(0);
+	if (ctx== nullptr)
+	{
+		ctx = new SceneContext;
+	}
+
+	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(0);
 	auto c = Game::GetInstance()->GetCamera();
 	
-	c->SetWorldSize(tilemap->GetWidth(), tilemap->GetHeight());
+	c->SetWorldSize(ctx->tilemap->GetWidth(), ctx->tilemap->GetHeight());
 	
 	int startX, startY;
-	tilemap->GetPlayerStartPosition(startX, startY);
+	ctx->tilemap->GetPlayerStartPosition(startX, startY);
 	player = new Mario(startX, startY);
 	
 	c->SetTarget(player);

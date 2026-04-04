@@ -7,6 +7,7 @@
 
 #include "LdtkParser.h"
 #include "Tilemap.h"
+#include "Vector2.h"
 
 using std::vector;
 using std::wstring;
@@ -19,8 +20,11 @@ class LevelLoader
 	vector<Tilemap*> tilemaps;
 
 	// Helper
-	static Tilemap* ParseLevel(int level);
+	Tilemap* ParseLevel(int level);
 	static const LayerInstance* GetLayerWithIdentifier(const vector<LayerInstance>& v, const std::string& identifier);
+	static RenderLayer ParseCollisionLayer(const vector<LayerInstance>& v, CollisionLayer& col);
+	static RenderLayer ParseBackgroundLayer(const vector<LayerInstance>& v);
+	static Vector2Int ParseEntityLayer(const vector<LayerInstance>& v);
 
 public:
 	static LevelLoader* GetInstance()

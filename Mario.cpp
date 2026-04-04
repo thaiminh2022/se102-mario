@@ -34,10 +34,13 @@ Mario::Mario(float startX, float startY) : GameObject(startX, startY)
 	anims->Add(MARIO_RUN_ANIM_ID, anim);
 }
 
-void Mario::Update(DWORD dt, vector<GameObject*>* coObjects)
+void Mario::Update(DWORD dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 	auto input = InputManager::GetInstance();
 	auto dtSec = dt / 1000.0f;
+	velocity.y += 9.81f * dtSec;
+
+
 	if (input->IsKeyDown('A'))
 	{
 		velocity.x = -100.0f;
@@ -54,7 +57,8 @@ void Mario::Update(DWORD dt, vector<GameObject*>* coObjects)
 		velocity.x = 0;
 		state = MarioState::Idle;
 	}
-	position += velocity * dtSec;
+
+	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 
 }
 
@@ -84,4 +88,29 @@ Rect Mario::GetBoundingBox()
 	r.bottom = position.y + 16;
 	r.right = position.x + 16;
 	return r;
+}
+
+void Mario::OnNoCollision(DWORD dt)
+{
+	// If the player didn't hit anything, we just move them normally based on their velocity.
+	float dtSec = dt / 1000.0f;
+	position.x += velocity.x * dtSec;
+	position.y += velocity.y * dtSec;
+
+}
+
+void Mario::OnCollisionWith(CollisionEvent* e)
+{
+	//// Did we hit the floor?
+	//if (e->normalizedCollisionDir.y == -1.0f) // Assuming -1 means pushed UP by the floor
+	//{
+	//	isOnGround = true; // Now we know the player can jump again!
+	//}
+
+	//// Example: Did we hit a specific object?
+	//if (e->isObjectCollision && e->coObject->GetType() == TYPE_ENEMY)
+	//{
+	//	TakeDamage();
+	//}
+	
 }

@@ -7,21 +7,26 @@
 void Tilemap::Render() const
 {
 	const auto g = Game::GetInstance();
-	const auto tex = Textures::GetInstance()->Get(config->textureID);
 	const auto cam = g->GetCamera();
-	for (const auto& t : config->tiles)
+
+	for (const auto& tLayer : config->renderLayers)
 	{
-		auto b = t.GetBounds();
-		auto pb = t.GetTextureBounds();
-
-		if (!cam->IsInView(b.left, b.top, b.right, b.bottom))
+		const auto tex = Textures::GetInstance()->Get(tLayer.textureID);
+		for (const auto& t :  tLayer.tiles)
 		{
-			continue;
-		}
+			const auto b = t.GetBounds();
+			auto pb = t.GetTextureBounds();
 
-		float renderX, renderY;
-		cam->WorldToScreen(t.x, t.y, renderX, renderY);
-		g->Draw(round(renderX), round(renderY), tex, &pb);
+			if (!cam->IsInView(b.left, b.top, b.right, b.bottom))
+			{
+				continue;
+			}
+
+			float renderX, renderY;
+			cam->WorldToScreen(t.worldX, t.worldY, renderX, renderY);
+			g->Draw(round(renderX), round(renderY), tex, &pb);
+		}
+		
 	}
 }
 
@@ -33,27 +38,18 @@ void Tilemap::GetPlayerStartPosition(int& x, int& y) const
 
 int Tilemap::GetWidth() const
 {
-	return config->width;
+	return config->worldWidth;
 }
 
 int Tilemap::GetHeight() const
 {
-	return config->height;
+	return config->worldHeight;
 }
 
-void Tilemap::GetPotentialColliableTiles(Rect r, vector<Tile*>& outTiles) const
+void Tilemap::GetPotentialCollidableCells(const RectF& bound, vector<Rect>& outCells) const
 {
-	for (auto tile : config->tiles)
-	{
-		if (!tile.IsCollidable())
-			continue;
+	outCells.clear();
 
-		auto bounds = tile.GetBounds();
 
-		if (bounds.right < r.left || bounds.left > r.right
-			|| bounds.bottom < r.top || bounds.top > r.bottom)
-			continue;
-
-		outTiles.push_back(&tile);
-	}
+	
 }

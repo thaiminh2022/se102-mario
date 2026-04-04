@@ -46,10 +46,10 @@ public:
 	}
 
 	void Init(HWND hWnd);
-	void Draw(float x, float y, Texture *tex, RECT *rect = nullptr);
+	void Draw(float x, float y, Texture* tex, Rect* rect = nullptr);
 	void Draw(float x, float y, Texture *tex, int l, int t, int r, int b)
 	{
-		RECT rect;
+		Rect rect;
 		rect.left = l;
 		rect.right = r;
 		rect.top = t;

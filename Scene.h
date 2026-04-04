@@ -2,7 +2,14 @@
 #include <Windows.h>
 #include <vector>
 
+#include "Tilemap.h"
+
 using std::vector;
+struct SceneContext
+{
+	Tilemap* tilemap;
+};
+
 
 class Scene
 {

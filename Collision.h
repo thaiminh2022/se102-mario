@@ -16,11 +16,12 @@ struct CollisionEvent
 	CollisionSource source;
 	GameObject* self;
 	GameObject* otherObject;
-	Tile* otherTile;
+	Rect* otherTile;
 
 	float t; // time of impact (0 < t < 1)
-	float nx;
-	float ny;
+	Vector2 normalizedCollisionDir;
+
+	bool isInvalid;
 
 	CollisionEvent()
 	{
@@ -29,30 +30,28 @@ struct CollisionEvent
 		otherObject = nullptr;
 		otherTile = nullptr;
 		t = 1.0f;
-		nx = 0.0f;
-		ny = 0.0f;
+		isInvalid = false;
 	}
-	static CollisionEvent CreateObjectCollisionEvent(GameObject* self, GameObject* other_object, float t, float nx, float ny)
+	static CollisionEvent CreateObjectCollisionEvent(GameObject* self, GameObject* other_object, float t, Vector2 normalizedCollisionDir)
 	{
 		CollisionEvent e;
 		e.source = CollisionSource::OtherObject;
 		e.self = self;
 		e.otherObject = other_object;
 		e.t = t;
-		e.nx = nx;
-		e.ny = ny;
+		e.normalizedCollisionDir = normalizedCollisionDir;
+
 		return e;
 	}
 
-	static CollisionEvent CreateTileCollisionEvent(GameObject* self, Tile* other_tile, float t, float nx, float ny)
+	static CollisionEvent CreateTileCollisionEvent(GameObject* self, Rect* other_tile, float t, Vector2 normalizedCollisionDir)
 	{
 		CollisionEvent e;
 		e.source = CollisionSource::OtherTile;
 		e.self = self;
 		e.otherTile = other_tile;
 		e.t = t;
-		e.nx = nx;
-		e.ny = ny;
+		e.normalizedCollisionDir = normalizedCollisionDir;
 		return e;
 	}
 
@@ -72,19 +71,20 @@ struct CollisionEvent
 	}
 };
 
+
+
 struct SweptAABBResult
 {
-	bool collided;
 	float t;
-	float nx;
-	float ny;
+	bool collided;
+	Vector2 normalizedCollisionDir;
+	
 
 	SweptAABBResult()
 	{
 		collided = false;
 		t = 1.0f;
-		nx = 0.0f;
-		ny = 0.0f;
+		normalizedCollisionDir = Vector2();
 	}
 };
 class Collision
@@ -97,9 +97,15 @@ public:
 	}
 
 	// 1 dynamic object and 1 static object (tile or non-moving object)
-	SweptAABBResult SweptAABB();
+	SweptAABBResult SweptAABB(
+		Rect mb, // moving bounds
+		float mDeltaVelocityX,
+		float mDeltaVelocityY, 
+		Rect sb // static bounds
+	);
 	// Helper for 2 moving object
-	SweptAABBResult SweptAABB(GameObject* src, GameObject* other);
+	SweptAABBResult SweptAABB(GameObject* src, GameObject* other, float dtSec);
+	SweptAABBResult SweptAABB(GameObject* src, Rect tile, float dtSec);
 
 	void ProcessCollision(GameObject* go,
 		const vector<GameObject*>& coObjects,

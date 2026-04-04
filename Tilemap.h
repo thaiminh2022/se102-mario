@@ -1,54 +1,24 @@
 #pragma once
 #include <vector>
 #include "Rect.h"
+#include "Tile.h"
 using std::vector;
 
-enum TileType
-{
-	None = 0, // decorative only;
-	Ground = 1, // Anything can walk on with full collision
-	OnewayPlatform = 2, // Platforms player can jump up to, but not drop down
-};
-struct Tile
-{
-	TileType value; // for int grid (collision, oneway platform, dead zone)
-	int x, y;
-	int px, py;
-	int width, height;
-
-	bool IsCollidable() { return value != None; }
-	Rect GetBounds() const
-	{
-		Rect r;
-		r.left = x;
-		r.top = y;
-		r.right = x + width;
-		r.bottom = y + height;
-
-		return r;
-	}
-
-	Rect GetTextureBounds() const
-	{
-		Rect r;
-		r.left = px;
-		r.top = py;
-		r.right = px + width;
-		r.bottom = py + height;
-
-		return r;
-	}
-};
 struct TilemapConfig
 {
-	int textureID;
-	vector<Tile> tiles;
 	int playerStartX;
 	int playerStartY;
-	int width;
-	int height;
-};
 
+
+	int worldWidth;
+	int worldHeight;
+
+	int tileWidth;
+	int tileHeight;
+
+	vector<RenderLayer> renderLayers;
+	CollisionLayer collisionLayer;
+};
 
 class Tilemap
 {
@@ -63,9 +33,24 @@ public:
 	void GetPlayerStartPosition(int& x, int& y) const;
 	int GetWidth() const;
 	int GetHeight() const;
+	int GetTileWidth() const { return config->tileWidth; }
+	int GetTileHeight() const { return config->tileHeight; }
 
-	const vector<Tile>& GetTiles() const { return  config->tiles; }
-	void GetPotentialColliableTiles(Rect r, vector<Tile*>& outTiles) const;
+	void GetPotentialCollidableCells(const RectF& bound, vector<Rect>& outCells) const;
 
+	bool IsBlockingCell(int row, int col) const
+	{
+		return config->collisionLayer.IsBlockingCell(row, col);
+	}
+
+	bool IsOneWayCell(int row, int col) const
+	{
+		return config->collisionLayer.IsOneWayCell(row, col);
+	}
+
+	Rect GetCellBounds(int cx, int cy) const
+	{
+		return config->collisionLayer.GetCellBounds(cx, cy);
+	}
 };
 

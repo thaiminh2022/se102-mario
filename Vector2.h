@@ -81,6 +81,24 @@ struct Vector2
 	{
 		return Vector2{ x / other, y / other };
 	}
+
+	static Vector2 Right()
+	{
+		return Vector2(0, 1);
+	}
+	static Vector2 Left()
+	{
+		return Vector2(1, 0);
+	}
+
+	static Vector2 Down()
+	{
+		return Vector2(0, 1);
+	}
+	static Vector2 Up()
+	{
+		return Vector2(0, -1);
+	}
 };
 
 

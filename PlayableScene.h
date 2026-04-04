@@ -13,6 +13,7 @@ class PlayableScene :
 {
     Mario* player;
     vector<GameObject*> objects;
+    SceneContext* ctx;
 public:
 
     void Update(DWORD dt) override;
