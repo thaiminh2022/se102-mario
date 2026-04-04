@@ -9,7 +9,7 @@ class Camera
 public:
 	Camera();
 	void SetPosition(float x, float y);
-	void SetWorldSize(float worldWidth, float worldHeight);
+	void SetWorldSize(int width, int height);
 	void SetTarget(GameObject* t);
 
 	void GetPosition(float& x, float& y) const;

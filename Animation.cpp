@@ -3,14 +3,14 @@
 #include "Sprite.h"
 #include "Debug.h"
 
-void Animation::Add(int spriteId, DWORD time)
+void Animation::Add(int spriteId, DWORD timeMs)
 {
-	int t = time;
-	if (time == 0)
+	int t = timeMs;
+	if (timeMs == 0)
 		t = this->defaultTime;
 
 	Sprite *sprite = Sprites::GetInstance()->Get(spriteId);
-	if (sprite == NULL)
+	if (sprite == nullptr)
 		DebugOut(L"[ERROR] Sprite ID %d not found!\n", spriteId);
 
 	AnimationFrame *frame = new AnimationFrame(sprite, t);
@@ -40,12 +40,12 @@ void Animation::Render(float x, float y)
 	frames[currentFrame]->GetSprite()->Draw(x, y);
 }
 
-inline AnimationFrame::AnimationFrame(Sprite *sprite, int time)
+inline AnimationFrame::AnimationFrame(Sprite *sprite, int timeMs)
 {
 	this->sprite = sprite;
-	this->time = time;
+	this->time = timeMs;
 }
 
 inline DWORD AnimationFrame::GetTime() const { return time; }
 
-inline Sprite *AnimationFrame::GetSprite() { return sprite; }
+inline Sprite *AnimationFrame::GetSprite() const { return sprite; }

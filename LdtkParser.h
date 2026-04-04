@@ -2,7 +2,6 @@
 
 #include <string>
 #include <vector>
-#include <cstdint>
 #include <stdexcept>
 #include <nloahmann/json.hpp>
 
@@ -33,10 +32,10 @@ struct Optional
 struct TileInstance
 {
 	double a;
-	int64_t f;
-	std::vector<int64_t> px;
-	std::vector<int64_t> src;
-	int64_t t;
+	int f;
+	std::vector<int> px;
+	std::vector<int> src;
+	int t;
 };
 
 struct FieldInstance
@@ -44,49 +43,49 @@ struct FieldInstance
 	std::string identifier;
 	std::string type;
 	json value;
-	int64_t defUid;
+	int defUid;
 };
 
 struct EntityInstance
 {
-	std::vector<int64_t> grid;
+	std::vector<int> grid;
 	std::string identifier;
 	std::vector<double> pivot;
 	std::string smartColor;
 	std::vector<std::string> tags;
 	json tile;
-	Optional<int64_t> worldX;
-	Optional<int64_t> worldY;
-	int64_t defUid;
+	Optional<int> worldX;
+	Optional<int> worldY;
+	int defUid;
 	std::vector<FieldInstance> fieldInstances;
-	int64_t height;
+	int height;
 	std::string iid;
-	std::vector<int64_t> px;
-	int64_t width;
+	std::vector<int> px;
+	int width;
 };
 
 struct LayerInstance
 {
-	int64_t cHei;
-	int64_t cWid;
-	int64_t gridSize;
+	int cHei;
+	int cWid;
+	int gridSize;
 	std::string identifier;
 	double opacity;
-	int64_t pxTotalOffsetX;
-	int64_t pxTotalOffsetY;
-	Optional<int64_t> tilesetDefUid;
+	int pxTotalOffsetX;
+	int pxTotalOffsetY;
+	Optional<int> tilesetDefUid;
 	Optional<std::string> tilesetRelPath;
 	std::string type;
 	std::vector<TileInstance> autoLayerTiles;
 	std::vector<EntityInstance> entityInstances;
 	std::vector<TileInstance> gridTiles;
 	std::string iid;
-	std::vector<int64_t> intGridCsv;
-	int64_t layerDefUid;
-	int64_t levelId;
-	Optional<int64_t> overrideTilesetUid;
-	int64_t pxOffsetX;
-	int64_t pxOffsetY;
+	std::vector<int> intGridCsv;
+	int layerDefUid;
+	int levelId;
+	Optional<int> overrideTilesetUid;
+	int pxOffsetX;
+	int pxOffsetY;
 	bool visible;
 };
 
@@ -106,12 +105,12 @@ struct Level
 	std::string identifier;
 	std::string iid;
 	Optional<std::vector<LayerInstance> > layerInstances;
-	int64_t pxHei;
-	int64_t pxWid;
-	int64_t uid;
-	int64_t worldDepth;
-	int64_t worldX;
-	int64_t worldY;
+	int pxHei;
+	int pxWid;
+	int uid;
+	int worldDepth;
+	int worldX;
+	int worldY;
 };
 
 struct WorldMap

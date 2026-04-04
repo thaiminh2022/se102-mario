@@ -21,10 +21,10 @@ public:
 
 	Scene() { id = -1; }
 	Scene(int id) { this->id = id; }
-	virtual void Update(DWORD dt) {}
+	virtual void Update(float dt) {}
 	virtual void Render() {}
 	virtual void Load() {}
 	virtual void UnLoad() {}
 
-	virtual  ~Scene(){}
+	virtual  ~Scene() = default;
 };

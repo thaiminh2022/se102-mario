@@ -11,9 +11,9 @@ class AnimationFrame {
 	Sprite* sprite;
 	DWORD time;
 public:
-	AnimationFrame(Sprite* sprite, int time);
+	AnimationFrame(Sprite* sprite, int timeMs);
 	DWORD GetTime() const;
-	Sprite* GetSprite();
+	Sprite* GetSprite() const;
 };
 
 class Animation
@@ -25,7 +25,7 @@ class Animation
 
 public:
 	Animation(int defaultTime = 100) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
-	void Add(int spriteId, DWORD time = 0);
+	void Add(int spriteId, DWORD timeMs = 0);
 	void Render(float x, float y);
 };
 

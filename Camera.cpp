@@ -21,10 +21,10 @@ void Camera::SetPosition(float x, float y)
 	this->y = y;
 }
 
-void Camera::SetWorldSize(float worldWidth, float worldHeight)
+void Camera::SetWorldSize(int width, int height)
 {
-	this->worldWidth = worldWidth;
-	this->worldHeight = worldHeight;
+	this->worldWidth = width;
+	this->worldHeight = height;
 }
 
 void Camera::SetTarget(GameObject* t)
@@ -62,11 +62,11 @@ void Camera::Update()
 	y = max(y, 0.0f);
 
 	// clamp right/bottom
-	float maxX = worldWidth - g->GetBackBufferWidth();
-	float maxY = worldHeight - g->GetBackBufferHeight();
+	int maxX = worldWidth - g->GetBackBufferWidth();
+	int maxY = worldHeight - g->GetBackBufferHeight();
 
-	maxX = max(maxX, 0.0f);
-	maxY = max(maxY, 0.0f);
+	maxX = max(maxX, 0);
+	maxY = max(maxY, 0);
 
 	x = min(x, maxX);
 	y = min(y, maxY);

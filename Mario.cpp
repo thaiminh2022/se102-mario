@@ -34,11 +34,10 @@ Mario::Mario(float startX, float startY) : GameObject(startX, startY)
 	anims->Add(MARIO_RUN_ANIM_ID, anim);
 }
 
-void Mario::Update(DWORD dt, vector<GameObject*>& coObjects, SceneContext* ctx)
+void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 	auto input = InputManager::GetInstance();
-	auto dtSec = dt / 1000.0f;
-	velocity.y += 9.81f * dtSec;
+	velocity.y += 0.00981f;
 
 
 	if (input->IsKeyDown('A'))
@@ -90,12 +89,11 @@ Rect Mario::GetBoundingBox()
 	return r;
 }
 
-void Mario::OnNoCollision(DWORD dt)
+void Mario::OnNoCollision(float dt)
 {
 	// If the player didn't hit anything, we just move them normally based on their velocity.
-	float dtSec = dt / 1000.0f;
-	position.x += velocity.x * dtSec;
-	position.y += velocity.y * dtSec;
+	position.x += velocity.x * dt;
+	position.y += velocity.y * dt;
 
 }
 

@@ -28,10 +28,10 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);
 		break;
 	case WM_KEYDOWN:
-		InputManager::GetInstance()->KeyDown(wParam);
+		InputManager::GetInstance()->KeyDown(static_cast<unsigned char>(wParam));
 		break;
 	case WM_KEYUP:
-		InputManager::GetInstance()->KeyUp(wParam);
+		InputManager::GetInstance()->KeyUp(static_cast<unsigned char>(wParam));
 		break;
 	case WM_KILLFOCUS:
 		InputManager::GetInstance()->ClearAll();
@@ -47,7 +47,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-void Update(DWORD dt)
+void Update(const float dt)
 {
 	auto game = Game::GetInstance();
 	game->GetCurrentScene()->Update(dt);
@@ -62,7 +62,7 @@ void Render()
 	ID3D10RenderTargetView* pRenderTargetView = g->GetRenderTargetView();
 	ID3DX10Sprite* spriteHandler = g->GetSpriteHandler();
 
-	if (pD3DDevice != NULL)
+	if (pD3DDevice != nullptr)
 	{
 		// clear the background
 		pD3DDevice->ClearRenderTargetView(pRenderTargetView, BACKGROUND_COLOR);
@@ -154,26 +154,28 @@ int Run()
 
 		ULONGLONG now = GetTickCount64();
 
-		// dt: the time between (beginning of last frame) and now
+		// dt: the time between (beginning of last frame) and now (in ms)
 		// this frame: the frame we are about to render
 		ULONGLONG dt = now - frameStart;
 
 		if (dt >= tickPerFrame)
 		{
 			frameStart = now;
-			Update((DWORD)dt);
+
+			const float dtSec = static_cast<float>(dt) / 1000.0f;
+			Update(dtSec);
 			Render();
 
 			Game::GetInstance()->SwitchScene();
 		}
 		else
-			Sleep((DWORD)(tickPerFrame - dt));
+			Sleep(static_cast<DWORD>(tickPerFrame - dt));
 	}
 
 	return 1;
 }
 
-static void LoadResource()
+void LoadResource()
 {
 	auto t = Textures::GetInstance();
 	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_frames.png");

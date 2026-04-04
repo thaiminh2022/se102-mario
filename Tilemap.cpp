@@ -17,13 +17,18 @@ void Tilemap::Render() const
 			const auto b = t.GetBounds();
 			auto pb = t.GetTextureBounds();
 
-			if (!cam->IsInView(b.left, b.top, b.right, b.bottom))
+			if (!cam->IsInView(
+				static_cast<float>(b.left), 
+				static_cast<float>(b.top), 
+				static_cast<float>(b.right), 
+				static_cast<float>(b.bottom))
+				)
 			{
 				continue;
 			}
 
 			float renderX, renderY;
-			cam->WorldToScreen(t.worldX, t.worldY, renderX, renderY);
+			cam->WorldToScreen(static_cast<float>(t.worldX), static_cast<float>(t.worldY), renderX, renderY);
 			g->Draw(round(renderX), round(renderY), tex, &pb);
 		}
 		

@@ -16,7 +16,7 @@ class PlayableScene :
     SceneContext* ctx;
 public:
 
-    void Update(DWORD dt) override;
+    void Update(float dt) override;
     void Load() override;
     void UnLoad() override;
     void Render() override;

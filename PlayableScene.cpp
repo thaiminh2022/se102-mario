@@ -1,7 +1,7 @@
 #include "PlayableScene.h"
 #include "Game.h"
 
-void PlayableScene::Update(DWORD dt)
+void PlayableScene::Update(float dt)
 {
 	// coObjects is all object, not including obj itself
 	vector<GameObject*> coObjects;
