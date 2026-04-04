@@ -34,27 +34,36 @@ void Tilemap::Render() const
 		
 	}
 }
-
-void Tilemap::GetPlayerStartPosition(int& x, int& y) const
-{
-	x = config->playerStartX;
-	y = config->playerStartY;
-}
-
-int Tilemap::GetWidth() const
-{
-	return config->worldWidth;
-}
-
-int Tilemap::GetHeight() const
-{
-	return config->worldHeight;
-}
-
-void Tilemap::GetPotentialCollidableCells(const RectF& bound, vector<Rect>& outCells) const
+void Tilemap::GetPotentialCollidableCells(const RectF& bound, vector<CollisionTile*>& outCells) const
 {
 	outCells.clear();
 
+	int startCol = static_cast<int>(std::floor(bound.left / config->tileWidth));
+	int endCol = static_cast<int>(std::floor(bound.right /  config->tileWidth));
+	int startRow = static_cast<int>(std::floor(bound.top /  config->tileHeight));
+	int endRow = static_cast<int>(std::floor(bound.bottom / config->tileHeight));
 
+	startCol = max(0, startCol);
+	endCol = min(config->collisionLayer.cWidth - 1, endCol);
+	startRow = max(0, startRow);
+	endRow = min(config->collisionLayer.tileHeight - 1, endRow);
+
+	// 3. Loop through the overlapping grid section
+	for (int row = startRow; row <= endRow; ++row)
+	{
+		for (int col = startCol; col <= endCol; ++col)
+		{
+			// 4. Retrieve the tile from your 1D or 2D array.
+			// Replace this with however your Tilemap stores its tiles.
+			CollisionTile* tile = config->collisionLayer.GetCell(col, row);
+
+			// 5. If the tile exists and is solid/collidable, add it to our list.
+			// (If your array stores nullptrs for empty air tiles, check for that).
+			if (tile != nullptr && tile->type == CollisionTileType::Ground)
+			{
+				outCells.push_back(tile);
+			}
+		}
+	}
 	
 }

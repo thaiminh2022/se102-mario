@@ -10,16 +10,31 @@ enum CollisionSource
 	OtherTile
 };
 
+struct SweptAABBResult
+{
+	float t;
+	bool collided;
+	Vector2Int normalizeDir;
+
+
+	SweptAABBResult()
+	{
+		collided = false;
+		t = 1.0f;
+	}
+};
+
+
+
 struct CollisionEvent
 {
-
 	CollisionSource source;
 	GameObject* self;
 	GameObject* otherObject;
-	Rect* otherTile;
+	CollisionTile* otherTile;
 
 	float t; // time of impact (0 < t < 1)
-	Vector2 normalizedCollisionDir;
+	Vector2Int normalizedDir;
 
 	bool isInvalid;
 
@@ -32,26 +47,26 @@ struct CollisionEvent
 		t = 1.0f;
 		isInvalid = false;
 	}
-	static CollisionEvent CreateObjectCollisionEvent(GameObject* self, GameObject* other_object, float t, Vector2 normalizedCollisionDir)
+	static CollisionEvent CreateObjectCollisionEvent(GameObject* self, GameObject* other, const SweptAABBResult& r)
 	{
 		CollisionEvent e;
 		e.source = CollisionSource::OtherObject;
 		e.self = self;
-		e.otherObject = other_object;
-		e.t = t;
-		e.normalizedCollisionDir = normalizedCollisionDir;
+		e.otherObject = other;
+		e.t = r.t;
+		e.normalizedDir = r.normalizeDir;
 
 		return e;
 	}
 
-	static CollisionEvent CreateTileCollisionEvent(GameObject* self, Rect* other_tile, float t, Vector2 normalizedCollisionDir)
+	static CollisionEvent CreateTileCollisionEvent(GameObject* src, CollisionTile* other,  const SweptAABBResult& r)
 	{
 		CollisionEvent e;
 		e.source = CollisionSource::OtherTile;
-		e.self = self;
-		e.otherTile = other_tile;
-		e.t = t;
-		e.normalizedCollisionDir = normalizedCollisionDir;
+		e.self = src;
+		e.otherTile = other;
+		e.t = r.t;
+		e.normalizedDir = r.normalizeDir;
 		return e;
 	}
 
@@ -65,28 +80,16 @@ struct CollisionEvent
 		return source == OtherObject;
 	}
 
-	static bool Compare(const CollisionEvent& a, const CollisionEvent& b)
-	{
-		return a.t < b.t;
-	}
 };
 
-
-
-struct SweptAABBResult
+struct CompareCollisionEvent
 {
-	float t;
-	bool collided;
-	Vector2 normalizedCollisionDir;
-	
-
-	SweptAABBResult()
+	bool operator()(CollisionEvent const& p1, CollisionEvent const& p2) const
 	{
-		collided = false;
-		t = 1.0f;
-		normalizedCollisionDir = Vector2();
+		return p1.t > p2.t;
 	}
 };
+
 class Collision
 {
 public:
@@ -99,18 +102,18 @@ public:
 	// 1 dynamic object and 1 static object (tile or non-moving object)
 	SweptAABBResult SweptAABB(
 		Rect mb, // moving bounds
-		float mDeltaVelocityX,
-		float mDeltaVelocityY, 
+		float dvx,
+		float dvy, 
 		Rect sb // static bounds
 	);
 	// Helper for 2 moving object
-	SweptAABBResult SweptAABB(GameObject* src, GameObject* other, float dtSec);
-	SweptAABBResult SweptAABB(GameObject* src, Rect tile, float dtSec);
+	SweptAABBResult SweptAABB(GameObject* src, GameObject* other, float dt);
+	SweptAABBResult SweptAABB(GameObject* src, CollisionTile* tile, float dt);
 
 	void ProcessCollision(GameObject* go,
 		const vector<GameObject*>& coObjects,
 		const Tilemap* tilemap,
-		DWORD dt
+		float dt
 	);
 };
 

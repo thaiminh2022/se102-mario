@@ -17,7 +17,7 @@ struct Rect
 
 	static Rect FromXYWH(int left, int top, int width, int height)
 	{
-		return Rect{ left, top, left + width, top + height };
+		return Rect{ left, top, left + width, top + height};
 	}
 
 	Rect(const RECT& r) {

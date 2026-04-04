@@ -15,8 +15,12 @@
 #define WINDOW_ICON_PATH L"mario.ico"
 
 #define BACKGROUND_COLOR D3DXCOLOR(200.0f / 255, 200.0f / 255, 255.0f / 255, 0.0f)
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 320
+
+enum : std::uint16_t
+{
+	SCREEN_WIDTH = 640,
+	SCREEN_HEIGHT = 320
+};
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -131,7 +135,7 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 	return hWnd;
 }
 
-const int MAX_FRAME_RATE = 165;
+constexpr int MAX_FRAME_RATE = 165;
 
 int Run()
 {

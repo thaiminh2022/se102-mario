@@ -39,9 +39,8 @@ void PlayableScene::Load()
 	
 	c->SetWorldSize(ctx->tilemap->GetWidth(), ctx->tilemap->GetHeight());
 	
-	int startX, startY;
-	ctx->tilemap->GetPlayerStartPosition(startX, startY);
-	player = new Mario(startX, startY);
+	auto playerStart = ctx->tilemap->GetPlayerStartPosition();
+	player = new Mario(playerStart.x, playerStart.y);
 	
 	c->SetTarget(player);
 	

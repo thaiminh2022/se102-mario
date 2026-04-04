@@ -105,26 +105,37 @@ RenderLayer LevelLoader::ParseCollisionLayer(const vector<LayerInstance>& v, Col
 	renderLayer.cellHeight = layerData->cHei;
 
 	// parse collision
+	int i = 0;
 	for (const auto value: layerData->intGridCsv)
 	{
-		CollisionTileType t = CollisionTileType::None;
+		CollisionTile t;
+		t.tileWidth = 16;
+		t.tileHeight = 16;
+
+		t.worldX = i % layerData->cWid * 16;
+		t.worldY = i / layerData->cWid * 16;
+		
 		if (value == 2)
 		{
-			t = CollisionTileType::Ground;
+			t.type = CollisionTileType::Ground;
 		}else if (value == 3)
 		{
-			t = CollisionTileType::OneWay;
+			t.type = CollisionTileType::OneWay;
+		}else
+		{
+			t.type = CollisionTileType::None;
 		}
 
 		col.cells.push_back(t);
+		i++;
 	}
 
-	int tID = -1;
-	if (!Textures::GetInstance()->HaveTextureWithPath(LEVEL_0_TILESET, tID))
+	int tId = -1;
+	if (!Textures::GetInstance()->HaveTextureWithPath(LEVEL_0_TILESET, tId))
 	{
 		DebugOut(L"[ERROR] Cannot fine tileset, resolve to default: -1");
 	}
-	renderLayer.textureID = tID;
+	renderLayer.textureID = tId;
 
 	// parse visual
 	for (const auto& l: layerData->autoLayerTiles)

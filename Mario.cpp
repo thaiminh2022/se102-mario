@@ -37,7 +37,7 @@ Mario::Mario(float startX, float startY) : GameObject(startX, startY)
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 	auto input = InputManager::GetInstance();
-	velocity.y += 0.00981f;
+	velocity.y += 9.81f;
 
 
 	if (input->IsKeyDown('A'))
@@ -91,16 +91,14 @@ Rect Mario::GetBoundingBox()
 
 void Mario::OnNoCollision(float dt)
 {
-	// If the player didn't hit anything, we just move them normally based on their velocity.
-	position.x += velocity.x * dt;
-	position.y += velocity.y * dt;
-
+	position += velocity * dt;
+	//DebugOut(L"Velocity: %f,%f: %f\n", velocity.x, velocity.y,dt);
 }
 
 void Mario::OnCollisionWith(CollisionEvent* e)
 {
 	//// Did we hit the floor?
-	//if (e->normalizedCollisionDir.y == -1.0f) // Assuming -1 means pushed UP by the floor
+	//if (e->normalizedDir.y == -1.0f) // Assuming -1 means pushed UP by the floor
 	//{
 	//	isOnGround = true; // Now we know the player can jump again!
 	//}

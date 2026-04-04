@@ -30,6 +30,24 @@ struct Vector2Int
 	{
 		return Vector2Int{ x / other, y / other };
 	}
+
+	static Vector2Int Right()
+	{
+		return Vector2Int(1, 0);
+	}
+	static Vector2Int Left()
+	{
+		return Vector2Int(-1, 0);
+	}
+
+	static Vector2Int Down()
+	{
+		return Vector2Int(0, 1);
+	}
+	static Vector2Int Up()
+	{
+		return Vector2Int(0, -1);
+	}
 };
 
 
@@ -44,7 +62,7 @@ struct Vector2
 		this->y = y;
 	}
 
-	explicit Vector2(const Vector2Int& vec)
+	Vector2(const Vector2Int& vec)
 	{
 		this->x = static_cast<float>(vec.x);
 		this->y = static_cast<float>(vec.y);
@@ -82,23 +100,7 @@ struct Vector2
 		return Vector2{ x / other, y / other };
 	}
 
-	static Vector2 Right()
-	{
-		return Vector2(0, 1);
-	}
-	static Vector2 Left()
-	{
-		return Vector2(1, 0);
-	}
 
-	static Vector2 Down()
-	{
-		return Vector2(0, 1);
-	}
-	static Vector2 Up()
-	{
-		return Vector2(0, -1);
-	}
 };
 
 

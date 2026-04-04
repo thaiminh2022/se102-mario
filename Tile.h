@@ -17,7 +17,7 @@ struct RenderTile
 	}
 	Rect GetTextureBounds() const
 	{
-		return Rect::FromXYWH(srcX, srcY, width, height);
+		return Rect::FromXYWH(srcX, srcY, width - 1, height -1);
 	}
 };
 
@@ -38,37 +38,32 @@ enum CollisionTileType : std::uint8_t
 	OneWay = 2,
 };
 
+struct CollisionTile
+{
+	int worldX, worldY;
+	int tileWidth , tileHeight;
+	CollisionTileType type;
+
+	Rect GetBounds() const
+	{
+		return Rect::FromXYWH(worldX, worldY, tileWidth, tileHeight);
+	}
+
+};
+
 struct CollisionLayer
 {
 	int tileWidth, tileHeight; // in pixel
 	int cWidth, cHeight; // in cells
 
-	vector<CollisionTileType> cells;
+	vector<CollisionTile> cells;
 
-	CollisionTileType GetCell(int cx, int cy) const
+	CollisionTile* GetCell(int cx, int cy)
 	{
 		if (cx < 0 || cx >= cWidth || cy < 0 || cy >= cHeight)
-			return None;
+			return nullptr;
+		int index = cy * cWidth + cx;
 
-		return cells[(cy * cWidth) + cx];
+		return &cells[index];
 	}
-
-	bool IsBlockingCell(int cx, int cy) const
-	{
-		return GetCell(cx, cy) == Ground;
-	}
-
-	bool IsOneWayCell(int cx, int cy) const
-	{
-		return GetCell(cx, cy) == OneWay;
-	}
-
-	Rect GetCellBounds(int cx, int cy) const
-	{
-		int x = cx * tileWidth;
-		int y = cy * tileHeight;
-
-		return Rect::FromXYWH(x, y, tileWidth, tileHeight);
-	}
-
 };
