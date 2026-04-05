@@ -36,7 +36,7 @@ void Game::Init(HWND hWnd)
 	HRESULT hr = D3D10CreateDeviceAndSwapChain(NULL,
 		D3D10_DRIVER_TYPE_HARDWARE,
 		NULL,
-		D3D10_CREATE_DEVICE_DEBUG, // remove this on real build
+		0,
 		D3D10_SDK_VERSION,
 		&swapChainDesc,
 		&swapChain,
