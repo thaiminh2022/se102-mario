@@ -313,6 +313,20 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 	}
 	go->position = position;
 
-	events.clear();
 
+	for (auto& v : events)
+	{
+		if (v.isInvalid) 
+			continue;
+
+		if (v.IsObjectCollision() && v.otherObject->IsBlocking())
+			continue;
+
+		if (v.IsTileCollision() && v.otherTile->IsBlocking())
+			continue;
+
+		go->OnCollisionWith(&v);
+	}
+
+	events.clear();
 }

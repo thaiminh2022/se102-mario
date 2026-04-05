@@ -65,7 +65,7 @@ void Tilemap::GetPotentialCollidableCells(const RectF& bound, vector<CollisionTi
 
 			if (tile != nullptr)
 			{
-				if (tile->type == Ground || tile->type == OneWay)
+				if (tile->IsBlocking())
 				{
 					outCells.push_back(tile);
 				}
@@ -73,7 +73,7 @@ void Tilemap::GetPotentialCollidableCells(const RectF& bound, vector<CollisionTi
 		}
 	}
 
-	/*
+	/* // Debug: give all the tiles to collision check
 	for (auto& tile: config->collisionLayer.cells)
 	{
 		if (tile.type == CollisionTileType::Ground)

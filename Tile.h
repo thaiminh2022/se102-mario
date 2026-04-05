@@ -49,6 +49,12 @@ struct CollisionTile
 		return Rect::FromXYWH(worldX, worldY, tileWidth, tileHeight);
 	}
 
+	// tiles that will make player back tf off
+	bool IsBlocking() const
+	{
+		return type == Ground || type == OneWay;
+	}
+
 };
 
 struct CollisionLayer
