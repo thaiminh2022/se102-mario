@@ -2,6 +2,7 @@
 #include "Debug.h"
 #include "Sprites.h"
 #include "Animations.h"
+#include <d3d10sdklayers.h>
 
 Game* Game::_instance = nullptr;
 
@@ -35,7 +36,7 @@ void Game::Init(HWND hWnd)
 	HRESULT hr = D3D10CreateDeviceAndSwapChain(NULL,
 		D3D10_DRIVER_TYPE_HARDWARE,
 		NULL,
-		0,
+		D3D10_CREATE_DEVICE_DEBUG, // remove this on real build
 		D3D10_SDK_VERSION,
 		&swapChainDesc,
 		&swapChain,
@@ -367,10 +368,12 @@ void Game::EnterStartingScene()
 
 Game::~Game()
 {
-	device->Release();
-	swapChain->Release();
-	renderTargetView->Release();
-	blendStateAlpha->Release();
-	spriteObject->Release();
 	delete camera;
+
+	if (spriteObject) spriteObject->Release();
+	if (blendStateAlpha) blendStateAlpha->Release();
+	if (renderTargetView) renderTargetView->Release();
+	if (swapChain) swapChain->Release();
+
+	if (device) device->Release();
 }

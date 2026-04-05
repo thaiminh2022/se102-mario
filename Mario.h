@@ -10,6 +10,8 @@ enum MarioState
 
 class Mario : public GameObject
 {
+	bool isGrounded;
+
 public:
 	Mario(float startX, float startY);
 	MarioState state;

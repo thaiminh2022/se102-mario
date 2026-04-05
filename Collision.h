@@ -94,7 +94,7 @@ class Collision
 	void GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*& tilemap, GameObject
 	                      *& go, float dt);
 
-	void Filter(vector<CollisionEvent>& events, CollisionEvent*& colMinX, CollisionEvent*& colMinY);
+	void Filter(vector<CollisionEvent>& events, CollisionEvent*& colMinX, CollisionEvent*& colMinY, bool filterX, bool filterY);
 
 public:
 	static Collision* GetInstance()

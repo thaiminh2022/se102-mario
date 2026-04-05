@@ -32,6 +32,8 @@ Mario::Mario(float startX, float startY) : GameObject(startX, startY)
 	anim->Add(MARIO_RUN_SPRITE_2);
 	anim->Add(MARIO_RUN_SPRITE_3);
 	anims->Add(MARIO_RUN_ANIM_ID, anim);
+
+	isGrounded = false;
 }
 
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
@@ -56,6 +58,13 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		velocity.x = 0;
 		state = MarioState::Idle;
 	}
+
+	if (input->IsKeyDown('W') && isGrounded)
+	{
+		velocity.y = -300.0f;
+		isGrounded = false;
+	}
+
 
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 
@@ -93,23 +102,19 @@ Rect Mario::GetBoundingBox()
 void Mario::OnNoCollision(float dt)
 {
 	position += velocity * dt;
-	//DebugOut(L"Velocity: %f,%f: %f\n", velocity.x, velocity.y,dt);
+	isGrounded = false;
 }
 
 void Mario::OnCollisionWith(CollisionEvent* e)
 {
-	DebugOut(L"Normal %d, %d\n", e->normalizedDir.x, e->normalizedDir.y);
+	//DebugOut(L"Normal %d, %d\n", e->normalizedDir.x, e->normalizedDir.y);
 
-	//// Did we hit the floor?
-	//if (e->normalizedDir.y == -1.0f) // Assuming -1 means pushed UP by the floor
-	//{
-	//	isOnGround = true; // Now we know the player can jump again!
-	//}
-
-	//// Example: Did we hit a specific object?
-	//if (e->isObjectCollision && e->coObject->GetType() == TYPE_ENEMY)
-	//{
-	//	TakeDamage();
-	//}
+	if (e->IsTileCollision())
+	{
+		if (e->otherTile->type == Ground || e->otherTile->type == OneWay)
+		{
+			isGrounded = true;
+		}
+	}
 	
 }

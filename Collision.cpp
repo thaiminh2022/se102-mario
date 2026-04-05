@@ -46,7 +46,13 @@ void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*&
 	}
 }
 
-void Collision::Filter(vector<CollisionEvent>& events, CollisionEvent*& colMinX, CollisionEvent*& colMinY)
+void Collision::Filter(
+	vector<CollisionEvent>& events,
+	CollisionEvent*& colMinX,
+	CollisionEvent*& colMinY,
+	bool filterX = true,
+	bool filterY = true
+)
 {
 	float minXTime = 1.0f;
 	float minYTime = 1.0f;
@@ -57,13 +63,26 @@ void Collision::Filter(vector<CollisionEvent>& events, CollisionEvent*& colMinX,
 		if (v.self == nullptr || GameObject::IsDeleted(v.self)) continue;
 		if (v.t < 0 || v.t >= 1) continue;
 
-		if (colMinX == nullptr && v.normalizedDir.x != 0 && minXTime > v.t)
+		// Hit oneway tile, so ignore
+		if (v.IsTileCollision() && v.otherTile->type == OneWay)
+		{
+			// We only care if the player is landing on the TOP.
+			// If the collision normal is anything else (Side or Bottom), 
+			// we ignore it entirely so the player passes through.
+			if (v.normalizedDir.y != -1)
+			{
+				continue;
+			}
+		}
+
+
+		if (colMinX == nullptr && v.normalizedDir.x != 0 && minXTime > v.t && filterX)
 		{
 			colMinX = &v;
 			minXTime = v.t;
 		}
 
-		if (colMinY == nullptr && v.normalizedDir.y != 0 && minYTime > v.t)
+		if (colMinY == nullptr && v.normalizedDir.y != 0 && minYTime > v.t && filterY)
 		{
 			colMinY = &v;
 			minYTime = v.t;
@@ -227,7 +246,7 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 				events.push_back(CollisionEvent::CreateObjectCollisionEvent(go, colY->otherObject, r));
 			}
 
-			Filter(events, colX, colYOther);
+			Filter(events, colX, colYOther, false, true);
 			if (colYOther != nullptr)
 			{
 				position.y += srcVelocity.y * dt * colYOther->t + colYOther->normalizedDir.y * PUSH_BACK_FACTOR;
@@ -260,7 +279,7 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 				events.push_back(CollisionEvent::CreateObjectCollisionEvent(go, colX->otherObject, r));
 			}
 
-			Filter(events, colXOther, colY);
+			Filter(events, colXOther, colY, true, false);
 			if (colXOther != nullptr)
 			{
 				position.x += srcVelocity.x * dt * colXOther->t + colXOther->normalizedDir.x * PUSH_BACK_FACTOR;

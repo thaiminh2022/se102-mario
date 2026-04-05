@@ -24,8 +24,6 @@ enum : std::uint16_t
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-
-
 	switch (message)
 	{
 	case WM_DESTROY:
@@ -206,5 +204,7 @@ int WINAPI WinMain(
 
 	g->EnterStartingScene();
 	Run();
+
+	delete g;
 	return 0;
 }

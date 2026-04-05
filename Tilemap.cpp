@@ -48,7 +48,7 @@ void Tilemap::GetPotentialCollidableCells(const RectF& bound, vector<CollisionTi
 	startRow = max(0, startRow);
 	endRow = min(config->collisionLayer.cHeight - 1, endRow);
 
-	Game::GetInstance()->DrawDebugRect(bound, D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.3f));
+	//Game::GetInstance()->DrawDebugRect(bound, D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.3f));
 
 
 	// 3. Loop through the overlapping grid section
@@ -62,9 +62,13 @@ void Tilemap::GetPotentialCollidableCells(const RectF& bound, vector<CollisionTi
 
 			// 5. If the tile exists and is solid/collidable, add it to our list.
 			// (If your array stores nullptrs for empty air tiles, check for that).
-			if (tile != nullptr && tile->type == CollisionTileType::Ground)
+
+			if (tile != nullptr)
 			{
-				outCells.push_back(tile);
+				if (tile->type == Ground || tile->type == OneWay)
+				{
+					outCells.push_back(tile);
+				}
 			}
 		}
 	}

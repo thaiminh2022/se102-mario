@@ -20,11 +20,11 @@ class Game
 	int backBufferWidth = 0;
 	int backBufferHeight = 0;
 
-	ID3D10Device *device = NULL;
-	IDXGISwapChain *swapChain = NULL;
-	ID3D10RenderTargetView *renderTargetView = NULL;
-	ID3D10BlendState *blendStateAlpha = NULL;
-	ID3DX10Sprite *spriteObject = NULL;
+	ID3D10Device *device = nullptr;
+	IDXGISwapChain *swapChain = nullptr;
+	ID3D10RenderTargetView *renderTargetView = nullptr;
+	ID3D10BlendState *blendStateAlpha = nullptr;
+	ID3DX10Sprite *spriteObject = nullptr;
 
 	int currentSceneID;
 	int nextSceneID;
