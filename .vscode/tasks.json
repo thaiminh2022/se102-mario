@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Debug x64",
+      "type": "shell",
+      "command": "msbuild",
+      "args": [
+        "se102-mario.sln",
+        "/t:Build",
+        "/p:Configuration=Debug",
+        "/p:Platform=x64"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Build Release x64",
+      "type": "shell",
+      "command": "msbuild",
+      "args": [
+        "YourApp.sln",
+        "/t:Build",
+        "/p:Configuration=Release",
+        "/p:Platform=x64"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Clean Debug x64",
+      "type": "shell",
+      "command": "msbuild",
+      "args": [
+        "YourApp.sln",
+        "/t:Clean",
+        "/p:Configuration=Debug",
+        "/p:Platform=x64"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}
