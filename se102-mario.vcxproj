@@ -134,18 +134,14 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="PlayableScene.cpp" />
-    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
-    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Textures.cpp" />
-    <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>

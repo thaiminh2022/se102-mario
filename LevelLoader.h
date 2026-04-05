@@ -8,19 +8,22 @@
 #include "LdtkParser.h"
 #include "Tilemap.h"
 #include "Vector2.h"
+#include "unordered_map"
 
 using std::vector;
 using std::wstring;
 using std::ifstream;
+using std::unordered_map;
+
 
 
 class LevelLoader
 {
 	static LevelLoader* _instance;
-	vector<Tilemap*> tilemaps;
+	unordered_map<int, Tilemap*> tilemaps;
 
-	// Helper
-	Tilemap* ParseLevel(int level);
+	// Helpers
+	static Tilemap* ParseLevel(int level);
 	static const LayerInstance* GetLayerWithIdentifier(const vector<LayerInstance>& v, const std::string& identifier);
 	static RenderLayer ParseCollisionLayer(const vector<LayerInstance>& v, CollisionLayer& col);
 	static RenderLayer ParseBackgroundLayer(const vector<LayerInstance>& v);
@@ -35,6 +38,6 @@ public:
 		return _instance;
 	}
 
-	Tilemap* GetTilemapForLevel(const int level) const { return tilemaps[level]; }
-	void Init();
+	Tilemap* GetTilemapForLevel(const int level);
+	static void Init();
 };

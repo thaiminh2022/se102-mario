@@ -198,7 +198,7 @@ int WINAPI WinMain(
 
 	auto g = Game::GetInstance();
 	g->Init(hWnd);
-	LevelLoader::GetInstance()->Init();
+	LevelLoader::Init();
 
 	LoadResource();
 

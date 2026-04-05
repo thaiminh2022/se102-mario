@@ -1,9 +1,6 @@
 #include "LevelLoader.h"
-
 #include "Debug.h"
-
 #include "Textures.h"
-#include <filesystem>
 
 #include <fstream>
 #include <vector>
@@ -18,20 +15,35 @@ using namespace std;
 LevelLoader *LevelLoader::_instance = nullptr;
 
 
+
 constexpr auto LEVEL_0_TILESET = L"Assets/Sprites/ground_and_stone_overworld.png";
+const string WORLD_PATH = "world_map.ldtk";
+const string COLLISION_LAYER = "Collision";
+const string BACKGROUND_LAYER = "Background";
+const string DYNAMIC_LAYER = "Dynamic";
+
+
+Tilemap* LevelLoader::GetTilemapForLevel(const int level)
+{
+	if (tilemaps.find(level) == tilemaps.end())
+	{
+		// did not find shit, need parse
+		auto tilemap = ParseLevel(level);
+
+		if (tilemap == nullptr)
+			return nullptr;
+		tilemaps[level] = tilemap;
+	}
+
+	return tilemaps[level];
+}
 
 void LevelLoader::Init()
 {
 	const auto t = Textures::GetInstance();
 	t->Add(-1, LEVEL_0_TILESET);
-
-	tilemaps.push_back(ParseLevel(0));
 }
 
-const string WORLD_PATH = "world_map.ldtk";
-const string COLLISION_LAYER = "Collision";
-const string BACKGROUND_LAYER = "Background";
-const string DYNAMIC_LAYER = "Dynamic";
 
 
 Tilemap *LevelLoader::ParseLevel(int level)
