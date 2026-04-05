@@ -1,14 +1,19 @@
-#include "LevelLoader.h"
 #include "Debug.h"
+#include "LevelLoader.h"
 #include "Textures.h"
 
 #include <fstream>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "LdtkParser.h"	
-#include "Game.h"
+#include "nloahmann/json.hpp"
+#include "SceneEntityData.h"
+#include "SceneEntityData.h"
+#include "Tile.h"
 #include "Tilemap.h"
+#include "TilemapConfig.h"
+#include "Vector2.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -22,6 +27,11 @@ const string COLLISION_LAYER = "Collision";
 const string BACKGROUND_LAYER = "Background";
 const string DYNAMIC_LAYER = "Dynamic";
 
+const string PLAYER_START = "PlayerStart";
+const string GOOMBA_START= "GoombaStart";
+const string QUESTION_BLOCK= "QuestionBlock";
+const string EMPTY_BRICK_BLOCK= "EmptyBrickBlock";
+const string COIN = "Coin";
 
 Tilemap* LevelLoader::GetTilemapForLevel(const int level)
 {
@@ -42,17 +52,25 @@ void LevelLoader::Init()
 {
 	const auto t = Textures::GetInstance();
 	t->Add(-1, LEVEL_0_TILESET);
+
+	ifstream f(WORLD_PATH);
+	const auto data = json::parse(f);
+	worldMap.Set(data.get<WorldMap>());
+
+	f.close();
 }
 
 
 
 Tilemap *LevelLoader::ParseLevel(int level)
 {
-	/// PARSE JSON
-	ifstream f(WORLD_PATH);
-	json data  = json::parse(f);
-	const auto& map = data.get<WorldMap>();
+	if (!worldMap.hasValue)
+	{
+		// what happened lol, though you got init innit?
+		Init();
+	}
 
+	const auto& map = worldMap.value;
 	if (level > map.levels.size())
 		return nullptr;
 	
@@ -64,25 +82,21 @@ Tilemap *LevelLoader::ParseLevel(int level)
 	const auto& layersValue = levelData.layerInstances.value;
 	/// -----
 	vector<RenderLayer> renderLayers;
-	CollisionLayer collisionLayer;
-	auto r1 = ParseCollisionLayer(layersValue, collisionLayer);
-	auto r2 = ParseBackgroundLayer(layersValue);
-	auto playerStart = ParseEntityLayer(layersValue);
+	const auto col = ParseCollisionLayer(layersValue);
+	const auto r1 = ParseBackgroundLayer(layersValue);
+	auto entitiesData = ParseEntityLayer(layersValue);
 
 	renderLayers.push_back(r1);
-	renderLayers.push_back(r2);
 
 	
-	const auto config = new TilemapConfig {
-		playerStart.x,
-		playerStart.y,
-		static_cast<int>(levelData.pxWid),
-		static_cast<int>(levelData.pxHei),
-		16,
-		16,
-		renderLayers,
-		collisionLayer
-	};
+	auto config = new TilemapConfig(
+		entitiesData, 
+		levelData.pxWid, 
+		levelData.pxHei, 
+		col.tileWidth, 
+		col.tileHeight, 
+		renderLayers, 
+		col);
 
 	const auto tilemap = new Tilemap(config);
 	return tilemap;
@@ -101,20 +115,15 @@ const LayerInstance* LevelLoader::GetLayerWithIdentifier(
 	return nullptr;
 }
 
-RenderLayer LevelLoader::ParseCollisionLayer(const vector<LayerInstance>& v, CollisionLayer& col)
+CollisionLayer LevelLoader::ParseCollisionLayer(const vector<LayerInstance>& v)
 {
 	// collision layer is store as an int grid
+	CollisionLayer col;
 	auto layerData = GetLayerWithIdentifier(v, COLLISION_LAYER);
 	col.tileWidth = 16;
 	col.tileHeight = 16;
 	col.cWidth = layerData->cWid;
 	col.cHeight = layerData->cHei;
-
-	RenderLayer renderLayer;
-	renderLayer.tileWidth = 16;
-	renderLayer.tileHeight = 16;
-	renderLayer.cellWidth = layerData->cWid;
-	renderLayer.cellHeight = layerData->cHei;
 
 	// parse collision
 	int i = 0;
@@ -127,43 +136,13 @@ RenderLayer LevelLoader::ParseCollisionLayer(const vector<LayerInstance>& v, Col
 		t.worldX = i % layerData->cWid * 16;
 		t.worldY = i / layerData->cWid * 16;
 		
-		if (value == 2)
-		{
-			t.type = CollisionTileType::Ground;
-		}else if (value == 3)
-		{
-			t.type = CollisionTileType::OneWay;
-		}else
-		{
-			t.type = CollisionTileType::None;
-		}
+		// danger, please make sure this match ldtk!
+		t.type = static_cast<CollisionTileType>(value);
 
 		col.cells.push_back(t);
 		i++;
 	}
-
-	int tId = -1;
-	if (!Textures::GetInstance()->HaveTextureWithPath(LEVEL_0_TILESET, tId))
-	{
-		DebugOut(L"[ERROR] Cannot fine tileset, resolve to default: -1");
-	}
-	renderLayer.textureID = tId;
-
-	// parse visual
-	for (const auto& l: layerData->autoLayerTiles)
-	{
-		RenderTile t;
-		t.worldX = l.px[0];
-		t.worldY = l.px[1];
-		t.srcX = l.src[0];
-		t.srcY = l.src[1];
-
-		t.width = 16;
-		t.height = 16;
-		renderLayer.tiles.push_back(t);
-	}
-
-	return renderLayer;
+	return col;
 }
 
 
@@ -195,17 +174,64 @@ RenderLayer LevelLoader::ParseBackgroundLayer(const vector<LayerInstance>& v)
 	return renderLayer;
 }
 
-Vector2Int LevelLoader::ParseEntityLayer(const vector<LayerInstance>& v)
+SceneEntityData LevelLoader::ParseEntityLayer(const vector<LayerInstance>& v)
 {
+	SceneEntityData sceneEntities;
+	
 	auto layer = GetLayerWithIdentifier(v, DYNAMIC_LAYER);
 	auto entities = layer->entityInstances;
 
-	if (!entities.empty())
+	if (entities.empty())
+		return sceneEntities;
+
+	
+	// player start - always have 1
+	const auto pStart = GetEntityDataWithIdentifier(entities, PLAYER_START)[0];
+	sceneEntities.playerStarts = Vector2Int(pStart->px[0], pStart->px[1]);
+
+
+	// NOTE: emplace_back is push_back but takes in a constructor, so no temp object creation is needed
+	// Goomba
+	const auto goombas = GetEntityDataWithIdentifier(entities, GOOMBA_START);
+	for (const auto& g: goombas)
 	{
-		auto playerStartEntity = layer->entityInstances[0]; // index 0 is player start
-		return Vector2Int(playerStartEntity.px[0], playerStartEntity.px[1]);
+		sceneEntities.goombaStarts.emplace_back(g->px[0], g->px[1]);
 	}
 
-	return Vector2Int();
+	// Question
+	const auto qBlocks = GetEntityDataWithIdentifier(entities, QUESTION_BLOCK);
+	for (const auto& g : qBlocks)
+	{
+		sceneEntities.questionBlocks.emplace_back(g->px[0], g->px[1]);
+	}
+
+	// Empty
+	const auto eBlocks = GetEntityDataWithIdentifier(entities, EMPTY_BRICK_BLOCK);
+	for (const auto&g : eBlocks)
+	{
+		sceneEntities.emptyBlocks.emplace_back(g->px[0], g->px[1]);
+	}
+
+	// Coins
+	const auto coins = GetEntityDataWithIdentifier(entities, COIN);
+	for (const auto& g : coins)
+	{
+		sceneEntities.coins.emplace_back(g->px[0], g->px[1]);
+	}
+
+	return sceneEntities;
+}
+
+vector<EntityInstance*> LevelLoader::GetEntityDataWithIdentifier(vector<EntityInstance>& v, const string& iden)
+{
+	vector<EntityInstance*> instances;
+	for (auto& e : v)
+	{
+		if (e.identifier == iden)
+		{
+			instances.push_back(&e);
+		}
+	}
+	return instances;
 }
 

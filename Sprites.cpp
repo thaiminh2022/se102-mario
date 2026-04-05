@@ -1,4 +1,6 @@
+#include "Sprite.h"
 #include "Sprites.h"
+#include "Texture.h"
 
 Sprites* Sprites::_instance = nullptr;
 

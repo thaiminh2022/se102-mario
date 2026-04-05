@@ -1,25 +1,11 @@
 #pragma once
 #include <vector>
+
 #include "Rect.h"
 #include "Tile.h"
+#include "TilemapConfig.h"
 #include "Vector2.h"
 using std::vector;
-
-struct TilemapConfig
-{
-	int playerStartX;
-	int playerStartY;
-
-
-	int worldWidth;
-	int worldHeight;
-
-	int tileWidth;
-	int tileHeight;
-
-	vector<RenderLayer> renderLayers;
-	CollisionLayer collisionLayer;
-};
 
 class Tilemap
 {
@@ -33,7 +19,7 @@ public:
 	void Render() const;
 	Vector2Int GetPlayerStartPosition() const
 	{
-		return Vector2Int(config->playerStartX, config->playerStartY);
+		return config->entityData.playerStarts;
 	}
 	int GetWidth() const
 	{

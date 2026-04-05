@@ -21,6 +21,12 @@ public:
 	Animation* Get(int id);
 
 	void Clear() {
+		for (auto& v: animations)
+		{
+			delete v.second;
+			v.second = nullptr;
+		}
+
 		animations.clear();
 	}
 };

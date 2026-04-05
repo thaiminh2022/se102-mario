@@ -22,6 +22,11 @@ public:
 	Sprite* Get(int id);
 
 	void Clear() {
+		for (auto& v: sprites)
+		{
+			delete v.second;
+			v.second = nullptr;
+		}
 		sprites.clear();
 	}
 

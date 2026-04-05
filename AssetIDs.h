@@ -16,20 +16,23 @@
 /// 10000 + 2000 + 300 + 40 + 5
 
 
-// MARIO (E = 10000, T = 1)
-const int MARIO_TEX_ID = 11000;
+/// MARIO (E = 10000, T = 1)
+constexpr int MARIO_TEX_ID = 11000;
 
 // Idle (A = 100)
-const int MARIO_IDLE_ANIM_ID = 11100;
-const int MARIO_IDLE_SPRITE_1 = 11101;
+constexpr int MARIO_IDLE_ANIM_ID = 11100;
+constexpr int MARIO_IDLE_SPRITE_1 = 11101;
 
 
 // Running (A = 200)
-const int MARIO_RUN_ANIM_ID = 11200;
+constexpr int MARIO_RUN_ANIM_ID = 11200;
 
-const int MARIO_RUN_SPRITE_1 = 11201;
-const int MARIO_RUN_SPRITE_2 = 11202;
-const int MARIO_RUN_SPRITE_3 = 11203;
+constexpr int MARIO_RUN_SPRITE_1 = 11201;
+constexpr int MARIO_RUN_SPRITE_2 = 11202;
+constexpr int MARIO_RUN_SPRITE_3 = 11203;
 
+/// ================================
 
+/// GOOMBA (E = 20000, T = 1)
+constexpr  int GOOMBA_TEX_ID = 21000;
 

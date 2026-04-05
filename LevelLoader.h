@@ -1,14 +1,14 @@
 #pragma once
 
 #include <string>
-#include <nloahmann/json.hpp>
-#include <Windows.h>
 #include <vector>
 
 #include "LdtkParser.h"
+#include "SceneEntityData.h"
+#include "Tile.h"
 #include "Tilemap.h"
-#include "Vector2.h"
 #include "unordered_map"
+#include <fstream>
 
 using std::vector;
 using std::wstring;
@@ -16,18 +16,19 @@ using std::ifstream;
 using std::unordered_map;
 
 
-
 class LevelLoader
 {
 	static LevelLoader* _instance;
 	unordered_map<int, Tilemap*> tilemaps;
+	Optional<WorldMap> worldMap;
 
 	// Helpers
-	static Tilemap* ParseLevel(int level);
+	Tilemap* ParseLevel(int level);
 	static const LayerInstance* GetLayerWithIdentifier(const vector<LayerInstance>& v, const std::string& identifier);
-	static RenderLayer ParseCollisionLayer(const vector<LayerInstance>& v, CollisionLayer& col);
+	static CollisionLayer ParseCollisionLayer(const vector<LayerInstance>& v);
 	static RenderLayer ParseBackgroundLayer(const vector<LayerInstance>& v);
-	static Vector2Int ParseEntityLayer(const vector<LayerInstance>& v);
+	static SceneEntityData ParseEntityLayer(const vector<LayerInstance>& v);
+	static vector<EntityInstance*> GetEntityDataWithIdentifier(vector<EntityInstance>& v, const std::string& iden);
 
 public:
 	static LevelLoader* GetInstance()
@@ -39,5 +40,5 @@ public:
 	}
 
 	Tilemap* GetTilemapForLevel(const int level);
-	static void Init();
+	void Init();
 };

@@ -1,19 +1,25 @@
 #include "Mario.h"
 
+#include "Animation.h"
 #include "Animations.h"
 #include "AssetIDs.h"
-#include "Debug.h"
+#include "Collision.h"
+#include "Game.h"
+#include "GameObject.h"
 #include "InputManager.h"
+#include "Rect.h"
+#include "Scene.h"
 #include "Sprites.h"
 #include "Textures.h"
+#include "Tile.h"
+#include <cmath>
+#include <vector>
 
 Mario::Mario(float startX, float startY) : GameObject(startX, startY)
 {
 	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
 	auto anims = Animations::GetInstance();
 	auto sprites = Sprites::GetInstance();
-
-	Animation* anim;
 
 	// sprites
 	sprites->Add(MARIO_RUN_SPRITE_1, 16, 0, 31, 15, marioTex);
@@ -22,7 +28,7 @@ Mario::Mario(float startX, float startY) : GameObject(startX, startY)
 	sprites->Add(MARIO_IDLE_SPRITE_1, 0, 0, 15, 15, marioTex);
 
 	// idle anim
-	anim = new Animation(300);
+	Animation* anim = new Animation(300);
 	anim->Add(MARIO_IDLE_SPRITE_1);
 	anims->Add(MARIO_IDLE_ANIM_ID, anim);
 
