@@ -357,12 +357,16 @@ void Game::IndicateSceneSwitch(int newID)
 	nextSceneID = newID;
 }
 
-void Game::EnterStartingScene()
+void Game::LoadSceneAndEnterFirst()
 {
-	// Enter first scene
-	auto s = new PlayableScene();
-	scenes[s->GetID()] = s;
-	IndicateSceneSwitch(s->GetID());
+	// level 1-1
+	auto s1 = new PlayableScene(0);
+	// level 1-2
+	auto s2 = new PlayableScene(1);
+
+	scenes[s1->GetID()] = s1;
+	scenes[s2->GetID()] = s2;
+	IndicateSceneSwitch(s1->GetID());
 	SwitchScene();
 }
 
@@ -376,4 +380,11 @@ Game::~Game()
 	if (swapChain) swapChain->Release();
 
 	if (device) device->Release();
+	
+	for (auto& v: scenes)
+	{
+		delete v.second;
+		v.second = nullptr;
+	}
+	scenes.clear();
 }

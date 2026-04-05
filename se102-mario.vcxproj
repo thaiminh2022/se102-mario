@@ -139,6 +139,7 @@
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="NextLevelPortal.cpp" />
     <ClCompile Include="PlayableScene.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="Mario.h" />
+    <ClInclude Include="NextLevelPortal.h" />
     <ClInclude Include="PlayableScene.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Scene.h" />

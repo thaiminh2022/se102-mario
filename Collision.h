@@ -1,9 +1,10 @@
 #pragma once
-#include <queue>
 
+#include "Rect.h"
+#include "Tile.h"
 #include "Tilemap.h"
-#include  "Windows.h"
 #include "Vector2.h"
+#include <vector>
 class GameObject;
 
 enum CollisionSource
@@ -114,10 +115,11 @@ public:
 	SweptAABBResult SweptAABB(GameObject* src, GameObject* other, float dt);
 	SweptAABBResult SweptAABB(GameObject* src, CollisionTile* tile, float dt);
 
+	void GetObjectEvents(vector<CollisionEvent>& events, GameObject* go, const vector<GameObject*>& coObjects, float dt);
 	void ProcessCollision(GameObject* go,
-		const vector<GameObject*>& coObjects,
-		const Tilemap* tilemap,
-		float dt
+	                      const vector<GameObject*>& coObjects,
+	                      const Tilemap* tilemap,
+	                      float dt
 	);
 };
 

@@ -13,17 +13,19 @@ class GameObject
 {
 protected:
 	bool isDeleted;
+	bool isCollidable;
+	bool isBlocking;
 
 public:
 	Vector2 position;
 	Vector2 velocity;
-	explicit GameObject(float x = 0, float y = 0) { position = Vector2(x, y); isDeleted = false; }
+	explicit GameObject(float x = 0, float y = 0) { position = Vector2(x, y); isDeleted = false; isCollidable = true; isBlocking = true; }
 
-	virtual void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx = nullptr) = 0;
-	virtual void Render() = 0;
+	virtual void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx = nullptr) {};
+	virtual void Render() {}
 
-	virtual bool IsCollidable() { return true; }
-	virtual bool IsBlocking() { return true; }
+	virtual bool IsCollidable() { return isCollidable; }
+	virtual bool IsBlocking() { return isBlocking; }
 	virtual void OnNoCollision(float dt) {} // Call every collision check but returns no collision
 	virtual void OnCollisionWith(CollisionEvent* event) {} // Call every collision check with collision data
 	virtual Rect GetBoundingBox() = 0;

@@ -1,5 +1,15 @@
-#include "PlayableScene.h"
 #include "Game.h"
+#include "GameObject.h"
+#include "LevelLoader.h"
+#include "Mario.h"
+#include "PlayableScene.h"
+#include "Scene.h"
+#include <algorithm>
+#include <vector>
+
+#include "Goomba.h"
+#include "NextLevelPortal.h"
+
 
 void PlayableScene::Update(float dt)
 {
@@ -34,17 +44,30 @@ void PlayableScene::Load()
 		ctx = new SceneContext;
 	}
 
-	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(0);
+	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(id);
+	auto config = ctx->tilemap->GetConfig();
+
 	auto c = Game::GetInstance()->GetCamera();
 	
-	c->SetWorldSize(ctx->tilemap->GetWidth(), ctx->tilemap->GetHeight());
-	
-	auto playerStart = ctx->tilemap->GetPlayerStartPosition();
+	c->SetWorldSize(config->worldWidth, config->worldHeight);
+	auto playerStart = config->entityData.playerStarts;
 	player = new Mario(playerStart.x, playerStart.y);
-	
 	c->SetTarget(player);
-	
 	objects.push_back(player);
+
+	// goomba
+	for (const auto& gPos : config->entityData.goombaStarts)
+	{
+		const auto gb = new Goomba(gPos.x, gPos.y);
+		objects.push_back(gb);
+	}
+
+	// next level portal
+	for (const auto& pPos : config->entityData.nextLevelsData)
+	{
+		const auto portal = new NextLevelPortal(pPos.zone, pPos.levelToLoad);
+		objects.push_back(portal);
+	}
 }
 
 void PlayableScene::UnLoad()
@@ -55,13 +78,11 @@ void PlayableScene::UnLoad()
 		ob = nullptr;
 	}
 	objects.clear();
-	delete player;
-	player = nullptr;
 }
 
 void PlayableScene::Render()
 {
-	LevelLoader::GetInstance()->GetTilemapForLevel(0)->Render();
+	LevelLoader::GetInstance()->GetTilemapForLevel(id)->Render();
 
 	for (const auto &obj : objects)
 	{

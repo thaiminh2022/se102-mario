@@ -1,14 +1,18 @@
-#include <Windows.h>
 #include <d3d10.h>
-#include <D3DX10.h>
+#include <Windows.h>
 
 #include "AssetIDs.h"
 #include "Debug.h"
 #include "Game.h"
 #include "InputManager.h"
 
+#include "D3DX10core.h"
+#include "D3DX10math.h"
 #include "LevelLoader.h"
 #include "Textures.h"
+#include <cstdint>
+#include <dxgi.h>
+#include <sal.h>
 
 #define WINDOW_CLASS_NAME L"MarioGame"
 #define MAIN_WINDOW_TITLE L"Mario"
@@ -179,10 +183,11 @@ int Run()
 	return 1;
 }
 
-void LoadResource()
+static void LoadResource()
 {
 	auto t = Textures::GetInstance();
 	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_frames.png");
+	t->Add(GOOMBA_TEX_ID, L"Assets/Sprites/goomba_frames.png");
 }
 
 int WINAPI WinMain(
@@ -202,7 +207,7 @@ int WINAPI WinMain(
 
 	LoadResource();
 
-	g->EnterStartingScene();
+	g->LoadSceneAndEnterFirst();
 	Run();
 
 	delete g;

@@ -9,7 +9,6 @@
 #include "LdtkParser.h"	
 #include "nloahmann/json.hpp"
 #include "SceneEntityData.h"
-#include "SceneEntityData.h"
 #include "Tile.h"
 #include "Tilemap.h"
 #include "TilemapConfig.h"
@@ -32,6 +31,8 @@ const string GOOMBA_START= "GoombaStart";
 const string QUESTION_BLOCK= "QuestionBlock";
 const string EMPTY_BRICK_BLOCK= "EmptyBrickBlock";
 const string COIN = "Coin";
+const string NEXT_LEVEL_ZONE = "NextLevel";
+
 
 Tilemap* LevelLoader::GetTilemapForLevel(const int level)
 {
@@ -217,6 +218,21 @@ SceneEntityData LevelLoader::ParseEntityLayer(const vector<LayerInstance>& v)
 	for (const auto& g : coins)
 	{
 		sceneEntities.coins.emplace_back(g->px[0], g->px[1]);
+	}
+
+	// Next level zone
+	const auto nextLevels = GetEntityDataWithIdentifier(entities, NEXT_LEVEL_ZONE);
+	for (const auto& g : nextLevels)
+	{
+		auto zone = Rect::FromXYWH(g->px[0], g->px[1], g->width, g->height);
+		auto value = g->fieldInstances[0].value.get<int>(); // just hard code it for now, since there's only 1 value
+
+		NextLevelData data{
+			zone, 
+			value
+		};
+
+		sceneEntities.nextLevelsData.push_back(data);
 	}
 
 	return sceneEntities;

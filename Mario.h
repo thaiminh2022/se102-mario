@@ -1,8 +1,12 @@
 #pragma once
+#include "Collision.h"
 #include "GameObject.h"
+#include "Rect.h"
+#include "Scene.h"
+#include <vector>
 
 
-enum MarioState
+enum class MarioState
 {
 	Running,
 	Idle,
@@ -13,7 +17,7 @@ class Mario : public GameObject
 	bool isGrounded;
 
 public:
-	Mario(float startX, float startY);
+	Mario(int startX, int startY);
 	MarioState state;
 
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
@@ -21,7 +25,6 @@ public:
 	Rect GetBoundingBox() override;
 	void OnNoCollision(float dt) override;
 	void OnCollisionWith(CollisionEvent* event) override;
-	bool IsCollidable() override { return true; }
 	bool IsBlocking() override { return true; }
 };
 

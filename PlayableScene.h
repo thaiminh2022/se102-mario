@@ -1,5 +1,4 @@
 #pragma once
-#include "LevelLoader.h"
 #include "Scene.h"
 #include <vector>
 
@@ -11,10 +10,17 @@ using std::vector;
 class PlayableScene :
     public Scene
 {
+
     Mario* player;
     vector<GameObject*> objects;
     SceneContext* ctx;
 public:
+    explicit PlayableScene(const int level) : Scene(level)
+    {
+        player = nullptr; // init on load
+        ctx = nullptr; // init on load
+    }
+
 
     void Update(float dt) override;
     void Load() override;

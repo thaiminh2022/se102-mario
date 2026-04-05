@@ -35,6 +35,8 @@ class Game
 	Game() : hWnd(nullptr), currentSceneID(0), nextSceneID(0)
 	{
 		camera = new Camera;
+		currentSceneID = -100;
+		nextSceneID = -200;
 	}
 
 public:
@@ -80,7 +82,7 @@ public:
 	// Scene related
 	void SwitchScene();
 	void IndicateSceneSwitch(int newID);
-	void EnterStartingScene();
+	void LoadSceneAndEnterFirst();
 
 	// Camera related	
 	Camera* GetCamera() const { return camera; }

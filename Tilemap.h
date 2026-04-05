@@ -1,13 +1,13 @@
 #pragma once
-#include <vector>
-
 #include "Rect.h"
 #include "Tile.h"
 #include "TilemapConfig.h"
 #include "Vector2.h"
+#include <vector>
 using std::vector;
 
 class Tilemap
+
 {
 	TilemapConfig* config;
 
@@ -17,6 +17,8 @@ public:
 		config = conf;
 	}
 	void Render() const;
+	TilemapConfig* GetConfig() const { return config; }
+
 	Vector2Int GetPlayerStartPosition() const
 	{
 		return config->entityData.playerStarts;

@@ -5,15 +5,22 @@
 #include "Scene.h"
 #include <vector>
 
-class Goomba : GameObject
+enum class GoombaState : std::uint8_t
 {
-public:
-	Goomba(int playerStartX, int playerStartY);
+	Moving,
+	Dead,
+};
 
+class Goomba : public GameObject
+{
+	bool moveLeft;
+	GoombaState state;
+public:
+	Goomba(int startX, int startY);
+	void SetState(GoombaState newState);
+	GoombaState GetState() const { return state; }
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
-	bool IsCollidable() override { return true; }
-	bool IsBlocking() override { return false; } 
 	void OnNoCollision(float dt) override;
 	void OnCollisionWith(CollisionEvent* event) override;
 	Rect GetBoundingBox() override

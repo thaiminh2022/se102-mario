@@ -6,16 +6,20 @@
 #include "Collision.h"
 #include "Game.h"
 #include "GameObject.h"
+#include "Goomba.h"
 #include "InputManager.h"
 #include "Rect.h"
 #include "Scene.h"
 #include "Sprites.h"
 #include "Textures.h"
-#include "Tile.h"
-#include <cmath>
 #include <vector>
 
-Mario::Mario(float startX, float startY) : GameObject(startX, startY)
+#include <cmath>
+
+#include "NextLevelPortal.h"
+
+Mario::Mario(int startX, int startY) : GameObject(startX, startY)
+
 {
 	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
 	auto anims = Animations::GetInstance();
@@ -40,12 +44,14 @@ Mario::Mario(float startX, float startY) : GameObject(startX, startY)
 	anims->Add(MARIO_RUN_ANIM_ID, anim);
 
 	isGrounded = false;
+	isCollidable = true;
 }
 
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 	auto input = InputManager::GetInstance();
-	velocity.y += 9.81f;
+	const float GRAVITY = 900.0f; // example
+	velocity.y += GRAVITY * dt;
 
 
 	if (input->IsKeyDown('A'))
@@ -115,12 +121,46 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 {
 	//DebugOut(L"Normal %d, %d\n", e->normalizedDir.x, e->normalizedDir.y);
 
-	if (e->IsTileCollision())
+	if (e->IsTileCollision()) 
 	{
-		if (e->otherTile->type == Ground || e->otherTile->type == OneWay)
+		// resolve tile collision
+		if (e->otherTile->IsBlocking() 
+			&& e->normalizedDir.y == -1
+			&& e->normalizedDir.x == 0
+			)
 		{
 			isGrounded = true;
 		}
+	}
+	else if (e->IsObjectCollision())
+	{
+		// resolve object collision
+		const auto goomba = dynamic_cast<Goomba*>(e->otherObject);
+
+		if (goomba != nullptr) 
+		{
+			if (goomba->GetState() == GoombaState::Dead)
+				return;
+
+			if (e->normalizedDir.y == -1)
+			{
+				// jump on head
+				velocity.y = -350.0f; // reward with free jump
+				goomba->SetState(GoombaState::Dead);
+			}else
+			{
+				// got kill by goomba, bad
+				velocity.y = -100.0f;
+				isCollidable = false;
+			}
+		}
+	
+		const auto portal = dynamic_cast<NextLevelPortal*>(e->otherObject);
+		if (portal != nullptr)
+		{
+			portal->RequestNextLevel();
+		}
+
 	}
 	
 }

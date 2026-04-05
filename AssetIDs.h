@@ -34,5 +34,14 @@ constexpr int MARIO_RUN_SPRITE_3 = 11203;
 /// ================================
 
 /// GOOMBA (E = 20000, T = 1)
-constexpr  int GOOMBA_TEX_ID = 21000;
+constexpr int GOOMBA_TEX_ID = 21000;
 
+// Walking (A = 100)
+constexpr int GOOMBA_WALK_ANIM_ID = 21100;
+constexpr int GOOMBA_WALK_SPRITE_1 = 21101;
+constexpr int GOOMBA_WALK_SPRITE_2 = 21102;
+
+// Dead (A = 200)
+constexpr int GOOMBA_DEAD_ANIM_ID = 21200;
+constexpr int GOOMBA_DEAD_SPRITE_1 = 21201;
+/// ==================

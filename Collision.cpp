@@ -1,11 +1,19 @@
 #include "Collision.h"
+
 #include <algorithm>
+
 #include "GameObject.h"
 
-#include "Game.h"
+#include "Rect.h"
+#include "Tile.h"
+#include "Tilemap.h"
+#include "Vector2.h"
+#include <cmath>
+#include <vector>
+#include <Windows.h>
 
 
-constexpr float PUSH_BACK_FACTOR = 0.1f;
+constexpr float PUSH_BACK_FACTOR = 0.01f;
 
 void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*& tilemap, GameObject*& go, float dt)
 {
@@ -61,10 +69,10 @@ void Collision::Filter(
 	{
 		if (v.isInvalid) continue;
 		if (v.self == nullptr || GameObject::IsDeleted(v.self)) continue;
-		if (v.t < 0 || v.t >= 1) continue;
+		if (v.t < 0 || v.t > 1) continue;
 
 		// Hit oneway tile, so ignore
-		if (v.IsTileCollision() && v.otherTile->type == OneWay)
+		if (v.IsTileCollision() && v.otherTile->type == CollisionTileType::OneWay)
 		{
 			// We only care if the player is landing on the TOP.
 			// If the collision normal is anything else (Side or Bottom), 
@@ -74,7 +82,6 @@ void Collision::Filter(
 				continue;
 			}
 		}
-
 
 		if (colMinX == nullptr && v.normalizedDir.x != 0 && minXTime > v.t && filterX)
 		{
@@ -170,6 +177,7 @@ SweptAABBResult Collision::SweptAABB(Rect mb, float dvx, float dvy, Rect sb)
 	if (entryTime > exitTime || (txEntry < 0.0f && tyEntry < 0.0f) || txEntry > 1.0f || tyEntry > 1.0f)
 	{
 		result.t = 1;
+		result.collided = false;
 		return result;
 	}
 	result.t = entryTime;
@@ -180,7 +188,7 @@ SweptAABBResult Collision::SweptAABB(Rect mb, float dvx, float dvy, Rect sb)
 	{
 		result.normalizeDir = dvy > 0.0f ? Vector2Int::Up() : Vector2Int::Down();
 	}
-
+	result.collided = true;
 	return result;
 }
 
@@ -201,10 +209,36 @@ SweptAABBResult Collision::SweptAABB(GameObject* src, CollisionTile* tile, float
 	return SweptAABB(src->GetBoundingBox(), dvx, dvy, tile->GetBounds());
 }
 
+void Collision::GetObjectEvents(vector<CollisionEvent>& events, GameObject* go, const vector<GameObject*>& coObjects,
+	float dt)
+{
+
+	for (auto obj : coObjects)
+	{
+		if (obj == go || !obj->IsCollidable() || GameObject::IsDeleted(obj))
+			continue;
+
+		auto r = SweptAABB(go, obj, dt);
+		if (r.collided)
+		{
+			auto e = CollisionEvent::CreateObjectCollisionEvent(go, obj, r);
+			events.push_back(e);
+		}
+	}
+}
+
 void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coObjects, const Tilemap* tilemap, float dt)
 {
+	if (!go->IsCollidable())
+	{
+		go->OnNoCollision(dt);
+		return;
+	}
+
 	vector<CollisionEvent> events;
 	GetTilemapEvents(events, tilemap, go, dt);
+	GetObjectEvents(events, go, coObjects, dt);
+
 
 	std::sort(events.begin(), events.end(), CollisionEvent::Compare);
 
