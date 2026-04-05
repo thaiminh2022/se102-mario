@@ -1,11 +1,78 @@
 #include "Collision.h"
 #include <algorithm>
 #include "GameObject.h"
-#include <queue>
 
-using std::priority_queue;
+#include "Game.h"
 
-constexpr float PUSH_BACK_FACTOR = .4f;
+
+constexpr float PUSH_BACK_FACTOR = 0.1f;
+
+void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*& tilemap, GameObject*& go, float dt)
+{
+	// tilemap collision
+	if (tilemap != nullptr)
+	{
+		auto srcBounds = go->GetBoundingBox();
+		auto srcVelocity = go->velocity;
+		vector<CollisionTile*> collisionTiles;
+		
+		auto futureLeft = srcBounds.left + srcVelocity.x * dt;
+		auto futureRight = srcBounds.right + srcVelocity.x * dt;
+		auto futureTop = srcBounds.top + srcVelocity.y * dt;
+		auto futureBottom = srcBounds.bottom + srcVelocity.y * dt;
+
+		float minX = min(srcBounds.left, futureLeft -16);
+		float maxX = max(srcBounds.right, futureRight + 16);
+		float minY = min(srcBounds.top, futureTop - 16);
+		float maxY = max(srcBounds.bottom, futureBottom + 16);
+
+		auto r = RectF(
+			minX,
+			minY,
+			maxX,
+			maxY);
+
+		tilemap->GetPotentialCollidableCells(r, collisionTiles);
+
+		if (collisionTiles.empty())
+			return;
+
+		for (const auto& c : collisionTiles)
+		{
+			auto r = SweptAABB(go, c, dt);
+			auto e = CollisionEvent::CreateTileCollisionEvent(go, c, r);
+			events.push_back(e);
+		}
+	}
+}
+
+void Collision::Filter(vector<CollisionEvent>& events, CollisionEvent*& colMinX, CollisionEvent*& colMinY)
+{
+	float minXTime = 1.0f;
+	float minYTime = 1.0f;
+	
+	for (auto& v : events)
+	{
+		if (v.isInvalid) continue;
+		if (v.self == nullptr || GameObject::IsDeleted(v.self)) continue;
+		if (v.t < 0 || v.t >= 1) continue;
+
+		if (colMinX == nullptr && v.normalizedDir.x != 0 && minXTime > v.t)
+		{
+			colMinX = &v;
+			minXTime = v.t;
+		}
+
+		if (colMinY == nullptr && v.normalizedDir.y != 0 && minYTime > v.t)
+		{
+			colMinY = &v;
+			minYTime = v.t;
+		}
+
+		if (colMinX  != nullptr && colMinY != nullptr)
+			break;
+	}
+}
 
 SweptAABBResult Collision::SweptAABB(Rect mb, float dvx, float dvy, Rect sb)
 {
@@ -117,39 +184,10 @@ SweptAABBResult Collision::SweptAABB(GameObject* src, CollisionTile* tile, float
 
 void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coObjects, const Tilemap* tilemap, float dt)
 {
-	auto srcBounds = go->GetBoundingBox();
-	auto srcVelocity = go->velocity;
-	vector<CollisionTile*> colTiles;
-	priority_queue<CollisionEvent, vector<CollisionEvent>, CompareCollisionEvent> events;
+	vector<CollisionEvent> events;
+	GetTilemapEvents(events, tilemap, go, dt);
 
-	// tilemap collision
-	if (tilemap != nullptr)
-	{
-		auto futureLeft = srcBounds.left + srcVelocity.x * dt;
-		auto futureRight = srcBounds.right + srcVelocity.x * dt;
-		auto futureTop = srcBounds.top + srcVelocity.y * dt;
-		auto futureBottom = srcBounds.bottom + srcVelocity.y * dt;
-
-		// --- FIX: Create a bounding box that covers the ENTIRE movement path ---
-		float minX = min(srcBounds.left, futureLeft);
-		float maxX = max(srcBounds.right, futureRight);
-		float minY = min(srcBounds.top, futureTop);
-		float maxY = max(srcBounds.bottom, futureBottom);
-
-
-		tilemap->GetPotentialCollidableCells(RectF(
-			minX,
-			minY,
-			maxX,
-			maxY), colTiles);
-
-		for (const auto& c : colTiles)
-		{
-			auto r = SweptAABB(go, c, dt);
-			auto e = CollisionEvent::CreateTileCollisionEvent(go, c, r);
-			events.push(e);
-		}
-	}
+	std::sort(events.begin(), events.end(), CollisionEvent::Compare);
 
 	if (events.empty())
 	{
@@ -157,22 +195,105 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 		return;
 	}
 
-	CollisionEvent earliestEvent = events.top();
-	if (earliestEvent.t >= 1.0f || earliestEvent.t < 0.0f)
-	{
-		go->OnNoCollision(dt);
-		return;
-	}
-	go->position += srcVelocity * dt * earliestEvent.t + Vector2(earliestEvent.normalizedDir) * PUSH_BACK_FACTOR;
+	CollisionEvent* colX = nullptr, *colY = nullptr;
+	Filter(events, colX, colY);
 
-	if (earliestEvent.normalizedDir.x != 0)
-	{
-		go->velocity.x = 0.0f; // Hit a vertical wall, stop moving horizontally
-	}
-	if (earliestEvent.normalizedDir.y != 0)
-	{
-		go->velocity.y = 0.0f; // Hit a floor/ceiling, stop moving vertically
-	}
+	auto position = go->position;
+	auto srcVelocity = go->velocity;
 
-	go->OnCollisionWith(&earliestEvent);
+
+	if (colX != nullptr && colY != nullptr)
+	{
+		// have collision on x, y
+		if (colX->t < colY->t)
+		{
+			// x happen first
+			position.x += srcVelocity.x * dt * colX->t + colX->normalizedDir.x * PUSH_BACK_FACTOR;
+			go->position = position;
+			go->OnCollisionWith(colX);
+			go->velocity.x = 0;
+
+			// ok after move x, is there still collision on y
+			colY->isInvalid = true;
+
+			CollisionEvent* colYOther = nullptr;
+			if (colY->IsTileCollision())
+			{
+				const auto r = SweptAABB(go, colY->otherTile, dt);
+				events.push_back(CollisionEvent::CreateTileCollisionEvent(go, colY->otherTile, r));
+			}else
+			{
+				const auto r = SweptAABB(go, colY->otherObject, dt);
+				events.push_back(CollisionEvent::CreateObjectCollisionEvent(go, colY->otherObject, r));
+			}
+
+			Filter(events, colX, colYOther);
+			if (colYOther != nullptr)
+			{
+				position.y += srcVelocity.y * dt * colYOther->t + colYOther->normalizedDir.y * PUSH_BACK_FACTOR;
+				go->OnCollisionWith(colYOther);
+			}
+			else
+			{
+				position.y += srcVelocity.y * dt;
+			}
+		}else
+		{
+			// col y happens first
+			position.y += srcVelocity.y * dt * colY->t + colY->normalizedDir.y * PUSH_BACK_FACTOR;
+			go->position = position;
+			go->OnCollisionWith(colY);
+			go->velocity.y = 0;
+
+			// ok after move y, is there still collision on x?
+			colX->isInvalid = true;
+
+			CollisionEvent* colXOther = nullptr;
+			if (colX->IsTileCollision())
+			{
+				const auto r = SweptAABB(go, colX->otherTile, dt);
+				events.push_back(CollisionEvent::CreateTileCollisionEvent(go, colX->otherTile, r));
+			}
+			else
+			{
+				const auto r = SweptAABB(go, colX->otherObject, dt);
+				events.push_back(CollisionEvent::CreateObjectCollisionEvent(go, colX->otherObject, r));
+			}
+
+			Filter(events, colXOther, colY);
+			if (colXOther != nullptr)
+			{
+				position.x += srcVelocity.x * dt * colXOther->t + colXOther->normalizedDir.x * PUSH_BACK_FACTOR;
+				go->OnCollisionWith(colXOther);
+			}
+			else
+			{
+				position.x += srcVelocity.x * dt;
+			}
+		}
+
+	}
+	else if (colX != nullptr)
+	{
+		// have collision on x only
+		position.x += srcVelocity.x * dt * colX->t + colX->normalizedDir.x * PUSH_BACK_FACTOR;
+		position.y += srcVelocity.y * dt;
+		go->velocity.x = 0;
+		go->OnCollisionWith(colX);
+
+	}else if (colY != nullptr)
+	{
+		// have collision on y only
+		position.y += srcVelocity.y * dt * colY->t + colY->normalizedDir.y * PUSH_BACK_FACTOR;
+		position.x += srcVelocity.x * dt;
+		go->velocity.y = 0;
+		go->OnCollisionWith(colY);
+	}else
+	{
+		position += srcVelocity * dt;
+	}
+	go->position = position;
+
+	events.clear();
+
 }

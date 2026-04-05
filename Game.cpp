@@ -190,6 +190,91 @@ void Game::Draw(float x, float y, Texture* tex, Rect* rect)
 	spriteObject->DrawSpritesImmediate(&sprite, 1, 0, 0);
 }
 
+void Game::DrawDebugRect(Rect r, D3DXCOLOR color)
+{
+	const auto p = std::pair<Rect, D3DXCOLOR>(r, color);
+	debugRects.push_back(p);
+}
+
+void Game::FlushDebugRect()
+{
+	if (debugRects.empty()) return;
+
+	// Backup old blend state if needed
+	float blendFactor[4] = { 0, 0, 0, 0 };
+	UINT sampleMask = 0xffffffff;
+	device->OMSetBlendState(blendStateAlpha, blendFactor, sampleMask);
+
+	// We will draw using very small 1x1 white texture stretched up
+	static Texture* whiteTex = nullptr;
+	if (whiteTex == nullptr)
+	{
+		ID3D10Texture2D* tex = nullptr;
+
+		D3D10_TEXTURE2D_DESC desc{};
+		desc.Width = 1;
+		desc.Height = 1;
+		desc.MipLevels = 1;
+		desc.ArraySize = 1;
+		desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		desc.SampleDesc.Count = 1;
+		desc.Usage = D3D10_USAGE_IMMUTABLE;
+		desc.BindFlags = D3D10_BIND_SHADER_RESOURCE;
+
+		unsigned int pixel = 0xffffffff; // white
+
+		D3D10_SUBRESOURCE_DATA initData{};
+		initData.pSysMem = &pixel;
+		initData.SysMemPitch = sizeof(unsigned int);
+
+		HRESULT hr = device->CreateTexture2D(&desc, &initData, &tex);
+		if (FAILED(hr)) return;
+
+		ID3D10ShaderResourceView* srv = nullptr;
+		hr = device->CreateShaderResourceView(tex, nullptr, &srv);
+		if (FAILED(hr))
+		{
+			tex->Release();
+			return;
+		}
+
+		whiteTex = new Texture(tex, srv);
+	}
+
+	for (const auto& rectData : debugRects)
+	{
+		auto rect = rectData.first;
+		auto color = rectData.second;
+
+		int width = rect.right - rect.left;
+		int height = rect.bottom - rect.top;
+
+		if (width <= 0 || height <= 0) continue;
+
+
+		D3DX10_SPRITE sprite{};
+		sprite.pTexture = whiteTex->GetShaderResourceView();
+		sprite.TexCoord = D3DXVECTOR2(0.0f, 0.0f);
+		sprite.TexSize = D3DXVECTOR2(1.0f, 1.0f);
+		sprite.TextureIndex = 0;
+		sprite.ColorModulate = color;
+
+		D3DXMATRIX matTranslation, matScaling;
+		D3DXMatrixTranslation(
+			&matTranslation,
+			rect.left + width * 0.5f,
+			(backBufferHeight - rect.top) - height * 0.5f,
+			0.1f
+		);
+		D3DXMatrixScaling(&matScaling, (FLOAT)width, (FLOAT)height, 1.0f);
+
+		sprite.matWorld = matScaling * matTranslation;
+		spriteObject->DrawSpritesImmediate(&sprite, 1, 0, 0);
+	}
+	debugRects.clear();
+}
+
+
 Texture* Game::LoadTexture(LPCWSTR texturePath) const
 {
 	ID3D10Resource* pD3D10Resource = NULL;

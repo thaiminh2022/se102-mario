@@ -29,6 +29,7 @@ class Game
 	int currentSceneID;
 	int nextSceneID;
 	unordered_map<int, Scene *> scenes;
+	vector<std::pair<Rect, D3DXCOLOR>> debugRects;
 
 	Camera* camera;
 	Game() : hWnd(nullptr), currentSceneID(0), nextSceneID(0)
@@ -56,6 +57,13 @@ public:
 		rect.bottom = b;
 		Draw(x, y, tex, &rect);
 	}
+
+	// Debug helper
+	void DrawDebugRect(Rect r, D3DXCOLOR color);
+	void FlushDebugRect();
+	void ClearDebugRect() { debugRects.clear(); }
+
+
 
 	Texture *LoadTexture(LPCWSTR texturePath) const;
 

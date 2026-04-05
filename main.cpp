@@ -54,6 +54,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 void Update(const float dt)
 {
 	auto game = Game::GetInstance();
+	game->ClearDebugRect();
 	game->GetCurrentScene()->Update(dt);
 }
 
@@ -78,6 +79,7 @@ void Render()
 		pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
 		g->GetCurrentScene()->Render();
+		g->FlushDebugRect();
 
 		spriteHandler->End();
 		pSwapChain->Present(0, 0);

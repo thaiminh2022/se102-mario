@@ -46,7 +46,10 @@ void Tilemap::GetPotentialCollidableCells(const RectF& bound, vector<CollisionTi
 	startCol = max(0, startCol);
 	endCol = min(config->collisionLayer.cWidth - 1, endCol);
 	startRow = max(0, startRow);
-	endRow = min(config->collisionLayer.tileHeight - 1, endRow);
+	endRow = min(config->collisionLayer.cHeight - 1, endRow);
+
+	Game::GetInstance()->DrawDebugRect(bound, D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.3f));
+
 
 	// 3. Loop through the overlapping grid section
 	for (int row = startRow; row <= endRow; ++row)
@@ -65,5 +68,14 @@ void Tilemap::GetPotentialCollidableCells(const RectF& bound, vector<CollisionTi
 			}
 		}
 	}
+
+	/*
+	for (auto& tile: config->collisionLayer.cells)
+	{
+		if (tile.type == CollisionTileType::Ground)
+		{
+			outCells.push_back(&tile);
+		}
+	}*/
 	
 }

@@ -77,6 +77,7 @@ void Mario::Render()
 		Animations::GetInstance()->Get(MARIO_IDLE_ANIM_ID)->Render(round(renderX), round(renderY));
 		break;
 	}
+
 }
 
 Rect Mario::GetBoundingBox()
@@ -97,6 +98,8 @@ void Mario::OnNoCollision(float dt)
 
 void Mario::OnCollisionWith(CollisionEvent* e)
 {
+	DebugOut(L"Normal %d, %d\n", e->normalizedDir.x, e->normalizedDir.y);
+
 	//// Did we hit the floor?
 	//if (e->normalizedDir.y == -1.0f) // Assuming -1 means pushed UP by the floor
 	//{

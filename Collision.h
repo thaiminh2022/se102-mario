@@ -1,4 +1,6 @@
 #pragma once
+#include <queue>
+
 #include "Tilemap.h"
 #include  "Windows.h"
 #include "Vector2.h"
@@ -80,18 +82,20 @@ struct CollisionEvent
 		return source == OtherObject;
 	}
 
-};
-
-struct CompareCollisionEvent
-{
-	bool operator()(CollisionEvent const& p1, CollisionEvent const& p2) const
+	static bool Compare(CollisionEvent const& p1, CollisionEvent const& p2)
 	{
-		return p1.t > p2.t;
+		return p1.t < p2.t;
 	}
+
 };
 
 class Collision
 {
+	void GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*& tilemap, GameObject
+	                      *& go, float dt);
+
+	void Filter(vector<CollisionEvent>& events, CollisionEvent*& colMinX, CollisionEvent*& colMinY);
+
 public:
 	static Collision* GetInstance()
 	{

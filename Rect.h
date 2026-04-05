@@ -1,5 +1,19 @@
 #pragma once
-#include "Windows.h"
+#include <Windows.h>
+#include <cmath>
+
+struct RectF
+{
+	float top, left, right, bottom;
+
+	explicit RectF(float left = 0, float top = 0, float right = 0, float bottom = 0) {
+		this->left = left;
+		this->right = right;
+		this->bottom = bottom;
+		this->top = top;
+	}
+};
+
 
 struct Rect
 {
@@ -26,6 +40,12 @@ struct Rect
 		bottom = r.bottom;
 		top = r.top;
 	}
+	Rect(const RectF& r) {
+		left = (int)roundf(r.left);
+		right = (int)roundf(r.right);
+		bottom = (int)roundf(r.bottom);
+		top = (int)roundf(r.top);
+	}
 
 	int GetWidth() const {
 		return right - left + 1;
@@ -36,14 +56,3 @@ struct Rect
 };
 
 
-struct RectF
-{
-	float top, left, right, bottom;
-
-	explicit RectF(float left = 0, float top = 0, float right = 0, float bottom = 0) {
-		this->left = left;
-		this->right = right;
-		this->bottom = bottom;
-		this->top = top;
-	}
-};
