@@ -18,7 +18,7 @@
 
 #include "NextLevelPortal.h"
 
-Mario::Mario(int startX, int startY) : GameObject(startX, startY)
+Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 
 {
 	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
@@ -45,6 +45,7 @@ Mario::Mario(int startX, int startY) : GameObject(startX, startY)
 
 	isGrounded = false;
 	isCollidable = true;
+	state = MarioState::Idle;
 }
 
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
@@ -103,7 +104,7 @@ void Mario::Render()
 
 Rect Mario::GetBoundingBox()
 {
-	Rect r;
+	RectF r;
 	r.top = position.y;
 	r.left = position.x;
 	r.bottom = position.y + 16;

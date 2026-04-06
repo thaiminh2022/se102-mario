@@ -41,10 +41,10 @@ struct Rect
 		top = r.top;
 	}
 	Rect(const RectF& r) {
-		left = (int)roundf(r.left);
-		right = (int)roundf(r.right);
-		bottom = (int)roundf(r.bottom);
-		top = (int)roundf(r.top);
+		left = static_cast<int>(roundf(r.left));
+		right = static_cast<int>(roundf(r.right));
+		bottom = static_cast<int>(roundf(r.bottom));
+		top = static_cast<int>(roundf(r.top));
 	}
 
 	int GetWidth() const {

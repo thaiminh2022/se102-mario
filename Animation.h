@@ -5,8 +5,6 @@
 #include "Sprite.h"
 
 using std::vector;
-
-
 class AnimationFrame {
 	Sprite* sprite;
 	DWORD time;

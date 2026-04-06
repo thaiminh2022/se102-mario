@@ -15,7 +15,7 @@
 
 #include "Debug.h"
 
-Goomba::Goomba(int startX, int startY) : GameObject(startX, startY)
+Goomba::Goomba(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 {
 	// Load the animations
 	auto t = Textures::GetInstance()->Get(GOOMBA_TEX_ID);
