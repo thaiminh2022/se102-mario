@@ -6,18 +6,18 @@
 #include "Game.h"
 #include "InputManager.h"
 
-#include "D3DX10core.h"
-#include "D3DX10math.h"
 #include "LevelLoader.h"
 #include "Textures.h"
 #include <cstdint>
 #include <dxgi.h>
 #include <sal.h>
 
+#include "AudioManager.h"
+
+
 #define WINDOW_CLASS_NAME L"MarioGame"
 #define MAIN_WINDOW_TITLE L"Mario"
 #define WINDOW_ICON_PATH L"mario.ico"
-
 #define BACKGROUND_COLOR D3DXCOLOR(200.0f / 255, 200.0f / 255, 255.0f / 255, 0.0f)
 
 enum : std::uint16_t
@@ -188,6 +188,11 @@ static void LoadResource()
 	auto t = Textures::GetInstance();
 	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_frames.png");
 	t->Add(GOOMBA_TEX_ID, L"Assets/Sprites/goomba_frames.png");
+	AudioManager::GetInstance()->LoadWAV(MARIO_JUMP_BIG, L"Assets\\Audio\\SFX\\jump-small.wav");
+	AudioManager::GetInstance()->LoadWAV(MARIO_JUMP_SMALL, L"Assets\\Audio\\SFX\\jump-super.wav");
+	AudioManager::GetInstance()->LoadWAV(GOOMBA_STOMP, L"Assets\\Audio\\SFX\\stomp.wav");
+	AudioManager::GetInstance()->LoadWAV(MARIO_DIE, L"Assets\\Audio\\SFX\\mariodie.wav");
+	
 }
 
 int WINAPI WinMain(
@@ -204,7 +209,7 @@ int WINAPI WinMain(
 	auto g = Game::GetInstance();
 	g->Init(hWnd);
 	LevelLoader::GetInstance()->Init();
-
+	AudioManager::GetInstance()->Init();
 	LoadResource();
 
 	g->LoadSceneAndEnterFirst();

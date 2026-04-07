@@ -10,6 +10,7 @@ enum class MarioState
 {
 	Running,
 	Idle,
+	Dead,
 };
 
 class Mario : public GameObject

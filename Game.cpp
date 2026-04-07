@@ -2,7 +2,6 @@
 #include "Debug.h"
 #include "Sprites.h"
 #include "Animations.h"
-#include <d3d10sdklayers.h>
 
 Game* Game::_instance = nullptr;
 
@@ -44,7 +43,7 @@ void Game::Init(HWND hWnd)
 
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t*)L"[ERROR] D3D10CreateDeviceAndSwapChain has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut(L"[ERROR] D3D10CreateDeviceAndSwapChain has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -53,7 +52,7 @@ void Game::Init(HWND hWnd)
 	hr = swapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), (LPVOID*)&pBackBuffer);
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t*)L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut(L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -85,7 +84,7 @@ void Game::Init(HWND hWnd)
 
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t*)L"[ERROR] D3DX10CreateSprite has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut(L"[ERROR] D3DX10CreateSprite has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -116,7 +115,6 @@ void Game::Init(HWND hWnd)
 	device->CreateBlendState(&StateDesc, &this->blendStateAlpha);
 
 	DebugOut(L"[INFO] InitDirectX has been successful\n");
-
 
 
 }
@@ -372,15 +370,21 @@ void Game::LoadSceneAndEnterFirst()
 
 Game::~Game()
 {
-	delete camera;
-
+	/// ===============D3D10 DESTROYS==================
 	if (spriteObject) spriteObject->Release();
 	if (blendStateAlpha) blendStateAlpha->Release();
 	if (renderTargetView) renderTargetView->Release();
 	if (swapChain) swapChain->Release();
 
+
+	// Others need to be destroyed before device
 	if (device) device->Release();
+
 	
+	/// =================================================
+	
+	delete camera;
+	camera = nullptr;
 	for (auto& v: scenes)
 	{
 		delete v.second;

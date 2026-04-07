@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <vector>
 
+#include "AudioManager.h"
 #include "Goomba.h"
 #include "NextLevelPortal.h"
 
@@ -47,11 +48,14 @@ void PlayableScene::Load()
 	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(id);
 	auto config = ctx->tilemap->GetConfig();
 
+	// camera
 	auto c = Game::GetInstance()->GetCamera();
-	
 	c->SetWorldSize(config->worldWidth, config->worldHeight);
+	
+	// player
 	auto playerStart = config->entityData.playerStarts;
 	player = new Mario(playerStart.x, playerStart.y);
+	
 	c->SetTarget(player);
 	objects.push_back(player);
 
@@ -68,10 +72,22 @@ void PlayableScene::Load()
 		const auto portal = new NextLevelPortal(pPos.zone, pPos.levelToLoad);
 		objects.push_back(portal);
 	}
+
+	// background music
+	if (config->entityData.backgroundMusicID.hasValue)
+	{
+		AudioManager::GetInstance()->PlayMusic(config->entityData.backgroundMusicID.value);
+	}
 }
 
 void PlayableScene::UnLoad()
 {
+	auto config = ctx->tilemap->GetConfig();
+	if (config->entityData.backgroundMusicID.hasValue)
+	{
+		AudioManager::GetInstance()->StopAll();
+	}
+
 	for (auto& ob : objects)
 	{
 		delete ob;

@@ -5,29 +5,10 @@
 #include <stdexcept>
 #include <nloahmann/json.hpp>
 
+#include "OptionalType.h"
+
 using json = nlohmann::json;
 
-template <typename T>
-struct Optional
-{
-	bool hasValue;
-	T value;
-
-	Optional() : hasValue(false), value() {}
-	explicit Optional(const T& v) : hasValue(true), value(v) {}
-
-	void Reset()
-	{
-		hasValue = false;
-		value = T();
-	}
-
-	void Set(const T& v)
-	{
-		hasValue = true;
-		value = v;
-	}
-};
 
 struct TileInstance
 {

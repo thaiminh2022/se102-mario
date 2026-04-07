@@ -16,7 +16,11 @@
 
 #include <cmath>
 
+#include "AudioManager.h"
 #include "NextLevelPortal.h"
+
+constexpr float GRAVITY = 900.0f;
+
 
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 
@@ -46,38 +50,43 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	isGrounded = false;
 	isCollidable = true;
 	state = MarioState::Idle;
+
+
 }
 
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
-	auto input = InputManager::GetInstance();
-	const float GRAVITY = 900.0f; // example
 	velocity.y += GRAVITY * dt;
 
-
-	if (input->IsKeyDown('A'))
+	if (state != MarioState::Dead)
 	{
-		velocity.x = -100.0f;
-		state = MarioState::Running;
-	}
-	else if (input->IsKeyDown('D'))
-	{
-		velocity.x = 100.0f;
-		state = MarioState::Running;
+		auto input = InputManager::GetInstance();
 
-	}
-	else
-	{
-		velocity.x = 0;
-		state = MarioState::Idle;
-	}
+		if (input->IsKeyDown('A'))
+		{
+			velocity.x = -100.0f;
+			state = MarioState::Running;
+		}
+		else if (input->IsKeyDown('D'))
+		{
+			velocity.x = 100.0f;
+			state = MarioState::Running;
 
-	if (input->IsKeyDown('W') && isGrounded)
-	{
-		velocity.y = -300.0f;
-		isGrounded = false;
-	}
+		}
+		else
+		{
+			velocity.x = 0;
+			state = MarioState::Idle;
+		}
 
+		if (input->IsKeyDown('W') && isGrounded)
+		{
+
+			velocity.y = -300.0f;
+			isGrounded = false;
+			AudioManager::GetInstance()->PlaySFX(MARIO_JUMP_SMALL);
+		}
+	}
 
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 
@@ -95,6 +104,7 @@ void Mario::Render()
 	case MarioState::Running:
 		Animations::GetInstance()->Get(MARIO_RUN_ANIM_ID)->Render(round(renderX), round(renderY));
 		break;
+	case MarioState::Dead:
 	case MarioState::Idle:
 		Animations::GetInstance()->Get(MARIO_IDLE_ANIM_ID)->Render(round(renderX), round(renderY));
 		break;
@@ -148,11 +158,18 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 				// jump on head
 				velocity.y = -350.0f; // reward with free jump
 				goomba->SetState(GoombaState::Dead);
+				
+				AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
+
 			}else
 			{
 				// got kill by goomba, bad
-				velocity.y = -100.0f;
+				velocity.y = -250.0f;
+				velocity.x = 0;
 				isCollidable = false;
+				state = MarioState::Dead;
+				AudioManager::GetInstance()->StopAll();
+				AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
 			}
 		}
 	

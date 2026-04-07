@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "AudioManager.h"
 #include "LdtkParser.h"	
 #include "nloahmann/json.hpp"
 #include "SceneEntityData.h"
@@ -20,20 +21,25 @@ LevelLoader *LevelLoader::_instance = nullptr;
 
 
 
+// PATH
 constexpr auto LEVEL_0_TILESET = L"Assets/Sprites/ground_and_stone_overworld.png";
 const string WORLD_PATH = "world_map.ldtk";
+
+// LAYER
 const string COLLISION_LAYER = "Collision";
 const string BACKGROUND_LAYER = "Background";
 const string DYNAMIC_LAYER = "Dynamic";
 
+// ENTITY
 const string PLAYER_START = "PlayerStart";
 const string GOOMBA_START= "GoombaStart";
 const string QUESTION_BLOCK= "QuestionBlock";
 const string EMPTY_BRICK_BLOCK= "EmptyBrickBlock";
 const string COIN = "Coin";
 const string NEXT_LEVEL_ZONE = "NextLevel";
+const string BACKGROUND_MUSIC = "BackgroundMusic";
 
-
+/// Return the tilemap object for [level]. Value will be cached if new
 Tilemap* LevelLoader::GetTilemapForLevel(const int level)
 {
 	if (tilemaps.find(level) == tilemaps.end())
@@ -49,6 +55,7 @@ Tilemap* LevelLoader::GetTilemapForLevel(const int level)
 	return tilemaps[level];
 }
 
+/// Parse the [worldMap.ldtk] json file and store in memory
 void LevelLoader::Init()
 {
 	const auto t = Textures::GetInstance();
@@ -60,7 +67,6 @@ void LevelLoader::Init()
 
 	f.close();
 }
-
 
 
 Tilemap *LevelLoader::ParseLevel(int level)
@@ -85,7 +91,7 @@ Tilemap *LevelLoader::ParseLevel(int level)
 	vector<RenderLayer> renderLayers;
 	const auto col = ParseCollisionLayer(layersValue);
 	const auto r1 = ParseBackgroundLayer(layersValue);
-	auto entitiesData = ParseEntityLayer(layersValue);
+	auto entitiesData = ParseEntityLayer(level, layersValue);
 
 	renderLayers.push_back(r1);
 
@@ -175,7 +181,7 @@ RenderLayer LevelLoader::ParseBackgroundLayer(const vector<LayerInstance>& v)
 	return renderLayer;
 }
 
-SceneEntityData LevelLoader::ParseEntityLayer(const vector<LayerInstance>& v)
+SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<LayerInstance>& v)
 {
 	SceneEntityData sceneEntities;
 	
@@ -235,6 +241,27 @@ SceneEntityData LevelLoader::ParseEntityLayer(const vector<LayerInstance>& v)
 		sceneEntities.nextLevelsData.push_back(data);
 	}
 
+	// Background music - there should be only once, as enforced in ldtk
+	const auto bgMusic = GetEntityDataWithIdentifier(entities, BACKGROUND_MUSIC);
+	
+	if (!bgMusic.empty())
+	{
+		const auto data = bgMusic[0]->fieldInstances[0];
+		const auto musicPath = data.value.get<string>();
+		const auto utf16String = wstring(musicPath.begin(), musicPath.end());
+
+		auto id = AudioManager::GetInstance()->GetIdForWAVFile(utf16String.c_str());
+
+		if (id.hasValue)
+		{
+			sceneEntities.backgroundMusicID.Set(id.value); // load the music here too
+		}else
+		{
+			AudioManager::GetInstance()->LoadWAV(-1 - level, utf16String.c_str());
+			sceneEntities.backgroundMusicID.Set(-1 - level);
+		}
+
+	}
 	return sceneEntities;
 }
 
