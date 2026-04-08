@@ -59,6 +59,7 @@ void Update(const float dt)
 	auto game = Game::GetInstance();
 	game->ClearDebugRect();
 	game->GetCurrentScene()->Update(dt);
+	AudioManager::GetInstance()->Update();
 }
 
 void Render()
@@ -227,5 +228,8 @@ int WINAPI WinMain(
 	Run();
 
 	delete g;
+	delete FontManager::GetInstance();
+	AudioManager::GetInstance()->Shutdown();
+
 	return 0;
 }

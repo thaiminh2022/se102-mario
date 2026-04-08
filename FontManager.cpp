@@ -37,7 +37,7 @@ void FontManager::AddFontCustom(int id, LPCWSTR filePath, LPCWSTR faceName, Font
 	int status = AddFontResourceEx(filePath, FR_PRIVATE, nullptr);
 	if (status == 0)
 	{
-		DebugOut(L"[Error] Cannot load custom font	font");
+		DebugOut(L"[Error] Cannot load custom font");
 		return;
 	}
 	ID3DX10Font* font = nullptr;
