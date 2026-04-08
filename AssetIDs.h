@@ -48,8 +48,12 @@ constexpr int GOOMBA_DEAD_SPRITE_1 = 21201;
 
 
 
-/// MUSICS: Background music will be managed by negative values
+/// MUSICS: Background music will be managed by negative values in ldtk
 constexpr int MARIO_JUMP_SMALL = 1;
 constexpr int MARIO_JUMP_BIG = 2;
 constexpr int GOOMBA_STOMP = 3;
 constexpr int MARIO_DIE = 4;
+
+
+
+/// 

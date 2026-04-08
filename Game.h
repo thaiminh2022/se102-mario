@@ -11,7 +11,6 @@
 #include "PlayableScene.h"
 
 using std::unordered_map;
-
 class Game
 {
 	static Game *_instance;
@@ -26,8 +25,6 @@ class Game
 	ID3D10RenderTargetView *renderTargetView = nullptr;
 	ID3D10BlendState *blendStateAlpha = nullptr;
 	ID3DX10Sprite *spriteObject = nullptr;
-	
-	
 
 	int currentSceneID;
 	int nextSceneID;

@@ -99,6 +99,7 @@ void Mario::Render()
 		->GetCamera()
 		->WorldToScreen(position.x, position.y, renderX, renderY);
 
+
 	switch (state)
 	{
 	case MarioState::Running:
@@ -110,6 +111,8 @@ void Mario::Render()
 		break;
 	}
 
+	auto r = Rect::FromXYWH(0, 0, 10, 40);
+	//Game::GetInstance()->RenderText(r, L"Hello darkness my old friend", D3DXCOLOR(0.0, 0.0, 0.0, 1.0));
 }
 
 Rect Mario::GetBoundingBox()

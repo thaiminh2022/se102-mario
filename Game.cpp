@@ -116,7 +116,6 @@ void Game::Init(HWND hWnd)
 
 	DebugOut(L"[INFO] InitDirectX has been successful\n");
 
-
 }
 
 void Game::Draw(float x, float y, Texture* tex, Rect* rect)
@@ -375,7 +374,6 @@ Game::~Game()
 	if (blendStateAlpha) blendStateAlpha->Release();
 	if (renderTargetView) renderTargetView->Release();
 	if (swapChain) swapChain->Release();
-
 
 	// Others need to be destroyed before device
 	if (device) device->Release();
