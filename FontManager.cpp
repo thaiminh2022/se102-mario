@@ -56,6 +56,12 @@ void FontManager::AddFontCustom(int id, LPCWSTR filePath, LPCWSTR faceName, Font
 		&font
 	);
 
+	if (FAILED(hr))
+	{
+		DebugOut(L"[Error] Cannot load font");
+		return;
+	}
+
 	fonts[id] = font;
 }
 
