@@ -3,6 +3,7 @@
 #include "Debug.h"
 #include "Game.h"
 
+FontManager* FontManager::_instance = nullptr;
 
 void FontManager::AddFontLocal(int id, LPCWSTR faceName, FontData fontData)
 {
@@ -87,4 +88,14 @@ void FontManager::Draw(const int id, const Vector2& pos, const LPCWSTR message, 
 		TextFormat::Left | TextFormat::NoClip,
 		color
 	);
+}
+
+FontManager::~FontManager()
+{
+	for (auto& it : fonts)
+	{
+		it.second->Release();
+		it.second = nullptr;
+	}
+	fonts.clear();
 }

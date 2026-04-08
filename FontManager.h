@@ -7,7 +7,7 @@
 
 using std::unordered_map;
 
-enum class FontWeight : std::uint16_t
+enum FontWeight : UINT16
 {
 	Normal = FW_NORMAL,
 	Bold =  FW_BOLD,
@@ -36,6 +36,14 @@ struct FontData
 	int width, height;
 	UINT weight;
 	bool italic;
+
+	FontData(int height, UINT weight = FontWeight::Normal, bool italic = false)
+		: width(0),
+		  height(height),
+		  weight(weight),
+		  italic(italic)
+	{
+	}
 };
 
 struct FontDrawConfig
@@ -44,6 +52,14 @@ struct FontDrawConfig
 	LPCWSTR message;
 	D3DXCOLOR color;
 	UINT format;
+
+	FontDrawConfig(const Rect& r, LPCWSTR message, const D3DXCOLOR& color, UINT format)
+		: r(r),
+		  message(message),
+		  color(color),
+		  format(format)
+	{
+	}
 };
 
 /// A class to manage and draw font
@@ -67,5 +83,7 @@ public:
 	void AddFontCustom(int id, LPCWSTR filePath, LPCWSTR faceName, FontData fontData);
 	void Draw(int id, const FontDrawConfig& config);
 	void Draw(int id, const Vector2& pos, LPCWSTR message, D3DXCOLOR color);
+
+	~FontManager();
 };
 

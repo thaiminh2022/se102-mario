@@ -56,4 +56,5 @@ constexpr int MARIO_DIE = 4;
 
 
 
-/// 
+/// FONT
+constexpr int STATS_FONT = 1;
