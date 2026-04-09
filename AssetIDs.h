@@ -23,13 +23,26 @@ constexpr int MARIO_TEX_ID = 11000;
 constexpr int MARIO_IDLE_ANIM_ID = 11100;
 constexpr int MARIO_IDLE_SPRITE_1 = 11101;
 
-
 // Running (A = 200)
 constexpr int MARIO_RUN_ANIM_ID = 11200;
 
 constexpr int MARIO_RUN_SPRITE_1 = 11201;
 constexpr int MARIO_RUN_SPRITE_2 = 11202;
 constexpr int MARIO_RUN_SPRITE_3 = 11203;
+
+// Turning Around (A = 300)
+constexpr int MARIO_TURN_ANIM_ID = 11300;
+constexpr int MARIO_TURN_SPRITE_1 = 11301;
+
+
+// Jumping (A = 400)
+constexpr int MARIO_JUMP_ANIM_ID = 11400;
+constexpr int MARIO_JUMP_SPRITE_1 = 11401;
+
+// Dying (A = 500)
+constexpr int MARIO_DEATH_ANIM_ID = 11500;
+constexpr int MARIO_DEATH_SPRITE_1 = 11501;
+
 
 /// ================================
 

@@ -82,11 +82,7 @@ void PlayableScene::Load()
 
 void PlayableScene::UnLoad()
 {
-	auto config = ctx->tilemap->GetConfig();
-	if (config->entityData.backgroundMusicID.hasValue)
-	{
-		AudioManager::GetInstance()->StopAll();
-	}
+	AudioManager::GetInstance()->StopAll();
 
 	for (auto& ob : objects)
 	{

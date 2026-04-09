@@ -15,11 +15,13 @@ protected:
 	bool isDeleted;
 	bool isCollidable;
 	bool isBlocking;
-
+	bool isFacingRight;	
 public:
 	Vector2 position;
 	Vector2 velocity;
-	explicit GameObject(float x = 0, float y = 0) { position = Vector2(x, y); isDeleted = false; isCollidable = true; isBlocking = true; }
+	explicit GameObject(float x = 0, float y = 0) {
+		position = Vector2(x, y); isDeleted = false; isCollidable = true; isBlocking = true; isFacingRight = true;
+	}
 
 	virtual void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx = nullptr) {};
 	virtual void Render() {}

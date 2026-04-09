@@ -177,6 +177,8 @@ int Run()
 			Render();
 
 			Game::GetInstance()->SwitchScene();
+
+			InputManager::GetInstance()->Update();
 		}
 		else
 			Sleep(static_cast<DWORD>(tickPerFrame - dt));
@@ -188,7 +190,7 @@ int Run()
 static void LoadResource()
 {
 	auto t = Textures::GetInstance();
-	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_frames.png");
+	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_sprites.png");
 	t->Add(GOOMBA_TEX_ID, L"Assets/Sprites/goomba_frames.png");
 
 	// Audios
