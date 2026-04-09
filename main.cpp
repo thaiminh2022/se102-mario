@@ -202,7 +202,7 @@ static void LoadResource()
 	// Fonts
 	FontManager::GetInstance()->AddFontCustom(
 		STATS_FONT,
-L"C:\\dev\\cplusplus\\se102-mario\\Assets\\Fonts\\super-mario-bros-nes.ttf",
+L"Assets\\Fonts\\super-mario-bros-nes.ttf",
 		L"Super Mario Bros. NES", 
 		FontData(25)
 	);
