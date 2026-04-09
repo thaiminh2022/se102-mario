@@ -18,9 +18,10 @@
 #include <cmath>
 
 #include "Debug.h"
+#include "AudioManager.h"
 #include "NextLevelPortal.h"
 
-Mario::Mario(int startX, int startY) : GameObject(startX, startY)
+Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 
 {
 	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
@@ -72,6 +73,9 @@ Mario::Mario(int startX, int startY) : GameObject(startX, startY)
 	isFacingRight = true;
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
+	state = MarioState::Idle;
+
+
 }
 
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
@@ -142,6 +146,9 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	// INITIATE JUMP
 	if (input->IsKeyPressed('W') && isGrounded)
 	{
+		// jumped
+		AudioManager::GetInstance()->PlaySFX(MARIO_JUMP_SMALL);
+
 		if (abs(velocity.x) < 16.0f) {
 			//Idle Jump
 			velocity.y = -280.0f;
@@ -260,7 +267,7 @@ void Mario::Render()
 
 Rect Mario::GetBoundingBox()
 {
-	Rect r;
+	RectF r;
 	r.top = position.y;
 	r.left = position.x;
 	r.bottom = position.y + 16;
@@ -308,13 +315,18 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 
 
 				goomba->SetState(GoombaState::Dead);
-			}
-			else
+				
+				AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
+
+			}else
 			{
 				// got kill by goomba, bad
-				state = MarioState::Dying;
-				//velocity.y = -300.0f;
+				velocity.y = -250.0f;
+				velocity.x = 0;
 				isCollidable = false;
+				state = MarioState::Dying;
+				AudioManager::GetInstance()->StopAll();
+				AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
 			}
 		}
 

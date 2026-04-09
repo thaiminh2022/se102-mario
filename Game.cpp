@@ -2,7 +2,6 @@
 #include "Debug.h"
 #include "Sprites.h"
 #include "Animations.h"
-#include <d3d10sdklayers.h>
 
 Game* Game::_instance = nullptr;
 
@@ -44,7 +43,7 @@ void Game::Init(HWND hWnd)
 
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t*)L"[ERROR] D3D10CreateDeviceAndSwapChain has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut(L"[ERROR] D3D10CreateDeviceAndSwapChain has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -97,7 +96,7 @@ void Game::Init(HWND hWnd)
 
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t*)L"[ERROR] D3DX10CreateSprite has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut(L"[ERROR] D3DX10CreateSprite has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -129,7 +128,6 @@ void Game::Init(HWND hWnd)
 
 
 	DebugOut(L"[INFO] InitDirectX has been successful\n");
-
 
 
 }
@@ -392,15 +390,23 @@ Game::~Game()
 	}
 
 
-	delete camera;
 
+	/// ===============D3D10 DESTROYS==================
 	if (spriteObject) spriteObject->Release();
 	if (blendStateAlpha) blendStateAlpha->Release();
 	if (renderTargetView) renderTargetView->Release();
 	if (swapChain) swapChain->Release();
 	if (rasterizerState) rasterizerState->Release();
+
+
+	// Others need to be destroyed before device
 	if (device) device->Release();
+
 	
+	/// =================================================
+	camera = nullptr;
+	delete camera;
+
 	for (auto& v: scenes)
 	{
 		delete v.second;

@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "Scene.h"
 #include <unordered_map>
+#include <xaudio2.h>
 
 #include "Camera.h"
 #include "PlayableScene.h"
@@ -66,8 +67,6 @@ public:
 	void FlushDebugRect();
 	void ClearDebugRect() { debugRects.clear(); }
 
-
-
 	Texture *LoadTexture(LPCWSTR texturePath) const;
 
 	ID3D10Device *GetDirect3DDevice() const { return this->device; }
@@ -75,6 +74,7 @@ public:
 	ID3D10RenderTargetView *GetRenderTargetView() const { return this->renderTargetView; }
 	ID3DX10Sprite *GetSpriteHandler() const { return this->spriteObject; }
 	ID3D10BlendState *GetAlphaBlending() const { return blendStateAlpha; };
+
 
 	int GetBackBufferWidth() const { return backBufferWidth; }
 	int GetBackBufferHeight() const { return backBufferHeight; }

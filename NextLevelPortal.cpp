@@ -3,7 +3,7 @@
 #include "Game.h"
 
 // We still change the position for thematic things i guess
-NextLevelPortal::NextLevelPortal(Rect zone, int levelToLoad) : GameObject(zone.top, zone.left)
+NextLevelPortal::NextLevelPortal(Rect zone, int levelToLoad) : GameObject(static_cast<float>(zone.top), static_cast<float>(zone.left))
 {
 	this->zone = zone;
 	this->levelToLoad = levelToLoad;

@@ -13,7 +13,7 @@
 #include <Windows.h>
 
 
-constexpr float PUSH_BACK_FACTOR = 0.01f;
+constexpr float PUSH_BACK_FACTOR = 0.001f;
 
 void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*& tilemap, GameObject*& go, float dt)
 {
@@ -108,25 +108,25 @@ SweptAABBResult Collision::SweptAABB(Rect mb, float dvx, float dvy, Rect sb)
 	// moving in x
 	if (dvx > 0)
 	{
-		dxEntry = sb.left - mb.right;
-		dxExit = sb.right - mb.left;
+		dxEntry = static_cast<float>(sb.left - mb.right);
+		dxExit = static_cast<float>(sb.right - mb.left);
 	}
 	else
 	{
-		dxEntry = sb.right - mb.left;
-		dxExit = sb.left - mb.right;
+		dxEntry = static_cast<float>(sb.right - mb.left);
+		dxExit = static_cast<float>(sb.left - mb.right);
 	}
 
 	// moving in y
 
-	if (dvy > 0)	
+	if (dvy > 0)
 	{
-		dyEntry = sb.top - mb.bottom;
-		dyExit = sb.bottom - mb.top;
+		dyEntry = static_cast<float>(sb.top - mb.bottom);
+		dyExit = static_cast<float>(sb.bottom - mb.top);
 	}else
 	{
-		dyEntry = sb.bottom - mb.top;
-		dyExit = sb.top - mb.bottom;
+		dyEntry = static_cast<float>(sb.bottom - mb.top);
+		dyExit = static_cast<float>(sb.top - mb.bottom);
 	}
 	float txEntry, tyEntry;
 	float txExit, tyExit;
@@ -169,8 +169,8 @@ SweptAABBResult Collision::SweptAABB(Rect mb, float dvx, float dvy, Rect sb)
 		tyExit = dyExit / dvy;
 	}
 
-	float entryTime = max(txEntry, tyEntry);
-	float exitTime = min(txExit, tyExit);
+	const float entryTime = max(txEntry, tyEntry);
+	const float exitTime = min(txExit, tyExit);
 
 	SweptAABBResult result;
 
@@ -194,9 +194,9 @@ SweptAABBResult Collision::SweptAABB(Rect mb, float dvx, float dvy, Rect sb)
 
 SweptAABBResult Collision::SweptAABB(GameObject* src, GameObject* other, const float dt)
 {
-	auto relVelocity = src->velocity - other->velocity;
-	auto dvx = relVelocity.x * dt;
-	auto dvy = relVelocity.y * dt;
+	const auto relVelocity = src->velocity - other->velocity;
+	const auto dvx = relVelocity.x * dt;
+	const auto dvy = relVelocity.y * dt;
 
 	return SweptAABB(src->GetBoundingBox(), dvx, dvy, other->GetBoundingBox());
 }
@@ -210,10 +210,10 @@ SweptAABBResult Collision::SweptAABB(GameObject* src, CollisionTile* tile, float
 }
 
 void Collision::GetObjectEvents(vector<CollisionEvent>& events, GameObject* go, const vector<GameObject*>& coObjects,
-	float dt)
+	const float dt)
 {
 
-	for (auto obj : coObjects)
+	for (const auto& obj : coObjects)
 	{
 		if (obj == go || !obj->IsCollidable() || GameObject::IsDeleted(obj))
 			continue;

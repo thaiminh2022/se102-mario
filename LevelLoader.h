@@ -27,7 +27,7 @@ class LevelLoader
 	static const LayerInstance* GetLayerWithIdentifier(const vector<LayerInstance>& v, const std::string& identifier);
 	static CollisionLayer ParseCollisionLayer(const vector<LayerInstance>& v);
 	static RenderLayer ParseBackgroundLayer(const vector<LayerInstance>& v);
-	static SceneEntityData ParseEntityLayer(const vector<LayerInstance>& v);
+	static SceneEntityData ParseEntityLayer(int level, const vector<LayerInstance>& v);
 	static vector<EntityInstance*> GetEntityDataWithIdentifier(vector<EntityInstance>& v, const std::string& iden);
 
 public:
