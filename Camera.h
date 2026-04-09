@@ -4,6 +4,7 @@
 class Camera
 {
 	float x, y;
+	float prevX;
 	int worldWidth, worldHeight;
 	GameObject* target;
 public:
@@ -17,5 +18,7 @@ public:
 
 	void Update();
 	bool IsInView(float left, float top, float right, float bottom) const;
+	float getX();
+	float getY();
 };
 

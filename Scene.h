@@ -10,7 +10,7 @@ struct SceneContext
 	Tilemap* tilemap;
 };
 
-
+//Abstract class showing the interface of a scene
 class Scene
 {
 protected:

@@ -28,13 +28,20 @@ Sprite::Sprite(int id, int left, int top, int right, int bottom, Texture *tex)
 	D3DXMatrixScaling(&this->matScaling, (FLOAT)spriteWidth, (FLOAT)spriteHeight, 1.0f);
 }
 
-void Sprite::Draw(float x, float y)
+void Sprite::Draw(float x, float y, bool flipX, bool flipY)
 {
-	Game *g = Game::GetInstance();
-
+	Game* g = Game::GetInstance();
 
 	float spriteWidth = (float)(right - left + 1);
 	float spriteHeight = (float)(bottom - top + 1);
+
+	D3DXMATRIX matScalingDynamic;
+	D3DXMatrixScaling(
+		&matScalingDynamic,
+		spriteWidth * (flipX ? -1.0f : 1.0f),
+		spriteHeight * (flipY ? -1.0f : 1.0f),
+		1.0f
+	);
 
 	D3DXMATRIX matTranslation;
 	D3DXMatrixTranslation(
@@ -44,7 +51,7 @@ void Sprite::Draw(float x, float y)
 		0.1f
 	);
 
-	this->sprite.matWorld = (this->matScaling * matTranslation);
+	this->sprite.matWorld = matScalingDynamic * matTranslation;
 
 	g->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0);
 }

@@ -472,7 +472,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [48,7],
+							"__grid": [5,5],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": null,
@@ -481,10 +481,10 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 31,
-							"px": [768,112],
+							"px": [80,80],
 							"fieldInstances": [],
-							"__worldX": 768,
-							"__worldY": 112
+							"__worldX": 80,
+							"__worldY": 80
 						},
 						{
 							"__identifier": "GoombaStart",

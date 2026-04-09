@@ -53,17 +53,29 @@ void Game::Init(HWND hWnd)
 	hr = swapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), (LPVOID*)&pBackBuffer);
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t*)L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut(L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
 	// create the render target view
 	hr = device->CreateRenderTargetView(pBackBuffer, NULL, &renderTargetView);
 
+	D3D10_RASTERIZER_DESC rsDesc = {};
+	rsDesc.FillMode = D3D10_FILL_SOLID;
+	rsDesc.CullMode = D3D10_CULL_NONE;
+	rsDesc.FrontCounterClockwise = FALSE;
+	rsDesc.DepthClipEnable = TRUE;
+	hr = device->CreateRasterizerState(&rsDesc, &rasterizerState);
+	if (FAILED(hr))
+	{
+		DebugOut(L"[Error] cannot init rasterizerState");
+	}
+	device->RSSetState(rasterizerState);
+
 	pBackBuffer->Release();
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t*)L"[ERROR] CreateRenderTargetView has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut(L"[ERROR] CreateRenderTargetView has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -114,6 +126,7 @@ void Game::Init(HWND hWnd)
 	StateDesc.BlendOpAlpha = D3D10_BLEND_OP_ADD;
 	StateDesc.RenderTargetWriteMask[0] = D3D10_COLOR_WRITE_ENABLE_ALL;
 	device->CreateBlendState(&StateDesc, &this->blendStateAlpha);
+
 
 	DebugOut(L"[INFO] InitDirectX has been successful\n");
 
@@ -183,7 +196,8 @@ void Game::Draw(float x, float y, Texture* tex, Rect* rect)
 
 	// Scale the sprite to its correct width and height because by default, DirectX draws it with width = height = 1.0f
 	D3DXMATRIX matScaling;
-	D3DXMatrixScaling(&matScaling, (FLOAT)spriteWidth, (FLOAT)spriteHeight, 1.0f);
+	// flip X/Y by scaling with negative value on X/Y axis
+	D3DXMatrixScaling(&matScaling, (FLOAT)spriteWidth, (FLOAT)spriteHeight, 1.0f); 
 
 	// Setting the sprite’s position and size
 	sprite.matWorld = (matScaling * matTranslation);
@@ -372,13 +386,19 @@ void Game::LoadSceneAndEnterFirst()
 
 Game::~Game()
 {
+	for (auto& v: scenes)
+	{
+		v.second->UnLoad();
+	}
+
+
 	delete camera;
 
 	if (spriteObject) spriteObject->Release();
 	if (blendStateAlpha) blendStateAlpha->Release();
 	if (renderTargetView) renderTargetView->Release();
 	if (swapChain) swapChain->Release();
-
+	if (rasterizerState) rasterizerState->Release();
 	if (device) device->Release();
 	
 	for (auto& v: scenes)

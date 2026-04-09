@@ -69,7 +69,7 @@ void Goomba::Render()
 
 	Animations::GetInstance()
 	->Get(state == GoombaState::Moving ? GOOMBA_WALK_ANIM_ID : GOOMBA_DEAD_ANIM_ID)
-	->Render(round(renderX), round(renderY));
+	->Render(round(renderX), round(renderY), false, false);
 }
 
 void Goomba::OnNoCollision(float dt)
