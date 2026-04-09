@@ -12,10 +12,12 @@
 #include "Scene.h"
 #include "Sprites.h"
 #include "Textures.h"
+#include <algorithm>
 #include <vector>
 
 #include <cmath>
 
+#include "Debug.h"
 #include "NextLevelPortal.h"
 
 Mario::Mario(int startX, int startY) : GameObject(startX, startY)
@@ -65,7 +67,6 @@ Mario::Mario(int startX, int startY) : GameObject(startX, startY)
 	anim->Add(MARIO_DEATH_SPRITE_1);
 	anims->Add(MARIO_DEATH_ANIM_ID, anim);
 
-	isDead = false;
 	isGrounded = false;
 	isCollidable = true;
 	isFacingRight = true;
@@ -75,9 +76,16 @@ Mario::Mario(int startX, int startY) : GameObject(startX, startY)
 
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
-	auto input = InputManager::GetInstance();
-	if (isDead) return;
+	if (state == MarioState::Dying)
+	{
+		// dead animation for now
+		Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
+		velocity.y = 9000.0f * dt;
+		velocity.x = 0;
+		return;
+	}
 
+	auto input = InputManager::GetInstance();
 	if (isGrounded)
 	{
 		// GROUND PHYSICS
@@ -166,11 +174,11 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 
 	// Y-axis clamping (Only limit fall speed, not jump force)
-	if (velocity.y > MAX_FALL) velocity.y = MAX_FALL;
+	velocity.y = min(velocity.y, MAX_FALL);
 
 	// Absolute X-axis clamping
-	if (velocity.x > MAX_RUN) velocity.x = MAX_RUN;
-	if (velocity.x < -MAX_RUN) velocity.x = -MAX_RUN;
+	velocity.x = min(velocity.x, MAX_RUN);
+	velocity.x = max(velocity.x, -MAX_RUN);
 
 	// Clamp back to Walk speed if Shift is released
 	if (isGrounded) {
@@ -231,6 +239,7 @@ void Mario::Render()
 		break;
 	case MarioState::Walking:
 	case MarioState::Running:
+	//case MarioState::Ducking:
 		Animations::GetInstance()->Get(MARIO_RUN_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
 		break;
 	case MarioState::Skidding:
@@ -241,7 +250,11 @@ void Mario::Render()
 		break;
 	case MarioState::Jumping:
 		Animations::GetInstance()->Get(MARIO_JUMP_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+		break;
+	default:
+		DebugOut(L"[Error] No handling for state: %d\n", state);
 	}
+	
 
 }
 
@@ -299,10 +312,8 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			else
 			{
 				// got kill by goomba, bad
-				isDead = true;
 				state = MarioState::Dying;
-
-				velocity.y = -100.0f;
+				//velocity.y = -300.0f;
 				isCollidable = false;
 			}
 		}

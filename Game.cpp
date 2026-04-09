@@ -53,7 +53,7 @@ void Game::Init(HWND hWnd)
 	hr = swapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), (LPVOID*)&pBackBuffer);
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t*)L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut(L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -65,15 +65,17 @@ void Game::Init(HWND hWnd)
 	rsDesc.CullMode = D3D10_CULL_NONE;
 	rsDesc.FrontCounterClockwise = FALSE;
 	rsDesc.DepthClipEnable = TRUE;
-
-	ID3D10RasterizerState* rsState = nullptr;
-	device->CreateRasterizerState(&rsDesc, &rsState);
-	device->RSSetState(rsState);
+	hr = device->CreateRasterizerState(&rsDesc, &rasterizerState);
+	if (FAILED(hr))
+	{
+		DebugOut(L"[Error] cannot init rasterizerState");
+	}
+	device->RSSetState(rasterizerState);
 
 	pBackBuffer->Release();
 	if (hr != S_OK)
 	{
-		DebugOut((wchar_t*)L"[ERROR] CreateRenderTargetView has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut(L"[ERROR] CreateRenderTargetView has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -384,13 +386,19 @@ void Game::LoadSceneAndEnterFirst()
 
 Game::~Game()
 {
+	for (auto& v: scenes)
+	{
+		v.second->UnLoad();
+	}
+
+
 	delete camera;
 
 	if (spriteObject) spriteObject->Release();
 	if (blendStateAlpha) blendStateAlpha->Release();
 	if (renderTargetView) renderTargetView->Release();
 	if (swapChain) swapChain->Release();
-
+	if (rasterizerState) rasterizerState->Release();
 	if (device) device->Release();
 	
 	for (auto& v: scenes)

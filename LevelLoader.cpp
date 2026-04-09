@@ -72,7 +72,7 @@ Tilemap *LevelLoader::ParseLevel(int level)
 	}
 
 	const auto& map = worldMap.value;
-	if (level > map.levels.size())
+	if (level >= map.levels.size())
 		return nullptr;
 	
 	const auto& levelData = map.levels[level];

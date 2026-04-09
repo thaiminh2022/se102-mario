@@ -12,7 +12,6 @@ using std::vector;
 class GameObject
 {
 protected:
-	bool isDead;
 	bool isDeleted;
 	bool isCollidable;
 	bool isBlocking;
@@ -21,7 +20,7 @@ public:
 	Vector2 position;
 	Vector2 velocity;
 	explicit GameObject(float x = 0, float y = 0) {
-		position = Vector2(x, y); isDead = false; isDeleted = false; isCollidable = true; isBlocking = true; isFacingRight = true;
+		position = Vector2(x, y); isDeleted = false; isCollidable = true; isBlocking = true; isFacingRight = true;
 	}
 
 	virtual void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx = nullptr) {};
