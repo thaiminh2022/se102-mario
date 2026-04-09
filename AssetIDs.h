@@ -44,6 +44,29 @@ constexpr int MARIO_DEATH_ANIM_ID = 11500;
 constexpr int MARIO_DEATH_SPRITE_1 = 11501;
 
 
+// Big Mario (E = 10000, T = 2)
+constexpr int MARIO_BIG_TEX_ID = 12000;
+
+// Idle (A = 100)
+constexpr int MARIO_BIG_IDLE_ANIM_ID = 12100;
+constexpr int MARIO_BIG_IDLE_SPRITE_1 = 12101;
+// Running (A = 200)
+constexpr int MARIO_BIG_RUN_ANIM_ID = 12200;
+constexpr int MARIO_BIG_RUN_SPRITE_1 = 12201;
+constexpr int MARIO_BIG_RUN_SPRITE_2 = 12202;
+constexpr int MARIO_BIG_RUN_SPRITE_3 = 12203;	
+// Turning Around (A = 300)
+constexpr int MARIO_BIG_TURN_ANIM_ID = 12300;
+constexpr int MARIO_BIG_TURN_SPRITE_1 = 12301;
+
+// Jumping (A = 400)
+constexpr int MARIO_BIG_JUMP_ANIM_ID = 12400;
+constexpr int MARIO_BIG_JUMP_SPRITE_1 = 12401;
+
+// Ducking (A = 500)
+constexpr int MARIO_BIG_DUCK_ANIM_ID = 12500;
+constexpr int MARIO_BIG_DUCK_SPRITE_1 = 12501;
+
 /// ================================
 
 /// GOOMBA (E = 20000, T = 1)

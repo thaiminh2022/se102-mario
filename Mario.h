@@ -18,6 +18,13 @@ enum class MarioState
 	Dying
 };
 
+enum class MarioPower
+{
+	Normal,
+	Big,
+	JD // Fire. Dont ask me why.
+};
+
 class Mario : public GameObject
 {
 	bool isGrounded;
@@ -26,6 +33,7 @@ class Mario : public GameObject
 public:
 	Mario(int startX, int startY);
 	MarioState state;
+	MarioPower power;
 
 	float ax;
 	float ay;
@@ -53,7 +61,7 @@ public:
 
 	//Fall acceleration when holding jump
 	const float STOP_FALL_A = 450.0f;
-	const float WALK_FALL_A = 421.87f;
+	const float WALK_FALL_A = 421.875f;
 	const float RUN_FALL_A = 562.5f;
 
 	const float MAX_FALL = 270.0f;

@@ -30,6 +30,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 
 {
 	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
+	auto marioBigTex = Textures::GetInstance()->Get(MARIO_BIG_TEX_ID);
 	auto anims = Animations::GetInstance();
 	auto sprites = Sprites::GetInstance();
 
@@ -73,13 +74,51 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	anim->Add(MARIO_DEATH_SPRITE_1);
 	anims->Add(MARIO_DEATH_ANIM_ID, anim);
 
+	// BIG sprites
+	sprites->Add(MARIO_BIG_RUN_SPRITE_1, 20, 0, 35, 31, marioBigTex);
+	sprites->Add(MARIO_BIG_RUN_SPRITE_2, 38, 0, 53, 31, marioBigTex);
+	sprites->Add(MARIO_BIG_RUN_SPRITE_3, 56, 0, 71, 31, marioBigTex);
+
+	sprites->Add(MARIO_BIG_TURN_SPRITE_1, 76, 0, 91, 31, marioBigTex);
+
+	sprites->Add(MARIO_BIG_JUMP_SPRITE_1, 96, 0, 111, 31, marioBigTex);
+	sprites->Add(MARIO_BIG_IDLE_SPRITE_1, 0, 0, 15, 31, marioBigTex);
+
+	sprites->Add(MARIO_BIG_DUCK_SPRITE_1, 116, 0, 131, 31, marioBigTex);
+
+	anim = new Animation(100);
+	anim->Add(MARIO_BIG_IDLE_SPRITE_1);
+	anims->Add(MARIO_BIG_IDLE_ANIM_ID, anim);
+
+	// walk anim
+	anim = new Animation(100);
+	anim->Add(MARIO_BIG_RUN_SPRITE_1);
+	anim->Add(MARIO_BIG_RUN_SPRITE_2);
+	anim->Add(MARIO_BIG_RUN_SPRITE_3);
+	anims->Add(MARIO_BIG_RUN_ANIM_ID, anim);
+
+	// turn anim
+	anim = new Animation(100);
+	anim->Add(MARIO_BIG_TURN_SPRITE_1);
+	anims->Add(MARIO_BIG_TURN_ANIM_ID, anim);
+
+	// jump anim
+	anim = new Animation(100);
+	anim->Add(MARIO_BIG_JUMP_SPRITE_1);
+	anims->Add(MARIO_BIG_JUMP_ANIM_ID, anim);
+
+	// duck anim
+	anim = new Animation(100);
+	anim->Add(MARIO_BIG_DUCK_SPRITE_1);
+	anims->Add(MARIO_BIG_DUCK_ANIM_ID, anim);
+
 	isGrounded = false;
 	isCollidable = true;
 	isFacingRight = true;
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
-
+	power = MarioPower::Normal;
 
 }
 
@@ -93,16 +132,24 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		velocity.x = 0;
 		return;
 	}
-
+	auto g = Game::GetInstance();
+	/*g->DrawDebugRect(GetBoundingBox(), D3DXCOLOR(1, 0, 0, 1));*/
 	auto input = InputManager::GetInstance();
 	if (isGrounded)
 	{
+		if (input->IsKeyDown('S') && power == MarioPower::Big) {
+			// Ducking has the highest priority, overrides all other states
+			// No horizontal movement while ducking
+			state = MarioState::Ducking;
+			if (velocity.x > 0) velocity.x -= DEC_SKID * dt; // Decelerate to a stop if ducking while moving right
+			else if (velocity.x < 0) velocity.x += DEC_SKID * dt; // Decelerate to a stop if ducking while moving left
+		}
 		// GROUND PHYSICS
 		if (abs(velocity.x) < MIN_WALK) {
 			// Kickstart acceleration
 			velocity.x = 0;
-			if (input->IsKeyDown('A') && !input->IsKeyDown('S')) velocity.x -= MIN_WALK;
-			if (input->IsKeyDown('D') && !input->IsKeyDown('S')) velocity.x += MIN_WALK;
+			if (input->IsKeyDown('A') && state != MarioState::Ducking) velocity.x -= MIN_WALK;
+			if (input->IsKeyDown('D') && state != MarioState::Ducking) velocity.x += MIN_WALK;
 		}
 		else {
 			// Moving: Handle Acceleration & Braking
@@ -126,7 +173,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 				}
 				else if (input->IsKeyDown('D')) {
 					// Skidding
-					velocity.x += DEC_SKID * dt; 
+					velocity.x += DEC_SKID * dt;
 				}
 				else {
 					// No input, apply friction
@@ -149,19 +196,19 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	}
 
 	// INITIATE JUMP
-	if (input->IsKeyPressed('W') && isGrounded)
+	if (input->IsKeyPressed('W') && isGrounded && state != MarioState::Ducking)
 	{
 		// jumped
 		AudioManager::GetInstance()->PlaySFX(MARIO_JUMP_SMALL);
 
 		if (abs(velocity.x) < 16.0f) {
 			//Idle Jump
-			velocity.y = -280.0f;
+			velocity.y = -240.0f;
 			fallAcc = STOP_FALL; // Heavy gravity
 		}
 		else if (abs(velocity.x) < 40.0f) {
 			// Walk Jump
-			velocity.y = -280.0f;
+			velocity.y = -240.0f;
 			fallAcc = WALK_FALL; // Very heavy gravity
 		}
 		else {
@@ -185,8 +232,10 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	velocity.y += fallAcc * dt;
 
 
-	// Y-axis clamping (Only limit fall speed, not jump force)
-	velocity.y = min(velocity.y, MAX_FALL);
+	// Y-axis clamping
+	/*velocity.y = min(velocity.y, MAX_FALL);*/
+	if (velocity.y > MAX_FALL) velocity.y = MAX_FALL;
+	if (velocity.y < -MAX_FALL) velocity.y = -MAX_FALL;
 
 	// Absolute X-axis clamping
 	velocity.x = min(velocity.x, MAX_RUN);
@@ -202,10 +251,10 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	// UPDATE STATE & FACING DIRECTION
 
 	// Update facing direction based on player input and only apply if grounded to prevent mid-air direction change
-	if (input->IsKeyDown('A') && !input->IsKeyDown('D') && isGrounded) {
+	if (input->IsKeyDown('A') && !input->IsKeyDown('D') && isGrounded && state != MarioState::Ducking) {
 		isFacingRight = false;
 	}
-	else if (input->IsKeyDown('D') && !input->IsKeyDown('A') && isGrounded) {
+	else if (input->IsKeyDown('D') && !input->IsKeyDown('A') && isGrounded && state != MarioState::Ducking) {
 		isFacingRight = true;
 	}
 
@@ -214,7 +263,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		state = MarioState::Jumping;
 	}
 	else {
-		if (input->IsKeyDown('S')) {
+		if (power == MarioPower::Big && input->IsKeyDown('S')) {
 			state = MarioState::Ducking;
 		}
 		else if (abs(velocity.x) > MAX_WALK) {
@@ -244,46 +293,83 @@ void Mario::Render()
 	g->GetCamera()
 		->WorldToScreen(position.x, position.y, renderX, renderY);
 
-
-	switch (state)
+	if (power == MarioPower::Normal)
 	{
-	case MarioState::Dying:
-		Animations::GetInstance()->Get(MARIO_DEATH_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-		break;
-	case MarioState::Walking:
-	case MarioState::Running:
-	//case MarioState::Ducking:
-		Animations::GetInstance()->Get(MARIO_RUN_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-		break;
-	case MarioState::Skidding:
-		Animations::GetInstance()->Get(MARIO_TURN_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-		break;
-	case MarioState::Idle:
-		Animations::GetInstance()->Get(MARIO_IDLE_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-		break;
-	case MarioState::Jumping:
-		Animations::GetInstance()->Get(MARIO_JUMP_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-		break;
-	default:
-		DebugOut(L"[Error] No handling for state: %d\n", state);
+		switch (state)
+		{
+		case MarioState::Dying:
+			Animations::GetInstance()->Get(MARIO_DEATH_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Walking:
+		case MarioState::Running:
+			//case MarioState::Ducking:
+			Animations::GetInstance()->Get(MARIO_RUN_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Skidding:
+			Animations::GetInstance()->Get(MARIO_TURN_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Idle:
+			Animations::GetInstance()->Get(MARIO_IDLE_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Jumping:
+			Animations::GetInstance()->Get(MARIO_JUMP_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		default:
+			DebugOut(L"[Error] No handling for state: %d\n", state);
+		}
 	}
+	else if (power == MarioPower::Big)
+	{
+		switch (state)
+		{
+		case MarioState::Walking:
+		case MarioState::Running:
+			Animations::GetInstance()->Get(MARIO_BIG_RUN_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Skidding:
+			Animations::GetInstance()->Get(MARIO_BIG_TURN_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Idle:
+			Animations::GetInstance()->Get(MARIO_BIG_IDLE_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Jumping:
+			Animations::GetInstance()->Get(MARIO_BIG_JUMP_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Ducking:
+			Animations::GetInstance()->Get(MARIO_BIG_DUCK_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		default:
+			DebugOut(L"[Error] No handling for state: %d\n", state);
+		}
+	}
+
 	std::wstring text = L"Goomba killed: " + std::to_wstring(goombaKilled);
 	auto r = Rect::FromXYWH(0, 0, g->GetBackBufferWidth(), 50);
 	FontManager::GetInstance()
-	->Draw(STATS_FONT, FontDrawConfig(r, 
-		text.c_str(),
-		D3DXCOLOR(1.0, 1.0, 1.0, 1.0), 
-		TextFormat::Center	 | TextFormat::VerticalCenter)
-	);
+		->Draw(STATS_FONT, FontDrawConfig(r,
+			text.c_str(),
+			D3DXCOLOR(1.0, 1.0, 1.0, 1.0),
+			TextFormat::Center | TextFormat::VerticalCenter)
+		);
 }
 
-Rect Mario::GetBoundingBox()	
+Rect Mario::GetBoundingBox()
 {
 	RectF r;
-	r.top = position.y;
-	r.left = position.x;
-	r.bottom = position.y + 16;
-	r.right = position.x + 16;
+	if (power == MarioPower::Normal)
+	{
+		r.top = position.y;
+		r.left = position.x;
+		r.bottom = position.y + 16;
+		r.right = position.x + 16;
+	}
+	else if (power == MarioPower::Big)
+	{
+		r.top = position.y;
+		r.left = position.x;
+		r.bottom = position.y + 32;
+		r.right = position.x + 16;
+	}
 	return r;
 }
 
@@ -327,11 +413,12 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 
 
 				goomba->SetState(GoombaState::Dead);
-				
+
 				goombaKilled++;
 				AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 
-			}else
+			}
+			else
 			{
 				// got kill by goomba, bad
 				velocity.y = -250.0f;
