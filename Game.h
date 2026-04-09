@@ -26,8 +26,7 @@ class Game
 	ID3D10RenderTargetView *renderTargetView = nullptr;
 	ID3D10BlendState *blendStateAlpha = nullptr;
 	ID3DX10Sprite *spriteObject = nullptr;
-	
-	
+	ID3D10RasterizerState* rasterizerState = nullptr;
 
 	int currentSceneID;
 	int nextSceneID;

@@ -17,7 +17,7 @@ void Animation::Add(int spriteId, DWORD timeMs)
 	frames.push_back(frame);
 }
 
-void Animation::Render(float x, float y)
+void Animation::Render(float x, float y, bool flipX, bool flipY)
 {
 	ULONGLONG now = GetTickCount64();
 	if (currentFrame == -1)
@@ -37,7 +37,7 @@ void Animation::Render(float x, float y)
 		}
 	}
 
-	frames[currentFrame]->GetSprite()->Draw(x, y);
+	frames[currentFrame]->GetSprite()->Draw(x, y, flipX, flipY);
 }
 
 inline AnimationFrame::AnimationFrame(Sprite *sprite, int timeMs)

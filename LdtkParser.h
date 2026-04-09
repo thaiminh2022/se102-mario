@@ -12,8 +12,8 @@ using json = nlohmann::json;
 
 struct TileInstance
 {
-	double a;
-	int f;
+	double a; //alpha (opacity)
+	int f; // (flip; 0 = no flip; 1 = horizontal flip, 2 = vertical flip 3 = both way)
 	std::vector<int> px;
 	std::vector<int> src;
 	int t;

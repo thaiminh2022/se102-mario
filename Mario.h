@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Collision.h"
 #include "GameObject.h"
 #include "Rect.h"
@@ -8,18 +8,55 @@
 
 enum class MarioState
 {
-	Running,
 	Idle,
-	Dead,
+	Walking,
+	Running,
+	Skidding,
+	Jumping,
+	Ducking,
+	PullingFlag,
+	Dying
 };
 
 class Mario : public GameObject
 {
 	bool isGrounded;
-
 public:
 	Mario(int startX, int startY);
 	MarioState state;
+
+	float ax;
+	float ay;
+
+	// A random guy on youtube got these numbers
+	const float MIN_WALK = 4.453125f; // Minimum speed to be considered walking, otherwise it's idle
+	const float MAX_WALK = 93.75f;
+	
+	const float MAX_RUN = 153.75f;
+	
+	//ACCELERATION
+	const float ACC_WALK = 133.59375f; 
+	const float ACC_RUN = 200.390625f;
+	
+	//Deceleration when no input
+	const float DEC_REL = 182.8125f;
+	//Deceleration when changing direction
+	const float DEC_SKID = 365.625f;
+
+	
+	//Fall acceleration when not holding jump
+	const float STOP_FALL = 1575.0f;
+	const float WALK_FALL = 1800.0f;
+	const float RUN_FALL = 2025.0f;
+
+	//Fall acceleration when holding jump
+	const float STOP_FALL_A = 450.0f;
+	const float WALK_FALL_A = 421.87f;
+	const float RUN_FALL_A = 562.5f;
+
+	const float MAX_FALL = 270.0f;
+
+	float fallAcc = 562.5f;
 
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
