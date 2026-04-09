@@ -390,7 +390,6 @@ Game::~Game()
 	}
 
 
-	delete camera;
 
 	/// ===============D3D10 DESTROYS==================
 	if (spriteObject) spriteObject->Release();
@@ -405,9 +404,9 @@ Game::~Game()
 
 	
 	/// =================================================
-	
-	delete camera;
 	camera = nullptr;
+	delete camera;
+
 	for (auto& v: scenes)
 	{
 		delete v.second;

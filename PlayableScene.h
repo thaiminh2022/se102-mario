@@ -21,7 +21,6 @@ public:
         ctx = nullptr; // init on load
     }
 
-
     void Update(float dt) override;
     void Load() override;
     void UnLoad() override;

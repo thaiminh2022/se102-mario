@@ -21,9 +21,6 @@
 #include "AudioManager.h"
 #include "NextLevelPortal.h"
 
-constexpr float GRAVITY = 900.0f;
-
-
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 
 {
@@ -149,6 +146,9 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	// INITIATE JUMP
 	if (input->IsKeyPressed('W') && isGrounded)
 	{
+		// jumped
+		AudioManager::GetInstance()->PlaySFX(MARIO_JUMP_SMALL);
+
 		if (abs(velocity.x) < 16.0f) {
 			//Idle Jump
 			velocity.y = -280.0f;
@@ -252,7 +252,6 @@ void Mario::Render()
 	case MarioState::Skidding:
 		Animations::GetInstance()->Get(MARIO_TURN_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
 		break;
-	case MarioState::Dead:
 	case MarioState::Idle:
 		Animations::GetInstance()->Get(MARIO_IDLE_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
 		break;
@@ -325,7 +324,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 				velocity.y = -250.0f;
 				velocity.x = 0;
 				isCollidable = false;
-				state = MarioState::Dead;
+				state = MarioState::Dying;
 				AudioManager::GetInstance()->StopAll();
 				AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
 			}

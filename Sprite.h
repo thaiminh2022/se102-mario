@@ -1,8 +1,10 @@
 ﻿#pragma once
 
+#include <cstdint>
+
 #include "Texture.h"
 
-enum SpriteFlip : uint8_t {
+enum SpriteFlip : std::uint8_t {
 	NONE = 0,         // 0000 - No flip
 	HORIZONTALLY = 1, // 0001 - Horizontal flip
 	VERTICALLY = 2,   // 0010 - Vertical flip
