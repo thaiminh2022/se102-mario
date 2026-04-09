@@ -15,8 +15,9 @@
 /// This can be read as:
 /// 10000 + 2000 + 300 + 40 + 5
 
-
+/// ================================
 /// MARIO (E = 10000, T = 1)
+/// /// ================================
 constexpr int MARIO_TEX_ID = 11000;
 
 // Idle (A = 100)
@@ -43,8 +44,9 @@ constexpr int MARIO_JUMP_SPRITE_1 = 11401;
 constexpr int MARIO_DEATH_ANIM_ID = 11500;
 constexpr int MARIO_DEATH_SPRITE_1 = 11501;
 
-
+/// ================================
 // Big Mario (E = 10000, T = 2)
+/// ================================
 constexpr int MARIO_BIG_TEX_ID = 12000;
 
 // Idle (A = 100)
@@ -67,6 +69,34 @@ constexpr int MARIO_BIG_JUMP_SPRITE_1 = 12401;
 constexpr int MARIO_BIG_DUCK_ANIM_ID = 12500;
 constexpr int MARIO_BIG_DUCK_SPRITE_1 = 12501;
 
+
+/// ================================
+// Fire Mario (E = 10000, T = 3)
+/// ================================
+constexpr int MARIO_FIRE_TEX_ID = 13000;
+
+// Idle (A = 100)
+constexpr int MARIO_FIRE_IDLE_ANIM_ID = 13100		;
+constexpr int MARIO_FIRE_IDLE_SPRITE_1 = 13101;
+// Running (A = 200)
+constexpr int MARIO_FIRE_RUN_ANIM_ID = 13200;
+constexpr int MARIO_FIRE_RUN_SPRITE_1 = 13201;
+constexpr int MARIO_FIRE_RUN_SPRITE_2 = 13202;
+constexpr int MARIO_FIRE_RUN_SPRITE_3 = 13203;
+// Turning Around (A = 300)
+constexpr int MARIO_FIRE_TURN_ANIM_ID = 13300;
+constexpr int MARIO_FIRE_TURN_SPRITE_1 = 13301;
+
+// Jumping (A = 400)
+constexpr int MARIO_FIRE_JUMP_ANIM_ID = 13400;
+constexpr int MARIO_FIRE_JUMP_SPRITE_1 = 13401;
+// Ducking (A = 500)
+constexpr int MARIO_FIRE_DUCK_ANIM_ID = 13500;
+constexpr int MARIO_FIRE_DUCK_SPRITE_1 = 13501;
+// Firing (A = 600)
+constexpr int MARIO_FIRE_FIRE_ANIM_ID = 13600;
+constexpr int MARIO_FIRE_FIRE_SPRITE_1 = 13601;
+
 /// ================================
 
 /// GOOMBA (E = 20000, T = 1)
@@ -80,6 +110,8 @@ constexpr int GOOMBA_WALK_SPRITE_2 = 21102;
 // Dead (A = 200)
 constexpr int GOOMBA_DEAD_ANIM_ID = 21200;
 constexpr int GOOMBA_DEAD_SPRITE_1 = 21201;
+
+
 /// ==================
 
 

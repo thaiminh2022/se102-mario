@@ -15,14 +15,15 @@ enum class MarioState
 	Jumping,
 	Ducking,
 	PullingFlag,
-	Dying
+	Dying,
+	Firing
 };
 
 enum class MarioPower
 {
 	Normal,
 	Big,
-	JD // Fire. Dont ask me why.
+	Fire
 };
 
 class Mario : public GameObject

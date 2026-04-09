@@ -31,10 +31,13 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 {
 	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
 	auto marioBigTex = Textures::GetInstance()->Get(MARIO_BIG_TEX_ID);
+	auto marioFireTex = Textures::GetInstance()->Get(MARIO_FIRE_TEX_ID);
 	auto anims = Animations::GetInstance();
 	auto sprites = Sprites::GetInstance();
 
-	// sprites
+	/// ================================
+	// Normal sprites
+	/// ================================
 	sprites->Add(MARIO_RUN_SPRITE_1, 20, 0, 35, 15, marioTex);
 	sprites->Add(MARIO_RUN_SPRITE_2, 38, 0, 53, 15, marioTex);
 	sprites->Add(MARIO_RUN_SPRITE_3, 56, 0, 71, 15, marioTex);
@@ -74,7 +77,11 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	anim->Add(MARIO_DEATH_SPRITE_1);
 	anims->Add(MARIO_DEATH_ANIM_ID, anim);
 
+	/// ================================
 	// BIG sprites
+	/// ================================
+	sprites->Add(MARIO_BIG_IDLE_SPRITE_1, 0, 0, 15, 31, marioBigTex);
+
 	sprites->Add(MARIO_BIG_RUN_SPRITE_1, 20, 0, 35, 31, marioBigTex);
 	sprites->Add(MARIO_BIG_RUN_SPRITE_2, 38, 0, 53, 31, marioBigTex);
 	sprites->Add(MARIO_BIG_RUN_SPRITE_3, 56, 0, 71, 31, marioBigTex);
@@ -82,7 +89,6 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	sprites->Add(MARIO_BIG_TURN_SPRITE_1, 76, 0, 91, 31, marioBigTex);
 
 	sprites->Add(MARIO_BIG_JUMP_SPRITE_1, 96, 0, 111, 31, marioBigTex);
-	sprites->Add(MARIO_BIG_IDLE_SPRITE_1, 0, 0, 15, 31, marioBigTex);
 
 	sprites->Add(MARIO_BIG_DUCK_SPRITE_1, 116, 0, 131, 31, marioBigTex);
 
@@ -112,13 +118,57 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	anim->Add(MARIO_BIG_DUCK_SPRITE_1);
 	anims->Add(MARIO_BIG_DUCK_ANIM_ID, anim);
 
+	/// ================================
+	// Fire sprites
+	/// ================================
+	sprites->Add(MARIO_FIRE_IDLE_SPRITE_1, 0, 0, 15, 31, marioFireTex);
+
+	sprites->Add(MARIO_FIRE_RUN_SPRITE_1, 20, 0, 35, 31, marioFireTex);
+	sprites->Add(MARIO_FIRE_RUN_SPRITE_2, 38, 0, 53, 31, marioFireTex);
+	sprites->Add(MARIO_FIRE_RUN_SPRITE_3, 56, 0, 71, 31, marioFireTex);
+	sprites->Add(MARIO_FIRE_TURN_SPRITE_1, 76, 0, 91, 31, marioFireTex);
+
+	sprites->Add(MARIO_FIRE_JUMP_SPRITE_1, 96, 0, 111, 31, marioFireTex);
+	sprites->Add(MARIO_FIRE_DUCK_SPRITE_1, 116, 0, 131, 31, marioFireTex);
+	sprites->Add(MARIO_FIRE_FIRE_SPRITE_1, 136, 0, 151, 31, marioFireTex);
+
+	anim = new Animation(100);
+	anim->Add(MARIO_FIRE_IDLE_SPRITE_1);
+	anims->Add(MARIO_FIRE_IDLE_ANIM_ID, anim);	
+	// walk anim
+	anim = new Animation(100);
+	anim->Add(MARIO_FIRE_RUN_SPRITE_1);
+	anim->Add(MARIO_FIRE_RUN_SPRITE_2);
+	anim->Add(MARIO_FIRE_RUN_SPRITE_3);
+	anims->Add(MARIO_FIRE_RUN_ANIM_ID, anim);
+
+	// turn anim
+	anim = new Animation(100);
+	anim->Add(MARIO_FIRE_TURN_SPRITE_1);
+	anims->Add(MARIO_FIRE_TURN_ANIM_ID, anim);
+
+	// jump anim
+	anim = new Animation(100);
+	anim->Add(MARIO_FIRE_JUMP_SPRITE_1);
+	anims->Add(MARIO_FIRE_JUMP_ANIM_ID, anim);
+
+	// duck anim
+	anim = new Animation(100);
+	anim->Add(MARIO_FIRE_DUCK_SPRITE_1);
+	anims->Add(MARIO_FIRE_DUCK_ANIM_ID, anim);
+
+	// fire anim
+	anim = new Animation(100);
+	anim->Add(MARIO_FIRE_FIRE_SPRITE_1);
+	anims->Add(MARIO_FIRE_FIRE_ANIM_ID, anim);
+
 	isGrounded = false;
 	isCollidable = true;
 	isFacingRight = true;
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
-	power = MarioPower::Normal;
+	power = MarioPower::Fire;
 
 }
 
@@ -137,7 +187,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	auto input = InputManager::GetInstance();
 	if (isGrounded)
 	{
-		if (input->IsKeyDown('S') && power == MarioPower::Big) {
+		if (input->IsKeyDown('S') && (power == MarioPower::Big || power == MarioPower::Fire)) {
 			// Ducking has the highest priority, overrides all other states
 			// No horizontal movement while ducking
 			state = MarioState::Ducking;
@@ -263,7 +313,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		state = MarioState::Jumping;
 	}
 	else {
-		if (power == MarioPower::Big && input->IsKeyDown('S')) {
+		if ((power == MarioPower::Big || power == MarioPower::Fire) && input->IsKeyDown('S')) {
 			state = MarioState::Ducking;
 		}
 		else if (abs(velocity.x) > MAX_WALK) {
@@ -342,6 +392,33 @@ void Mario::Render()
 			DebugOut(L"[Error] No handling for state: %d\n", state);
 		}
 	}
+	else if (power == MarioPower::Fire)
+	{
+		switch (state)
+		{
+		case MarioState::Walking:
+		case MarioState::Running:
+			Animations::GetInstance()->Get(MARIO_FIRE_RUN_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Skidding:
+			Animations::GetInstance()->Get(MARIO_FIRE_TURN_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Idle:
+			Animations::GetInstance()->Get(MARIO_FIRE_IDLE_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Jumping:
+			Animations::GetInstance()->Get(MARIO_FIRE_JUMP_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Ducking:
+			Animations::GetInstance()->Get(MARIO_FIRE_DUCK_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Firing:
+			Animations::GetInstance()->Get(MARIO_FIRE_IDLE_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		default:
+			DebugOut(L"[Error] No handling for state: %d\n", state);
+		}
+	}
 
 	std::wstring text = L"Goomba killed: " + std::to_wstring(goombaKilled);
 	auto r = Rect::FromXYWH(0, 0, g->GetBackBufferWidth(), 50);
@@ -363,7 +440,7 @@ Rect Mario::GetBoundingBox()
 		r.bottom = position.y + 16;
 		r.right = position.x + 16;
 	}
-	else if (power == MarioPower::Big)
+	else if (power == MarioPower::Big || power == MarioPower::Fire)
 	{
 		r.top = position.y;
 		r.left = position.x;
