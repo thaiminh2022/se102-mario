@@ -183,7 +183,7 @@ SweptAABBResult Collision::SweptAABB(Rect mb, float dvx, float dvy, Rect sb)
 	result.t = entryTime;
 	if (txEntry > tyEntry)
 	{
-		result.normalizeDir = dvx > 0.0f ? Vector2Int::Left() : Vector2Int::_();
+		result.normalizeDir = dvx > 0.0f ? Vector2Int::Left() : Vector2Int::Right();
 	}else
 	{
 		result.normalizeDir = dvy > 0.0f ? Vector2Int::Up() : Vector2Int::Down();
