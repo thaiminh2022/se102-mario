@@ -25,12 +25,12 @@ void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*&
 		vector<CollisionTile*> collisionTiles;
 		
 		auto futureLeft = srcBounds.left + srcVelocity.x * dt;
-		auto futureRight = srcBounds.right + srcVelocity.x * dt;
+		auto future_ = srcBounds.right + srcVelocity.x * dt;
 		auto futureTop = srcBounds.top + srcVelocity.y * dt;
 		auto futureBottom = srcBounds.bottom + srcVelocity.y * dt;
 
 		float minX = min(srcBounds.left, futureLeft -16);
-		float maxX = max(srcBounds.right, futureRight + 16);
+		float maxX = max(srcBounds.right, future_ + 16);
 		float minY = min(srcBounds.top, futureTop - 16);
 		float maxY = max(srcBounds.bottom, futureBottom + 16);
 
@@ -183,7 +183,7 @@ SweptAABBResult Collision::SweptAABB(Rect mb, float dvx, float dvy, Rect sb)
 	result.t = entryTime;
 	if (txEntry > tyEntry)
 	{
-		result.normalizeDir = dvx > 0.0f ? Vector2Int::Left() : Vector2Int::Right();
+		result.normalizeDir = dvx > 0.0f ? Vector2Int::Left() : Vector2Int::_();
 	}else
 	{
 		result.normalizeDir = dvy > 0.0f ? Vector2Int::Up() : Vector2Int::Down();

@@ -60,6 +60,16 @@ void Game::Init(HWND hWnd)
 	// create the render target view
 	hr = device->CreateRenderTargetView(pBackBuffer, NULL, &renderTargetView);
 
+	D3D10_RASTERIZER_DESC rsDesc = {};
+	rsDesc.FillMode = D3D10_FILL_SOLID;
+	rsDesc.CullMode = D3D10_CULL_NONE;
+	rsDesc.FrontCounterClockwise = FALSE;
+	rsDesc.DepthClipEnable = TRUE;
+
+	ID3D10RasterizerState* rsState = nullptr;
+	device->CreateRasterizerState(&rsDesc, &rsState);
+	device->RSSetState(rsState);
+
 	pBackBuffer->Release();
 	if (hr != S_OK)
 	{
@@ -114,6 +124,7 @@ void Game::Init(HWND hWnd)
 	StateDesc.BlendOpAlpha = D3D10_BLEND_OP_ADD;
 	StateDesc.RenderTargetWriteMask[0] = D3D10_COLOR_WRITE_ENABLE_ALL;
 	device->CreateBlendState(&StateDesc, &this->blendStateAlpha);
+
 
 	DebugOut(L"[INFO] InitDirectX has been successful\n");
 
@@ -183,7 +194,8 @@ void Game::Draw(float x, float y, Texture* tex, Rect* rect)
 
 	// Scale the sprite to its correct width and height because by default, DirectX draws it with width = height = 1.0f
 	D3DXMATRIX matScaling;
-	D3DXMatrixScaling(&matScaling, (FLOAT)spriteWidth, (FLOAT)spriteHeight, 1.0f);
+	// flip X/Y by scaling with negative value on X/Y axis
+	D3DXMatrixScaling(&matScaling, (FLOAT)spriteWidth, (FLOAT)spriteHeight, 1.0f); 
 
 	// Setting the sprite’s position and size
 	sprite.matWorld = (matScaling * matTranslation);
