@@ -16,10 +16,15 @@
 #include <vector>
 
 #include <cmath>
+#include <string>
 
 #include "Debug.h"
 #include "AudioManager.h"
+#include "FontManager.h"
 #include "NextLevelPortal.h"
+
+int Mario::goombaKilled = 0;
+
 
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 
@@ -234,10 +239,11 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 void Mario::Render()
 {
+	auto g = Game::GetInstance();
 	float renderX, renderY;
-	Game::GetInstance()
-		->GetCamera()
+	g->GetCamera()
 		->WorldToScreen(position.x, position.y, renderX, renderY);
+
 
 	switch (state)
 	{
@@ -261,11 +267,17 @@ void Mario::Render()
 	default:
 		DebugOut(L"[Error] No handling for state: %d\n", state);
 	}
-	
-
+	std::wstring text = L"Goomba killed: " + std::to_wstring(goombaKilled);
+	auto r = Rect::FromXYWH(0, 0, g->GetBackBufferWidth(), 50);
+	FontManager::GetInstance()
+	->Draw(STATS_FONT, FontDrawConfig(r, 
+		text.c_str(),
+		D3DXCOLOR(1.0, 1.0, 1.0, 1.0), 
+		TextFormat::Center	 | TextFormat::VerticalCenter)
+	);
 }
 
-Rect Mario::GetBoundingBox()
+Rect Mario::GetBoundingBox()	
 {
 	RectF r;
 	r.top = position.y;
@@ -316,6 +328,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 
 				goomba->SetState(GoombaState::Dead);
 				
+				goombaKilled++;
 				AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 
 			}else

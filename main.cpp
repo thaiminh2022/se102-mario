@@ -13,6 +13,7 @@
 #include <sal.h>
 
 #include "AudioManager.h"
+#include "FontManager.h"
 
 
 #define WINDOW_CLASS_NAME L"MarioGame"
@@ -58,6 +59,7 @@ void Update(const float dt)
 	auto game = Game::GetInstance();
 	game->ClearDebugRect();
 	game->GetCurrentScene()->Update(dt);
+	AudioManager::GetInstance()->Update();
 }
 
 void Render()
@@ -190,11 +192,21 @@ static void LoadResource()
 	auto t = Textures::GetInstance();
 	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_sprites.png");
 	t->Add(GOOMBA_TEX_ID, L"Assets/Sprites/goomba_frames.png");
+
+	// Audios
 	AudioManager::GetInstance()->LoadWAV(MARIO_JUMP_BIG, L"Assets\\Audio\\SFX\\jump-small.wav");
 	AudioManager::GetInstance()->LoadWAV(MARIO_JUMP_SMALL, L"Assets\\Audio\\SFX\\jump-super.wav");
 	AudioManager::GetInstance()->LoadWAV(GOOMBA_STOMP, L"Assets\\Audio\\SFX\\stomp.wav");
 	AudioManager::GetInstance()->LoadWAV(MARIO_DIE, L"Assets\\Audio\\SFX\\mariodie.wav");
 	
+	// Fonts
+	FontManager::GetInstance()->AddFontCustom(
+		STATS_FONT,
+L"C:\\dev\\cplusplus\\se102-mario\\Assets\\Fonts\\super-mario-bros-nes.ttf",
+		L"Super Mario Bros. NES", 
+		FontData(25)
+	);
+
 }
 
 int WINAPI WinMain(
@@ -218,5 +230,8 @@ int WINAPI WinMain(
 	Run();
 
 	delete g;
+	delete FontManager::GetInstance();
+	AudioManager::GetInstance()->Shutdown();
+
 	return 0;
 }

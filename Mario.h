@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Collision.h"
 #include "GameObject.h"
 #include "Rect.h"
@@ -21,6 +21,8 @@ enum class MarioState
 class Mario : public GameObject
 {
 	bool isGrounded;
+	static int goombaKilled;
+
 public:
 	Mario(int startX, int startY);
 	MarioState state;
