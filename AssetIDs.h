@@ -58,11 +58,10 @@ constexpr int GOOMBA_WALK_SPRITE_2 = 21102;
 constexpr int GOOMBA_DEAD_ANIM_ID = 21200;
 constexpr int GOOMBA_DEAD_SPRITE_1 = 21201;
 
-/// ==================
 
 /// ================================
 
-// Question blocks + brick (E = 3000, T = 1)
+// Question blocks + brick (E = 3000, T = 1 (overworld))
 
 constexpr int QUESTION_BLOCK_OVERWORLD_TEX_ID = 31000;
 
@@ -80,12 +79,37 @@ constexpr int QUESTION_BLOCK_OVERWORLD_BLOCKED_SPRITE_1 = 31201;
 
 /// ================================
 
+// Items (E=4000, T=1 (overworld))
+constexpr int OVERWORLD_ITEMS_TEX_ID = 41000;
+
+// coin anim
+constexpr int COIN_SPIN_ANIM_ID = 41100;
+constexpr int COIN_SPIN_SPRITE_1= 41101;
+constexpr int COIN_SPIN_SPRITE_2 = 41102;
+constexpr int COIN_SPIN_SPRITE_3 = 41103;
+constexpr int COIN_SPIN_SPRITE_4 = 41104;
+
+// mushroom anim
+constexpr int MUSHROOM_ANIM_ID = 42100;
+constexpr int MUSHROOM_SPRITE_1 = 42101;
+
+
+
+
+
 /// MUSICS: Background music will be managed by negative values in ldtk
+/// SFX
 
 constexpr int MARIO_JUMP_SMALL = 1;
 constexpr int MARIO_JUMP_BIG = 2;
 constexpr int GOOMBA_STOMP = 3;
 constexpr int MARIO_DIE = 4;
+constexpr int MARIO_COLLECT_COIN = 5;
+constexpr int MARIO_BUMP = 6;
+constexpr int MARIO_POWERUP = 7;
+constexpr int POWERUP_APPEARS = 8;
+
+
 
 /// FONT
 constexpr int STATS_FONT = 1;

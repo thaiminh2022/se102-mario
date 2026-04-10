@@ -2,17 +2,26 @@
 
 #include "Animations.h"
 #include "AssetIDs.h"
+#include "AudioManager.h"
+#include "Coin.h"
 #include "Game.h"
+#include "Mushroom.h"
 #include "Sprites.h"
 #include "Texture.h"
 #include "Textures.h"
 
 void QuestionBlock::SetState(const QuestionBlockState newState)
 {
+	AudioManager::GetInstance()->PlaySFX(MARIO_BUMP);
+
+
+	if (state == QuestionBlockState::Blocked)
+		return;
+
 	state = newState;
 	if (newState == QuestionBlockState::Opened)
 	{
-		velocity.y = -150;
+		moveUpTimer.Start();
 	}
 }
 
@@ -37,22 +46,46 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 	if (state == QuestionBlockState::Blocked)
 		return;
 
-	if (state == QuestionBlockState::Opened)
+	if (state != QuestionBlockState::Opened)
+		return;
+	if (!spawnInternalItem)
 	{
-		velocity.y += 900 * dt;
-		if (position.y >= startPosition.y)
+		if (drop == BlockDropType::Coin)
 		{
-			velocity.y = 0;
+			ctx->addObject(new Coin(
+				Vector2Int(startPosition.x, startPosition.y),
+				CoinState::CollectedFromQuestionBox)
+			);
+		}else if (drop == BlockDropType::JewDestroyer)
+		{
+			ctx->addObject(new Mushroom(position));
+		}
+		spawnInternalItem = true;
+	}
+
+	moveUpTimer.ProcessTimer(dt);
+	if (!moveUpTimer.IsFinished())
+	{
+		position.y -= 125.0f * dt;
+	}else
+	{
+		if (position.y < startPosition.y)
+		{
+			position.y += 9000.0f * dt * dt;
+
+		}else
+		{
+			moveUpTimer.SetIdle();
 			position.y = startPosition.y;
 			state = QuestionBlockState::Blocked;
 		}
 	}
-
-	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }
 
 QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop) : GameObject(startPos.x, startPos.y)
 {
+	spawnInternalItem = false;
+	moveUpTimer = Timer(0.1f);
 	this->drop = drop;
 	state = QuestionBlockState::Closed;
 	const auto t = Textures::GetInstance()->Get(QUESTION_BLOCK_OVERWORLD_TEX_ID);
@@ -60,7 +93,7 @@ QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop
 	const auto anims = Animations::GetInstance();
 
 	sp->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_1, 0, 0, 15, 15, t);
-	sp->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_2, 16,0 , 31, 15, t);
+	sp->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_2, 16, 0, 31, 15, t);
 	sp->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_3, 32, 0, 47, 15, t);
 	sp->Add(QUESTION_BLOCK_OVERWORLD_BLOCKED_SPRITE_1, 48, 0, 63, 15, t);
 
@@ -79,7 +112,6 @@ QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop
 
 
 	startPosition = position;
-
 }
 
 Rect QuestionBlock::GetBoundingBox()
@@ -87,7 +119,4 @@ Rect QuestionBlock::GetBoundingBox()
 	return Rect::FromXYWH(position.x, position.y, 16, 16);
 }
 
-void QuestionBlock::OnNoCollision(float dt)
-{
-	position += velocity * dt;
-}
+

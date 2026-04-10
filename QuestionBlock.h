@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Timer.h"
 
 enum class QuestionBlockState
 {
@@ -13,6 +14,9 @@ class QuestionBlock : public GameObject
 	QuestionBlockState state;
 	BlockDropType drop;
 	Vector2 startPosition;
+	Timer moveUpTimer;
+
+	bool spawnInternalItem;
 
 public:
 	void SetState(QuestionBlockState newState);
@@ -22,7 +26,5 @@ public:
 	Rect GetBoundingBox() override;
 	bool IsCollidable() override { return true; }
 	bool IsBlocking() override { return true; }
-
-	void OnNoCollision(float dt) override;
 };
 

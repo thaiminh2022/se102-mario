@@ -21,6 +21,7 @@ class Mario : public GameObject
 {
 	bool isGrounded;
 	static int goombaKilled;
+	static int coinCollected;
 
 public:
 	Mario(int startX, int startY);

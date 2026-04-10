@@ -1,4 +1,6 @@
 #pragma once
+#include <queue>
+
 #include "Scene.h"
 #include <vector>
 
@@ -10,6 +12,7 @@ using std::vector;
 class PlayableScene :
     public Scene
 {
+    std::queue<GameObject*> addPendingGos;
 
     Mario* player;
     vector<GameObject*> objects;
@@ -26,5 +29,6 @@ public:
     void UnLoad() override;
     void Render() override;
     void CleanupDeletedObjects();
+    void AddObject(GameObject* go);
 };
 

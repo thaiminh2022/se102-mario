@@ -20,11 +20,14 @@
 
 #include "Debug.h"
 #include "AudioManager.h"
+#include "Coin.h"
 #include "FontManager.h"
 #include "NextLevelPortal.h"
 #include "QuestionBlock.h"
 
 int Mario::goombaKilled = 0;
+int Mario::coinCollected = 0;
+
 
 
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
@@ -268,14 +271,26 @@ void Mario::Render()
 	default:
 		DebugOut(L"[Error] No handling for state: %d\n", state);
 	}
-	std::wstring text = L"Goomba killed: " + std::to_wstring(goombaKilled);
-	auto r = Rect::FromXYWH(0, 0, g->GetBackBufferWidth(), 50);
+	std::wstring text = L"Kills: " + std::to_wstring(goombaKilled);
+	
+	auto r = Rect::FromXYWH(0, 0, 300, 50);
+	
 	FontManager::GetInstance()
 	->Draw(STATS_FONT, FontDrawConfig(r, 
 		text.c_str(),
 		D3DXCOLOR(1.0, 1.0, 1.0, 1.0), 
 		TextFormat::Center	 | TextFormat::VerticalCenter)
 	);
+
+	r = Rect::FromXYWH(301, 0, 300, 50);
+	text = L"Coins: " + std::to_wstring(coinCollected);
+
+	FontManager::GetInstance()
+		->Draw(STATS_FONT, FontDrawConfig(r,
+			text.c_str(),
+			D3DXCOLOR(1.0, 1.0, 1.0, 1.0),
+			TextFormat::Center | TextFormat::VerticalCenter)
+		);
 }
 
 Rect Mario::GetBoundingBox()	
@@ -360,6 +375,15 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			{
 				questionBlock->SetState(QuestionBlockState::Opened);
 			}
+		}
+
+		const auto coin = dynamic_cast<Coin*>(e->otherObject);
+		if (coin != nullptr)
+		{
+			coin->SetState(CoinState::Collected);
+			coinCollected++;
+			AudioManager::GetInstance()->PlaySFX(MARIO_COLLECT_COIN);
+
 		}
 	}
 }
