@@ -30,6 +30,7 @@ class Mario : public GameObject
 {
 	bool isGrounded;
 	static int goombaKilled;
+	float fireTimer = 0;
 
 public:
 	Mario(int startX, int startY);

@@ -194,18 +194,20 @@ static void LoadResource()
 	t->Add(MARIO_BIG_TEX_ID, L"Assets/Sprites/mario_big_sprites.png");
 	t->Add(MARIO_FIRE_TEX_ID, L"Assets/Sprites/mario_fire_sprites.png");
 	t->Add(GOOMBA_TEX_ID, L"Assets/Sprites/goomba_frames.png");
+	t->Add(FIREBALL_TEX_ID, L"Assets/Sprites/fireball.png");
 
 	// Audios
 	AudioManager::GetInstance()->LoadWAV(MARIO_JUMP_BIG, L"Assets\\Audio\\SFX\\jump-small.wav");
 	AudioManager::GetInstance()->LoadWAV(MARIO_JUMP_SMALL, L"Assets\\Audio\\SFX\\jump-super.wav");
 	AudioManager::GetInstance()->LoadWAV(GOOMBA_STOMP, L"Assets\\Audio\\SFX\\stomp.wav");
 	AudioManager::GetInstance()->LoadWAV(MARIO_DIE, L"Assets\\Audio\\SFX\\mariodie.wav");
-	
+	AudioManager::GetInstance()->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
+
 	// Fonts
 	FontManager::GetInstance()->AddFontCustom(
 		STATS_FONT,
-L"Assets\\Fonts\\super-mario-bros-nes.ttf",
-		L"Super Mario Bros. NES", 
+		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
+		L"Super Mario Bros. NES",
 		FontData(25)
 	);
 

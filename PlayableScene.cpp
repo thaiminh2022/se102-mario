@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include "GameObject.h"
 #include "LevelLoader.h"
 #include "Mario.h"
@@ -10,6 +10,7 @@
 #include "AudioManager.h"
 #include "Goomba.h"
 #include "NextLevelPortal.h"
+#include "Fireball.h"
 
 
 void PlayableScene::Update(float dt)
@@ -27,7 +28,7 @@ void PlayableScene::Update(float dt)
 			{
 				if (!other->IsCollidable()) continue;
 				if (other == obj) continue;
-
+				if (GameObject::IsDeleted(other)) continue;
 				coObjects.push_back(other);
 			}
 		}
@@ -36,11 +37,16 @@ void PlayableScene::Update(float dt)
 	}
 	Game::GetInstance()->GetCamera()->Update();
 	CleanupDeletedObjects();
+	for (auto newObj : newObjects)
+	{
+		objects.push_back(newObj);
+	}
+	newObjects.clear();
 }
 
 void PlayableScene::Load()
 {
-	if (ctx== nullptr)
+	if (ctx == nullptr)
 	{
 		ctx = new SceneContext;
 	}
@@ -51,11 +57,11 @@ void PlayableScene::Load()
 	// camera
 	auto c = Game::GetInstance()->GetCamera();
 	c->SetWorldSize(config->worldWidth, config->worldHeight);
-	
+
 	// player
 	auto playerStart = config->entityData.playerStarts;
 	player = new Mario(playerStart.x, playerStart.y);
-	
+
 	c->SetTarget(player);
 	objects.push_back(player);
 
@@ -96,7 +102,7 @@ void PlayableScene::Render()
 {
 	LevelLoader::GetInstance()->GetTilemapForLevel(id)->Render();
 
-	for (const auto &obj : objects)
+	for (const auto& obj : objects)
 	{
 		obj->Render();
 	}
@@ -116,9 +122,19 @@ void PlayableScene::CleanupDeletedObjects()
 
 	objects.erase(
 		std::remove_if(objects.begin(), objects.end(),
-		[](const GameObject* o)
-		{
+			[](const GameObject* o)
+			{
 				return o == nullptr;
-		}),
+			}),
 		objects.end());
+}
+int PlayableScene::GetActiveFireballsCount() {
+	int count = 0;
+	for (auto obj : objects) {
+		if (dynamic_cast<Fireball*>(obj) != nullptr && !GameObject::IsDeleted(obj)) count++;
+	}
+	for (auto obj : newObjects) {
+		if (dynamic_cast<Fireball*>(obj) != nullptr) count++;
+	}
+	return count;
 }
