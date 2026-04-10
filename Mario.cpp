@@ -22,6 +22,7 @@
 #include "AudioManager.h"
 #include "FontManager.h"
 #include "NextLevelPortal.h"
+#include "QuestionBlock.h"
 
 int Mario::goombaKilled = 0;
 
@@ -341,12 +342,24 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 				AudioManager::GetInstance()->StopAll();
 				AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
 			}
+			return;
 		}
 
 		const auto portal = dynamic_cast<NextLevelPortal*>(e->otherObject);
 		if (portal != nullptr)
 		{
 			portal->RequestNextLevel();
+			return;
+		}
+		const auto questionBlock = dynamic_cast<QuestionBlock*>(e->otherObject);
+		if (questionBlock != nullptr){
+			if (e->normalizedDir.y == -1)
+			{
+				isGrounded = true;
+			}else if (e->normalizedDir.y == 1)
+			{
+				questionBlock->SetState(QuestionBlockState::Opened);
+			}
 		}
 	}
 }

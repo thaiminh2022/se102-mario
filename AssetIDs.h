@@ -57,17 +57,35 @@ constexpr int GOOMBA_WALK_SPRITE_2 = 21102;
 // Dead (A = 200)
 constexpr int GOOMBA_DEAD_ANIM_ID = 21200;
 constexpr int GOOMBA_DEAD_SPRITE_1 = 21201;
+
 /// ==================
 
+/// ================================
 
+// Question blocks + brick (E = 3000, T = 1)
+
+constexpr int QUESTION_BLOCK_OVERWORLD_TEX_ID = 31000;
+
+// Idle (flashing color) (A = 100)
+
+constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_ANIM_ID = 31100;
+constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_1 = 31101;
+constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_2 = 31102;
+constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_3 = 31103;
+
+// Blocked (opened) (A = 200)
+
+constexpr int QUESTION_BLOCK_OVERWORLD_BLOCKED_ANIM_ID = 31200;
+constexpr int QUESTION_BLOCK_OVERWORLD_BLOCKED_SPRITE_1 = 31201;
+
+/// ================================
 
 /// MUSICS: Background music will be managed by negative values in ldtk
+
 constexpr int MARIO_JUMP_SMALL = 1;
 constexpr int MARIO_JUMP_BIG = 2;
 constexpr int GOOMBA_STOMP = 3;
 constexpr int MARIO_DIE = 4;
-
-
 
 /// FONT
 constexpr int STATS_FONT = 1;

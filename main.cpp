@@ -192,6 +192,8 @@ static void LoadResource()
 	auto t = Textures::GetInstance();
 	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_sprites.png");
 	t->Add(GOOMBA_TEX_ID, L"Assets/Sprites/goomba_frames.png");
+	t->Add(QUESTION_BLOCK_OVERWORLD_TEX_ID, L"Assets/Sprites/overworld_blocks.png");
+
 
 	// Audios
 	AudioManager::GetInstance()->LoadWAV(MARIO_JUMP_BIG, L"Assets\\Audio\\SFX\\jump-small.wav");

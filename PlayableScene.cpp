@@ -10,6 +10,7 @@
 #include "AudioManager.h"
 #include "Goomba.h"
 #include "NextLevelPortal.h"
+#include "QuestionBlock.h"
 
 
 void PlayableScene::Update(float dt)
@@ -65,6 +66,21 @@ void PlayableScene::Load()
 		const auto gb = new Goomba(gPos.x, gPos.y);
 		objects.push_back(gb);
 	}
+
+	// question
+
+	for (const auto& qbData : config->entityData.questionBlocks)
+	{
+		const auto qb = new QuestionBlock(qbData.position, qbData.dropType);
+		objects.push_back(qb);
+	}
+
+	// bricks
+	//for (const auto& qbData : config->entityData.brickBlocks)
+	//{
+	//	const auto qb = new QuestionBlock(qbData.position, qbData.dropType);
+	//	objects.push_back(qb);
+	//}
 
 	// next level portal
 	for (const auto& pPos : config->entityData.nextLevelsData)

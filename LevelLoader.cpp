@@ -217,14 +217,67 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 	const auto qBlocks = GetEntityDataWithIdentifier(entities, QUESTION_BLOCK);
 	for (const auto& g : qBlocks)
 	{
-		sceneEntities.questionBlocks.emplace_back(g->px[0], g->px[1]);
+		string blockDrop;
+		blockDrop = g->fieldInstances[0].value.get<string>();
+		auto blockDropValue = BlockDropType::None;
+
+		if (blockDrop == "Coin")
+		{
+			blockDropValue = BlockDropType::Coin;
+
+		}else if (blockDrop == "JewDestroyer")
+		{
+			blockDropValue = BlockDropType::JewDestroyer;
+
+		}else if (blockDrop == "Starman")
+		{
+			blockDropValue = BlockDropType::Starman;
+
+		}else
+		{
+			DebugOut(L"[Error] block drop value not exists, default to none");
+
+		}
+
+
+		auto data = QuestionBlockData{
+			Vector2Int(g->px[0], g->px[1]),
+			blockDropValue,
+		};
+
+		sceneEntities.questionBlocks.push_back(data);
 	}
 
 	// Empty
 	const auto eBlocks = GetEntityDataWithIdentifier(entities, EMPTY_BRICK_BLOCK);
 	for (const auto&g : eBlocks)
 	{
-		sceneEntities.emptyBlocks.emplace_back(g->px[0], g->px[1]);
+		auto blockDrop = g->fieldInstances[0].value.get<string>();
+		auto blockDropValue = BlockDropType::None;
+		if (blockDrop == "Coin")
+		{
+			blockDropValue = BlockDropType::Coin;
+		}
+		else if (blockDrop == "JewDestroyer")
+		{
+			blockDropValue = BlockDropType::JewDestroyer;
+		}
+		else if (blockDrop == "Starman")
+		{
+			blockDropValue = BlockDropType::Starman;
+		}
+		else
+		{
+			DebugOut(L"[Error] block drop value not exists, default to none");
+		}
+
+
+		auto data = BrickBlocData{
+			Vector2Int(g->px[0], g->px[1]),
+			blockDropValue,
+		};
+
+		sceneEntities.brickBlocks.push_back(data);
 	}
 
 	// Coins

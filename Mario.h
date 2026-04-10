@@ -6,7 +6,7 @@
 #include <vector>
 
 
-enum class MarioState
+enum class MarioState : std::uint8_t
 {
 	Idle,
 	Walking,
@@ -17,7 +17,6 @@ enum class MarioState
 	PullingFlag,
 	Dying
 };
-
 class Mario : public GameObject
 {
 	bool isGrounded;
