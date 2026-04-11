@@ -323,8 +323,8 @@
 			"showName": true,
 			"tilesetId": 50,
 			"tileRenderMode": "FitInside",
-			"tileRect": { "tilesetUid": 50, "x": 64, "y": 0, "w": 16, "h": 16 },
-			"uiTileRect": { "tilesetUid": 50, "x": 64, "y": 0, "w": 16, "h": 16 },
+			"tileRect": { "tilesetUid": 50, "x": 0, "y": 16, "w": 16, "h": 16 },
+			"uiTileRect": { "tilesetUid": 50, "x": 0, "y": 16, "w": 16, "h": 16 },
 			"nineSliceBorders": [],
 			"maxCount": 0,
 			"limitScope": "PerLevel",
@@ -602,13 +602,13 @@
 		},
 		{
 			"__cWid": 5,
-			"__cHei": 1,
+			"__cHei": 2,
 			"identifier": "Overworld_blocks",
 			"uid": 50,
 			"relPath": "Assets/Sprites/overworld_blocks.png",
 			"embedAtlas": null,
 			"pxWid": 80,
-			"pxHei": 16,
+			"pxHei": 32,
 			"tileGridSize": 16,
 			"spacing": 0,
 			"padding": 0,
@@ -617,7 +617,7 @@
 			"enumTags": [],
 			"customData": [],
 			"savedSelections": [],
-			"cachedPixelData": { "opaqueTiles": "00000", "averageColors": "fb71f840f620f840f840" }
+			"cachedPixelData": { "opaqueTiles": "0000011000", "averageColors": "fb71f840f620f840f840f843f843b840f840f840" }
 		}
 	], "enums": [{ "identifier": "BlockDropType", "uid": 51, "values": [
 		{ "id": "None", "tileRect": null, "color": 0 },
@@ -797,7 +797,7 @@
 							"__grid": [30,13],
 							"__pivot": [0,0],
 							"__tags": [],
-							"__tile": { "tilesetUid": 50, "x": 64, "y": 0, "w": 16, "h": 16 },
+							"__tile": { "tilesetUid": 50, "x": 0, "y": 16, "w": 16, "h": 16 },
 							"__smartColor": "#C0CBDC",
 							"iid": "32de5500-21a0-11f1-bbb1-31cd6c8e9123",
 							"width": 16,
@@ -832,7 +832,7 @@
 							"__grid": [32,13],
 							"__pivot": [0,0],
 							"__tags": [],
-							"__tile": { "tilesetUid": 50, "x": 64, "y": 0, "w": 16, "h": 16 },
+							"__tile": { "tilesetUid": 50, "x": 0, "y": 16, "w": 16, "h": 16 },
 							"__smartColor": "#C0CBDC",
 							"iid": "354bab80-21a0-11f1-bbb1-b12718dc01dd",
 							"width": 16,
