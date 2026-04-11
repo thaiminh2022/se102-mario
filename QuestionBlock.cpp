@@ -4,6 +4,7 @@
 #include "AssetIDs.h"
 #include "AudioManager.h"
 #include "Coin.h"
+#include "Flower.h"
 #include "Game.h"
 #include "Mushroom.h"
 #include "Sprites.h"
@@ -58,7 +59,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 			);
 		}else if (drop == BlockDropType::JewDestroyer)
 		{
-			ctx->addObject(new Mushroom(position));
+			ctx->addObject(new Flower(position));
 		}
 		spawnInternalItem = true;
 	}

@@ -3,27 +3,42 @@
 #include "Animations.h"
 #include "AssetIDs.h"
 #include "AudioManager.h"
+#include "Collision.h"
 #include "Game.h"
 #include "Sprites.h"
 #include "Textures.h"
 
+void Mushroom::SetState(CollectableItemState newState)
+{
+	state = newState;
+	if (newState == CollectableItemState::Collected)
+	{
+		isDeleted = true;
+	}
+}
+
 Mushroom::Mushroom(const Vector2 startPos) : GameObject(startPos.x, startPos.y)
 {
-
-	state = MushroomState::Emerging;
+	moveLeft = true;
+	state = CollectableItemState::Emerging;
 	preferPosition = startPos;
 	preferPosition.y -= 16;
 
 
-	auto t = Textures::GetInstance()->Get(OVERWORLD_ITEMS_TEX_ID);
-	auto sp = Sprites::GetInstance();
+
 	auto anims = Animations::GetInstance();
 
-	sp->Add(MUSHROOM_SPRITE_1, 0, 48, 15, 63, t);
+	if (!anims->Contains(MUSHROOM_ANIM_ID))
+	{
+		auto t = Textures::GetInstance()->Get(OVERWORLD_ITEMS_TEX_ID);
+		auto sp = Sprites::GetInstance();
+		sp->Add(MUSHROOM_SPRITE_1, 0, 48, 15, 63, t);
+		auto anim = new Animation;
+		anim->Add(MUSHROOM_SPRITE_1);
+		anims->Add(MUSHROOM_ANIM_ID, anim);
+	}
 
-	auto anim = new Animation;
-	anim->Add(MUSHROOM_SPRITE_1);
-	anims->Add(MUSHROOM_ANIM_ID, anim);
+
 	AudioManager::GetInstance()->PlaySFX(POWERUP_APPEARS);
 }
 
@@ -38,9 +53,10 @@ void Mushroom::Render()
 
 void Mushroom::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
-	if (state == MushroomState::Emerging)
+	if (state == CollectableItemState::Emerging)
 	{
 		isCollidable = false;
+		isBlocking = false;
 
 		if (position.y > preferPosition.y)
 		{
@@ -48,21 +64,44 @@ void Mushroom::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ct
 		}else
 		{
 			position.y = preferPosition.y;
-			state = MushroomState::Moving;
+			state = CollectableItemState::Collectable;
 			isCollidable = true;
 		}
-	}else if (state == MushroomState::Moving)
+		return;
+	}
+	if (state == CollectableItemState::Collectable)
 	{
 		// default to move left
-		velocity.x = 100.0f;
+		velocity.x = moveLeft ? -69.0f : 69.0f;
 		velocity.y += 900.0f * dt;
-		Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 	}
+	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }
 
 void Mushroom::OnNoCollision(float dt)
 {
 	position += velocity * dt;
+}
+
+void Mushroom::OnCollisionWith(CollisionEvent* event)
+{
+	if (event->IsTileCollision()
+		&& event->otherTile->IsBlocking() && event->normalizedDir.x != 0)
+	{
+		if (event->normalizedDir.x > 0)
+		{
+			moveLeft = false;
+		}
+		else if (event->normalizedDir.x < 0)
+		{
+			moveLeft = true;
+		}
+	}
+
+	if (event->IsObjectCollision() && event->otherObject->IsBlocking() && event->normalizedDir.x != 0)
+	{
+		
+	}
 }
 
 Rect Mushroom::GetBoundingBox()

@@ -18,6 +18,7 @@ public:
 	}
 
 	void Add(int id, Animation* ani);
+	bool Contains(int id);
 	Animation* Get(int id);
 
 	void Clear() {

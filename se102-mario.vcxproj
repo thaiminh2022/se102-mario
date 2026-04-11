@@ -136,6 +136,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionEvent.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Flower.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Goomba.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="QuestionBlock.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
+    <ClCompile Include="Star.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -163,6 +165,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionEvent.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Flower.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="LdtkParser.h" />
@@ -180,6 +183,7 @@
     <ClInclude Include="SceneEntityData.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprites.h" />
+    <ClInclude Include="Star.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Tile.h" />

@@ -25,17 +25,22 @@ Goomba::Goomba(int startX, int startY) : GameObject(static_cast<float>(startX), 
 	sp->Add(GOOMBA_DEAD_SPRITE_1, 32, 0, 47, 15, t);
 	
 	auto anims = Animations::GetInstance();
-	
-	auto walkAnim = new Animation(100);
-	walkAnim->Add(GOOMBA_WALK_SPRITE_1);
-	walkAnim->Add(GOOMBA_WALK_SPRITE_2);
-	anims->Add(GOOMBA_WALK_ANIM_ID, walkAnim);
 
-	auto deadAnim = new Animation(100);
-	deadAnim->Add(GOOMBA_DEAD_SPRITE_1);
-	anims->Add(GOOMBA_DEAD_ANIM_ID, deadAnim);
+	if (!anims->Contains(GOOMBA_WALK_ANIM_ID))
+	{
+		auto walkAnim = new Animation(100);
+		walkAnim->Add(GOOMBA_WALK_SPRITE_1);
+		walkAnim->Add(GOOMBA_WALK_SPRITE_2);
+		anims->Add(GOOMBA_WALK_ANIM_ID, walkAnim);
+	}
+	if (!anims->Contains(GOOMBA_DEAD_ANIM_ID))
+	{
+		auto deadAnim = new Animation(100);
+		deadAnim->Add(GOOMBA_DEAD_SPRITE_1);
+		anims->Add(GOOMBA_DEAD_ANIM_ID, deadAnim);
+	}
 
-	moveLeft = true;
+	moveLeft = false;
 	state = GoombaState::Moving;
 }
 
@@ -57,7 +62,7 @@ void Goomba::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 	velocity.y += 900 * dt;
 	// default move to left
-	velocity.x = moveLeft ? 50 : -50.0f;
+	velocity.x = moveLeft ? -50.0f : 50.0f;
 
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }
@@ -90,14 +95,12 @@ void Goomba::OnCollisionWith(CollisionEvent* event)
 	{
 		if (event->normalizedDir.x > 0)
 		{
-			moveLeft = true;
-			DebugOut(L"Move left true\n");
+			moveLeft = false;
 
 		}
 		else if (event->normalizedDir.x < 0)
 		{
-			moveLeft = false;
-			DebugOut(L"Move left false\n");
+			moveLeft = true;
 		}
 	}
 }

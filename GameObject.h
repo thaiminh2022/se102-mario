@@ -8,6 +8,14 @@
 struct CollisionEvent;
 using std::vector;
 
+
+enum class CollectableItemState
+{
+	Emerging,
+	Collectable,
+	Collected,
+};
+
 class GameObject
 {
 protected:

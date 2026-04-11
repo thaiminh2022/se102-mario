@@ -22,6 +22,7 @@
 #include "AudioManager.h"
 #include "Coin.h"
 #include "FontManager.h"
+#include "Mushroom.h"
 #include "NextLevelPortal.h"
 #include "QuestionBlock.h"
 
@@ -384,6 +385,13 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			coinCollected++;
 			AudioManager::GetInstance()->PlaySFX(MARIO_COLLECT_COIN);
 
+		}
+
+		const auto mushroom = dynamic_cast<Mushroom*>(e->otherObject);
+		if (mushroom != nullptr)
+		{
+			mushroom->SetState(CollectableItemState::Collected);
+			AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
 		}
 	}
 }

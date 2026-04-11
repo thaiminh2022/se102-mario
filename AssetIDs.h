@@ -82,19 +82,31 @@ constexpr int QUESTION_BLOCK_OVERWORLD_BLOCKED_SPRITE_1 = 31201;
 // Items (E=4000, T=1 (overworld))
 constexpr int OVERWORLD_ITEMS_TEX_ID = 41000;
 
-// coin anim
+// coin anim (A = 1)
 constexpr int COIN_SPIN_ANIM_ID = 41100;
 constexpr int COIN_SPIN_SPRITE_1= 41101;
 constexpr int COIN_SPIN_SPRITE_2 = 41102;
 constexpr int COIN_SPIN_SPRITE_3 = 41103;
 constexpr int COIN_SPIN_SPRITE_4 = 41104;
 
-// mushroom anim
-constexpr int MUSHROOM_ANIM_ID = 42100;
-constexpr int MUSHROOM_SPRITE_1 = 42101;
+// mushroom anim (A = 2)
+constexpr int MUSHROOM_ANIM_ID = 41200;
+constexpr int MUSHROOM_SPRITE_1 = 41201;
+
+// flower anim id (A = 3)
+constexpr int FLOWER_IDLE_ANIM_ID = 41300;
+constexpr int FLOWER_IDLE_SPRITE_1 = 41301;
+constexpr int FLOWER_IDLE_SPRITE_2 = 41302;
+constexpr int FLOWER_IDLE_SPRITE_3 = 41303;
+constexpr int FLOWER_IDLE_SPRITE_4 = 41304;
 
 
-
+// star anim id (A = 4)
+constexpr int STAR_IDLE_ANIM_ID = 41400;
+constexpr int STAR_IDLE_SPRITE_1 = 41401;
+constexpr int STAR_IDLE_SPRITE_2 = 41402;
+constexpr int STAR_IDLE_SPRITE_3 = 41403;
+constexpr int STAR_IDLE_SPRITE_4 = 41404;
 
 
 /// MUSICS: Background music will be managed by negative values in ldtk
