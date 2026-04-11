@@ -62,7 +62,9 @@ public:
 	}
 
 	// Debug helper
-	void DrawDebugRect(Rect r, D3DXCOLOR color);
+	void DrawDebugRectRaw(Rect r, D3DXCOLOR color);
+	void DrawDebugRectWithCamera(Rect r, D3DXCOLOR color);
+
 	void FlushDebugRect();
 	void ClearDebugRect() { debugRects.clear(); }
 

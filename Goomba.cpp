@@ -48,7 +48,7 @@ void Goomba::SetState(GoombaState newState)
 {
 	state = newState;
 
-	if (state == GoombaState::Dead)
+	if (state == GoombaState::Dead || state == GoombaState::DeadUpsideDown)
 	{
 		isCollidable = false;
 		//isDeleted = true;  need a timer before delete
@@ -57,7 +57,7 @@ void Goomba::SetState(GoombaState newState)
 
 void Goomba::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
-	if (state == GoombaState::Dead)
+	if (state == GoombaState::Dead || state == GoombaState::DeadUpsideDown)
 		return;
 
 	velocity.y += 900 * dt;
@@ -72,14 +72,16 @@ void Goomba::Render()
 	float renderX, renderY;
 	Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
 
+
+
 	Animations::GetInstance()
 	->Get(state == GoombaState::Moving ? GOOMBA_WALK_ANIM_ID : GOOMBA_DEAD_ANIM_ID)
-	->Render(round(renderX), round(renderY), false, false);
+	->Render(round(renderX), round(renderY), false, state == GoombaState::DeadUpsideDown);
 }
 
 void Goomba::OnNoCollision(float dt)
 {
-	if (state == GoombaState::Dead)
+	if (state == GoombaState::Dead || state == GoombaState::DeadUpsideDown)
 		return;
 
 	position += velocity * dt;
@@ -87,7 +89,7 @@ void Goomba::OnNoCollision(float dt)
 
 void Goomba::OnCollisionWith(CollisionEvent* event)
 {
-	if (state == GoombaState::Dead)
+	if (state == GoombaState::Dead || state == GoombaState::DeadUpsideDown)
 		return;
 
 	if (event->IsTileCollision() 

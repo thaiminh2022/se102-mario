@@ -42,6 +42,17 @@ Mushroom::Mushroom(const Vector2 startPos) : GameObject(startPos.x, startPos.y)
 	AudioManager::GetInstance()->PlaySFX(POWERUP_APPEARS);
 }
 
+void Mushroom::SetMoveDirX(int newDirX)
+{
+	if (newDirX > 0)
+	{
+		moveLeft = false;
+	}else
+	{
+		moveLeft = true;
+	}
+}
+
 
 void Mushroom::Render()
 {

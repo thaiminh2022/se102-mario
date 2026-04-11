@@ -14,9 +14,11 @@ class QuestionBlock : public GameObject
 	QuestionBlockState state;
 	BlockDropType drop;
 	Vector2 startPosition;
+	Vector2 renderPosition;
 	Timer moveUpTimer;
 
 	bool spawnInternalItem;
+	Rect bounceCheckBox;
 
 public:
 	void SetState(QuestionBlockState newState);

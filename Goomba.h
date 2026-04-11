@@ -9,6 +9,7 @@ enum class GoombaState : std::uint8_t
 {
 	Moving,
 	Dead,
+	DeadUpsideDown
 };
 
 class Goomba : public GameObject

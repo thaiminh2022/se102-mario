@@ -4,8 +4,10 @@
 #include "AssetIDs.h"
 #include "AudioManager.h"
 #include "Coin.h"
+#include "Debug.h"
 #include "Flower.h"
 #include "Game.h"
+#include "Goomba.h"
 #include "Mushroom.h"
 #include "Sprites.h"
 #include "Texture.h"
@@ -28,6 +30,7 @@ void QuestionBlock::SetState(const QuestionBlockState newState)
 
 void QuestionBlock::Render()
 {
+	
 	const int animID = state == QuestionBlockState::Blocked ? 
 	QUESTION_BLOCK_OVERWORLD_BLOCKED_ANIM_ID: 
 	QUESTION_BLOCK_OVERWORLD_IDLE_ANIM_ID;
@@ -38,7 +41,7 @@ void QuestionBlock::Render()
 
 	Game::GetInstance()
 	->GetCamera()
-	->WorldToScreen(position.x, position.y, renderX, renderY);
+	->WorldToScreen(renderPosition.x, renderPosition.y, renderX, renderY);
 	anim->Render(round(renderX), round(renderY), false, false);
 }
 
@@ -49,8 +52,33 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 
 	if (state != QuestionBlockState::Opened)
 		return;
+
 	if (!spawnInternalItem)
 	{
+		for (auto& go : coObjects)
+		{
+			if (!go->GetBoundingBox().IsColliding(bounceCheckBox))
+				continue;
+
+			auto mushroom = dynamic_cast<Mushroom*>(go);
+			if (mushroom != nullptr)
+			{
+				float pushAmount;
+				auto pushDir = bounceCheckBox.GetPushDir(mushroom->GetBoundingBox(), pushAmount);
+				if (pushDir.x != 0)
+				{
+					mushroom->SetMoveDirX(pushDir.x);
+				}
+			}
+			auto goomba = dynamic_cast<Goomba*>(go);
+			if (goomba != nullptr)
+			{
+				goomba->SetState(GoombaState::DeadUpsideDown);
+			}
+
+	
+		}
+
 		if (drop == BlockDropType::Coin)
 		{
 			ctx->addObject(new Coin(
@@ -59,7 +87,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 			);
 		}else if (drop == BlockDropType::JewDestroyer)
 		{
-			ctx->addObject(new Flower(position));
+			ctx->addObject(new Mushroom(position));
 		}
 		spawnInternalItem = true;
 	}
@@ -67,17 +95,22 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 	moveUpTimer.ProcessTimer(dt);
 	if (!moveUpTimer.IsFinished())
 	{
-		position.y -= 125.0f * dt;
+		renderPosition.y -= 125.0f * dt;
+
+
+
 	}else
 	{
-		if (position.y < startPosition.y)
+
+
+		if (renderPosition.y < startPosition.y)
 		{
-			position.y += 9000.0f * dt * dt;
+			renderPosition.y += 9000.0f * dt * dt;
 
 		}else
 		{
 			moveUpTimer.SetIdle();
-			position.y = startPosition.y;
+			renderPosition.y = startPosition.y;
 			state = QuestionBlockState::Blocked;
 		}
 	}
@@ -113,6 +146,9 @@ QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop
 
 
 	startPosition = position;
+	renderPosition = position;
+
+	bounceCheckBox = Rect::FromXYWH(startPos.x, startPos.y - 16, 16, 16);
 }
 
 Rect QuestionBlock::GetBoundingBox()

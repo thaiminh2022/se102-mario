@@ -202,9 +202,18 @@ void Game::Draw(float x, float y, Texture* tex, Rect* rect)
 	spriteObject->DrawSpritesImmediate(&sprite, 1, 0, 0);
 }
 
-void Game::DrawDebugRect(Rect r, D3DXCOLOR color)
+void Game::DrawDebugRectRaw(Rect r, D3DXCOLOR color)
 {
 	const auto p = std::pair<Rect, D3DXCOLOR>(r, color);
+	debugRects.push_back(p);
+}
+
+void Game::DrawDebugRectWithCamera(Rect r, D3DXCOLOR color)
+{
+	float top, left;
+	camera->WorldToScreen(r.left, r.top, top, left);
+	Rect renderRect = Rect::FromXYWH(top, left, r.right - r.left, r.bottom - r.top);
+	const auto p = std::pair<Rect, D3DXCOLOR>(renderRect, color);
 	debugRects.push_back(p);
 }
 
@@ -262,7 +271,6 @@ void Game::FlushDebugRect()
 		int height = rect.bottom - rect.top;
 
 		if (width <= 0 || height <= 0) continue;
-
 
 		D3DX10_SPRITE sprite{};
 		sprite.pTexture = whiteTex->GetShaderResourceView();
