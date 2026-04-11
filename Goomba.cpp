@@ -42,6 +42,7 @@ Goomba::Goomba(int startX, int startY) : GameObject(static_cast<float>(startX), 
 
 	moveLeft = false;
 	state = GoombaState::Moving;
+	deadTimer = Timer(1.0f);
 }
 
 void Goomba::SetState(GoombaState newState)
@@ -51,19 +52,32 @@ void Goomba::SetState(GoombaState newState)
 	if (state == GoombaState::Dead || state == GoombaState::DeadUpsideDown)
 	{
 		isCollidable = false;
-		//isDeleted = true;  need a timer before delete
+		deadTimer.Start();
+		velocity.x = 0;
+	}
+
+	if (state == GoombaState::DeadUpsideDown)
+	{
+		velocity.y = -150.0f;
 	}
 }
 
 void Goomba::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 	if (state == GoombaState::Dead || state == GoombaState::DeadUpsideDown)
-		return;
-
+	{
+		deadTimer.ProcessTimer(dt);
+		if (deadTimer.IsFinished())
+		{
+			deadTimer.SetIdle();
+			isDeleted = true;
+		}
+	}else
+	{
+		
+		velocity.x = moveLeft ? -50.0f : 50.0f;
+	}
 	velocity.y += 900 * dt;
-	// default move to left
-	velocity.x = moveLeft ? -50.0f : 50.0f;
-
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }
 
@@ -81,9 +95,6 @@ void Goomba::Render()
 
 void Goomba::OnNoCollision(float dt)
 {
-	if (state == GoombaState::Dead || state == GoombaState::DeadUpsideDown)
-		return;
-
 	position += velocity * dt;
 }
 
