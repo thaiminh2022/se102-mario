@@ -387,11 +387,5 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 
 		}
 
-		const auto mushroom = dynamic_cast<Mushroom*>(e->otherObject);
-		if (mushroom != nullptr)
-		{
-			mushroom->SetState(CollectableItemState::Collected);
-			AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
-		}
 	}
 }

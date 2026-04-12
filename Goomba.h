@@ -1,10 +1,8 @@
 #pragma once
-#include "Collision.h"
 #include "GameObject.h"
 #include "Rect.h"
 #include "Scene.h"
 #include <vector>
-
 #include "Timer.h"
 
 enum class GoombaState : std::uint8_t
