@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>
+#include <string>
 #include <xaudio2.h>
 #include <unordered_map>
 #include  <vector>
@@ -38,7 +39,7 @@ class AudioManager
 
 	unordered_map<int, SoundData> soundData;
 	unordered_map<unsigned int, AudioInstance> activeInstances;
-	unordered_map<LPCWSTR, int> filePathToID;
+	unordered_map<std::wstring, int> filePathToID;
 
 	unsigned int musicHandle = 0;
 
@@ -72,7 +73,7 @@ public:
 	void Stop(unsigned int playbackHandle);
 	void Pause(unsigned int playbackHandle);
 	void Resume(unsigned int playbackHandle);
-	Optional<int> GetIdForWAVFile(LPCWSTR filePath)
+	Optional<int> GetIdForWAVFile(const std::wstring& filePath)
 	{
 		Optional<int> id{};
 		if (filePathToID.find(filePath) != filePathToID.end())
