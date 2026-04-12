@@ -160,7 +160,15 @@ RenderLayer LevelLoader::ParseBackgroundLayer(const vector<LayerInstance>& v)
 	auto renderLayer = RenderLayer();
 	int tID = -1;
 
-	if (!Textures::GetInstance()->HaveTextureWithPath(LEVEL_0_TILESET, tID))
+	auto texturePath = layerData->tilesetRelPath;
+	wstring path = LEVEL_0_TILESET;
+	
+	if (texturePath.hasValue)
+	{
+		path = wstring(texturePath.value.begin(), texturePath.value.end());
+	}
+
+	if (!Textures::GetInstance()->HaveTextureWithPath(path, tID))
 	{
 		DebugOut(L"[ERROR] Cannot fine tileset, resolve to default: -1");
 	}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <D3DX10.h>
+#include <string>
 #include <unordered_map>
 #include "Texture.h"
 
@@ -11,7 +12,7 @@ class Textures
 	static Textures* _instance;
 
 	unordered_map<int, Texture*> textures;
-	unordered_map<LPCWSTR, int> pathToTexture; // this is for caching
+	unordered_map<std::wstring, int> pathToTexture; // this is for caching
 
 public:
 	static Textures* GetInstance() {
@@ -21,7 +22,7 @@ public:
 	}
 	Textures();
 	void Add(int id, LPCWSTR filePath);
-	bool HaveTextureWithPath(LPCWSTR filePath, int& outID);
+	bool HaveTextureWithPath(std::wstring filePath, int& outID);
 	Texture* Get(int i) { return textures[i]; }
 };
 

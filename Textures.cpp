@@ -18,7 +18,7 @@ void Textures::Add(int id, LPCWSTR filePath)
 
 }
 
-bool Textures::HaveTextureWithPath(LPCWSTR filePath, int& outID)
+bool Textures::HaveTextureWithPath(std::wstring filePath, int& outID)
 {
 	if (pathToTexture.find(filePath) == pathToTexture.end())
 	{
