@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include "GameObject.h"
 #include "LevelLoader.h"
 #include "Mario.h"
@@ -29,7 +29,7 @@ void PlayableScene::Update(float dt)
 			{
 				if (!other->IsCollidable()) continue;
 				if (other == obj) continue;
-
+				if (GameObject::IsDeleted(other)) continue;
 				coObjects.push_back(other);
 			}
 		}
@@ -64,11 +64,11 @@ void PlayableScene::Load()
 	// camera
 	auto c = Game::GetInstance()->GetCamera();
 	c->SetWorldSize(config->worldWidth, config->worldHeight);
-	
+
 	// player
 	auto playerStart = config->entityData.playerStarts;
 	player = new Mario(playerStart.x, playerStart.y);
-	
+
 	c->SetTarget(player);
 	objects.push_back(player);
 
@@ -132,7 +132,7 @@ void PlayableScene::Render()
 {
 	LevelLoader::GetInstance()->GetTilemapForLevel(id)->Render();
 
-	for (const auto &obj : objects)
+	for (const auto& obj : objects)
 	{
 		obj->Render();
 	}
@@ -152,10 +152,10 @@ void PlayableScene::CleanupDeletedObjects()
 
 	objects.erase(
 		std::remove_if(objects.begin(), objects.end(),
-		[](const GameObject* o)
-		{
+			[](const GameObject* o)
+			{
 				return o == nullptr;
-		}),
+			}),
 		objects.end());
 }
 

@@ -119,8 +119,6 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 
 QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop, const bool isBrick, const bool isHidden) : GameObject(startPos.x, startPos.y)
 {
-
-
 	
 	state = QuestionBlockState::Closed;
 	const auto t = Textures::GetInstance()->Get(BLOCKS_OVERWORLD_TEX_ID);

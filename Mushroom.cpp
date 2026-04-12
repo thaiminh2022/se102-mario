@@ -4,6 +4,7 @@
 #include "AssetIDs.h"
 #include "AudioManager.h"
 #include "Collision.h"
+#include "Debug.h"
 #include "Game.h"
 #include "Sprites.h"
 #include "Textures.h"
@@ -51,6 +52,7 @@ void Mushroom::SetMoveDirX(int newDirX)
 	{
 		moveLeft = true;
 	}
+	velocity.y = -150.0;
 }
 
 
@@ -67,7 +69,6 @@ void Mushroom::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ct
 	if (state == CollectableItemState::Emerging)
 	{
 		isCollidable = false;
-		isBlocking = false;
 
 		if (position.y > preferPosition.y)
 		{
@@ -83,7 +84,7 @@ void Mushroom::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ct
 	if (state == CollectableItemState::Collectable)
 	{
 		// default to move left
-		velocity.x = moveLeft ? -69.0f : 69.0f;
+		velocity.x = moveLeft ? -20.0f : 20.0f;
 		velocity.y += 900.0f * dt;
 	}
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
@@ -109,10 +110,6 @@ void Mushroom::OnCollisionWith(CollisionEvent* event)
 		}
 	}
 
-	if (event->IsObjectCollision() && event->otherObject->IsBlocking() && event->normalizedDir.x != 0)
-	{
-		
-	}
 }
 
 Rect Mushroom::GetBoundingBox()

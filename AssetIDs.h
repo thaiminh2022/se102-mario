@@ -1,4 +1,6 @@
-#pragma once
+﻿#pragma once
+#include <cinttypes>
+
 // [NOTE]: NEGATIVE VALUES IS RESERVE FOR SCENE BACKGROUND
 
 /// Naming convention:
@@ -16,7 +18,13 @@
 /// 10000 + 2000 + 300 + 40 + 5
 
 
-/// MARIO (E = 10000, T = 1)
+/// ================================
+/// MARIO (E = 10000)
+/// ================================
+
+// ---------------------------------
+// SMALL MARIO (T = 1)
+// ---------------------------------
 constexpr int MARIO_TEX_ID = 11000;
 
 // Idle (A = 100)
@@ -25,28 +33,86 @@ constexpr int MARIO_IDLE_SPRITE_1 = 11101;
 
 // Running (A = 200)
 constexpr int MARIO_RUN_ANIM_ID = 11200;
-
 constexpr int MARIO_RUN_SPRITE_1 = 11201;
 constexpr int MARIO_RUN_SPRITE_2 = 11202;
 constexpr int MARIO_RUN_SPRITE_3 = 11203;
 
-// Turning Around (A = 300)
-constexpr int MARIO_TURN_ANIM_ID = 11300;
-constexpr int MARIO_TURN_SPRITE_1 = 11301;
-
+// SKIDDING(A = 300)
+constexpr int MARIO_SKID_ANIM_ID = 11300;
+constexpr int MARIO_SKID_SPRITE_1 = 11301;
 
 // Jumping (A = 400)
 constexpr int MARIO_JUMP_ANIM_ID = 11400;
 constexpr int MARIO_JUMP_SPRITE_1 = 11401;
 
-// Dying (A = 500)
-constexpr int MARIO_DEATH_ANIM_ID = 11500;
-constexpr int MARIO_DEATH_SPRITE_1 = 11501;
+// Dying (A = 700)
+constexpr int MARIO_DEATH_ANIM_ID = 11700;
+constexpr int MARIO_DEATH_SPRITE_1 = 11701;
+
+
+// ---------------------------------
+// BIG MARIO (T = 2)
+// ---------------------------------
+constexpr int MARIO_BIG_TEX_ID = 12000;
+
+// Idle (A = 100)
+constexpr int MARIO_BIG_IDLE_ANIM_ID = 12100;
+constexpr int MARIO_BIG_IDLE_SPRITE_1 = 12101;
+
+// Running (A = 200)
+constexpr int MARIO_BIG_RUN_ANIM_ID = 12200;
+constexpr int MARIO_BIG_RUN_SPRITE_1 = 12201;
+constexpr int MARIO_BIG_RUN_SPRITE_2 = 12202;
+constexpr int MARIO_BIG_RUN_SPRITE_3 = 12203;
+
+// SKIDDING (A = 300)
+constexpr int MARIO_BIG_SKID_ANIM_ID = 12300;
+constexpr int MARIO_BIG_SKID_SPRITE_1 = 12301;
+
+// Jumping (A = 400)
+constexpr int MARIO_BIG_JUMP_ANIM_ID = 12400;
+constexpr int MARIO_BIG_JUMP_SPRITE_1 = 12401;
+
+// Ducking (A = 500)
+constexpr int MARIO_BIG_DUCK_ANIM_ID = 12500;
+constexpr int MARIO_BIG_DUCK_SPRITE_1 = 12501;
+
+
+// ---------------------------------
+// FIRE MARIO (T = 3)
+// ---------------------------------
+constexpr int MARIO_FIRE_TEX_ID = 13000;
+
+// Idle (A = 100)
+constexpr int MARIO_FIRE_IDLE_ANIM_ID = 13100;
+constexpr int MARIO_FIRE_IDLE_SPRITE_1 = 13101;
+
+// Running (A = 200)
+constexpr int MARIO_FIRE_RUN_ANIM_ID = 13200;
+constexpr int MARIO_FIRE_RUN_SPRITE_1 = 13201;
+constexpr int MARIO_FIRE_RUN_SPRITE_2 = 13202;
+constexpr int MARIO_FIRE_RUN_SPRITE_3 = 13203;
+
+// SKIDing Around (A = 300)
+constexpr int MARIO_FIRE_SKID_ANIM_ID = 13300;
+constexpr int MARIO_FIRE_SKID_SPRITE_1 = 13301;
+
+// Jumping (A = 400)
+constexpr int MARIO_FIRE_JUMP_ANIM_ID = 13400;
+constexpr int MARIO_FIRE_JUMP_SPRITE_1 = 13401;
+
+// Ducking (A = 500)
+constexpr int MARIO_FIRE_DUCK_ANIM_ID = 13500;
+constexpr int MARIO_FIRE_DUCK_SPRITE_1 = 13501;
+
+// Firing (A = 600)
+constexpr int MARIO_FIRE_FIRE_ANIM_ID = 13600;
+constexpr int MARIO_FIRE_FIRE_SPRITE_1 = 13601;
 
 
 /// ================================
-
 /// GOOMBA (E = 20000, T = 1)
+/// ================================
 constexpr int GOOMBA_TEX_ID = 21000;
 
 // Walking (A = 100)
@@ -113,19 +179,45 @@ constexpr int STAR_IDLE_SPRITE_3 = 41403;
 constexpr int STAR_IDLE_SPRITE_4 = 41404;
 
 
+
+/// ================================
+// FIREBALL (E = 60000, T = 1)
+/// ================================
+constexpr int FIREBALL_TEX_ID =			61000;
+// Bouncing (A = 100)
+constexpr int FIREBALL_BOUNCE_ANIM_ID = 61100;
+constexpr int FIREBALL_BOUNCE_SPRITE_1 = 61101;
+constexpr int FIREBALL_BOUNCE_SPRITE_2 = 61102;
+constexpr int FIREBALL_BOUNCE_SPRITE_3 = 61103;
+constexpr int FIREBALL_BOUNCE_SPRITE_4 = 61104;
+
+// Collision (A = 200)
+constexpr int FIREBALL_COLLIDE_ANIM_ID = 61200;
+constexpr int FIREBALL_COLLIDE_SPRITE_1 = 61201;
+constexpr int FIREBALL_COLLIDE_SPRITE_2 = 61202;
+constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61203;
+
+
+
 /// MUSICS: Background music will be managed by negative values in ldtk
-/// SFX
 
-constexpr int MARIO_JUMP_SMALL = 1;
-constexpr int MARIO_JUMP_BIG = 2;
-constexpr int GOOMBA_STOMP = 3;
-constexpr int MARIO_DIE = 4;
-constexpr int MARIO_COLLECT_COIN = 5;
-constexpr int MARIO_BUMP = 6;
-constexpr int MARIO_POWERUP = 7;
-constexpr int POWERUP_APPEARS = 8;
-
-
+// SFX
+enum SFX: std::uint8_t
+{
+	MARIO_JUMP_SMALL = 1,
+	MARIO_JUMP_BIG,
+	GOOMBA_STOMP,
+	MARIO_DIE,
+	FIREBALL,
+	MARIO_COLLECT_COIN,
+	MARIO_BUMP,
+	MARIO_POWERUP,
+	POWERUP_APPEARS,
+};
 
 /// FONT
-constexpr int STATS_FONT = 1;
+
+enum FONTS: std::uint8_t
+{
+	STATS_FONT = 1
+};

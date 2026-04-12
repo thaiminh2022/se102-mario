@@ -191,7 +191,10 @@ static void LoadResource()
 {
 	auto t = Textures::GetInstance();
 	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_sprites.png");
+	t->Add(MARIO_BIG_TEX_ID, L"Assets/Sprites/mario_big_sprites.png");
+	t->Add(MARIO_FIRE_TEX_ID, L"Assets/Sprites/mario_fire_sprites.png");
 	t->Add(GOOMBA_TEX_ID, L"Assets/Sprites/goomba_frames.png");
+	t->Add(FIREBALL_TEX_ID, L"Assets/Sprites/fireball.png");
 	t->Add(BLOCKS_OVERWORLD_TEX_ID, L"Assets/Sprites/overworld_blocks.png");
 	t->Add(OVERWORLD_ITEMS_TEX_ID, L"Assets/Sprites/overworld_items.png");
 
@@ -208,11 +211,13 @@ static void LoadResource()
 
 
 
+	AudioManager::GetInstance()->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
+
 	// Fonts
 	FontManager::GetInstance()->AddFontCustom(
 		STATS_FONT,
-L"Assets\\Fonts\\super-mario-bros-nes.ttf",
-		L"Super Mario Bros. NES", 
+		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
+		L"Super Mario Bros. NES",
 		FontData(25)
 	);
 

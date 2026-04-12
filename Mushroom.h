@@ -11,6 +11,7 @@ public:
 	void SetState(CollectableItemState newState);
 	explicit Mushroom(Vector2 startPos);
 	void SetMoveDirX(int newDirX);
+	bool IsBlocking() override { return false; }
 	void Render() override;
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void OnNoCollision(float dt) override;

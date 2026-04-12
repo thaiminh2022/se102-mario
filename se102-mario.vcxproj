@@ -137,6 +137,7 @@
     <ClCompile Include="CollisionEvent.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Flower.cpp" />
+    <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Goomba.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="CollisionEvent.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Flower.h" />
+    <ClInclude Include="Fireball.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="LdtkParser.h" />

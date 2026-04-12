@@ -12,7 +12,6 @@
 #include <vector>
 #include <Windows.h>
 
-
 constexpr float PUSH_BACK_FACTOR = 0.001f;
 
 void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*& tilemap, GameObject*& go, float dt)
@@ -68,9 +67,10 @@ void Collision::Filter(
 	for (auto& v : events)
 	{
 		if (v.isInvalid) continue;
-		if (!v.IsBlocking()) continue; // this is for blocking event only
+		if (!v.IsBlocking()) continue;
 		if (v.self == nullptr || GameObject::IsDeleted(v.self)) continue;
 		if (v.t < 0 || v.t > 1) continue;
+
 
 		// Hit oneway tile, so ignore
 		if (v.IsTileCollision() && v.otherTile->type == CollisionTileType::OneWay)
