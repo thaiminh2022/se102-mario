@@ -2,9 +2,9 @@
 #include "GameObject.h"
 #include "Timer.h"
 
-const float BRICK_EXPLODE_SIDE_SPEED = 50.0f;
-const float BRICK_EXPLODE_JUMP = -150.0f;
-const float BRICK_GRAVITY = 900.0f;
+constexpr float BRICK_EXPLODE_SIDE_SPEED = 50.0f;
+constexpr float BRICK_EXPLODE_JUMP = -150.0f;
+constexpr float BRICK_GRAVITY = 900.0f;
 
 
 class BrickExplode : public GameObject
