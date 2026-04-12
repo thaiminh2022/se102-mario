@@ -25,6 +25,7 @@
 #include "NextLevelPortal.h"
 #include "QuestionBlock.h"
 #include "Fireball.h"
+#include "Flower.h"
 
 int Mario::goombaKilled = 0;
 int Mario::coinCollected = 0;
@@ -189,7 +190,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
-	power = MarioPower::Normal; 
+	power = MarioPower::Big; 
 	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
 	fireCooldownTimer.Start();
 	// manually change power here for testing, will be changed in the future when we implement power-ups
@@ -561,9 +562,22 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			if (e->normalizedDir.y == -1)
 			{
 				isGrounded = true;
-			}else if (e->normalizedDir.y == 1)
+				return;
+			}
+			
+			if (e->normalizedDir.y == 1)
 			{
-				questionBlock->SetState(QuestionBlockState::Opened);
+				
+				if (!questionBlock->HaveDrop())
+				{
+					if (power == MarioPower::Big || power == MarioPower::Fire)
+					{
+						questionBlock->SetState(QuestionBlockState::Break);
+					}
+				}else
+				{
+					questionBlock->SetState(QuestionBlockState::Opened);
+				}
 			}
 		}
 
@@ -574,6 +588,33 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			coinCollected++;
 			AudioManager::GetInstance()->PlaySFX(MARIO_COLLECT_COIN);
 
+		}
+
+		const auto mushroom = dynamic_cast<Mushroom*>(e->otherObject);
+		if (mushroom != nullptr)
+		{
+			mushroom->SetState(CollectableItemState::Collected);
+			AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
+			
+			if (power == MarioPower::Normal)
+			{
+				power = MarioPower::Big;
+
+				// add some pushback so player won't fall off the ground
+				position.y -= 17;
+			}
+		}
+
+		const auto flower = dynamic_cast<Flower*>(e->otherObject);
+		if (flower != nullptr)
+		{
+			flower->SetState(CollectableItemState::Collected);
+			AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
+
+			if (power == MarioPower::Big)
+			{
+				power = MarioPower::Fire;
+			}
 		}
 	}
 }

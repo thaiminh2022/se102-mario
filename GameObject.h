@@ -23,6 +23,7 @@ protected:
 	bool isCollidable;
 	bool isBlocking;
 	bool isFacingRight;	
+
 public:
 	Vector2 position;
 	Vector2 velocity;
@@ -32,6 +33,8 @@ public:
 
 	virtual void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx = nullptr) {}
 	virtual void Render() {}
+	virtual int GetRenderIndex() { return 0; }
+
 
 	virtual bool IsCollidable() { return isCollidable; }
 	virtual bool IsBlocking() { return isBlocking; }
@@ -41,5 +44,11 @@ public:
 
 	static bool IsDeleted(const GameObject* o) { return o->isDeleted; }
 	virtual ~GameObject() = default;
+
+
+	static bool SortRenderIndex(GameObject* a, GameObject *b)
+	{
+		return a->GetRenderIndex() < b->GetRenderIndex();
+	}
 };
 

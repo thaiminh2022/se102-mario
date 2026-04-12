@@ -2,6 +2,7 @@
 #include "Animations.h"
 #include "AssetIDs.h"
 #include "AudioManager.h"
+#include "BrickExplode.h"
 #include "Coin.h"
 #include "Flower.h"
 #include "Game.h"
@@ -17,7 +18,9 @@ void QuestionBlock::SetState(const QuestionBlockState newState)
 
 
 	if (state == QuestionBlockState::Blocked)
+	{
 		return;
+	}
 
 	state = newState;
 	if (newState == QuestionBlockState::Opened)
@@ -48,73 +51,100 @@ void QuestionBlock::Render()
 	anim->Render(round(renderX), round(renderY), false, false);
 }
 
+void QuestionBlock::CheckHitBounce(vector<GameObject*>& coObjects)
+{
+	for (auto& go : coObjects)
+	{
+		if (!go->GetBoundingBox().IsColliding(bounceCheckBox))
+			continue;
+
+		auto mushroom = dynamic_cast<Mushroom*>(go);
+		if (mushroom != nullptr)
+		{
+			float pushAmount;
+			auto pushDir = bounceCheckBox.GetPushDir(mushroom->GetBoundingBox(), pushAmount);
+			if (pushDir.x != 0)
+			{
+				mushroom->SetMoveDirX(pushDir.x);
+			}
+		}
+		auto goomba = dynamic_cast<Goomba*>(go);
+		if (goomba != nullptr)
+		{
+			goomba->SetState(GoombaState::DeadUpsideDown);
+		}
+	}
+}
+
 void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 	if (state == QuestionBlockState::Blocked)
 		return;
 
-	if (state != QuestionBlockState::Opened)
-		return;
-
-	if (!spawnInternalItem)
+	if (state == QuestionBlockState::Opened)
 	{
-		for (auto& go : coObjects)
+		if (!spawnInternalItem)
 		{
-			if (!go->GetBoundingBox().IsColliding(bounceCheckBox))
-				continue;
+			CheckHitBounce(coObjects);
 
-			auto mushroom = dynamic_cast<Mushroom*>(go);
-			if (mushroom != nullptr)
+			if (drop == BlockDropType::Coin)
 			{
-				float pushAmount;
-				auto pushDir = bounceCheckBox.GetPushDir(mushroom->GetBoundingBox(), pushAmount);
-				if (pushDir.x != 0)
+				ctx->addObject(new Coin(
+					Vector2Int(startPosition.x, startPosition.y),
+					CoinState::CollectedFromQuestionBox)
+				);
+			}
+			else if (drop == BlockDropType::JewDestroyer)
+			{
+				if (ctx->mario == nullptr)
+					return;
+
+				auto power = ctx->mario->GetPowerLevel();
+
+				if (power == MarioPower::Normal)
 				{
-					mushroom->SetMoveDirX(pushDir.x);
+					ctx->addObject(new Mushroom(position));
 				}
+				if (power == MarioPower::Big)
+				{
+					ctx->addObject(new Flower(position));
+				}
+
 			}
-			auto goomba = dynamic_cast<Goomba*>(go);
-			if (goomba != nullptr)
+			spawnInternalItem = true;
+		}
+
+		moveUpTimer.ProcessTimer(dt);
+		if (!moveUpTimer.IsFinished())
+		{
+			renderPosition.y -= 125.0f * dt;
+
+		}
+		else
+		{
+			if (renderPosition.y < startPosition.y)
 			{
-				goomba->SetState(GoombaState::DeadUpsideDown);
+				renderPosition.y += 9000.0f * dt * dt;
+
 			}
+			else
+			{
+				moveUpTimer.SetIdle();
+				renderPosition.y = startPosition.y;
+				state = QuestionBlockState::Blocked;
+			}
+		}
+	}
 
+	if (state == QuestionBlockState::Break)
+	{
+		CheckHitBounce(coObjects);
+		auto debris = new BrickExplode(startPosition);
+		ctx->addObject(debris);
+		isDeleted = true;
+		state = QuestionBlockState::Blocked;
+	}
 	
-		}
-
-		if (drop == BlockDropType::Coin)
-		{
-			ctx->addObject(new Coin(
-				Vector2Int(startPosition.x, startPosition.y),
-				CoinState::CollectedFromQuestionBox)
-			);
-		}else if (drop == BlockDropType::JewDestroyer)
-		{
-			ctx->addObject(new Mushroom(position));
-		}
-		spawnInternalItem = true;
-	}
-
-	moveUpTimer.ProcessTimer(dt);
-	if (!moveUpTimer.IsFinished())
-	{
-		renderPosition.y -= 125.0f * dt;
-
-
-
-	}else
-	{
-		if (renderPosition.y < startPosition.y)
-		{
-			renderPosition.y += 9000.0f * dt * dt;
-
-		}else
-		{
-			moveUpTimer.SetIdle();
-			renderPosition.y = startPosition.y;
-			state = QuestionBlockState::Blocked;
-		}
-	}
 }
 
 QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop, const bool isBrick, const bool isHidden) : GameObject(startPos.x, startPos.y)

@@ -148,6 +148,13 @@ constexpr int BLOCK_OVERWORLD_BLOCKED_SPRITE_1 = 31201;
 constexpr int BRICK_OVERWORLD_IDLE_ANIM_ID = 31300;
 constexpr int BRICK_OVERWORLD_IDLE_SPRITE_1 = 31301;
 
+// Brick Explode (A = 400) // animation index doesn't matter but use anyway lol
+
+constexpr int BRICK_EXPLODE_SPRITE_1 = 31401;
+constexpr int BRICK_EXPLODE_SPRITE_2 = 31402;
+constexpr int BRICK_EXPLODE_SPRITE_3 = 31403;
+constexpr int BRICK_EXPLODE_SPRITE_4 = 31404;
+
 /// ================================
 
 // Items (E=4000, T=1 (overworld))
@@ -213,6 +220,7 @@ enum SFX: std::uint8_t
 	MARIO_BUMP,
 	MARIO_POWERUP,
 	POWERUP_APPEARS,
+	BREAK_BLOCK
 };
 
 /// FONT

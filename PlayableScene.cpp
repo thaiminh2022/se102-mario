@@ -67,10 +67,10 @@ void PlayableScene::Load()
 
 	// player
 	auto playerStart = config->entityData.playerStarts;
-	player = new Mario(playerStart.x, playerStart.y);
+	ctx->mario = new Mario(playerStart.x, playerStart.y);
 
-	c->SetTarget(player);
-	objects.push_back(player);
+	c->SetTarget(ctx->mario);
+	objects.push_back(ctx->mario);
 
 	// goomba
 	for (const auto& gPos : config->entityData.goombaStarts)
@@ -90,7 +90,7 @@ void PlayableScene::Load()
 	//bricks
 	for (const auto& qbData : config->entityData.brickBlocks)
 	{
-		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, true, true);
+		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, true, false);
 		objects.push_back(qb);
 	}
 
@@ -132,6 +132,8 @@ void PlayableScene::Render()
 {
 	LevelLoader::GetInstance()->GetTilemapForLevel(id)->Render();
 
+
+	std::sort(objects.begin(), objects.end(), GameObject::SortRenderIndex);
 	for (const auto& obj : objects)
 	{
 		obj->Render();

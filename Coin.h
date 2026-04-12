@@ -21,5 +21,6 @@ public:
 	Coin(Vector2Int startPos, CoinState state = CoinState::Idle);
 	Rect GetBoundingBox() override;
 	bool IsBlocking() override { return false; }
+	int GetRenderIndex() override { return -1; }
 };
 

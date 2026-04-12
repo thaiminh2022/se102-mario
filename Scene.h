@@ -2,11 +2,14 @@
 #include <vector>
 #include "Tilemap.h"
 #include <functional>
+
+class Mario;
 class GameObject;
 using std::vector;
 
 struct SceneContext
 {
+	Mario* mario;
 	Tilemap* tilemap;
 	std::function<void(GameObject*)> addObject;
 };
