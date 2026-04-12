@@ -55,6 +55,8 @@ enum class MarioPower
 	Big,
 	Fire
 };
+
+
 class Mario : public GameObject
 {
 	bool isGrounded;
@@ -63,14 +65,14 @@ class Mario : public GameObject
 
 	float fallAcc = 562.5f;
 	int GetFireBallCount(const vector<GameObject*>& coObjects) const;
-
 	Timer fireCooldownTimer;
-
-public:
-	Mario(int startX, int startY);
 	MarioState state;
 	MarioPower power;
 
+public:
+	Mario(int startX, int startY);
+
+	MarioPower GetPowerLevel() const { return power; }
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
 	Rect GetBoundingBox() override;

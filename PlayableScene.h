@@ -14,7 +14,6 @@ class PlayableScene :
 {
     std::queue<GameObject*> addPendingGos;
 
-	Mario* player;
 	vector<GameObject*> objects;
 	SceneContext* ctx;
 	
@@ -22,7 +21,6 @@ public:
 	int maxFireballs = 2; // Max fireballs allowed on screen at once, to prevent spamming
 	explicit PlayableScene(const int level) : Scene(level)
 	{
-		player = nullptr; // init on load
 		ctx = nullptr; // init on load
 	}
 

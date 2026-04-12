@@ -11,6 +11,7 @@
 #include "PlayableScene.h"
 
 using std::unordered_map;
+
 class Game
 {
 	static Game *_instance;

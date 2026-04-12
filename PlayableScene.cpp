@@ -67,10 +67,10 @@ void PlayableScene::Load()
 
 	// player
 	auto playerStart = config->entityData.playerStarts;
-	player = new Mario(playerStart.x, playerStart.y);
+	ctx->mario = new Mario(playerStart.x, playerStart.y);
 
-	c->SetTarget(player);
-	objects.push_back(player);
+	c->SetTarget(ctx->mario);
+	objects.push_back(ctx->mario);
 
 	// goomba
 	for (const auto& gPos : config->entityData.goombaStarts)

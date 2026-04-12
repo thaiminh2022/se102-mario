@@ -90,7 +90,20 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 			);
 		}else if (drop == BlockDropType::JewDestroyer)
 		{
-			ctx->addObject(new Mushroom(position));
+			if (ctx->mario == nullptr)
+				return;
+
+			auto power = ctx->mario->GetPowerLevel();
+
+			if (power == MarioPower::Normal)
+			{
+				ctx->addObject(new Mushroom(position));
+			}
+			if (power == MarioPower::Big)
+			{
+				ctx->addObject(new Flower(position));
+			}
+	
 		}
 		spawnInternalItem = true;
 	}
@@ -99,8 +112,6 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 	if (!moveUpTimer.IsFinished())
 	{
 		renderPosition.y -= 125.0f * dt;
-
-
 
 	}else
 	{
