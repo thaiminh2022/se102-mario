@@ -11,5 +11,7 @@ public:
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
 	Rect GetBoundingBox() override;
+	int GetRenderIndex() override { return -1; }
+
 };
 

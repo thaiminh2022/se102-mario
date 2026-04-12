@@ -132,6 +132,8 @@ void PlayableScene::Render()
 {
 	LevelLoader::GetInstance()->GetTilemapForLevel(id)->Render();
 
+
+	std::sort(objects.begin(), objects.end(), GameObject::SortRenderIndex);
 	for (const auto& obj : objects)
 	{
 		obj->Render();
