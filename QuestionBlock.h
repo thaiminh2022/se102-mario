@@ -19,12 +19,15 @@ class QuestionBlock : public GameObject
 
 	bool spawnInternalItem;
 	Rect bounceCheckBox;
+	
+	bool isBrick; // there's no differences for now
+	bool isHidden;
 
 public:
 	void SetState(QuestionBlockState newState);
 	void Render() override;
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;	
-	QuestionBlock(Vector2Int startPos, BlockDropType drop);
+	QuestionBlock(Vector2Int startPos, BlockDropType drop, bool isBrick = false, bool isHidden = false);
 	Rect GetBoundingBox() override;
 	bool IsCollidable() override { return true; }
 	bool IsBlocking() override { return true; }

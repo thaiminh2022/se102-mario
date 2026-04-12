@@ -63,19 +63,24 @@ constexpr int GOOMBA_DEAD_SPRITE_1 = 21201;
 
 // Question blocks + brick (E = 3000, T = 1 (overworld))
 
-constexpr int QUESTION_BLOCK_OVERWORLD_TEX_ID = 31000;
+constexpr int BLOCKS_OVERWORLD_TEX_ID = 31000;
 
-// Idle (flashing color) (A = 100)
+// Question block Idle (flashing color) (A = 100)
 
 constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_ANIM_ID = 31100;
 constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_1 = 31101;
 constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_2 = 31102;
 constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_3 = 31103;
 
-// Blocked (opened) (A = 200)
+// Blocked (block is opened by player) (A = 200)
 
-constexpr int QUESTION_BLOCK_OVERWORLD_BLOCKED_ANIM_ID = 31200;
-constexpr int QUESTION_BLOCK_OVERWORLD_BLOCKED_SPRITE_1 = 31201;
+constexpr int BLOCK_OVERWORLD_BLOCKED_ANIM_ID = 31200;
+constexpr int BLOCK_OVERWORLD_BLOCKED_SPRITE_1 = 31201;
+
+// Brick (A = 300)
+
+constexpr int BRICK_OVERWORLD_IDLE_ANIM_ID = 31300;
+constexpr int BRICK_OVERWORLD_IDLE_SPRITE_1 = 31301;
 
 /// ================================
 
@@ -99,7 +104,6 @@ constexpr int FLOWER_IDLE_SPRITE_1 = 41301;
 constexpr int FLOWER_IDLE_SPRITE_2 = 41302;
 constexpr int FLOWER_IDLE_SPRITE_3 = 41303;
 constexpr int FLOWER_IDLE_SPRITE_4 = 41304;
-
 
 // star anim id (A = 4)
 constexpr int STAR_IDLE_ANIM_ID = 41400;

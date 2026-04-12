@@ -87,12 +87,12 @@ void PlayableScene::Load()
 		objects.push_back(qb);
 	}
 
-	// bricks
-	//for (const auto& qbData : config->entityData.brickBlocks)
-	//{
-	//	const auto qb = new QuestionBlock(qbData.position, qbData.dropType);
-	//	objects.push_back(qb);
-	//}
+	//bricks
+	for (const auto& qbData : config->entityData.brickBlocks)
+	{
+		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, true, true);
+		objects.push_back(qb);
+	}
 
 
 	// coins

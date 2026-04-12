@@ -1,10 +1,8 @@
 #include "QuestionBlock.h"
-
 #include "Animations.h"
 #include "AssetIDs.h"
 #include "AudioManager.h"
 #include "Coin.h"
-#include "Debug.h"
 #include "Flower.h"
 #include "Game.h"
 #include "Goomba.h"
@@ -25,15 +23,20 @@ void QuestionBlock::SetState(const QuestionBlockState newState)
 	if (newState == QuestionBlockState::Opened)
 	{
 		moveUpTimer.Start();
+		isHidden = false;
 	}
 }
 
 void QuestionBlock::Render()
 {
-	
-	const int animID = state == QuestionBlockState::Blocked ? 
-	QUESTION_BLOCK_OVERWORLD_BLOCKED_ANIM_ID: 
-	QUESTION_BLOCK_OVERWORLD_IDLE_ANIM_ID;
+	if (isHidden)
+		return;
+
+	int animID = BLOCK_OVERWORLD_BLOCKED_ANIM_ID;
+	if (state != QuestionBlockState::Blocked)
+	{
+		animID = isBrick ? BRICK_OVERWORLD_IDLE_ANIM_ID : QUESTION_BLOCK_OVERWORLD_IDLE_ANIM_ID;
+	}
 
 
 	const auto anim = Animations::GetInstance()->Get(animID);
@@ -101,8 +104,6 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 
 	}else
 	{
-
-
 		if (renderPosition.y < startPosition.y)
 		{
 			renderPosition.y += 9000.0f * dt * dt;
@@ -116,34 +117,57 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 	}
 }
 
-QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop) : GameObject(startPos.x, startPos.y)
+QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop, const bool isBrick, const bool isHidden) : GameObject(startPos.x, startPos.y)
 {
-	spawnInternalItem = false;
-	moveUpTimer = Timer(0.1f);
-	this->drop = drop;
+
+
+	
 	state = QuestionBlockState::Closed;
-	const auto t = Textures::GetInstance()->Get(QUESTION_BLOCK_OVERWORLD_TEX_ID);
+	const auto t = Textures::GetInstance()->Get(BLOCKS_OVERWORLD_TEX_ID);
 	const auto sp = Sprites::GetInstance();
 	const auto anims = Animations::GetInstance();
 
-	sp->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_1, 0, 0, 15, 15, t);
-	sp->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_2, 16, 0, 31, 15, t);
-	sp->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_3, 32, 0, 47, 15, t);
-	sp->Add(QUESTION_BLOCK_OVERWORLD_BLOCKED_SPRITE_1, 48, 0, 63, 15, t);
 
+	// question block
+	if (!isBrick && !anims->Contains(QUESTION_BLOCK_OVERWORLD_IDLE_ANIM_ID))
+	{
+		sp->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_1, 0, 0, 15, 15, t);
+		sp->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_2, 16, 0, 31, 15, t);
+		sp->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_3, 32, 0, 47, 15, t);
 
-	// idle
-	auto anim = new Animation(200);
-	anim->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_1);
-	anim->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_2);
-	anim->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_3);
-	anims->Add(QUESTION_BLOCK_OVERWORLD_IDLE_ANIM_ID, anim);
+		// idle
+		auto anim = new Animation(200);
+		anim->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_1);
+		anim->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_2);
+		anim->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_3);
+		anims->Add(QUESTION_BLOCK_OVERWORLD_IDLE_ANIM_ID, anim);
+	}
 
-	// blocked
-	anim = new Animation(0);
-	anim->Add(QUESTION_BLOCK_OVERWORLD_BLOCKED_SPRITE_1);
-	anims->Add(QUESTION_BLOCK_OVERWORLD_BLOCKED_ANIM_ID, anim);
+	if (isBrick && !anims->Contains(BRICK_OVERWORLD_IDLE_ANIM_ID))
+	{
+		// brick
+		sp->Add(BRICK_OVERWORLD_IDLE_SPRITE_1, 0, 16, 15, 31, t);
 
+		auto anim = new Animation(0);
+		anim->Add(BRICK_OVERWORLD_IDLE_SPRITE_1);
+		anims->Add(BRICK_OVERWORLD_IDLE_ANIM_ID, anim);
+	}
+
+	if (!anims->Contains(BLOCK_OVERWORLD_BLOCKED_ANIM_ID))
+	{
+		// blocked
+		sp->Add(BLOCK_OVERWORLD_BLOCKED_SPRITE_1, 48, 0, 63, 15, t);
+		auto anim = new Animation(0);
+		anim->Add(BLOCK_OVERWORLD_BLOCKED_SPRITE_1);
+		anims->Add(BLOCK_OVERWORLD_BLOCKED_ANIM_ID, anim);
+	}
+
+	spawnInternalItem = false;
+	moveUpTimer = Timer(0.1f);
+
+	this->drop = drop;
+	this->isBrick = isBrick;
+	this->isHidden = isHidden;
 
 	startPosition = position;
 	renderPosition = position;
