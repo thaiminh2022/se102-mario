@@ -12,6 +12,5 @@ public:
 	void Render() override;
 	Rect GetBoundingBox() override;
 	int GetRenderIndex() override { return -1; }
-
 };
 

@@ -7,6 +7,7 @@ enum class QuestionBlockState
 	Opened,
 	Blocked,
 	Closed,
+	Break,
 };
 
 class QuestionBlock : public GameObject
@@ -25,7 +26,10 @@ class QuestionBlock : public GameObject
 
 public:
 	void SetState(QuestionBlockState newState);
+	bool HaveDrop() const { return drop != BlockDropType::None; }
+
 	void Render() override;
+	void CheckHitBounce(vector<GameObject*>& coObjects);
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;	
 	QuestionBlock(Vector2Int startPos, BlockDropType drop, bool isBrick = false, bool isHidden = false);
 	Rect GetBoundingBox() override;

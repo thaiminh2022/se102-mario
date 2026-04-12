@@ -208,6 +208,7 @@ static void LoadResource()
 	AudioManager::GetInstance()->LoadWAV(MARIO_BUMP, L"Assets\\Audio\\SFX\\bump.wav");
 	AudioManager::GetInstance()->LoadWAV(MARIO_POWERUP, L"Assets\\Audio\\SFX\\powerup.wav");
 	AudioManager::GetInstance()->LoadWAV(POWERUP_APPEARS, L"Assets\\Audio\\SFX\\powerup_appears.wav");
+	AudioManager::GetInstance()->LoadWAV(BREAK_BLOCK, L"Assets\\Audio\\SFX\\breakblock.wav");
 
 
 

@@ -562,9 +562,22 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			if (e->normalizedDir.y == -1)
 			{
 				isGrounded = true;
-			}else if (e->normalizedDir.y == 1)
+				return;
+			}
+			
+			if (e->normalizedDir.y == 1)
 			{
-				questionBlock->SetState(QuestionBlockState::Opened);
+				
+				if (!questionBlock->HaveDrop())
+				{
+					if (power == MarioPower::Big || power == MarioPower::Fire)
+					{
+						questionBlock->SetState(QuestionBlockState::Break);
+					}
+				}else
+				{
+					questionBlock->SetState(QuestionBlockState::Opened);
+				}
 			}
 		}
 

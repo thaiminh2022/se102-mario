@@ -90,7 +90,7 @@ void PlayableScene::Load()
 	//bricks
 	for (const auto& qbData : config->entityData.brickBlocks)
 	{
-		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, true, true);
+		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, true, false);
 		objects.push_back(qb);
 	}
 
