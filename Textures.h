@@ -22,7 +22,7 @@ public:
 	}
 	Textures();
 	void Add(int id, LPCWSTR filePath);
-	bool HaveTextureWithPath(std::wstring filePath, int& outID);
+	bool HaveTextureWithPath(const std::wstring& filePath, int& outID);
 	Texture* Get(int i) { return textures[i]; }
 };
 
