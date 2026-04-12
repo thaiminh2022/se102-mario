@@ -1,13 +1,20 @@
 #pragma once
-#include <Windows.h>
 #include <vector>
 
-#include "Collision.h"
 #include "Vector2.h"
 #include "Rect.h"
 #include "Scene.h"
 
+struct CollisionEvent;
 using std::vector;
+
+
+enum class CollectableItemState
+{
+	Emerging,
+	Collectable,
+	Collected,
+};
 
 class GameObject
 {
@@ -23,7 +30,7 @@ public:
 		position = Vector2(x, y); isDeleted = false; isCollidable = true; isBlocking = true; isFacingRight = true;
 	}
 
-	virtual void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx = nullptr) {};
+	virtual void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx = nullptr) {}
 	virtual void Render() {}
 
 	virtual bool IsCollidable() { return isCollidable; }

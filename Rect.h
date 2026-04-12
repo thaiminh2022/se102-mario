@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include  "Vector2.h"
 #include <cmath>
 
 struct RectF
@@ -54,6 +55,48 @@ struct Rect
 		r.left = left;
 		r.bottom = bottom;
 		return r;
+	}
+
+	bool IsColliding(const Rect& other) const
+	{
+		return (other.left <= right &&
+			other.right >= left &&
+			other.top <= bottom &&     // FIX
+			other.bottom >= top);      // FIX
+	}
+
+	Vector2Int GetPushDir(const Rect& other, float& pushAmount) const
+	{
+		if (!IsColliding(other))
+			return Vector2Int{};
+
+		float pushLeft = right - other.left;   // move other left
+		float pushRight = other.right - left;   // move other right
+		float pushUp = bottom - other.top;   // move other up
+		float pushDown = other.bottom - top;   // move other down
+		pushAmount = pushLeft;
+
+		Vector2Int dir = Vector2Int::Right();
+
+		if (pushRight < pushAmount)
+		{
+			pushAmount = pushRight;
+			dir = Vector2Int::Left();
+		}
+
+		if (pushUp < pushAmount)
+		{
+			pushAmount = pushUp;
+			dir = Vector2Int::Down();
+		}
+
+		if (pushDown < pushAmount)
+		{
+			pushAmount = pushDown;
+			dir = Vector2Int::Up();
+		}
+
+		return dir;
 	}
 
 	int GetWidth() const {

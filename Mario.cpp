@@ -20,11 +20,16 @@
 
 #include "Debug.h"
 #include "AudioManager.h"
+#include "Coin.h"
 #include "FontManager.h"
+#include "Mushroom.h"
 #include "NextLevelPortal.h"
+#include "QuestionBlock.h"
 #include "Fireball.h"
 
 int Mario::goombaKilled = 0;
+int Mario::coinCollected = 0;
+
 
 
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
@@ -448,6 +453,16 @@ void Mario::Render()
 	std::wstring text = L"Goomba killed: " + std::to_wstring(goombaKilled);
 	auto r = Rect::FromXYWH(0, 0, g->GetBackBufferWidth(), 50);
 	FontManager::GetInstance()
+	->Draw(STATS_FONT, FontDrawConfig(r, 
+		text.c_str(),
+		D3DXCOLOR(1.0, 1.0, 1.0, 1.0), 
+		TextFormat::Center	 | TextFormat::VerticalCenter)
+	);
+
+	r = Rect::FromXYWH(301, 0, 300, 50);
+	text = L"Coins: " + std::to_wstring(coinCollected);
+
+	FontManager::GetInstance()
 		->Draw(STATS_FONT, FontDrawConfig(r,
 			text.c_str(),
 			D3DXCOLOR(1.0, 1.0, 1.0, 1.0),
@@ -536,12 +551,34 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 				AudioManager::GetInstance()->StopAll();
 				AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
 			}
+			return;
 		}
 
 		const auto portal = dynamic_cast<NextLevelPortal*>(e->otherObject);
 		if (portal != nullptr)
 		{
 			portal->RequestNextLevel();
+			return;
 		}
+		const auto questionBlock = dynamic_cast<QuestionBlock*>(e->otherObject);
+		if (questionBlock != nullptr){
+			if (e->normalizedDir.y == -1)
+			{
+				isGrounded = true;
+			}else if (e->normalizedDir.y == 1)
+			{
+				questionBlock->SetState(QuestionBlockState::Opened);
+			}
+		}
+
+		const auto coin = dynamic_cast<Coin*>(e->otherObject);
+		if (coin != nullptr)
+		{
+			coin->SetState(CoinState::Collected);
+			coinCollected++;
+			AudioManager::GetInstance()->PlaySFX(MARIO_COLLECT_COIN);
+
+		}
+
 	}
 }

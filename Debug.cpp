@@ -1,5 +1,7 @@
 #include "Debug.h"
 
+#include <corecrt_wstdio.h>
+
 HWND _hwnd = NULL;
 
 void DebugOut(const wchar_t* fmt, ...)

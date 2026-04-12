@@ -1,12 +1,11 @@
 #pragma once
-#include "Collision.h"
 #include "GameObject.h"
 #include "Rect.h"
 #include "Scene.h"
 #include <vector>
 
 
-enum class MarioState
+enum class MarioState : std::uint8_t
 {
 	Idle,
 	Walking,
@@ -25,12 +24,12 @@ enum class MarioPower
 	Big,
 	Fire
 };
-
 class Mario : public GameObject
 {
 	bool isGrounded;
 	static int goombaKilled;
 	float fireTimer = 0;
+	static int coinCollected;
 
 public:
 	Mario(int startX, int startY);

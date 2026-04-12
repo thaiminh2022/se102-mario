@@ -12,6 +12,28 @@ struct NextLevelData
 	Rect zone;
 	int levelToLoad;
 };
+enum class BlockDropType: std::uint8_t
+{
+	None,
+	Coin,
+	Starman,
+	JewDestroyer,
+};
+
+
+struct QuestionBlockData
+{
+	Vector2Int position;
+	BlockDropType dropType;
+};
+
+struct BrickBlocData
+{
+	Vector2Int position;
+	BlockDropType dropType;
+};
+
+
 
 
 struct SceneEntityData
@@ -19,8 +41,8 @@ struct SceneEntityData
 	Optional<int> backgroundMusicID;
 	Vector2Int playerStarts;
 	vector<Vector2Int> goombaStarts;
-	vector<Vector2Int> questionBlocks;
-	vector<Vector2Int> emptyBlocks;
+	vector<QuestionBlockData> questionBlocks;
+	vector<BrickBlocData> brickBlocks;
 	vector<Vector2Int> coins;
 	vector<NextLevelData> nextLevelsData;
 };

@@ -8,9 +8,11 @@
 #include <vector>
 
 #include "AudioManager.h"
+#include "Coin.h"
 #include "Goomba.h"
 #include "NextLevelPortal.h"
 #include "Fireball.h"
+#include "QuestionBlock.h"
 
 
 void PlayableScene::Update(float dt)
@@ -37,11 +39,13 @@ void PlayableScene::Update(float dt)
 	}
 	Game::GetInstance()->GetCamera()->Update();
 	CleanupDeletedObjects();
-	for (auto newObj : newObjects)
+
+	while (!addPendingGos.empty())
 	{
-		objects.push_back(newObj);
+		auto& g = addPendingGos.front();
+		objects.push_back(g);
+		addPendingGos.pop();
 	}
-	newObjects.clear();
 }
 
 void PlayableScene::Load()
@@ -50,8 +54,12 @@ void PlayableScene::Load()
 	{
 		ctx = new SceneContext;
 	}
-
 	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(id);
+	ctx->addObject =[this](GameObject *go)
+	{
+		AddObject(go);
+	};
+
 	auto config = ctx->tilemap->GetConfig();
 
 	// camera
@@ -70,6 +78,29 @@ void PlayableScene::Load()
 	{
 		const auto gb = new Goomba(gPos.x, gPos.y);
 		objects.push_back(gb);
+	}
+
+	// question
+
+	for (const auto& qbData : config->entityData.questionBlocks)
+	{
+		const auto qb = new QuestionBlock(qbData.position, qbData.dropType);
+		objects.push_back(qb);
+	}
+
+	//bricks
+	for (const auto& qbData : config->entityData.brickBlocks)
+	{
+		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, true, true);
+		objects.push_back(qb);
+	}
+
+
+	// coins
+	for (const auto& cPos : config->entityData.coins)
+	{
+		const auto coin = new Coin(cPos);
+		objects.push_back(coin);
 	}
 
 	// next level portal
@@ -127,6 +158,11 @@ void PlayableScene::CleanupDeletedObjects()
 				return o == nullptr;
 			}),
 		objects.end());
+}
+
+void PlayableScene::AddObject(GameObject* go)
+{
+	addPendingGos.push(go);
 }
 int PlayableScene::GetActiveFireballsCount() {
 	int count = 0;

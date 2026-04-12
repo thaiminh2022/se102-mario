@@ -23,6 +23,8 @@ LevelLoader *LevelLoader::_instance = nullptr;
 
 // PATH
 constexpr auto LEVEL_0_TILESET = L"Assets/Sprites/ground_and_stone_overworld.png";
+constexpr auto LEVEL_1_TILESET = L"Assets/Sprites/AssetsReference/hud.png";
+
 const string WORLD_PATH = "world_map.ldtk";
 
 // LAYER
@@ -60,6 +62,8 @@ void LevelLoader::Init()
 {
 	const auto t = Textures::GetInstance();
 	t->Add(-1, LEVEL_0_TILESET);
+	t->Add(-2, LEVEL_1_TILESET); 
+
 
 	ifstream f(WORLD_PATH);
 	const auto data = json::parse(f);
@@ -217,14 +221,67 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 	const auto qBlocks = GetEntityDataWithIdentifier(entities, QUESTION_BLOCK);
 	for (const auto& g : qBlocks)
 	{
-		sceneEntities.questionBlocks.emplace_back(g->px[0], g->px[1]);
+		string blockDrop;
+		blockDrop = g->fieldInstances[0].value.get<string>();
+		auto blockDropValue = BlockDropType::None;
+
+		if (blockDrop == "Coin")
+		{
+			blockDropValue = BlockDropType::Coin;
+
+		}else if (blockDrop == "JewDestroyer")
+		{
+			blockDropValue = BlockDropType::JewDestroyer;
+
+		}else if (blockDrop == "Starman")
+		{
+			blockDropValue = BlockDropType::Starman;
+
+		}else
+		{
+			DebugOut(L"[Error] block drop value not exists, default to none");
+
+		}
+
+
+		auto data = QuestionBlockData{
+			Vector2Int(g->px[0], g->px[1]),
+			blockDropValue,
+		};
+
+		sceneEntities.questionBlocks.push_back(data);
 	}
 
 	// Empty
 	const auto eBlocks = GetEntityDataWithIdentifier(entities, EMPTY_BRICK_BLOCK);
 	for (const auto&g : eBlocks)
 	{
-		sceneEntities.emptyBlocks.emplace_back(g->px[0], g->px[1]);
+		auto blockDrop = g->fieldInstances[0].value.get<string>();
+		auto blockDropValue = BlockDropType::None;
+		if (blockDrop == "Coin")
+		{
+			blockDropValue = BlockDropType::Coin;
+		}
+		else if (blockDrop == "JewDestroyer")
+		{
+			blockDropValue = BlockDropType::JewDestroyer;
+		}
+		else if (blockDrop == "Starman")
+		{
+			blockDropValue = BlockDropType::Starman;
+		}
+		else
+		{
+			DebugOut(L"[Error] block drop value not exists, default to none");
+		}
+
+
+		auto data = BrickBlocData{
+			Vector2Int(g->px[0], g->px[1]),
+			blockDropValue,
+		};
+
+		sceneEntities.brickBlocks.push_back(data);
 	}
 
 	// Coins
