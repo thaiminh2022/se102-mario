@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <cinttypes>
+
 // [NOTE]: NEGATIVE VALUES IS RESERVE FOR SCENE BACKGROUND
 
 /// Naming convention:
@@ -169,22 +171,6 @@ constexpr int FLOWER_IDLE_SPRITE_2 = 41302;
 constexpr int FLOWER_IDLE_SPRITE_3 = 41303;
 constexpr int FLOWER_IDLE_SPRITE_4 = 41304;
 
-/// ================================
-// FIREBALL (E = 30000, T = 1)
-/// ================================
-constexpr int FIREBALL_TEX_ID = 31000;
-// Bouncing (A = 100)
-constexpr int FIREBALL_BOUNCE_ANIM_ID = 31100;
-constexpr int FIREBALL_BOUNCE_SPRITE_1 = 31101;
-constexpr int FIREBALL_BOUNCE_SPRITE_2 = 31102;
-constexpr int FIREBALL_BOUNCE_SPRITE_3 = 31103;
-constexpr int FIREBALL_BOUNCE_SPRITE_4 = 31104;
-
-// Collision (A = 200)
-constexpr int FIREBALL_COLLIDE_ANIM_ID = 31200;
-constexpr int FIREBALL_COLLIDE_SPRITE_1 = 31201;
-constexpr int FIREBALL_COLLIDE_SPRITE_2 = 31202;
-constexpr int FIREBALL_COLLIDE_SPRITE_3 = 31203;
 // star anim id (A = 4)
 constexpr int STAR_IDLE_ANIM_ID = 41400;
 constexpr int STAR_IDLE_SPRITE_1 = 41401;
@@ -193,20 +179,45 @@ constexpr int STAR_IDLE_SPRITE_3 = 41403;
 constexpr int STAR_IDLE_SPRITE_4 = 41404;
 
 
+
+/// ================================
+// FIREBALL (E = 60000, T = 1)
+/// ================================
+constexpr int FIREBALL_TEX_ID =			61000;
+// Bouncing (A = 100)
+constexpr int FIREBALL_BOUNCE_ANIM_ID = 61100;
+constexpr int FIREBALL_BOUNCE_SPRITE_1 = 61101;
+constexpr int FIREBALL_BOUNCE_SPRITE_2 = 61102;
+constexpr int FIREBALL_BOUNCE_SPRITE_3 = 61103;
+constexpr int FIREBALL_BOUNCE_SPRITE_4 = 61104;
+
+// Collision (A = 200)
+constexpr int FIREBALL_COLLIDE_ANIM_ID = 61200;
+constexpr int FIREBALL_COLLIDE_SPRITE_1 = 61201;
+constexpr int FIREBALL_COLLIDE_SPRITE_2 = 61202;
+constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61203;
+
+
+
 /// MUSICS: Background music will be managed by negative values in ldtk
-/// SFX
 
-constexpr int MARIO_JUMP_SMALL = 1;
-constexpr int MARIO_JUMP_BIG = 2;
-constexpr int GOOMBA_STOMP = 3;
-constexpr int MARIO_DIE = 4;
-constexpr int FIREBALL = 5;
-constexpr int MARIO_COLLECT_COIN = 5;
-constexpr int MARIO_BUMP = 6;
-constexpr int MARIO_POWERUP = 7;
-constexpr int POWERUP_APPEARS = 8;
-
-
+// SFX
+enum SFX: std::uint8_t
+{
+	MARIO_JUMP_SMALL = 1,
+	MARIO_JUMP_BIG,
+	GOOMBA_STOMP,
+	MARIO_DIE,
+	FIREBALL,
+	MARIO_COLLECT_COIN,
+	MARIO_BUMP,
+	MARIO_POWERUP,
+	POWERUP_APPEARS,
+};
 
 /// FONT
-constexpr int STATS_FONT = 1;
+
+enum FONTS: std::uint8_t
+{
+	STATS_FONT = 1
+};

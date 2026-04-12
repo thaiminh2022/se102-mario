@@ -8,7 +8,6 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Goomba.h"
-#include "InputManager.h"
 #include "Rect.h"
 #include "Scene.h"
 #include "Sprites.h"
@@ -22,71 +21,84 @@
 #include "Debug.h"
 #include "AudioManager.h"
 #include "FontManager.h"
-#include "NextLevelPortal.h"
 
 
 
 Fireball::Fireball(float x, float y, bool isFacingRight)
 {
+	lifeTimeTimer = Timer(FIREBALL_LIFETIME);
+	explodeTimer = Timer(FIREBALL_EXPLOSION_TIME);
+	lifeTimeTimer.Start();
+
 	auto sprites = Sprites::GetInstance();
 	auto anims = Animations::GetInstance();
 	auto tex = Textures::GetInstance()->Get(FIREBALL_TEX_ID);
 
-	// BOUNCING
-	sprites->Add(FIREBALL_BOUNCE_SPRITE_1, 0, 8, 7, 15, tex);
-	sprites->Add(FIREBALL_BOUNCE_SPRITE_2, 10, 8, 17, 15, tex);
-	sprites->Add(FIREBALL_BOUNCE_SPRITE_3, 20, 8, 27, 15, tex);
-	sprites->Add(FIREBALL_BOUNCE_SPRITE_4, 30, 8, 37, 15, tex);
+	if (!anims->Contains(FIREBALL_BOUNCE_ANIM_ID))
+	{
+		// BOUNCING
+		sprites->Add(FIREBALL_BOUNCE_SPRITE_1, 0, 8, 7, 15, tex);
+		sprites->Add(FIREBALL_BOUNCE_SPRITE_2, 10, 8, 17, 15, tex);
+		sprites->Add(FIREBALL_BOUNCE_SPRITE_3, 20, 8, 27, 15, tex);
+		sprites->Add(FIREBALL_BOUNCE_SPRITE_4, 30, 8, 37, 15, tex);
 
-	Animation* anim = new Animation(100);
-	anim->Add(FIREBALL_BOUNCE_SPRITE_1);
-	anim->Add(FIREBALL_BOUNCE_SPRITE_2);
-	anim->Add(FIREBALL_BOUNCE_SPRITE_3);
-	anim->Add(FIREBALL_BOUNCE_SPRITE_4);
-	anims->Add(FIREBALL_BOUNCE_ANIM_ID, anim);
+		Animation* anim = new Animation(100);
+		anim->Add(FIREBALL_BOUNCE_SPRITE_1);
+		anim->Add(FIREBALL_BOUNCE_SPRITE_2);
+		anim->Add(FIREBALL_BOUNCE_SPRITE_3);
+		anim->Add(FIREBALL_BOUNCE_SPRITE_4);
+		anims->Add(FIREBALL_BOUNCE_ANIM_ID, anim);
+	}
 
-	// COLLISION
-
-	sprites->Add(FIREBALL_COLLIDE_SPRITE_1, 40, 0, 55, 15, tex);
-	sprites->Add(FIREBALL_COLLIDE_SPRITE_2, 58, 0, 73, 15, tex);
-	sprites->Add(FIREBALL_COLLIDE_SPRITE_3, 76, 0, 91, 15, tex);
-	anim = new Animation(150);
-	anim->Add(FIREBALL_COLLIDE_SPRITE_1);
-	anim->Add(FIREBALL_COLLIDE_SPRITE_2);
-	anim->Add(FIREBALL_COLLIDE_SPRITE_3);
-
-	anims->Add(FIREBALL_COLLIDE_ANIM_ID, anim);
+	if (!anims->Contains(FIREBALL_COLLIDE_ANIM_ID))
+	{
+		// COLLISION
+		sprites->Add(FIREBALL_COLLIDE_SPRITE_1, 40, 0, 55, 15, tex);
+		sprites->Add(FIREBALL_COLLIDE_SPRITE_2, 58, 0, 73, 15, tex);
+		sprites->Add(FIREBALL_COLLIDE_SPRITE_3, 76, 0, 91, 15, tex);
+		auto anim = new Animation(150);
+		anim->Add(FIREBALL_COLLIDE_SPRITE_1);
+		anim->Add(FIREBALL_COLLIDE_SPRITE_2);
+		anim->Add(FIREBALL_COLLIDE_SPRITE_3);
+		anims->Add(FIREBALL_COLLIDE_ANIM_ID, anim);
+	}
 
 	this->position.x = x;
 	this->position.y = y;
 	isDeleted = false;
 	state = FireballState::Bouncing;
-	creationTime = GetTickCount64();
 	this->isFacingRight = isFacingRight;
 	velocity.x = this->isFacingRight ? FIREBALL_SPEED : -FIREBALL_SPEED;
 }
 
 void Fireball::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
-	if (GetTickCount64() - creationTime > FIREBALL_LIFETIME) {
+	lifeTimeTimer.ProcessTimer(dt);
+	if (lifeTimeTimer.IsFinished()) {
 		isExploded = true;
 		isDeleted = true;
+		lifeTimeTimer.SetIdle();
 		return;
 	}
+
 	if (isDeleted)
 		return;
+
 	if (state == FireballState::Exploding) {
-		if (GetTickCount64() - explodeStartTime > FIREBALL_EXPLOSION_TIME) {
+		explodeTimer.ProcessTimer(dt);
+
+		if (explodeTimer.IsFinished()) {
 			isExploded = true;
 			isDeleted = true;
+			explodeTimer.SetIdle();
 		}
 		return;
 	}
 	auto g = Game::GetInstance();
 	velocity.y += FIREBALL_GRAVITY * dt;
-	float camX, camY;
-	Game::GetInstance()->GetCamera()->GetPosition(camX, camY);
-	if (position.x < camX || position.x > camX + g->GetBackBufferWidth() || position.y > g->GetBackBufferHeight()) {
+
+	auto r = GetBoundingBox();
+	if (!Game::GetInstance()->GetCamera()->IsInView(r.left, r.top, r.right, r.bottom)) {
 		isExploded = true;
 		isDeleted = true;
 		return;
@@ -170,5 +182,5 @@ void Fireball::Explode() {
 	state = FireballState::Exploding;
 	velocity.x = 0;
 	velocity.y = 0;
-	explodeStartTime = GetTickCount64();
+	explodeTimer.Start();
 }

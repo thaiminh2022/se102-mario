@@ -16,7 +16,6 @@
 #include <vector>
 
 #include <cmath>
-#include <string>
 
 #include "Debug.h"
 #include "AudioManager.h"
@@ -284,19 +283,16 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		if (fallAcc == WALK_FALL) velocity.y -= (WALK_FALL - WALK_FALL_A) * dt;
 		if (fallAcc == RUN_FALL)  velocity.y -= (RUN_FALL - RUN_FALL_A) * dt;
 	}
-	PlayableScene* currentScene = (PlayableScene*)Game::GetInstance()->GetCurrentScene();
+
+
 	if (input->IsKeyPressed(VK_CONTROL)
 		&& power == MarioPower::Fire
-		&& state != MarioState::Ducking
-		&& currentScene != nullptr
-		&& currentScene->GetActiveFireballsCount() < currentScene->getMaxFireballs())
+		&& state != MarioState::Ducking)
 	{
 		float offsetX = isFacingRight ? 16.0f : -16.0f; // Spawn fireball slightly in front of Mario
 		float offsetY = 8.0f; // Spawn fireball slightly above Mario's center
 		Fireball* f = new Fireball(position.x + offsetX, position.y + offsetY, isFacingRight);
-		if (currentScene != nullptr) {
-			currentScene->AddObject(f);
-		}
+		ctx->addObject(f);
 		AudioManager::GetInstance()->PlaySFX(FIREBALL);
 		fireTimer = 0.15f;
 	}
@@ -449,25 +445,6 @@ void Mario::Render()
 			DebugOut(L"[Error] No handling for state: %d\n", state);
 		}
 	}
-
-	std::wstring text = L"Goomba killed: " + std::to_wstring(goombaKilled);
-	auto r = Rect::FromXYWH(0, 0, g->GetBackBufferWidth(), 50);
-	FontManager::GetInstance()
-	->Draw(STATS_FONT, FontDrawConfig(r, 
-		text.c_str(),
-		D3DXCOLOR(1.0, 1.0, 1.0, 1.0), 
-		TextFormat::Center	 | TextFormat::VerticalCenter)
-	);
-
-	r = Rect::FromXYWH(301, 0, 300, 50);
-	text = L"Coins: " + std::to_wstring(coinCollected);
-
-	FontManager::GetInstance()
-		->Draw(STATS_FONT, FontDrawConfig(r,
-			text.c_str(),
-			D3DXCOLOR(1.0, 1.0, 1.0, 1.0),
-			TextFormat::Center | TextFormat::VerticalCenter)
-		);
 }
 
 Rect Mario::GetBoundingBox()

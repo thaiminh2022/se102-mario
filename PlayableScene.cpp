@@ -11,7 +11,6 @@
 #include "Coin.h"
 #include "Goomba.h"
 #include "NextLevelPortal.h"
-#include "Fireball.h"
 #include "QuestionBlock.h"
 
 
@@ -163,14 +162,4 @@ void PlayableScene::CleanupDeletedObjects()
 void PlayableScene::AddObject(GameObject* go)
 {
 	addPendingGos.push(go);
-}
-int PlayableScene::GetActiveFireballsCount() {
-	int count = 0;
-	for (auto obj : objects) {
-		if (dynamic_cast<Fireball*>(obj) != nullptr && !GameObject::IsDeleted(obj)) count++;
-	}
-	for (auto obj : newObjects) {
-		if (dynamic_cast<Fireball*>(obj) != nullptr) count++;
-	}
-	return count;
 }

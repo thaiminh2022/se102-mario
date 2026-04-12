@@ -16,7 +16,6 @@ class PlayableScene :
 
 	Mario* player;
 	vector<GameObject*> objects;
-	vector<GameObject*> newObjects;
 	SceneContext* ctx;
 	
 public:
@@ -33,18 +32,11 @@ public:
     void Render() override;
     void CleanupDeletedObjects();
     void AddObject(GameObject* go);
-	void Update(float dt) override;
-	void Load() override;
-	void UnLoad() override;
-	void Render() override;
-	void CleanupDeletedObjects();
-	void AddObject(GameObject* obj) {
-		newObjects.push_back(obj);
-	}
-	int getMaxFireballs() const {
+
+	int GetMaxFireballs() const {
 		return maxFireballs;
 	}
-	int GetActiveFireballsCount();
+	int GetActiveFireballsCount() const;
 };
 
 
