@@ -30,6 +30,22 @@ int Mario::goombaKilled = 0;
 int Mario::coinCollected = 0;
 
 
+int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
+{
+	int count = 0;
+
+	for (const auto& co: coObjects)
+	{
+		if (GameObject::IsDeleted(co))
+			continue;
+
+		if (dynamic_cast<Fireball*>(co) != nullptr)
+		{
+			count++;
+		}
+	}
+	return count;
+}
 
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 
@@ -174,6 +190,8 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
 	power = MarioPower::Fire; 
+	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
+	fireCooldownTimer.Start();
 	// manually change power here for testing, will be changed in the future when we implement power-ups
 
 }
@@ -284,17 +302,20 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		if (fallAcc == RUN_FALL)  velocity.y -= (RUN_FALL - RUN_FALL_A) * dt;
 	}
 
-
+	auto fireBallCount = GetFireBallCount(coObjects);
 	if (input->IsKeyPressed(VK_CONTROL)
 		&& power == MarioPower::Fire
-		&& state != MarioState::Ducking)
+		&& state != MarioState::Ducking
+		&& fireBallCount < MAX_FIREBALL_COUNT
+		&& fireCooldownTimer.IsFinished()
+		)
 	{
 		float offsetX = isFacingRight ? 16.0f : -16.0f; // Spawn fireball slightly in front of Mario
 		float offsetY = 8.0f; // Spawn fireball slightly above Mario's center
 		Fireball* f = new Fireball(position.x + offsetX, position.y + offsetY, isFacingRight);
 		ctx->addObject(f);
 		AudioManager::GetInstance()->PlaySFX(FIREBALL);
-		fireTimer = 0.15f;
+		fireCooldownTimer.Start();
 	}
 
 	// APPLY GRAVITY
@@ -302,8 +323,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 
 	// Y-axis clamping
-	if (velocity.y > MAX_FALL) velocity.y = MAX_FALL;
-	if (velocity.y < -MAX_FALL) velocity.y = -MAX_FALL;
+	velocity.y = min(velocity.y, MAX_FALL);
+	velocity.y = max(velocity.y, -MAX_FALL);
 
 	// Absolute X-axis clamping
 	velocity.x = min(velocity.x, MAX_RUN);
@@ -350,10 +371,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			state = MarioState::Idle;
 		}
 	}
-	if (fireTimer > 0) {
-		fireTimer -= dt;
-	}
-	if (fireTimer > 0) {
+	fireCooldownTimer.ProcessTimer(dt);
+	if (!fireCooldownTimer.IsFinished()) {
 		state = MarioState::Firing;
 	}
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
@@ -556,6 +575,5 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			AudioManager::GetInstance()->PlaySFX(MARIO_COLLECT_COIN);
 
 		}
-
 	}
 }

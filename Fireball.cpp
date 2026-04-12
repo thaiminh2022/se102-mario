@@ -154,19 +154,11 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 {
 	if (state == FireballState::Exploding) return;
 
-	if (e->IsTileCollision() && e->otherTile->IsBlocking()) {
-		if (e->normalizedDir.y == -1)
-			velocity.y = FIREBALL_BOUNCE_SPEED; // bounce up if hit the ground
-		else if (e->normalizedDir.y == 1)
-			velocity.y = 0; //bounce down if hit the ceiling
-		else if (e->normalizedDir.x != 0)
-			Explode(); // explode if hit a wall
-	}
+
 	if (e->IsObjectCollision())
 	{
 		// resolve object collision
 		const auto goomba = dynamic_cast<Goomba*>(e->otherObject);
-
 		if (goomba != nullptr)
 		{
 			if (goomba->GetState() == GoombaState::Dead)
@@ -175,7 +167,17 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 			goomba->SetState(GoombaState::Dead);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 			Explode();
+			return;
 		}
+	}
+
+	if (e->IsBlocking()) {
+		if (e->normalizedDir.y == -1)
+			velocity.y = FIREBALL_BOUNCE_SPEED; // bounce up if hit the ground
+		else if (e->normalizedDir.y == 1)
+			velocity.y = 0; //bounce down if hit the ceiling
+		else if (e->normalizedDir.x != 0)
+			Explode(); // explode if hit a wall
 	}
 }
 void Fireball::Explode() {

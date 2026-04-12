@@ -4,6 +4,8 @@
 #include "Scene.h"
 #include <vector>
 
+#include "Timer.h"
+
 // A random guy on youtube got these numbers
 const float MIN_WALK = 4.453125f; // Minimum speed to be considered walking, otherwise it's idle
 const float MAX_WALK = 93.75f;
@@ -31,6 +33,8 @@ const float WALK_FALL_A = 421.875f;
 const float RUN_FALL_A = 562.5f;
 
 const float MAX_FALL = 270.0f;
+const int MAX_FIREBALL_COUNT = 2;
+const float MARIO_TIME_BTW_FIRE = 0.15f;
 
 enum class MarioState : std::uint8_t
 {
@@ -55,12 +59,12 @@ class Mario : public GameObject
 {
 	bool isGrounded;
 	static int goombaKilled;
-	float fireTimer = 0;
 	static int coinCollected;
 
-	float ax;
-	float ay;
 	float fallAcc = 562.5f;
+	int GetFireBallCount(const vector<GameObject*>& coObjects) const;
+
+	Timer fireCooldownTimer;
 
 public:
 	Mario(int startX, int startY);

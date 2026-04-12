@@ -67,7 +67,6 @@ void Mushroom::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ct
 	if (state == CollectableItemState::Emerging)
 	{
 		isCollidable = false;
-		isBlocking = false;
 
 		if (position.y > preferPosition.y)
 		{
