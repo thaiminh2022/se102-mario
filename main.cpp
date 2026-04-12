@@ -192,13 +192,22 @@ static void LoadResource()
 	auto t = Textures::GetInstance();
 	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_sprites.png");
 	t->Add(GOOMBA_TEX_ID, L"Assets/Sprites/goomba_frames.png");
+	t->Add(BLOCKS_OVERWORLD_TEX_ID, L"Assets/Sprites/overworld_blocks.png");
+	t->Add(OVERWORLD_ITEMS_TEX_ID, L"Assets/Sprites/overworld_items.png");
+
 
 	// Audios
 	AudioManager::GetInstance()->LoadWAV(MARIO_JUMP_BIG, L"Assets\\Audio\\SFX\\jump-small.wav");
 	AudioManager::GetInstance()->LoadWAV(MARIO_JUMP_SMALL, L"Assets\\Audio\\SFX\\jump-super.wav");
 	AudioManager::GetInstance()->LoadWAV(GOOMBA_STOMP, L"Assets\\Audio\\SFX\\stomp.wav");
 	AudioManager::GetInstance()->LoadWAV(MARIO_DIE, L"Assets\\Audio\\SFX\\mariodie.wav");
-	
+	AudioManager::GetInstance()->LoadWAV(MARIO_COLLECT_COIN, L"Assets\\Audio\\SFX\\coin.wav");
+	AudioManager::GetInstance()->LoadWAV(MARIO_BUMP, L"Assets\\Audio\\SFX\\bump.wav");
+	AudioManager::GetInstance()->LoadWAV(MARIO_POWERUP, L"Assets\\Audio\\SFX\\powerup.wav");
+	AudioManager::GetInstance()->LoadWAV(POWERUP_APPEARS, L"Assets\\Audio\\SFX\\powerup_appears.wav");
+
+
+
 	// Fonts
 	FontManager::GetInstance()->AddFontCustom(
 		STATS_FONT,

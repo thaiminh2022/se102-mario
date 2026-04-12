@@ -1,13 +1,14 @@
 #pragma once
-#include <Windows.h>
 #include <vector>
-
 #include "Tilemap.h"
-
+#include <functional>
+class GameObject;
 using std::vector;
+
 struct SceneContext
 {
 	Tilemap* tilemap;
+	std::function<void(GameObject*)> addObject;
 };
 
 //Abstract class showing the interface of a scene
@@ -17,10 +18,10 @@ protected:
 	int id;
 
 public:
-	int GetID() { return id; }
+	int GetID() const { return id; }
 
 	Scene() { id = -1; }
-	Scene(int id) { this->id = id; }
+	explicit Scene(int id) { this->id = id; }
 	virtual void Update(float dt) {}
 	virtual void Render() {}
 	virtual void Load() {}

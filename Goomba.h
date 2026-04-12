@@ -1,20 +1,22 @@
 #pragma once
-#include "Collision.h"
 #include "GameObject.h"
 #include "Rect.h"
 #include "Scene.h"
 #include <vector>
+#include "Timer.h"
 
 enum class GoombaState : std::uint8_t
 {
 	Moving,
 	Dead,
+	DeadUpsideDown
 };
 
 class Goomba : public GameObject
 {
 	bool moveLeft;
 	GoombaState state;
+	Timer deadTimer;
 public:
 	Goomba(int startX, int startY);
 	void SetState(GoombaState newState);
@@ -26,6 +28,10 @@ public:
 	Rect GetBoundingBox() override
 	{
 		return Rect::FromXYWH(static_cast<int>(position.x), static_cast<int>(position.y), 16, 16);
+	}
+	bool IsBlocking() override
+	{
+		return false;
 	}
 };
 

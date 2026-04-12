@@ -68,6 +68,7 @@ void Collision::Filter(
 	for (auto& v : events)
 	{
 		if (v.isInvalid) continue;
+		if (!v.IsBlocking()) continue; // this is for blocking event only
 		if (v.self == nullptr || GameObject::IsDeleted(v.self)) continue;
 		if (v.t < 0 || v.t > 1) continue;
 
@@ -239,7 +240,6 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 	GetTilemapEvents(events, tilemap, go, dt);
 	GetObjectEvents(events, go, coObjects, dt);
 
-
 	std::sort(events.begin(), events.end(), CollisionEvent::Compare);
 
 	if (events.empty())
@@ -249,13 +249,12 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 	}
 
 	CollisionEvent* colX = nullptr, *colY = nullptr;
-	Filter(events, colX, colY);
 
+	Filter(events, colX, colY);
 	auto position = go->position;
 	auto srcVelocity = go->velocity;
-
-
-	if (colX != nullptr && colY != nullptr)
+	
+	if (colX != nullptr && colY != nullptr  )
 	{
 		// have collision on x, y
 		if (colX->t < colY->t)
@@ -353,10 +352,7 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 		if (v.isInvalid) 
 			continue;
 
-		if (v.IsObjectCollision() && v.otherObject->IsBlocking())
-			continue;
-
-		if (v.IsTileCollision() && v.otherTile->IsBlocking())
+		if (v.IsBlocking())
 			continue;
 
 		go->OnCollisionWith(&v);

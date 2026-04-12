@@ -132,8 +132,11 @@
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="CollisionEvent.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Flower.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Goomba.cpp" />
@@ -141,12 +144,16 @@
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="NextLevelPortal.cpp" />
     <ClCompile Include="PlayableScene.cpp" />
+    <ClCompile Include="QuestionBlock.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
+    <ClCompile Include="Star.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tilemap.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -154,8 +161,11 @@
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionEvent.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Flower.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="LdtkParser.h" />
@@ -164,19 +174,23 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="Mario.h" />
+    <ClInclude Include="Mushroom.h" />
     <ClInclude Include="NextLevelPortal.h" />
     <ClInclude Include="PlayableScene.h" />
+    <ClInclude Include="QuestionBlock.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEntityData.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprites.h" />
+    <ClInclude Include="Star.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Tilemap.h" />
     <ClInclude Include="TilemapConfig.h" />
     <ClInclude Include="OptionalType.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
