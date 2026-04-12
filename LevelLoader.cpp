@@ -23,6 +23,8 @@ LevelLoader *LevelLoader::_instance = nullptr;
 
 // PATH
 constexpr auto LEVEL_0_TILESET = L"Assets/Sprites/ground_and_stone_overworld.png";
+constexpr auto LEVEL_1_TILESET = L"Assets/Sprites/AssetsReference/hud.png";
+
 const string WORLD_PATH = "world_map.ldtk";
 
 // LAYER
@@ -60,6 +62,8 @@ void LevelLoader::Init()
 {
 	const auto t = Textures::GetInstance();
 	t->Add(-1, LEVEL_0_TILESET);
+	t->Add(-2, LEVEL_1_TILESET); 
+
 
 	ifstream f(WORLD_PATH);
 	const auto data = json::parse(f);

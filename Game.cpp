@@ -382,9 +382,13 @@ void Game::LoadSceneAndEnterFirst()
 	auto s1 = new PlayableScene(0);
 	// level 1-2
 	auto s2 = new PlayableScene(1);
+	auto s3 = new PlayableScene(2);
+
 
 	scenes[s1->GetID()] = s1;
 	scenes[s2->GetID()] = s2;
+	scenes[s3->GetID()] = s3;
+
 	IndicateSceneSwitch(s1->GetID());
 	SwitchScene();
 }
