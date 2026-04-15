@@ -191,8 +191,7 @@ static void LoadResource()
 {
 	auto t = Textures::GetInstance();
 	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_sprites.png");
-	t->Add(MARIO_BIG_TEX_ID, L"Assets/Sprites/mario_big_sprites.png");
-	t->Add(MARIO_FIRE_TEX_ID, L"Assets/Sprites/mario_fire_sprites.png");
+
 	t->Add(GOOMBA_TEX_ID, L"Assets/Sprites/goomba_frames.png");
 	t->Add(FIREBALL_TEX_ID, L"Assets/Sprites/fireball.png");
 	t->Add(BLOCKS_OVERWORLD_TEX_ID, L"Assets/Sprites/overworld_blocks.png");

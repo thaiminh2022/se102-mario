@@ -27,7 +27,7 @@ public:
 	void OnCollisionWith(CollisionEvent* event) override;
 	Rect GetBoundingBox() override
 	{
-		return Rect::FromXYWH(static_cast<int>(position.x), static_cast<int>(position.y), 16, 16);
+		return Rect::FromXYWH(static_cast<int>(position.x+3), static_cast<int>(position.y) + 5, 11, 11);
 	}
 	bool IsBlocking() override
 	{

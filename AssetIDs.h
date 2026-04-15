@@ -25,7 +25,11 @@
 // ---------------------------------
 // SMALL MARIO (T = 1)
 // ---------------------------------
-constexpr int MARIO_TEX_ID = 11000;
+constexpr int MARIO_TEX_ID = 10000;
+
+// ==========================================
+// SMALL MARIO (T = 1)
+// ==========================================
 
 // Idle (A = 100)
 constexpr int MARIO_IDLE_ANIM_ID = 11100;
@@ -37,7 +41,7 @@ constexpr int MARIO_RUN_SPRITE_1 = 11201;
 constexpr int MARIO_RUN_SPRITE_2 = 11202;
 constexpr int MARIO_RUN_SPRITE_3 = 11203;
 
-// SKIDDING(A = 300)
+// Skidding (A = 300)
 constexpr int MARIO_SKID_ANIM_ID = 11300;
 constexpr int MARIO_SKID_SPRITE_1 = 11301;
 
@@ -49,11 +53,9 @@ constexpr int MARIO_JUMP_SPRITE_1 = 11401;
 constexpr int MARIO_DEATH_ANIM_ID = 11700;
 constexpr int MARIO_DEATH_SPRITE_1 = 11701;
 
-
-// ---------------------------------
+// ==========================================
 // BIG MARIO (T = 2)
-// ---------------------------------
-constexpr int MARIO_BIG_TEX_ID = 12000;
+// ==========================================
 
 // Idle (A = 100)
 constexpr int MARIO_BIG_IDLE_ANIM_ID = 12100;
@@ -65,7 +67,7 @@ constexpr int MARIO_BIG_RUN_SPRITE_1 = 12201;
 constexpr int MARIO_BIG_RUN_SPRITE_2 = 12202;
 constexpr int MARIO_BIG_RUN_SPRITE_3 = 12203;
 
-// SKIDDING (A = 300)
+// Skidding (A = 300)
 constexpr int MARIO_BIG_SKID_ANIM_ID = 12300;
 constexpr int MARIO_BIG_SKID_SPRITE_1 = 12301;
 
@@ -77,11 +79,9 @@ constexpr int MARIO_BIG_JUMP_SPRITE_1 = 12401;
 constexpr int MARIO_BIG_DUCK_ANIM_ID = 12500;
 constexpr int MARIO_BIG_DUCK_SPRITE_1 = 12501;
 
-
-// ---------------------------------
+// ==========================================
 // FIRE MARIO (T = 3)
-// ---------------------------------
-constexpr int MARIO_FIRE_TEX_ID = 13000;
+// ==========================================
 
 // Idle (A = 100)
 constexpr int MARIO_FIRE_IDLE_ANIM_ID = 13100;
@@ -93,7 +93,7 @@ constexpr int MARIO_FIRE_RUN_SPRITE_1 = 13201;
 constexpr int MARIO_FIRE_RUN_SPRITE_2 = 13202;
 constexpr int MARIO_FIRE_RUN_SPRITE_3 = 13203;
 
-// SKIDing Around (A = 300)
+// Skidding (A = 300)
 constexpr int MARIO_FIRE_SKID_ANIM_ID = 13300;
 constexpr int MARIO_FIRE_SKID_SPRITE_1 = 13301;
 
@@ -109,6 +109,25 @@ constexpr int MARIO_FIRE_DUCK_SPRITE_1 = 13501;
 constexpr int MARIO_FIRE_FIRE_ANIM_ID = 13600;
 constexpr int MARIO_FIRE_FIRE_SPRITE_1 = 13601;
 
+// ==========================================
+// TRANSITION STATES (T = 4, 5, 6)
+// ==========================================
+
+// Growing (Small -> Big) (T = 4, A = 100)
+constexpr int MARIO_GROW_ANIM_ID = 14100;
+constexpr int MARIO_GROW_SPRITE_1 = 14101;
+constexpr int MARIO_GROW_SPRITE_2 = 14102;
+constexpr int MARIO_GROW_SPRITE_3 = 14103;
+
+// Shrinking (Big -> Small) (T = 5, A = 100)
+constexpr int MARIO_BIG_SHRINK_ANIM_ID = 15100;
+constexpr int MARIO_BIG_SHRINK_SPRITE_1 = 15101;
+constexpr int MARIO_BIG_SHRINK_SPRITE_2 = 15102;
+
+// Shrinking (Fire -> Small) (T = 6, A = 100)
+constexpr int MARIO_FIRE_SHRINK_ANIM_ID = 16100;
+constexpr int MARIO_FIRE_SHRINK_SPRITE_1 = 16101;
+constexpr int MARIO_FIRE_SHRINK_SPRITE_2 = 16102;
 
 /// ================================
 /// GOOMBA (E = 20000, T = 1)
@@ -123,6 +142,7 @@ constexpr int GOOMBA_WALK_SPRITE_2 = 21102;
 // Dead (A = 200)
 constexpr int GOOMBA_DEAD_ANIM_ID = 21200;
 constexpr int GOOMBA_DEAD_SPRITE_1 = 21201;
+
 
 
 /// ================================

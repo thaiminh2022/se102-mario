@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "GameObject.h"
 #include "Rect.h"
 #include "Scene.h"
@@ -46,7 +46,9 @@ enum class MarioState : std::uint8_t
 	Ducking,
 	PullingFlag,
 	Dying,
-	Firing
+	Firing,
+	Growing,
+	Shrinking
 };
 
 enum class MarioPower
@@ -66,6 +68,13 @@ class Mario : public GameObject
 	float fallAcc = 562.5f;
 	int GetFireBallCount(const vector<GameObject*>& coObjects) const;
 	Timer fireCooldownTimer;
+
+	float transformTimer = 0;            // Bộ đếm ngược thời gian biến hình
+	MarioPower targetPower;              // Dạng sức mạnh mà Mario sắp biến thành
+	MarioPower previousPower;            // Dạng sức mạnh trước khi biến hình (để vẽ chớp nháy)
+	const float TRANSFORM_TIME = 1000.0f; // Tổng thời gian biến hình (1 giây)
+	const float FLASH_RATE = 100.0f;      // Tốc độ chớp nháy (100ms / lần)
+
 	MarioState state;
 	MarioPower power;
 
