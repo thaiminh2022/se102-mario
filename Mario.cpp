@@ -117,7 +117,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	sprites->Add(MARIO_BIG_RUN_SPRITE_1, 16, 16, 31, 47, marioTex);
 	sprites->Add(MARIO_BIG_RUN_SPRITE_2, 32, 16, 47, 47, marioTex);
 	sprites->Add(MARIO_BIG_RUN_SPRITE_3, 48, 16, 63, 47, marioTex);
-	
+
 	sprites->Add(MARIO_BIG_SKID_SPRITE_1, 64, 16, 79, 47, marioTex);
 
 	sprites->Add(MARIO_BIG_JUMP_SPRITE_1, 80, 16, 95, 47, marioTex);
@@ -222,11 +222,10 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
-	power = MarioPower::Fire;
+	power = MarioPower::Normal;
 	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
 	fireCooldownTimer.Start();
-	// manually change power here for testing, will be changed in the future when we implement power-ups
-
+	transformTimer = Timer(MARIO_TRANSFORM_TIME);
 }
 
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
@@ -240,8 +239,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		return;
 	}
 	if (state == MarioState::Growing) {
-		transformTimer -= dt * 1000;
-		if (transformTimer > 0)
+		transformTimer.ProcessTimer(dt);
+		if (!transformTimer.IsFinished())
 			return;
 		else {
 			power = MarioPower::Big;
@@ -249,6 +248,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 				state = MarioState::Idle;
 			else
 				state = MarioState::Jumping;
+			transformTimer.SetIdle();
 		}
 	}
 	auto g = Game::GetInstance();
@@ -647,7 +647,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			if (power == MarioPower::Normal)
 			{
 				state = MarioState::Growing;
-				transformTimer = TRANSFORM_TIME;
+				transformTimer.Start();
 				// add some pushback so player won't fall off the ground
 				position.y -= 17;
 			}
@@ -661,7 +661,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 
 			if (power == MarioPower::Big)
 			{
-				power = MarioPower::Fire;
+				power = MarioPower::Fire; // Instantly power up to Fire, no animation for this one
 			}
 		}
 	}

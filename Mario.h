@@ -35,6 +35,7 @@ const float RUN_FALL_A = 562.5f;
 const float MAX_FALL = 270.0f;
 const int MAX_FIREBALL_COUNT = 2;
 const float MARIO_TIME_BTW_FIRE = 0.15f;
+const float MARIO_TRANSFORM_TIME = 1.0f;
 
 enum class MarioState : std::uint8_t
 {
@@ -68,12 +69,7 @@ class Mario : public GameObject
 	float fallAcc = 562.5f;
 	int GetFireBallCount(const vector<GameObject*>& coObjects) const;
 	Timer fireCooldownTimer;
-
-	float transformTimer = 0;            // Bộ đếm ngược thời gian biến hình
-	MarioPower targetPower;              // Dạng sức mạnh mà Mario sắp biến thành
-	MarioPower previousPower;            // Dạng sức mạnh trước khi biến hình (để vẽ chớp nháy)
-	const float TRANSFORM_TIME = 1000.0f; // Tổng thời gian biến hình (1 giây)
-	const float FLASH_RATE = 100.0f;      // Tốc độ chớp nháy (100ms / lần)
+	Timer transformTimer;
 
 	MarioState state;
 	MarioPower power;
