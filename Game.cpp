@@ -219,6 +219,12 @@ void Game::DrawDebugRectWithCamera(Rect r, D3DXCOLOR color)
 
 void Game::FlushDebugRect()
 {
+	if (!IsDebuggerPresent())
+	{
+		return;
+	}
+
+
 	if (debugRects.empty()) return;
 
 	// Backup old blend state if needed

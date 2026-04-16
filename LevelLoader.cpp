@@ -40,6 +40,7 @@ const string EMPTY_BRICK_BLOCK= "EmptyBrickBlock";
 const string COIN = "Coin";
 const string NEXT_LEVEL_ZONE = "NextLevel";
 const string BACKGROUND_MUSIC = "BackgroundMusic";
+const string FIREBALL_TRAP = "FireballTrap";
 
 /// Return the tilemap object for [level]. Value will be cached if new
 Tilemap* LevelLoader::GetTilemapForLevel(const int level)
@@ -327,6 +328,13 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 		}
 
 	}
+	// fireball trap
+	const auto traps = GetEntityDataWithIdentifier(entities, FIREBALL_TRAP);
+	for (const auto& g : traps)
+	{
+		sceneEntities.fireballTraps.emplace_back(g->px[0], g->px[1]);
+	}
+
 	return sceneEntities;
 }
 
