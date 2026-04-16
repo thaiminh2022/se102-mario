@@ -113,8 +113,8 @@ void PlayableScene::Load()
 	// fire trap
 	for (const auto& pPos : config->entityData.fireballTraps)
 	{
-		const auto portal = new FireballTrap(pPos);
-		objects.push_back(portal);
+		const auto trap = new FireballTrap(pPos);
+		objects.push_back(trap);
 	}
 
 	// background music

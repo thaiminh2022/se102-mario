@@ -1017,7 +1017,7 @@
 						},
 						{
 							"__identifier": "FireballTrap",
-							"__grid": [19,16],
+							"__grid": [19,14],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": { "tilesetUid": 49, "x": 32, "y": 144, "w": 16, "h": 16 },
@@ -1026,10 +1026,10 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 56,
-							"px": [304,256],
+							"px": [304,224],
 							"fieldInstances": [],
 							"__worldX": 304,
-							"__worldY": 256
+							"__worldY": 224
 						},
 						{
 							"__identifier": "FireballTrap",

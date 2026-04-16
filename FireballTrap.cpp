@@ -9,8 +9,9 @@
 #include "Sprites.h"
 #include "Textures.h"
 
-FireballTrap::FireballTrap(Vector2 startPosition) : GameObject(startPosition.x, startPosition.y)
+FireballTrap::FireballTrap(Vector2 startPosition)
 {
+	position = startPosition;
 	auto sprites = Sprites::GetInstance();
 	auto anims = Animations::GetInstance();
 	auto tex = Textures::GetInstance()->Get(FIREBALL_TEX_ID);
@@ -35,9 +36,13 @@ FireballTrap::FireballTrap(Vector2 startPosition) : GameObject(startPosition.x, 
 
 	// center
 	auto rect = FireballTrap::GetBoundingBox();
+	position.x -= rect.GetWidth() / 2.0f;
+	position.y -= rect.GetHeight() / 2.0f;
+	
+	
 	center = Vector2(
-		static_cast<float>(rect.GetWidth()) / 2.0f + static_cast<float>(rect.left), 
-		static_cast<float>(rect.GetHeight()) / 2.0f + static_cast<float>(rect.top)
+		static_cast<float>(rect.GetWidth()) / 2.0f + position.x, 
+		static_cast<float>(rect.GetHeight()) / 2.0f + position.y
 	);
 
 	// layout the left
@@ -64,10 +69,10 @@ void FireballTrap::Update(float dt, vector<GameObject*>& coObjects, SceneContext
 	{
 
 		float dist = 10;
-		float offset = 8;
+		float offset = 4;
 		auto radian = currentAngle * 3.1415f / 180.0f;
-		auto x = center.x + dist * i * cos(radian) - offset;
-		auto y = center.y + dist * i * sin(radian) - offset;
+		auto x = center.x + dist * i * cos(radian) + offset;
+		auto y = center.y + dist * i * sin(radian) + offset;
 
 		fireballPositions[i] = Vector2(x, y);
 	}
