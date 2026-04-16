@@ -36,8 +36,8 @@ FireballTrap::FireballTrap(Vector2 startPosition)
 
 	// center
 	auto rect = FireballTrap::GetBoundingBox();
-	position.x -= rect.GetWidth() / 2.0f;
-	position.y -= rect.GetHeight() / 2.0f;
+	position.x -= rect.GetWidth() / 2;
+	position.y -= rect.GetHeight() / 2;
 	
 	
 	center = Vector2(
@@ -45,7 +45,8 @@ FireballTrap::FireballTrap(Vector2 startPosition)
 		static_cast<float>(rect.GetHeight()) / 2.0f + position.y
 	);
 
-	// layout the left
+	// default positions start on the left side
+
 	for (auto i =0; i < MAX_FIREBALL_TRAP_COUNT; i++)
 	{
 		fireballPositions.emplace_back(
@@ -67,14 +68,14 @@ void FireballTrap::Update(float dt, vector<GameObject*>& coObjects, SceneContext
 
 	for (auto i = 0; i < fireballPositions.size(); i++)
 	{
+		constexpr float dist = 10;
+		constexpr float offset = 4;
+		const auto radian = currentAngle * 3.1415f / 180.0f;
+		const auto x = center.x + dist * i * cos(radian) + offset;
+		const auto y = center.y + dist * i * sin(radian) + offset;
 
-		float dist = 10;
-		float offset = 4;
-		auto radian = currentAngle * 3.1415f / 180.0f;
-		auto x = center.x + dist * i * cos(radian) + offset;
-		auto y = center.y + dist * i * sin(radian) + offset;
-
-		fireballPositions[i] = Vector2(x, y);
+		fireballPositions[i].x = x;
+		fireballPositions[i].y = y;
 	}
 
 
