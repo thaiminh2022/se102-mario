@@ -34,6 +34,10 @@ struct Rect
 	{
 		return Rect{ left, top, left + width, top + height};
 	}
+	static Rect FromXYWH(float left, float top, int width, int height)
+	{
+		return Rect{ static_cast<int>(left), static_cast<int>(top), static_cast<int>(left) + width, static_cast<int>(top) + height };
+	}
 
 	Rect(const RECT& r) {
 		left = r.left;
