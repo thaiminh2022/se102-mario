@@ -9,6 +9,7 @@
 
 #include "AudioManager.h"
 #include "Coin.h"
+#include "FireballTrap.h"
 #include "Goomba.h"
 #include "NextLevelPortal.h"
 #include "QuestionBlock.h"
@@ -108,6 +109,10 @@ void PlayableScene::Load()
 		const auto portal = new NextLevelPortal(pPos.zone, pPos.levelToLoad);
 		objects.push_back(portal);
 	}
+
+	// fire trap
+	const auto trap = new FireballTrap(Vector2(200, 200));
+	objects.push_back(trap);
 
 	// background music
 	if (config->entityData.backgroundMusicID.hasValue)
