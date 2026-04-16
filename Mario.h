@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "GameObject.h"
 #include "Rect.h"
 #include "Scene.h"
@@ -35,6 +35,7 @@ const float RUN_FALL_A = 562.5f;
 const float MAX_FALL = 270.0f;
 const int MAX_FIREBALL_COUNT = 2;
 const float MARIO_TIME_BTW_FIRE = 0.15f;
+const float MARIO_TRANSFORM_TIME = 1.0f;
 
 enum class MarioState : std::uint8_t
 {
@@ -46,7 +47,9 @@ enum class MarioState : std::uint8_t
 	Ducking,
 	PullingFlag,
 	Dying,
-	Firing
+	Firing,
+	Growing,
+	Shrinking
 };
 
 enum class MarioPower
@@ -66,6 +69,8 @@ class Mario : public GameObject
 	float fallAcc = 562.5f;
 	int GetFireBallCount(const vector<GameObject*>& coObjects) const;
 	Timer fireCooldownTimer;
+	Timer transformTimer;
+
 	MarioState state;
 	MarioPower power;
 

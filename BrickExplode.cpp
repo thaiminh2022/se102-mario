@@ -62,7 +62,7 @@ void BrickExplode::Update(float dt, vector<GameObject*>& coObjects, SceneContext
 	bottomRightDebris += velBottomRight * dt;
 
 	// spinning
-	spinTimer.Start();
+	spinTimer.ProcessTimer(dt);
 	if (spinTimer.IsFinished())
 	{
 		flipState = !flipState;
