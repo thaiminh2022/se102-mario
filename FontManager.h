@@ -79,8 +79,11 @@ public:
 
 		return _instance;
 	}
-
+	
+	// font available on computer
 	void AddFontLocal(int id, LPCWSTR faceName, FontData fontData);
+	
+	// custom file font (.tff only! Other file format is untested)
 	void AddFontCustom(int id, LPCWSTR filePath, LPCWSTR faceName, FontData fontData);
 	void Draw(int id, const FontDrawConfig& config);
 	void Draw(int id, const Vector2& pos, LPCWSTR message, Color color);

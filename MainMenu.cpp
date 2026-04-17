@@ -75,12 +75,12 @@ void MainMenu::Render()
 	const auto g = Game::GetInstance();
 	auto config = FontDrawConfig(
 		Rect::FromXYWH(0, 0, g->GetBackBufferWidth(), 100), 
-		L"MARIO NES - SE102", Colors::WHITE, \
+		L"MARIO NES - SE102", Colors::PURPLE, \
 		Center | VerticalCenter
 	);
 
-
 	f->Draw(FONTS::STATS_FONT, config);
+	f->Draw(STATS_FONT, Vector2(50, 100), L"Use arrow key to move,\nEnter to choose", Colors::YELLOW);
 
 	for (int i = PlayButton; i <= QuitButton; i++)
 	{
@@ -99,7 +99,7 @@ void MainMenu::Render()
 		f->Draw(FONTS::STATS_FONT,
 			Vector2(drawX, drawY),
 			msg.c_str(),
-			Colors::PINK
+			Colors::WHITE
 		);
 	}
 
