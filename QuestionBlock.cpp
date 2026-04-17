@@ -52,7 +52,7 @@ void QuestionBlock::Render()
 	anim->Render(round(renderX), round(renderY), false, false);
 }
 
-void QuestionBlock::CheckHitBounce(vector<GameObject*>& coObjects)
+void QuestionBlock::CheckHitBounce(vector<GameObject*>& coObjects) const
 {
 	for (auto& go : coObjects)
 	{

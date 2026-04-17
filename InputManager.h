@@ -15,6 +15,10 @@ class InputManager
 		{
 			key = false;
 		}
+		for (auto& key : previousKeys)
+		{
+			key = false;
+		}
 	}
 
 public:
