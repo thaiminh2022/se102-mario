@@ -587,6 +587,12 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 
 	if (e->IsTileCollision())
 	{
+		if (e->otherTile->type == CollisionTileType::Death)
+		{
+			OnMarioHit();
+			return;
+		}
+
 		// resolve tile collision
 		if (e->otherTile->IsBlocking()
 			&& e->normalizedDir.y == -1
