@@ -75,7 +75,7 @@ void MainMenu::Render()
 	const auto g = Game::GetInstance();
 	auto config = FontDrawConfig(
 		Rect::FromXYWH(0, 0, g->GetBackBufferWidth(), 100), 
-		L"MARIO NES - SE102", D3DXCOLOR(1.0, 1.0, 1.0, 1.0), \
+		L"MARIO NES - SE102", Colors::WHITE, \
 		Center | VerticalCenter
 	);
 
@@ -99,7 +99,7 @@ void MainMenu::Render()
 		f->Draw(FONTS::STATS_FONT,
 			Vector2(drawX, drawY),
 			msg.c_str(),
-			D3DXCOLOR(1.0, 1.0, 1.0, 1.0)
+			Colors::PINK
 		);
 	}
 

@@ -86,7 +86,7 @@ void FireballTrap::Render()
 
 	Game::GetInstance()->DrawDebugRectWithCamera(
 		GetBoundingBox(),
-		D3DXCOLOR(0.0, 1.0, 0.0, 0.4f)
+		Colors::GREEN.WithAlpha(0.5f)
 	);
 
 
@@ -101,7 +101,7 @@ void FireballTrap::Render()
 	
 		Game::GetInstance()->DrawDebugRectRaw(
 			Rect::FromXYWH(renderX, renderY, 8, 8), 
-			D3DXCOLOR(0.0, 1.0, 0.0, 1.0)
+			Colors::GREEN.WithAlpha(0.7f)
 		);
 	}
 }

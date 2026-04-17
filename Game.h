@@ -8,6 +8,7 @@
 #include <xaudio2.h>
 
 #include "Camera.h"
+#include "Color.h"
 #include "PlayableScene.h"
 
 using std::unordered_map;
@@ -51,7 +52,7 @@ public:
 	}
 
 	void Init(HWND hWnd);
-	void Draw(float x, float y, Texture* tex, Rect* rect = nullptr);
+	void Draw(float x, float y, Texture* tex, Rect* rect = nullptr) const;
 	void Draw(float x, float y, Texture *tex, int l, int t, int r, int b)
 	{
 		Rect rect;
@@ -63,8 +64,8 @@ public:
 	}
 
 	// Debug helper
-	void DrawDebugRectRaw(Rect r, D3DXCOLOR color);
-	void DrawDebugRectWithCamera(Rect r, D3DXCOLOR color);
+	void DrawDebugRectRaw(Rect r, Color color);
+	void DrawDebugRectWithCamera(Rect r, Color color);
 
 	void FlushDebugRect();
 	void ClearDebugRect() { debugRects.clear(); }

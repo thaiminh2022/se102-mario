@@ -9,6 +9,7 @@ Game* Game::_instance = nullptr;
 
 void Game::Init(HWND hWnd)
 {
+
 	// retrieve client area width & height so that we can create backbuffer height & width accordingly
 	RECT r;
 	GetClientRect(hWnd, &r);
@@ -133,7 +134,7 @@ void Game::Init(HWND hWnd)
 
 }
 
-void Game::Draw(float x, float y, Texture* tex, Rect* rect)
+void Game::Draw(float x, float y, Texture* tex, Rect* rect) const
 {
 	if (tex == nullptr)
 		return;
@@ -204,18 +205,18 @@ void Game::Draw(float x, float y, Texture* tex, Rect* rect)
 	spriteObject->DrawSpritesImmediate(&sprite, 1, 0, 0);
 }
 
-void Game::DrawDebugRectRaw(Rect r, D3DXCOLOR color)
+void Game::DrawDebugRectRaw(Rect r, Color color)
 {
-	const auto p = std::pair<Rect, D3DXCOLOR>(r, color);
+	const auto p = std::pair<Rect, D3DXCOLOR>(r, color.GetD3DXColor());
 	debugRects.push_back(p);
 }
 
-void Game::DrawDebugRectWithCamera(Rect r, D3DXCOLOR color)
+void Game::DrawDebugRectWithCamera(Rect r, Color color)
 {
 	float top, left;
 	camera->WorldToScreen(r.left, r.top, top, left);
 	Rect renderRect = Rect::FromXYWH(top, left, r.right - r.left, r.bottom - r.top);
-	const auto p = std::pair<Rect, D3DXCOLOR>(renderRect, color);
+	const auto p = std::pair<Rect, D3DXCOLOR>(renderRect, color.GetD3DXColor());
 	debugRects.push_back(p);
 }
 
