@@ -342,7 +342,7 @@
 					"canBeNull": false,
 					"arrayMinLength": null,
 					"arrayMaxLength": null,
-					"editorDisplayMode": "Hidden",
+					"editorDisplayMode": "ValueOnly",
 					"editorDisplayScale": 1,
 					"editorDisplayPos": "Above",
 					"editorLinkStyle": "StraightArrow",
@@ -861,7 +861,10 @@
 							"height": 16,
 							"defUid": 36,
 							"px": [480,208],
-							"fieldInstances": [{ "__identifier": "BrickBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "None", "__tile": null, "defUid": 53, "realEditorValues": [] }],
+							"fieldInstances": [{ "__identifier": "BrickBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "Coin", "__tile": null, "defUid": 53, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["Coin"]
+							}] }],
 							"__worldX": 480,
 							"__worldY": 208
 						},
@@ -912,9 +915,9 @@
 							"height": 16,
 							"defUid": 35,
 							"px": [496,144],
-							"fieldInstances": [{ "__identifier": "QuestionBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "Coin", "__tile": null, "defUid": 52, "realEditorValues": [{
+							"fieldInstances": [{ "__identifier": "QuestionBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "Starman", "__tile": null, "defUid": 52, "realEditorValues": [{
 								"id": "V_String",
-								"params": ["Coin"]
+								"params": ["Starman"]
 							}] }],
 							"__worldX": 496,
 							"__worldY": 144
@@ -1033,7 +1036,7 @@
 						},
 						{
 							"__identifier": "FireballTrap",
-							"__grid": [34,13],
+							"__grid": [25,14],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": { "tilesetUid": 49, "x": 32, "y": 144, "w": 16, "h": 16 },
@@ -1042,10 +1045,10 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 56,
-							"px": [544,208],
+							"px": [400,224],
 							"fieldInstances": [],
-							"__worldX": 544,
-							"__worldY": 208
+							"__worldX": 400,
+							"__worldY": 224
 						}
 					]
 				},
