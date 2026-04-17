@@ -11,7 +11,7 @@
 	"iid": "542e4d40-21a0-11f1-b547-3f7639dce03c",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 212,
+	"nextUid": 213,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "Free",
@@ -2915,22 +2915,6 @@
 							"__worldY": 464
 						},
 						{
-							"__identifier": "NextLevel",
-							"__grid": [57,9],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#BE4A2F",
-							"iid": "40401f50-21a0-11f1-956b-57b008c3f9b6",
-							"width": 32,
-							"height": 16,
-							"defUid": 41,
-							"px": [912,144],
-							"fieldInstances": [{ "__identifier": "level_to_load", "__type": "Int", "__value": 1, "__tile": null, "defUid": 42, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }],
-							"__worldX": 2624,
-							"__worldY": 464
-						},
-						{
 							"__identifier": "PlayerStart",
 							"__grid": [2,12],
 							"__pivot": [0,0],
@@ -3153,6 +3137,38 @@
 							"fieldInstances": [],
 							"__worldX": 3728,
 							"__worldY": 512
+						},
+						{
+							"__identifier": "NextLevel",
+							"__grid": [57,10],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#BE4A2F",
+							"iid": "29b09250-21a0-11f1-abcc-e333e6672b76",
+							"width": 32,
+							"height": 16,
+							"defUid": 41,
+							"px": [912,160],
+							"fieldInstances": [{ "__identifier": "level_to_load", "__type": "Int", "__value": 1, "__tile": null, "defUid": 42, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }],
+							"__worldX": 2624,
+							"__worldY": 480
+						},
+						{
+							"__identifier": "NextLevel",
+							"__grid": [204,11],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#BE4A2F",
+							"iid": "395f76d0-21a0-11f1-abcc-db218d26c96b",
+							"width": 16,
+							"height": 32,
+							"defUid": 41,
+							"px": [3264,176],
+							"fieldInstances": [{ "__identifier": "level_to_load", "__type": "Int", "__value": 2, "__tile": null, "defUid": 42, "realEditorValues": [{ "id": "V_Int", "params": [2] }] }],
+							"__worldX": 4976,
+							"__worldY": 496
 						}
 					]
 				},
@@ -3740,11 +3756,7 @@
 					"overrideTilesetUid": 56,
 					"gridTiles": [
 						{ "px": [3168,32], "src": [1,596], "f": 0, "t": 1400, "d": [620], "a": 1 },
-						{ "px": [144,48], "src": [307,1], "f": 0, "t": 18, "d": [642], "a": 1 },
-						{ "px": [160,48], "src": [324,1], "f": 0, "t": 19, "d": [643], "a": 1 },
 						{ "px": [3168,48], "src": [1,732], "f": 0, "t": 1720, "d": [831], "a": 1 },
-						{ "px": [144,64], "src": [307,18], "f": 0, "t": 58, "d": [853], "a": 1 },
-						{ "px": [160,64], "src": [324,18], "f": 0, "t": 59, "d": [854], "a": 1 },
 						{ "px": [3168,64], "src": [1,732], "f": 0, "t": 1720, "d": [1042], "a": 1 },
 						{ "px": [3008,80], "src": [1,18], "f": 0, "t": 40, "d": [1243], "a": 1 },
 						{ "px": [3024,80], "src": [1,18], "f": 0, "t": 40, "d": [1244], "a": 1 },

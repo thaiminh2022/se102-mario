@@ -35,12 +35,43 @@ const string DYNAMIC_LAYER = "Dynamic";
 // ENTITY
 const string PLAYER_START = "PlayerStart";
 const string GOOMBA_START= "GoombaStart";
+const string KOOPA_START = "KoopaStart";
 const string QUESTION_BLOCK= "QuestionBlock";
 const string EMPTY_BRICK_BLOCK= "EmptyBrickBlock";
 const string COIN = "Coin";
 const string NEXT_LEVEL_ZONE = "NextLevel";
 const string BACKGROUND_MUSIC = "BackgroundMusic";
+RenderLayer LevelLoader::ParseCollisionRenderLayer(const vector<LayerInstance>& v)
+{
+	auto layerData = GetLayerWithIdentifier(v, COLLISION_LAYER);
+	RenderLayer renderLayer;
+	int tID = -1;
 
+	auto texturePath = layerData->tilesetRelPath;
+	wstring path = LEVEL_0_TILESET;
+	if (texturePath.hasValue)
+		path = wstring(texturePath.value.begin(), texturePath.value.end());
+
+	if (!Textures::GetInstance()->HaveTextureWithPath(path, tID))
+		DebugOut(L"[ERROR] Cannot find tileset for collision layer");
+
+	renderLayer.textureID = tID;
+
+	// Collision dùng autoLayerTiles vì có RULES
+	for (auto& t : layerData->autoLayerTiles)
+	{
+		RenderTile tile;
+		tile.worldX = t.px[0];
+		tile.worldY = t.px[1];
+		tile.srcX = t.src[0];
+		tile.srcY = t.src[1];
+		tile.width = 16;
+		tile.height = 16;
+		renderLayer.tiles.push_back(tile);
+	}
+
+	return renderLayer;
+}
 /// Return the tilemap object for [level]. Value will be cached if new
 Tilemap* LevelLoader::GetTilemapForLevel(const int level)
 {
@@ -73,45 +104,44 @@ void LevelLoader::Init()
 }
 
 
-Tilemap *LevelLoader::ParseLevel(int level)
+Tilemap* LevelLoader::ParseLevel(int level)
 {
 	if (!worldMap.hasValue)
-	{
-		// what happened lol, though you got init innit?
 		Init();
-	}
 
 	const auto& map = worldMap.value;
 	if (level >= map.levels.size())
 		return nullptr;
-	
+
 	const auto& levelData = map.levels[level];
 	if (!levelData.layerInstances.hasValue)
-	{
 		return nullptr;
-	}
+
 	const auto& layersValue = levelData.layerInstances.value;
-	/// -----
+
 	vector<RenderLayer> renderLayers;
 	const auto col = ParseCollisionLayer(layersValue);
 	const auto r1 = ParseBackgroundLayer(layersValue);
+	const auto r2 = ParseCollisionRenderLayer(layersValue);
 	auto entitiesData = ParseEntityLayer(level, layersValue);
 
 	renderLayers.push_back(r1);
+	renderLayers.push_back(r2); 
 
-	
 	auto config = new TilemapConfig(
-		entitiesData, 
-		levelData.pxWid, 
-		levelData.pxHei, 
-		col.tileWidth, 
-		col.tileHeight, 
-		renderLayers, 
+		entitiesData,
+		levelData.pxWid,
+		levelData.pxHei,
+		col.tileWidth,
+		col.tileHeight,
+		renderLayers,
 		col);
 
 	const auto tilemap = new Tilemap(config);
 	return tilemap;
 }
+
+
 const LayerInstance* LevelLoader::GetLayerWithIdentifier(
 	const vector<LayerInstance>& v,
 	const string& identifier)
