@@ -3,6 +3,7 @@
 #include "Rect.h"
 #include <unordered_map>
 
+#include "Color.h"
 #include "Vector2.h"
 
 using std::unordered_map;
@@ -50,10 +51,10 @@ struct FontDrawConfig
 {
 	Rect r;
 	LPCWSTR message;
-	D3DXCOLOR color;
+	Color color;
 	UINT format;
 
-	FontDrawConfig(const Rect& r, LPCWSTR message, const D3DXCOLOR& color, UINT format)
+	FontDrawConfig(const Rect& r, const LPCWSTR message, const Color& color, const UINT format)
 		: r(r),
 		  message(message),
 		  color(color),
@@ -82,8 +83,7 @@ public:
 	void AddFontLocal(int id, LPCWSTR faceName, FontData fontData);
 	void AddFontCustom(int id, LPCWSTR filePath, LPCWSTR faceName, FontData fontData);
 	void Draw(int id, const FontDrawConfig& config);
-	void Draw(int id, const Vector2& pos, LPCWSTR message, D3DXCOLOR color);
-
+	void Draw(int id, const Vector2& pos, LPCWSTR message, Color color);
 	~FontManager();
-};
+}; 
 
