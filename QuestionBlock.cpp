@@ -7,6 +7,7 @@
 #include "Flower.h"
 #include "Game.h"
 #include "Goomba.h"
+#include "Mario.h"
 #include "Mushroom.h"
 #include "Sprites.h"
 #include "Texture.h"
