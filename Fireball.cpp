@@ -23,6 +23,12 @@
 #include "FontManager.h"
 
 
+constexpr float FIREBALL_SPEED = 200.0f;
+constexpr float FIREBALL_GRAVITY = 900.0f;
+constexpr float FIREBALL_BOUNCE_SPEED = -150.0f;
+constexpr float FIREBALL_EXPLOSION_TIME = 0.45f;
+constexpr float FIREBALL_LIFETIME = 5.0f;
+
 
 Fireball::Fireball(float x, float y, bool isFacingRight)
 {

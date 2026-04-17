@@ -6,7 +6,7 @@
 #include "Sprites.h"
 #include "Textures.h"
 
-BrickExplode::BrickExplode(Vector2 startPosition) : GameObject(startPosition.x, startPosition.y)
+BrickExplode::BrickExplode(Vector2 startPosition) : GameObject(startPosition)
 {
 	auto t = Textures::GetInstance()->Get(BLOCKS_OVERWORLD_TEX_ID);
 	auto sp = Sprites::GetInstance();

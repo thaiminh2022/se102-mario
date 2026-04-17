@@ -12,9 +12,9 @@
 FireballTrap::FireballTrap(Vector2 startPosition)
 {
 	position = startPosition;
-	auto sprites = Sprites::GetInstance();
-	auto anims = Animations::GetInstance();
-	auto tex = Textures::GetInstance()->Get(FIREBALL_TEX_ID);
+	const auto sprites = Sprites::GetInstance();
+	const auto anims = Animations::GetInstance();
+	const auto tex = Textures::GetInstance()->Get(FIREBALL_TEX_ID);
 
 	// fireball idling is basically fireball bouncing
 	if (!anims->Contains(FIREBALL_BOUNCE_ANIM_ID))
@@ -25,7 +25,7 @@ FireballTrap::FireballTrap(Vector2 startPosition)
 		sprites->Add(FIREBALL_BOUNCE_SPRITE_3, 20, 8, 27, 15, tex);
 		sprites->Add(FIREBALL_BOUNCE_SPRITE_4, 30, 8, 37, 15, tex);
 
-		Animation* anim = new Animation(100);
+		auto anim = new Animation(100);
 		anim->Add(FIREBALL_BOUNCE_SPRITE_1);
 		anim->Add(FIREBALL_BOUNCE_SPRITE_2);
 		anim->Add(FIREBALL_BOUNCE_SPRITE_3);
@@ -86,12 +86,12 @@ void FireballTrap::Render()
 
 	Game::GetInstance()->DrawDebugRectWithCamera(
 		GetBoundingBox(),
-		D3DXCOLOR(0.0, 1.0, 0.0, 0.4)
+		D3DXCOLOR(0.0, 1.0, 0.0, 0.4f)
 	);
 
 
 	float renderX, renderY;
-	auto cam = Game::GetInstance()->GetCamera();
+	const auto cam = Game::GetInstance()->GetCamera();
 	for (const auto& pos: fireballPositions)
 	{
 		cam->WorldToScreen(pos.x, pos.y, renderX, renderY);
@@ -112,7 +112,7 @@ bool FireballTrap::IsHitSmallBalls(Rect checkRect) const
 	return std::any_of(fireballPositions.begin(), fireballPositions.end(), 
 	[&checkRect](const Vector2& p)
 	{
-		Rect r = Rect::FromXYWH(p.x, p.y, 8, 8);
+		const Rect r = Rect::FromXYWH(p.x, p.y, 8, 8);
 		return r.IsColliding(checkRect);
 	});
 }

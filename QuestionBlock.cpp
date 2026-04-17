@@ -90,7 +90,10 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 			if (drop == BlockDropType::Coin)
 			{
 				ctx->addObject(new Coin(
-					Vector2Int(startPosition.x, startPosition.y),
+					Vector2Int(
+						static_cast<int>(round(startPosition.x)), 
+						static_cast<int>(round(startPosition.y))
+					),
 					CoinState::CollectedFromQuestionBox)
 				);
 			}
@@ -147,7 +150,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 	
 }
 
-QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop, const bool isBrick, const bool isHidden) : GameObject(startPos.x, startPos.y)
+QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop, const bool isBrick, const bool isHidden) : GameObject(startPos)
 {
 	
 	state = QuestionBlockState::Closed;
