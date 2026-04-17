@@ -2,6 +2,8 @@
 #include "Debug.h"
 #include "Sprites.h"
 #include "Animations.h"
+#include "AssetIDs.h"
+#include "MainMenu.h"
 
 Game* Game::_instance = nullptr;
 
@@ -384,14 +386,14 @@ void Game::IndicateSceneSwitch(int newID)
 
 void Game::LoadSceneAndEnterFirst()
 {
-	if (scenes.find(0) == scenes.end())
+	if (scenes.find(MAIN_MENU) == scenes.end())
 	{
-		AddScene(0, new PlayableScene(0));
+		AddScene(MAIN_MENU, new MainMenu());
 	}
-	IndicateSceneSwitch(0);
+	IndicateSceneSwitch(MAIN_MENU);
 	SwitchScene();
 }
-
+	
 void Game::AddScene(int id, Scene* scene)
 {
 	if (scenes.find(id) != scenes.end())

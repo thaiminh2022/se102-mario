@@ -36,9 +36,10 @@ public:
 	void KeyDown(unsigned char key);
 	void KeyUp(unsigned char key);
 
-	bool IsKeyPressed(const unsigned char key) const; //prev = false, current = true
+	bool IsKeyDownThisFrame(unsigned char key) const;
+	bool IsKeyPressed(unsigned char key) const; //prev = false, current = true
 	bool IsKeyDown(unsigned char key) const; // prev = true/false, current = true
-	bool IsKeyReleased(const unsigned char key) const; // prev = true, current = false
+	bool IsKeyReleased(unsigned char key) const; // prev = true, current = false
 	void ClearAll();
 };
 

@@ -146,6 +146,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="NextLevelPortal.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="NextLevelPortal.h" />

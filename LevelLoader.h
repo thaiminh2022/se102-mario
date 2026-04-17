@@ -39,6 +39,6 @@ public:
 		return _instance;
 	}
 
-	Tilemap* GetTilemapForLevel(const int level);
+	Tilemap* GetTilemapForLevel(int level);
 	void Init();
 };
