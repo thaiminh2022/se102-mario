@@ -2,11 +2,14 @@
 #include "Debug.h"
 #include "Sprites.h"
 #include "Animations.h"
+#include "AssetIDs.h"
+#include "MainMenu.h"
 
 Game* Game::_instance = nullptr;
 
 void Game::Init(HWND hWnd)
 {
+
 	// retrieve client area width & height so that we can create backbuffer height & width accordingly
 	RECT r;
 	GetClientRect(hWnd, &r);
@@ -131,7 +134,7 @@ void Game::Init(HWND hWnd)
 
 }
 
-void Game::Draw(float x, float y, Texture* tex, Rect* rect)
+void Game::Draw(float x, float y, Texture* tex, Rect* rect) const
 {
 	if (tex == nullptr)
 		return;
@@ -202,18 +205,18 @@ void Game::Draw(float x, float y, Texture* tex, Rect* rect)
 	spriteObject->DrawSpritesImmediate(&sprite, 1, 0, 0);
 }
 
-void Game::DrawDebugRectRaw(Rect r, D3DXCOLOR color)
+void Game::DrawDebugRectRaw(Rect r, Color color)
 {
-	const auto p = std::pair<Rect, D3DXCOLOR>(r, color);
+	const auto p = std::pair<Rect, D3DXCOLOR>(r, color.GetD3DXColor());
 	debugRects.push_back(p);
 }
 
-void Game::DrawDebugRectWithCamera(Rect r, D3DXCOLOR color)
+void Game::DrawDebugRectWithCamera(Rect r, Color color)
 {
 	float top, left;
 	camera->WorldToScreen(r.left, r.top, top, left);
 	Rect renderRect = Rect::FromXYWH(top, left, r.right - r.left, r.bottom - r.top);
-	const auto p = std::pair<Rect, D3DXCOLOR>(renderRect, color);
+	const auto p = std::pair<Rect, D3DXCOLOR>(renderRect, color.GetD3DXColor());
 	debugRects.push_back(p);
 }
 
@@ -362,7 +365,8 @@ Texture* Game::LoadTexture(LPCWSTR texturePath) const
 
 void Game::SwitchScene()
 {
-	if (nextSceneID == currentSceneID)
+
+	if (!forceReload && nextSceneID == currentSceneID)
 		return;
 
 	DebugOut(L"[INFO] Switching to scene %d\n", nextSceneID);
@@ -375,6 +379,7 @@ void Game::SwitchScene()
 
 	currentSceneID = nextSceneID;
 	scenes[currentSceneID]->Load();
+	forceReload = false;
 }
 
 void Game::IndicateSceneSwitch(int newID)
@@ -384,19 +389,31 @@ void Game::IndicateSceneSwitch(int newID)
 
 void Game::LoadSceneAndEnterFirst()
 {
-	// level 1-1
-	auto s1 = new PlayableScene(0);
-	// level 1-2
-	auto s2 = new PlayableScene(1);
-	auto s3 = new PlayableScene(2);
-
-
-	scenes[s1->GetID()] = s1;
-	scenes[s2->GetID()] = s2;
-	scenes[s3->GetID()] = s3;
-
-	IndicateSceneSwitch(s1->GetID());
+	if (scenes.find(MAIN_MENU) == scenes.end())
+	{
+		AddScene(MAIN_MENU, new MainMenu());
+	}
+	IndicateSceneSwitch(MAIN_MENU);
 	SwitchScene();
+}
+	
+void Game::AddScene(int id, Scene* scene)
+{
+	if (scenes.find(id) != scenes.end())
+		return;
+
+	scenes[id] = scene;
+}
+
+bool Game::HaveSceneWithID(const int id)
+{
+	return scenes.find(id) != scenes.end();
+}
+
+void Game::ReloadCurrentScene()
+{
+	forceReload = true;
+	IndicateSceneSwitch(currentSceneID);
 }
 
 Game::~Game()

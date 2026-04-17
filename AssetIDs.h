@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <cinttypes>
 
 // [NOTE]: NEGATIVE VALUES IS RESERVE FOR SCENE BACKGROUND
 
@@ -16,6 +15,9 @@
 ///
 /// This can be read as:
 /// 10000 + 2000 + 300 + 40 + 5
+
+#include <cinttypes>
+
 
 
 // ---------------------------------
@@ -221,6 +223,16 @@ constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61203;
 
 
 
+
+// SCENES THAT ARE NOT PLAYABLE SCENE
+// PLAYABLE SCENES IS MANAGE BY LEVEL LOADER (INIT FUNCTION)
+// NEGATIVE VALUE (AND 0) IS FOR PLAYABLE SCENE ONLY
+
+enum NonPlayableScene : std::int8_t
+{
+	MAIN_MENU = 1,
+};
+
 /// MUSICS: Background music will be managed by negative values in ldtk
 
 // SFX
@@ -239,7 +251,6 @@ enum SFX: std::uint8_t
 };
 
 /// FONT
-
 enum FONTS: std::uint8_t
 {
 	STATS_FONT = 1

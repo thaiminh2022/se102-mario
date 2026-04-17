@@ -54,7 +54,7 @@ void PlayableScene::Load()
 	{
 		ctx = new SceneContext;
 	}
-	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(id);
+	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
 	ctx->addObject =[this](GameObject *go)
 	{
 		AddObject(go);
@@ -138,7 +138,7 @@ void PlayableScene::UnLoad()
 
 void PlayableScene::Render()
 {
-	LevelLoader::GetInstance()->GetTilemapForLevel(id)->Render();
+	LevelLoader::GetInstance()->GetTilemapForLevel(level)->Render();
 
 
 	std::sort(objects.begin(), objects.end(), GameObject::SortRenderIndex);

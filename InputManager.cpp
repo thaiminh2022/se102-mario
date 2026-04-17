@@ -13,6 +13,12 @@ void InputManager::KeyUp(const unsigned char key)
 {
 	currentKeys[key] = false;
 }
+
+bool InputManager::IsKeyDownThisFrame(unsigned char key) const
+{
+	return currentKeys[key] &&!previousKeys[key];
+}
+
 void InputManager::Update()
 {
 	std::memcpy(previousKeys, currentKeys, sizeof(currentKeys));

@@ -49,6 +49,25 @@ int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
 	return count;
 }
 
+void Mario::OnMarioHit()
+{
+	if (power != MarioPower::Normal)
+	{
+		power = MarioPower::Normal;
+		state = MarioState::Idle;
+		return;
+	}
+	velocity.y = -250.0f;
+	velocity.x = 0;
+	isCollidable = false;
+	state = MarioState::Dying;
+	AudioManager::GetInstance()->StopAll();
+	AudioManager::GetInstance()->Play(MARIO_DIE, false, []()
+	{
+		Game::GetInstance()->ReloadCurrentScene();
+	});
+}
+
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 
 {
@@ -253,7 +272,6 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		}
 	}
 	auto g = Game::GetInstance();
-	/*g->DrawDebugRect(GetBoundingBox(), D3DXCOLOR(1, 0, 0, 1));*/
 	auto input = InputManager::GetInstance();
 	if (isGrounded)
 	{
@@ -438,18 +456,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		if (!fireballTrap->IsHitSmallBalls(GetBoundingBox()))
 			continue;
 
-		if (power != MarioPower::Normal)
-		{
-			power = MarioPower::Normal;
-			state = MarioState::Idle;
-			return;
-		}
-		velocity.y = -250.0f;
-		velocity.x = 0;
-		isCollidable = false;
-		state = MarioState::Dying;
-		AudioManager::GetInstance()->StopAll();
-		AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
+		OnMarioHit();
 	}
 
 
@@ -580,6 +587,12 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 
 	if (e->IsTileCollision())
 	{
+		if (e->otherTile->type == CollisionTileType::Death)
+		{
+			OnMarioHit();
+			return;
+		}
+
 		// resolve tile collision
 		if (e->otherTile->IsBlocking()
 			&& e->normalizedDir.y == -1
@@ -615,19 +628,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			}
 			else
 			{
-				if (power != MarioPower::Normal)
-				{
-					power = MarioPower::Normal;
-					state = MarioState::Idle;
-					return;
-				}
-				// got kill by goomba, bad
-				velocity.y = -250.0f;
-				velocity.x = 0;
-				isCollidable = false;
-				state = MarioState::Dying;
-				AudioManager::GetInstance()->StopAll();
-				AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
+				OnMarioHit();
 			}
 			return;
 		}
