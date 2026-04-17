@@ -8,7 +8,6 @@
 
 #include "LevelLoader.h"
 #include "Textures.h"
-#include <cstdint>
 #include <dxgi.h>
 #include <sal.h>
 
