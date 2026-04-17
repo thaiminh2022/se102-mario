@@ -82,7 +82,6 @@ void MainMenu::Render()
 
 	f->Draw(FONTS::STATS_FONT, config);
 
-
 	for (int i = PlayButton; i <= QuitButton; i++)
 	{
 		constexpr float offset = 30.0f;

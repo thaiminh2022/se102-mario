@@ -169,6 +169,7 @@
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionEvent.h" />
+    <ClInclude Include="Color.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="FireballTrap.h" />
     <ClInclude Include="Flower.h" />
