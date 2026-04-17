@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "AudioManager.h"
+#include "Game.h"
 #include "LdtkParser.h"	
 #include "nloahmann/json.hpp"
 #include "SceneEntityData.h"
@@ -69,6 +70,16 @@ void LevelLoader::Init()
 	ifstream f(WORLD_PATH);
 	const auto data = json::parse(f);
 	worldMap.Set(data.get<WorldMap>());
+
+	for (auto i = 0; i < worldMap.value.levels.size(); i++)
+	{
+		if (Game::GetInstance()->HaveSceneWithID(i))
+			continue;
+
+		const auto scene = new PlayableScene(i);
+		Game::GetInstance()->AddScene(i, scene);
+	}
+
 
 	f.close();
 }

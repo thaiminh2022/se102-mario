@@ -384,19 +384,25 @@ void Game::IndicateSceneSwitch(int newID)
 
 void Game::LoadSceneAndEnterFirst()
 {
-	// level 1-1
-	auto s1 = new PlayableScene(0);
-	// level 1-2
-	auto s2 = new PlayableScene(1);
-	auto s3 = new PlayableScene(2);
-
-
-	scenes[s1->GetID()] = s1;
-	scenes[s2->GetID()] = s2;
-	scenes[s3->GetID()] = s3;
-
-	IndicateSceneSwitch(s1->GetID());
+	if (scenes.find(0) == scenes.end())
+	{
+		AddScene(0, new PlayableScene(0));
+	}
+	IndicateSceneSwitch(0);
 	SwitchScene();
+}
+
+void Game::AddScene(int id, Scene* scene)
+{
+	if (scenes.find(id) != scenes.end())
+		return;
+
+	scenes[id] = scene;
+}
+
+bool Game::HaveSceneWithID(const int id)
+{
+	return scenes.find(id) != scenes.end();
 }
 
 Game::~Game()

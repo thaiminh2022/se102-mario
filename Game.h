@@ -86,6 +86,9 @@ public:
 	void SwitchScene();
 	void IndicateSceneSwitch(int newID);
 	void LoadSceneAndEnterFirst();
+	void AddScene(int id, Scene* scene);
+	bool HaveSceneWithID(int id);
+
 
 	// Camera related	
 	Camera* GetCamera() const { return camera; }
