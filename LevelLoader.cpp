@@ -22,8 +22,8 @@ LevelLoader *LevelLoader::_instance = nullptr;
 
 
 // PATH
-constexpr auto LEVEL_0_TILESET = L"Assets/Sprites/ground_and_stone_overworld.png";
-constexpr auto LEVEL_1_TILESET = L"Assets/Sprites/AssetsReference/hud.png";
+constexpr auto LEVEL_0_TILESET = L"Assets/Sprites/AssetsReference/fulltileset.png";
+constexpr auto LEVEL_1_TILESET = L"Assets/Sprites/AssetsReference/fulltileset.png";
 
 const string WORLD_PATH = "world_map.ldtk";
 
