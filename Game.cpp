@@ -365,7 +365,8 @@ Texture* Game::LoadTexture(LPCWSTR texturePath) const
 
 void Game::SwitchScene()
 {
-	if (nextSceneID == currentSceneID)
+
+	if (!forceReload && nextSceneID == currentSceneID)
 		return;
 
 	DebugOut(L"[INFO] Switching to scene %d\n", nextSceneID);
@@ -378,6 +379,7 @@ void Game::SwitchScene()
 
 	currentSceneID = nextSceneID;
 	scenes[currentSceneID]->Load();
+	forceReload = false;
 }
 
 void Game::IndicateSceneSwitch(int newID)
@@ -406,6 +408,12 @@ void Game::AddScene(int id, Scene* scene)
 bool Game::HaveSceneWithID(const int id)
 {
 	return scenes.find(id) != scenes.end();
+}
+
+void Game::ReloadCurrentScene()
+{
+	forceReload = true;
+	IndicateSceneSwitch(currentSceneID);
 }
 
 Game::~Game()

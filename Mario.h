@@ -74,6 +74,8 @@ class Mario : public GameObject
 	MarioState state;
 	MarioPower power;
 
+	void OnMarioHit();
+
 public:
 	Mario(int startX, int startY);
 

@@ -32,6 +32,8 @@ class Game
 	int currentSceneID;
 	int nextSceneID;
 	unordered_map<int, Scene *> scenes;
+	bool forceReload;
+
 	vector<std::pair<Rect, D3DXCOLOR>> debugRects;
 
 	Camera* camera;
@@ -40,6 +42,7 @@ class Game
 		camera = new Camera;
 		currentSceneID = -100;
 		nextSceneID = -200;
+		forceReload = false;
 	}
 
 public:
@@ -89,6 +92,7 @@ public:
 	void LoadSceneAndEnterFirst();
 	void AddScene(int id, Scene* scene);
 	bool HaveSceneWithID(int id);
+	void ReloadCurrentScene();
 
 
 	// Camera related	
