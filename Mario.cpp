@@ -25,6 +25,7 @@
 #include "NextLevelPortal.h"
 #include "QuestionBlock.h"
 #include "Fireball.h"
+#include "FireballTrap.h"
 #include "Flower.h"
 
 int Mario::goombaKilled = 0;
@@ -420,6 +421,39 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	if (!fireCooldownTimer.IsFinished()) {
 		state = MarioState::Firing;
 	}
+
+
+	// FOR NOW, FIREBALL TRAP WILL BE CHECK IN UPDATE
+	// WE SHOULD HAVE A BETTER SOLUTION
+
+	for (const auto& other: coObjects)
+	{
+		const auto fireballTrap = dynamic_cast<FireballTrap*>(other);
+		if (fireballTrap == nullptr)
+			continue;
+
+		if (!fireballTrap->GetBoundingBox().IsColliding(GetBoundingBox()))
+			continue;
+		
+		if (!fireballTrap->IsHitSmallBalls(GetBoundingBox()))
+			continue;
+
+		if (power != MarioPower::Normal)
+		{
+			power = MarioPower::Normal;
+			state = MarioState::Idle;
+			return;
+		}
+		velocity.y = -250.0f;
+		velocity.x = 0;
+		isCollidable = false;
+		state = MarioState::Dying;
+		AudioManager::GetInstance()->StopAll();
+		AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
+	}
+
+
+
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }
 
@@ -664,5 +698,6 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 				power = MarioPower::Fire; // Instantly power up to Fire, no animation for this one
 			}
 		}
+
 	}
 }

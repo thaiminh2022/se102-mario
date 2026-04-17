@@ -45,5 +45,6 @@ struct SceneEntityData
 	vector<BrickBlocData> brickBlocks;
 	vector<Vector2Int> coins;
 	vector<NextLevelData> nextLevelsData;
+	vector<Vector2Int> fireballTraps;
 };
 

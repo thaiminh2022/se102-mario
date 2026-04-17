@@ -49,6 +49,15 @@ void Camera::WorldToScreen(float worldX, float worldY, float& ox, float& oy) con
 	oy = worldY - y;
 }
 
+void Camera::WorldToScreen(int worldX, int worldY, float& ox, float& oy) const
+{
+	return WorldToScreen(
+		static_cast<float>(worldX),
+		static_cast<float>(worldY),
+		ox,
+		oy);
+}
+
 void Camera::Update()
 {
 	auto g = Game::GetInstance();
@@ -96,5 +105,16 @@ bool Camera::IsInView(float left, float top, float right, float bottom) const
 		bottom <= camTop ||
 		top >= camBottom);
 }
-float Camera::getX() { return x; }
-float Camera::getY() { return y; }
+
+bool Camera::IsInView(int left, int top, int right, int bottom) const
+{
+	return IsInView(
+		static_cast<float>(left),
+		static_cast<float>(top),
+		static_cast<float>(right),
+		static_cast<float>(bottom)
+	);
+}
+
+float Camera::GetX() const { return x; }
+float Camera::GetY() const { return y; }

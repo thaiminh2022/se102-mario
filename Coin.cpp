@@ -45,7 +45,7 @@ void Coin::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	}
 }
 
-Coin::Coin(Vector2Int startPos, const CoinState state) : GameObject(startPos.x, startPos.y)
+Coin::Coin(Vector2Int startPos, const CoinState state) : GameObject(startPos)
 {
 	moveUpTimer = Timer(0.3f);
 	this->state = state;

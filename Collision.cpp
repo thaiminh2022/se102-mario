@@ -13,6 +13,8 @@
 #include <Windows.h>
 
 constexpr float PUSH_BACK_FACTOR = 0.001f;
+Collision* Collision::_instance = nullptr;
+
 
 void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*& tilemap, GameObject*& go, float dt)
 {
