@@ -51,21 +51,29 @@ int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
 
 void Mario::OnMarioHit()
 {
-	if (power != MarioPower::Normal)
-	{
-		power = MarioPower::Normal;
-		state = MarioState::Idle;
-		return;
+
+	if (!isInvincible) {
+		if (power != MarioPower::Normal)
+		{
+			state = MarioState::Shrinking;
+			AudioManager::GetInstance()->PlaySFX(PIPE_ENTER);// Original used pipe sound for power down
+			isInvincible = true;
+			transformTimer = Timer(MARIO_SHRINK_TIME);
+			transformTimer.Start();
+			return;
+		}
+		// got kill by goomba, bad
+		velocity.y = -250.0f;
+		velocity.x = 0;
+		isCollidable = false;
+		state = MarioState::Dying;
+		AudioManager::GetInstance()->StopAll();
+		AudioManager::GetInstance()->Play(MARIO_DIE, false, []()
+			{
+				Game::GetInstance()->ReloadCurrentScene();
+			});
 	}
-	velocity.y = -250.0f;
-	velocity.x = 0;
-	isCollidable = false;
-	state = MarioState::Dying;
-	AudioManager::GetInstance()->StopAll();
-	AudioManager::GetInstance()->Play(MARIO_DIE, false, []()
-	{
-		Game::GetInstance()->ReloadCurrentScene();
-	});
+
 }
 
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
@@ -484,7 +492,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	// FOR NOW, FIREBALL TRAP WILL BE CHECK IN UPDATE
 	// WE SHOULD HAVE A BETTER SOLUTION
 
-	for (const auto& other: coObjects)
+	for (const auto& other : coObjects)
 	{
 		const auto fireballTrap = dynamic_cast<FireballTrap*>(other);
 		if (fireballTrap == nullptr)
@@ -492,7 +500,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 		if (!fireballTrap->GetBoundingBox().IsColliding(GetBoundingBox()))
 			continue;
-		
+
 		if (!fireballTrap->IsHitSmallBalls(GetBoundingBox()))
 			continue;
 
@@ -679,7 +687,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			}
 			else
 			{
-				OnMarioHit();
+					OnMarioHit();
 			}
 			return;
 		}
@@ -733,6 +741,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			if (power == MarioPower::Normal)
 			{
 				state = MarioState::Growing;
+				transformTimer = Timer(MARIO_GROW_TIME);
 				transformTimer.Start();
 				// add some pushback so player won't fall off the ground
 				position.y -= 17;
@@ -745,10 +754,10 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			if (power == MarioPower::Normal)
 			{
 				state = MarioState::Growing; // If collect a flower while small, grow to big
+				transformTimer = Timer(MARIO_GROW_TIME);
 				transformTimer.Start();
 				// add some pushback so player won't fall off the ground
 				position.y -= 17;
-				transformTimer.Start();
 			}
 			else if (power == MarioPower::Big)
 			{
