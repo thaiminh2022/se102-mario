@@ -110,21 +110,18 @@ constexpr int MARIO_FIRE_FIRE_SPRITE_1 = 13601;
 // TRANSITION STATES 
 // ==========================================
 
-// Growing (Small -> Big) ( A = 100)
-constexpr int MARIO_GROW_ANIM_ID = 14100;
-constexpr int MARIO_GROW_SPRITE_1 = 14101;
-constexpr int MARIO_GROW_SPRITE_2 = 14102;
-constexpr int MARIO_GROW_SPRITE_3 = 14103;
+// Growing (Small -> Big) (T = 4, A = 100)
+constexpr int MARIO_GROWBIG_ANIM_ID = 14100;
+constexpr int MARIO_GROWBIG_SPRITE_1 = 14101;
+constexpr int MARIO_GROWBIG_SPRITE_2 = 14102;
+constexpr int MARIO_GROWBIG_SPRITE_3 = 14103;
 
-// Shrinking (Big -> Small) (A = 100)
-constexpr int MARIO_BIG_SHRINK_ANIM_ID = 15100;
-constexpr int MARIO_BIG_SHRINK_SPRITE_1 = 15101;
-constexpr int MARIO_BIG_SHRINK_SPRITE_2 = 15102;
+// Shrinking (Big -> Small) (T = 5, A = 100)
+constexpr int MARIO_SHRINK_ANIM_ID = 15100;
+constexpr int MARIO_SHRINK_SPRITE_1 = 15101;
+constexpr int MARIO_SHRINK_SPRITE_2 = 15102;
+constexpr int MARIO_SHRINK_SPRITE_3 = 15103;
 
-// Shrinking (Fire -> Small) ( A = 100)
-constexpr int MARIO_FIRE_SHRINK_ANIM_ID = 16100;
-constexpr int MARIO_FIRE_SHRINK_SPRITE_1 = 16101;
-constexpr int MARIO_FIRE_SHRINK_SPRITE_2 = 16102;
 
 /// ================================
 /// GOOMBA (E = 20000, T = 1)
@@ -247,7 +244,9 @@ enum SFX: std::uint8_t
 	MARIO_BUMP,
 	MARIO_POWERUP,
 	POWERUP_APPEARS,
-	BREAK_BLOCK
+	BREAK_BLOCK,
+	PIPE_ENTER,
+	INVINCIBILITY_THEME,
 };
 
 /// FONT

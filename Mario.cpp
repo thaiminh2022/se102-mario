@@ -27,6 +27,7 @@
 #include "Fireball.h"
 #include "FireballTrap.h"
 #include "Flower.h"
+#include "Star.h"
 
 int Mario::goombaKilled = 0;
 int Mario::coinCollected = 0;
@@ -51,21 +52,29 @@ int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
 
 void Mario::OnMarioHit()
 {
-	if (power != MarioPower::Normal)
-	{
-		power = MarioPower::Normal;
-		state = MarioState::Idle;
-		return;
+
+	if (!isInvincible) {
+		if (power != MarioPower::Normal)
+		{
+			state = MarioState::Shrinking;
+			AudioManager::GetInstance()->PlaySFX(PIPE_ENTER);// Original used pipe sound for power down
+			isInvincible = true;
+			transformTimer = Timer(MARIO_SHRINK_TIME);
+			transformTimer.Start();
+			return;
+		}
+		// got kill by goomba, bad
+		velocity.y = -250.0f;
+		velocity.x = 0;
+		isCollidable = false;
+		state = MarioState::Dying;
+		AudioManager::GetInstance()->StopAll();
+		AudioManager::GetInstance()->Play(MARIO_DIE, false, []()
+			{
+				Game::GetInstance()->ReloadCurrentScene();
+			});
 	}
-	velocity.y = -250.0f;
-	velocity.x = 0;
-	isCollidable = false;
-	state = MarioState::Dying;
-	AudioManager::GetInstance()->StopAll();
-	AudioManager::GetInstance()->Play(MARIO_DIE, false, []()
-	{
-		Game::GetInstance()->ReloadCurrentScene();
-	});
+
 }
 
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
@@ -91,9 +100,10 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 
 	sprites->Add(MARIO_DEATH_SPRITE_1, 96, 0, 111, 15, marioTex);
 
-	sprites->Add(MARIO_GROW_SPRITE_1, 0, 48, 15, 79, marioTex);
-	sprites->Add(MARIO_GROW_SPRITE_2, 16, 48, 31, 79, marioTex);
-	sprites->Add(MARIO_GROW_SPRITE_3, 0, 16, 15, 47, marioTex);
+	sprites->Add(MARIO_GROWBIG_SPRITE_1, 0, 48, 15, 79, marioTex);
+	sprites->Add(MARIO_GROWBIG_SPRITE_2, 16, 48, 31, 79, marioTex);
+	sprites->Add(MARIO_GROWBIG_SPRITE_3, 0, 16, 15, 47, marioTex);
+
 
 	// idle anim
 	Animation* anim = new Animation(300);
@@ -122,12 +132,16 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	anim->Add(MARIO_DEATH_SPRITE_1);
 	anims->Add(MARIO_DEATH_ANIM_ID, anim);
 
-	// grow anim
-	anim = new Animation(300);
-	anim->Add(MARIO_GROW_SPRITE_1, 100);
-	anim->Add(MARIO_GROW_SPRITE_2, 500);
-	anim->Add(MARIO_GROW_SPRITE_3, 100);
-	anims->Add(MARIO_GROW_ANIM_ID, anim);
+	// grow to big anim
+	anim = new Animation(150);
+	anim->Add(MARIO_GROWBIG_SPRITE_1, 100);
+	anim->Add(MARIO_GROWBIG_SPRITE_2, 100);
+	anim->Add(MARIO_GROWBIG_SPRITE_1, 100);
+	anim->Add(MARIO_GROWBIG_SPRITE_2, 100);
+	anim->Add(MARIO_GROWBIG_SPRITE_3, 100);
+	anim->Add(MARIO_GROWBIG_SPRITE_2, 100);
+	anim->Add(MARIO_GROWBIG_SPRITE_3, 100);
+	anims->Add(MARIO_GROWBIG_ANIM_ID, anim);
 
 	/// ================================
 	// BIG sprites
@@ -144,8 +158,9 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 
 	sprites->Add(MARIO_BIG_DUCK_SPRITE_1, 96, 16, 111, 47, marioTex);
 
-	sprites->Add(MARIO_BIG_SHRINK_SPRITE_1, 32, 48, 47, 79, marioTex);
-	sprites->Add(MARIO_BIG_SHRINK_SPRITE_2, 48, 48, 63, 79, marioTex);
+	sprites->Add(MARIO_SHRINK_SPRITE_1, 32, 48, 47, 79, marioTex);
+	sprites->Add(MARIO_SHRINK_SPRITE_2, 48, 48, 63, 79, marioTex);
+	sprites->Add(MARIO_SHRINK_SPRITE_3, 64, 48, 79, 79, marioTex);
 
 
 	anim = new Animation(100);
@@ -177,8 +192,22 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 
 	//shrink anim
 	anim = new Animation(100);
-	anim->Add(MARIO_BIG_SHRINK_SPRITE_1, 300);
-	anim->Add(MARIO_BIG_SHRINK_SPRITE_2, 300);
+	anim->Add(MARIO_SHRINK_SPRITE_1, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_1, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_1, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_1, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_2, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_2, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_2, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_2, 50);
+	anims->Add(MARIO_SHRINK_ANIM_ID, anim);
 
 
 	/// ================================
@@ -195,9 +224,6 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	sprites->Add(MARIO_FIRE_DUCK_SPRITE_1, 96, 80, 111, 111, marioTex);
 
 	sprites->Add(MARIO_FIRE_FIRE_SPRITE_1, 16, 80, 31, 111, marioTex);// Reusing the run sprite for firing since it's the same pose
-
-	sprites->Add(MARIO_FIRE_SHRINK_SPRITE_1, 80, 48, 95, 79, marioTex);
-	sprites->Add(MARIO_FIRE_SHRINK_SPRITE_2, 96, 48, 111, 79, marioTex);
 
 	//idle anim
 	anim = new Animation(300);
@@ -231,21 +257,17 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	anim->Add(MARIO_FIRE_FIRE_SPRITE_1);
 	anims->Add(MARIO_FIRE_FIRE_ANIM_ID, anim);
 
-	// shrink anim
-	anim = new Animation(100);
-	anim->Add(MARIO_FIRE_SHRINK_SPRITE_1, 300);
-	anim->Add(MARIO_FIRE_SHRINK_SPRITE_2, 300);
-
 	isGrounded = false;
+	isInvincible = false;
 	isCollidable = true;
 	isFacingRight = true;
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
-	power = MarioPower::Normal;
+	power = MarioPower::Big;
 	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
 	fireCooldownTimer.Start();
-	transformTimer = Timer(MARIO_TRANSFORM_TIME);
+	transformTimer = Timer(MARIO_GROW_TIME);
 }
 
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
@@ -271,6 +293,33 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			transformTimer.SetIdle();
 		}
 	}
+	if (state == MarioState::Shrinking) {
+		transformTimer.ProcessTimer(dt);
+		if (!transformTimer.IsFinished())
+			return;
+		else {
+			power = MarioPower::Normal;
+			invincibleTimer = Timer(MARIO_INVINCIBLE_TIME);
+			invincibleTimer.Start();
+			if (isGrounded)
+				state = MarioState::Idle;
+			else
+				state = MarioState::Jumping;
+			transformTimer.SetIdle();
+			return;
+		}
+	}
+
+	if (isInvincible)
+	{
+		invincibleTimer.ProcessTimer(dt);
+		if (invincibleTimer.IsFinished())
+		{
+			isInvincible = false;
+			invincibleTimer.SetIdle();
+		}
+	}
+
 	auto g = Game::GetInstance();
 	auto input = InputManager::GetInstance();
 	if (isGrounded)
@@ -444,7 +493,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	// FOR NOW, FIREBALL TRAP WILL BE CHECK IN UPDATE
 	// WE SHOULD HAVE A BETTER SOLUTION
 
-	for (const auto& other: coObjects)
+	for (const auto& other : coObjects)
 	{
 		const auto fireballTrap = dynamic_cast<FireballTrap*>(other);
 		if (fireballTrap == nullptr)
@@ -452,7 +501,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 		if (!fireballTrap->GetBoundingBox().IsColliding(GetBoundingBox()))
 			continue;
-		
+
 		if (!fireballTrap->IsHitSmallBalls(GetBoundingBox()))
 			continue;
 
@@ -466,6 +515,11 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 void Mario::Render()
 {
+	if (isInvincible) {
+		if ((GetTickCount() / 100) % 2 == 0) {
+			return; // Skip this frame to create a blinking effect
+		}
+	}
 	auto g = Game::GetInstance();
 	float renderX, renderY;
 	g->GetCamera()
@@ -480,7 +534,7 @@ void Mario::Render()
 			Animations::GetInstance()->Get(MARIO_DEATH_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
 			break;
 		case MarioState::Growing:
-			Animations::GetInstance()->Get(MARIO_GROW_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			Animations::GetInstance()->Get(MARIO_GROWBIG_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
 			break;
 		case MarioState::Walking:
 		case MarioState::Running:
@@ -522,6 +576,9 @@ void Mario::Render()
 		case MarioState::Ducking:
 			Animations::GetInstance()->Get(MARIO_BIG_DUCK_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
 			break;
+		case MarioState::Shrinking:
+			Animations::GetInstance()->Get(MARIO_SHRINK_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
 		default:
 			DebugOut(L"[Error] No handling for state: %d\n", state);
 		}
@@ -548,6 +605,9 @@ void Mario::Render()
 			break;
 		case MarioState::Firing:
 			Animations::GetInstance()->Get(MARIO_FIRE_FIRE_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
+			break;
+		case MarioState::Shrinking:
+			Animations::GetInstance()->Get(MARIO_SHRINK_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
 			break;
 		default:
 			DebugOut(L"[Error] No handling for state: %d\n", state);
@@ -628,7 +688,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			}
 			else
 			{
-				OnMarioHit();
+					OnMarioHit();
 			}
 			return;
 		}
@@ -682,6 +742,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			if (power == MarioPower::Normal)
 			{
 				state = MarioState::Growing;
+				transformTimer = Timer(MARIO_GROW_TIME);
 				transformTimer.Start();
 				// add some pushback so player won't fall off the ground
 				position.y -= 17;
@@ -691,13 +752,41 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		const auto flower = dynamic_cast<Flower*>(e->otherObject);
 		if (flower != nullptr)
 		{
+			if (power == MarioPower::Normal)
+			{
+				state = MarioState::Growing; // If collect a flower while small, grow to big
+				transformTimer = Timer(MARIO_GROW_TIME);
+				transformTimer.Start();
+				// add some pushback so player won't fall off the ground
+				position.y -= 17;
+			}
+			else if (power == MarioPower::Big)
+			{
+				power = MarioPower::Fire; // Instantly power up to Fire if already Big
+			}
+
 			flower->SetState(CollectableItemState::Collected);
 			AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
+		}
 
-			if (power == MarioPower::Big)
+
+		const auto star = dynamic_cast<Star*>(e->otherObject);
+		if (star != nullptr)
+		{
+			star->SetState(CollectableItemState::Collected);
+			auto audio = AudioManager::GetInstance();
+			
+			
+			isInvincible = true;
+			invincibleTimer = Timer(15);
+			invincibleTimer.Start();
+
+			audio->PauseMusic();
+			audio->PlaySFX(MARIO_POWERUP);
+			AudioManager::GetInstance()->Play(INVINCIBILITY_THEME, false, []()
 			{
-				power = MarioPower::Fire; // Instantly power up to Fire, no animation for this one
-			}
+					AudioManager::GetInstance()->ResumeMusic();
+			});
 		}
 
 	}
