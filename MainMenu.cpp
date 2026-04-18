@@ -79,6 +79,8 @@ void MainMenu::Render()
 		Center | VerticalCenter
 	);
 
+
+
 	f->Draw(FONTS::STATS_FONT, config);
 	f->Draw(STATS_FONT, Vector2(50, 100), L"Use arrow key to move,\nEnter to choose", Colors::YELLOW);
 

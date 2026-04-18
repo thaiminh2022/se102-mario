@@ -386,7 +386,7 @@ void Game::IndicateSceneSwitch(int newID)
 {
 	nextSceneID = newID;
 }
-
+#include "LevelTransitionScene.h"
 void Game::LoadSceneAndEnterFirst()
 {
 	if (scenes.find(MAIN_MENU) == scenes.end())
@@ -395,6 +395,16 @@ void Game::LoadSceneAndEnterFirst()
 	}
 	IndicateSceneSwitch(MAIN_MENU);
 	SwitchScene();
+
+	/*if (scenes.find(LEVELTRANSITION) == scenes.end())
+    {
+        auto transitionScene = new LevelTransitionScene(0, 3.0f);
+        
+        AddScene(LEVELTRANSITION, transitionScene);
+    }*/
+
+    //IndicateSceneSwitch(LEVELTRANSITION);
+    //SwitchScene();
 }
 	
 void Game::AddScene(int id, Scene* scene)

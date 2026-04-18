@@ -14,6 +14,7 @@
 #include "Textures.h"
 #include <algorithm>
 #include <vector>
+#include "StatManager.h"
 
 #include <cmath>
 
@@ -683,6 +684,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 				goomba->SetState(GoombaState::Dead);
 
 				goombaKilled++;
+				StatManager::AddScore(100);
 				AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 
 			}
@@ -743,6 +745,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			{
 				state = MarioState::Growing;
 				transformTimer = Timer(MARIO_GROW_TIME);
+				StatManager::AddScore(1000);
 				transformTimer.Start();
 				// add some pushback so player won't fall off the ground
 				position.y -= 17;
@@ -766,6 +769,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			}
 
 			flower->SetState(CollectableItemState::Collected);
+			StatManager::AddScore(1000);
 			AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
 		}
 
