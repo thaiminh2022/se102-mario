@@ -2,16 +2,33 @@
 
 #include "Game.h"
 
-// We still change the position for thematic things i guess
-NextLevelPortal::NextLevelPortal(Rect zone, int levelToLoad) : GameObject(static_cast<float>(zone.top), static_cast<float>(zone.left))
+
+
+NextLevelPortal::NextLevelPortal(Rect zone, int levelToLoad, float timeBeforeLoad)
 {
 	this->zone = zone;
 	this->levelToLoad = levelToLoad;
+	this->timeBeforeLoad = timeBeforeLoad;
+	startCountdown = false;
 }
 
-void NextLevelPortal::RequestNextLevel() const
+void NextLevelPortal::RequestNextLevel()
 {
-	Game::GetInstance()->IndicateSceneSwitch(levelToLoad);
+	startCountdown = true;
+}
+
+void NextLevelPortal::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
+{
+
+	if (timeBeforeLoad > 0 && startCountdown)
+	{
+		timeBeforeLoad -= dt;
+	}
+
+	if (timeBeforeLoad <= 0)
+	{
+		Game::GetInstance()->IndicateSceneSwitch(levelToLoad);
+	}
 }
 
 

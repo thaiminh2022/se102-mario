@@ -138,6 +138,7 @@
     <ClCompile Include="CollisionEvent.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="FireballTrap.cpp" />
+    <ClCompile Include="FlagPole.cpp" />
     <ClCompile Include="Flower.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="FontManager.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="FireballTrap.h" />
+    <ClInclude Include="FlagPole.h" />
     <ClInclude Include="Flower.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="FontManager.h" />
