@@ -27,6 +27,7 @@
 #include "Fireball.h"
 #include "FireballTrap.h"
 #include "Flower.h"
+#include "Star.h"
 
 int Mario::goombaKilled = 0;
 int Mario::coinCollected = 0;
@@ -766,6 +767,26 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 
 			flower->SetState(CollectableItemState::Collected);
 			AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
+		}
+
+
+		const auto star = dynamic_cast<Star*>(e->otherObject);
+		if (star != nullptr)
+		{
+			star->SetState(CollectableItemState::Collected);
+			auto audio = AudioManager::GetInstance();
+			
+			
+			isInvincible = true;
+			invincibleTimer = Timer(15);
+			invincibleTimer.Start();
+
+			audio->PauseMusic();
+			audio->PlaySFX(MARIO_POWERUP);
+			AudioManager::GetInstance()->Play(INVINCIBILITY_THEME, false, []()
+			{
+					AudioManager::GetInstance()->ResumeMusic();
+			});
 		}
 
 	}

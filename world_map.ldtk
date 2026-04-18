@@ -804,9 +804,9 @@
 							"height": 16,
 							"defUid": 47,
 							"px": [32,16],
-							"fieldInstances": [{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/01. Ground Theme.mp3.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
+							"fieldInstances": [{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/01.GroundTheme.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
 								"id": "V_String",
-								"params": ["Assets/Audio/Soundtracks/01. Ground Theme.mp3.wav"]
+								"params": ["Assets/Audio/Soundtracks/01.GroundTheme.wav"]
 							}] }],
 							"__worldX": 32,
 							"__worldY": 16
@@ -1020,7 +1020,7 @@
 						},
 						{
 							"__identifier": "FireballTrap",
-							"__grid": [19,14],
+							"__grid": [10,5],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": { "tilesetUid": 49, "x": 32, "y": 144, "w": 16, "h": 16 },
@@ -1029,14 +1029,14 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 56,
-							"px": [304,224],
+							"px": [160,80],
 							"fieldInstances": [],
-							"__worldX": 304,
-							"__worldY": 224
+							"__worldX": 160,
+							"__worldY": 80
 						},
 						{
 							"__identifier": "FireballTrap",
-							"__grid": [25,14],
+							"__grid": [18,4],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": { "tilesetUid": 49, "x": 32, "y": 144, "w": 16, "h": 16 },
@@ -1045,10 +1045,10 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 56,
-							"px": [400,224],
+							"px": [288,64],
 							"fieldInstances": [],
-							"__worldX": 400,
-							"__worldY": 224
+							"__worldX": 288,
+							"__worldY": 64
 						}
 					]
 				},
@@ -1520,9 +1520,9 @@
 							"height": 16,
 							"defUid": 47,
 							"px": [16,16],
-							"fieldInstances": [{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/02. Underground Theme.mp3.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
+							"fieldInstances": [{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/02.UndergroundTheme.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
 								"id": "V_String",
-								"params": ["Assets/Audio/Soundtracks/02. Underground Theme.mp3.wav"]
+								"params": ["Assets/Audio/Soundtracks/02.UndergroundTheme.wav"]
 							}] }],
 							"__worldX": 400,
 							"__worldY": 336

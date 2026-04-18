@@ -167,6 +167,9 @@ void AudioManager::Shutdown()
 
 void AudioManager::Update()
 {
+    DebugOutTitle(std::to_wstring(musicHandle).c_str());
+
+
     for (auto& it : activeInstances)
     {
         auto& instance = it.second;
