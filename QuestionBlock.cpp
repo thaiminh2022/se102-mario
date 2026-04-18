@@ -7,8 +7,10 @@
 #include "Flower.h"
 #include "Game.h"
 #include "Goomba.h"
+#include "Mario.h"
 #include "Mushroom.h"
 #include "Sprites.h"
+#include "Star.h"
 #include "Texture.h"
 #include "Textures.h"
 
@@ -51,7 +53,7 @@ void QuestionBlock::Render()
 	anim->Render(round(renderX), round(renderY), false, false);
 }
 
-void QuestionBlock::CheckHitBounce(vector<GameObject*>& coObjects)
+void QuestionBlock::CheckHitBounce(vector<GameObject*>& coObjects) const
 {
 	for (auto& go : coObjects)
 	{
@@ -90,7 +92,10 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 			if (drop == BlockDropType::Coin)
 			{
 				ctx->addObject(new Coin(
-					Vector2Int(startPosition.x, startPosition.y),
+					Vector2Int(
+						static_cast<int>(round(startPosition.x)), 
+						static_cast<int>(round(startPosition.y - 8))
+					),
 					CoinState::CollectedFromQuestionBox)
 				);
 			}
@@ -110,6 +115,9 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 					ctx->addObject(new Flower(position));
 				}
 
+			}else if (drop == BlockDropType::Starman)
+			{
+				ctx->addObject(new Star(startPosition));
 			}
 			spawnInternalItem = true;
 		}
@@ -147,7 +155,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 	
 }
 
-QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop, const bool isBrick, const bool isHidden) : GameObject(startPos.x, startPos.y)
+QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop, const bool isBrick, const bool isHidden) : GameObject(startPos)
 {
 	
 	state = QuestionBlockState::Closed;

@@ -65,10 +65,7 @@ void Tilemap::GetPotentialCollidableCells(const RectF& bound, vector<CollisionTi
 
 			if (tile != nullptr)
 			{
-				if (tile->IsBlocking())
-				{
-					outCells.push_back(tile);
-				}
+				outCells.push_back(tile);
 			}
 		}
 	}

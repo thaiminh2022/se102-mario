@@ -8,6 +8,7 @@
 #include <xaudio2.h>
 
 #include "Camera.h"
+#include "Color.h"
 #include "PlayableScene.h"
 
 using std::unordered_map;
@@ -31,6 +32,8 @@ class Game
 	int currentSceneID;
 	int nextSceneID;
 	unordered_map<int, Scene *> scenes;
+	bool forceReload;
+
 	vector<std::pair<Rect, D3DXCOLOR>> debugRects;
 
 	Camera* camera;
@@ -39,6 +42,7 @@ class Game
 		camera = new Camera;
 		currentSceneID = -100;
 		nextSceneID = -200;
+		forceReload = false;
 	}
 
 public:
@@ -51,7 +55,7 @@ public:
 	}
 
 	void Init(HWND hWnd);
-	void Draw(float x, float y, Texture* tex, Rect* rect = nullptr);
+	void Draw(float x, float y, Texture* tex, Rect* rect = nullptr) const;
 	void Draw(float x, float y, Texture *tex, int l, int t, int r, int b)
 	{
 		Rect rect;
@@ -63,8 +67,8 @@ public:
 	}
 
 	// Debug helper
-	void DrawDebugRectRaw(Rect r, D3DXCOLOR color);
-	void DrawDebugRectWithCamera(Rect r, D3DXCOLOR color);
+	void DrawDebugRectRaw(Rect r, Color color);
+	void DrawDebugRectWithCamera(Rect r, Color color);
 
 	void FlushDebugRect();
 	void ClearDebugRect() { debugRects.clear(); }
@@ -86,6 +90,10 @@ public:
 	void SwitchScene();
 	void IndicateSceneSwitch(int newID);
 	void LoadSceneAndEnterFirst();
+	void AddScene(int id, Scene* scene);
+	bool HaveSceneWithID(int id);
+	void ReloadCurrentScene();
+
 
 	// Camera related	
 	Camera* GetCamera() const { return camera; }

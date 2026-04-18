@@ -56,7 +56,6 @@ struct CollisionTile
 	{
 		return type == CollisionTileType::Ground || type == CollisionTileType::OneWay || type == CollisionTileType::Pipe;
 	}
-
 };
 
 struct CollisionLayer
