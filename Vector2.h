@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 struct Vector2Int
 {
 	int x;
@@ -10,7 +12,6 @@ struct Vector2Int
 		this->x = x;
 		this->y = y;
 	}
-
 
 	Vector2Int operator+(const Vector2Int& other) const
 	{
@@ -61,6 +62,7 @@ struct Vector2
 		this->x = x;
 		this->y = y;
 	}
+
 
 	Vector2(const Vector2Int& vec)
 	{

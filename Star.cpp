@@ -71,7 +71,7 @@ void Star::Render()
 	float renderX, renderY;
 	Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
 	Animations::GetInstance()
-		->Get(FLOWER_IDLE_ANIM_ID)
+		->Get(STAR_IDLE_ANIM_ID)
 		->Render(round(renderX), round(renderY), false, false);
 }
 

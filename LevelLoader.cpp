@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "AudioManager.h"
+#include "Game.h"
 #include "LdtkParser.h"	
 #include "nloahmann/json.hpp"
 #include "SceneEntityData.h"
@@ -37,7 +38,7 @@ const string PLAYER_START = "PlayerStart";
 const string GOOMBA_START= "GoombaStart";
 const string KOOPA_START = "KoopaStart";
 const string QUESTION_BLOCK= "QuestionBlock";
-const string EMPTY_BRICK_BLOCK= "EmptyBrickBlock";
+const string BRICK_BLOCK= "EmptyBrickBlock";
 const string COIN = "Coin";
 const string NEXT_LEVEL_ZONE = "NextLevel";
 const string BACKGROUND_MUSIC = "BackgroundMusic";
@@ -69,6 +70,7 @@ RenderLayer LevelLoader::ParseCollisionRenderLayer(const vector<LayerInstance>& 
 		tile.height = 16;
 		renderLayer.tiles.push_back(tile);
 	}
+const string FIREBALL_TRAP = "FireballTrap";
 
 	return renderLayer;
 }
@@ -99,6 +101,16 @@ void LevelLoader::Init()
 	ifstream f(WORLD_PATH);
 	const auto data = json::parse(f);
 	worldMap.Set(data.get<WorldMap>());
+
+	for (auto i = 0; i < worldMap.value.levels.size(); i++)
+	{
+		if (Game::GetInstance()->HaveSceneWithID(i))
+			continue;
+
+		const auto scene = new PlayableScene(i);
+		Game::GetInstance()->AddScene(-i, scene);
+	}
+
 
 	f.close();
 }
@@ -282,8 +294,8 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 		sceneEntities.questionBlocks.push_back(data);
 	}
 
-	// Empty
-	const auto eBlocks = GetEntityDataWithIdentifier(entities, EMPTY_BRICK_BLOCK);
+	// Brick block
+	const auto eBlocks = GetEntityDataWithIdentifier(entities, BRICK_BLOCK);
 	for (const auto&g : eBlocks)
 	{
 		auto blockDrop = g->fieldInstances[0].value.get<string>();
@@ -328,9 +340,10 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 		auto zone = Rect::FromXYWH(g->px[0], g->px[1], g->width, g->height);
 		auto value = g->fieldInstances[0].value.get<int>(); // just hard code it for now, since there's only 1 value
 
+
 		NextLevelData data{
 			zone, 
-			value
+			-value 	// playable levels are stored as 0 or negative values
 		};
 
 		sceneEntities.nextLevelsData.push_back(data);
@@ -357,6 +370,13 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 		}
 
 	}
+	// fireball trap
+	const auto traps = GetEntityDataWithIdentifier(entities, FIREBALL_TRAP);
+	for (const auto& g : traps)
+	{
+		sceneEntities.fireballTraps.emplace_back(g->px[0], g->px[1]);
+	}
+
 	return sceneEntities;
 }
 

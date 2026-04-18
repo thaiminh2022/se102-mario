@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <cinttypes>
 
 // [NOTE]: NEGATIVE VALUES IS RESERVE FOR SCENE BACKGROUND
 
@@ -17,19 +16,16 @@
 /// This can be read as:
 /// 10000 + 2000 + 300 + 40 + 5
 
+#include <cinttypes>
 
-/// ================================
-/// MARIO (E = 10000)
-/// ================================
+
 
 // ---------------------------------
 // SMALL MARIO (T = 1)
 // ---------------------------------
 constexpr int MARIO_TEX_ID = 10000;
 
-// ==========================================
-// SMALL MARIO (T = 1)
-// ==========================================
+
 
 // Idle (A = 100)
 constexpr int MARIO_IDLE_ANIM_ID = 11100;
@@ -54,7 +50,7 @@ constexpr int MARIO_DEATH_ANIM_ID = 11700;
 constexpr int MARIO_DEATH_SPRITE_1 = 11701;
 
 // ==========================================
-// BIG MARIO (T = 2)
+// BIG MARIO 
 // ==========================================
 
 // Idle (A = 100)
@@ -80,7 +76,7 @@ constexpr int MARIO_BIG_DUCK_ANIM_ID = 12500;
 constexpr int MARIO_BIG_DUCK_SPRITE_1 = 12501;
 
 // ==========================================
-// FIRE MARIO (T = 3)
+// FIRE MARIO 
 // ==========================================
 
 // Idle (A = 100)
@@ -93,7 +89,8 @@ constexpr int MARIO_FIRE_RUN_SPRITE_1 = 13201;
 constexpr int MARIO_FIRE_RUN_SPRITE_2 = 13202;
 constexpr int MARIO_FIRE_RUN_SPRITE_3 = 13203;
 
-// Skidding (A = 300)
+/// Skidding (A = 300)
+
 constexpr int MARIO_FIRE_SKID_ANIM_ID = 13300;
 constexpr int MARIO_FIRE_SKID_SPRITE_1 = 13301;
 
@@ -110,24 +107,21 @@ constexpr int MARIO_FIRE_FIRE_ANIM_ID = 13600;
 constexpr int MARIO_FIRE_FIRE_SPRITE_1 = 13601;
 
 // ==========================================
-// TRANSITION STATES (T = 4, 5, 6)
+// TRANSITION STATES 
 // ==========================================
 
 // Growing (Small -> Big) (T = 4, A = 100)
-constexpr int MARIO_GROW_ANIM_ID = 14100;
-constexpr int MARIO_GROW_SPRITE_1 = 14101;
-constexpr int MARIO_GROW_SPRITE_2 = 14102;
-constexpr int MARIO_GROW_SPRITE_3 = 14103;
+constexpr int MARIO_GROWBIG_ANIM_ID = 14100;
+constexpr int MARIO_GROWBIG_SPRITE_1 = 14101;
+constexpr int MARIO_GROWBIG_SPRITE_2 = 14102;
+constexpr int MARIO_GROWBIG_SPRITE_3 = 14103;
 
 // Shrinking (Big -> Small) (T = 5, A = 100)
-constexpr int MARIO_BIG_SHRINK_ANIM_ID = 15100;
-constexpr int MARIO_BIG_SHRINK_SPRITE_1 = 15101;
-constexpr int MARIO_BIG_SHRINK_SPRITE_2 = 15102;
+constexpr int MARIO_SHRINK_ANIM_ID = 15100;
+constexpr int MARIO_SHRINK_SPRITE_1 = 15101;
+constexpr int MARIO_SHRINK_SPRITE_2 = 15102;
+constexpr int MARIO_SHRINK_SPRITE_3 = 15103;
 
-// Shrinking (Fire -> Small) (T = 6, A = 100)
-constexpr int MARIO_FIRE_SHRINK_ANIM_ID = 16100;
-constexpr int MARIO_FIRE_SHRINK_SPRITE_1 = 16101;
-constexpr int MARIO_FIRE_SHRINK_SPRITE_2 = 16102;
 
 /// ================================
 /// GOOMBA (E = 20000, T = 1)
@@ -210,7 +204,7 @@ constexpr int STAR_IDLE_SPRITE_4 = 41404;
 /// ================================
 // FIREBALL (E = 60000, T = 1)
 /// ================================
-constexpr int FIREBALL_TEX_ID =			61000;
+constexpr int FIREBALL_TEX_ID =	61000;
 // Bouncing (A = 100)
 constexpr int FIREBALL_BOUNCE_ANIM_ID = 61100;
 constexpr int FIREBALL_BOUNCE_SPRITE_1 = 61101;
@@ -226,6 +220,16 @@ constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61203;
 
 
 
+
+// SCENES THAT ARE NOT PLAYABLE SCENE
+// PLAYABLE SCENES IS MANAGE BY LEVEL LOADER (INIT FUNCTION)
+// NEGATIVE VALUE (AND 0) IS FOR PLAYABLE SCENE ONLY
+
+enum NonPlayableScene : std::int8_t
+{
+	MAIN_MENU = 1,
+};
+
 /// MUSICS: Background music will be managed by negative values in ldtk
 
 // SFX
@@ -240,11 +244,12 @@ enum SFX: std::uint8_t
 	MARIO_BUMP,
 	MARIO_POWERUP,
 	POWERUP_APPEARS,
-	BREAK_BLOCK
+	BREAK_BLOCK,
+	PIPE_ENTER,
+	INVINCIBILITY_THEME,
 };
 
 /// FONT
-
 enum FONTS: std::uint8_t
 {
 	STATS_FONT = 1

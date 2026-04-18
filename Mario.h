@@ -35,7 +35,10 @@ const float RUN_FALL_A = 562.5f;
 const float MAX_FALL = 270.0f;
 const int MAX_FIREBALL_COUNT = 2;
 const float MARIO_TIME_BTW_FIRE = 0.15f;
-const float MARIO_TRANSFORM_TIME = 1.0f;
+
+const float MARIO_GROW_TIME = 0.7f;
+const float MARIO_SHRINK_TIME = 0.75f;
+const float MARIO_INVINCIBLE_TIME = 2.0f;
 
 enum class MarioState : std::uint8_t
 {
@@ -63,16 +66,21 @@ enum class MarioPower
 class Mario : public GameObject
 {
 	bool isGrounded;
+	bool isInvincible;
 	static int goombaKilled;
 	static int coinCollected;
 
 	float fallAcc = 562.5f;
 	int GetFireBallCount(const vector<GameObject*>& coObjects) const;
 	Timer fireCooldownTimer;
-	Timer transformTimer;
+	Timer invincibleTimer;
+
+	Timer transformTimer; //used for growing and shrinking
 
 	MarioState state;
 	MarioPower power;
+
+	void OnMarioHit();
 
 public:
 	Mario(int startX, int startY);

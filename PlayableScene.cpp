@@ -9,6 +9,7 @@
 
 #include "AudioManager.h"
 #include "Coin.h"
+#include "FireballTrap.h"
 #include "Goomba.h"
 #include "NextLevelPortal.h"
 #include "QuestionBlock.h"
@@ -53,7 +54,7 @@ void PlayableScene::Load()
 	{
 		ctx = new SceneContext;
 	}
-	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(id);
+	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
 	ctx->addObject =[this](GameObject *go)
 	{
 		AddObject(go);
@@ -109,6 +110,13 @@ void PlayableScene::Load()
 		objects.push_back(portal);
 	}
 
+	// fire trap
+	for (const auto& pPos : config->entityData.fireballTraps)
+	{
+		const auto trap = new FireballTrap(pPos);
+		objects.push_back(trap);
+	}
+
 	// background music
 	if (config->entityData.backgroundMusicID.hasValue)
 	{
@@ -130,7 +138,7 @@ void PlayableScene::UnLoad()
 
 void PlayableScene::Render()
 {
-	LevelLoader::GetInstance()->GetTilemapForLevel(id)->Render();
+	LevelLoader::GetInstance()->GetTilemapForLevel(level)->Render();
 
 
 	std::sort(objects.begin(), objects.end(), GameObject::SortRenderIndex);

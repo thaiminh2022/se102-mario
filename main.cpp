@@ -8,7 +8,6 @@
 
 #include "LevelLoader.h"
 #include "Textures.h"
-#include <cstdint>
 #include <dxgi.h>
 #include <sal.h>
 
@@ -208,6 +207,9 @@ static void LoadResource()
 	AudioManager::GetInstance()->LoadWAV(MARIO_POWERUP, L"Assets\\Audio\\SFX\\powerup.wav");
 	AudioManager::GetInstance()->LoadWAV(POWERUP_APPEARS, L"Assets\\Audio\\SFX\\powerup_appears.wav");
 	AudioManager::GetInstance()->LoadWAV(BREAK_BLOCK, L"Assets\\Audio\\SFX\\breakblock.wav");
+	AudioManager::GetInstance()->LoadWAV(PIPE_ENTER, L"Assets\\Audio\\SFX\\pipe.wav");
+	AudioManager::GetInstance()->LoadWAV(INVINCIBILITY_THEME, L"Assets\\Audio\\Soundtracks\\05.InvincibilityTheme.wav");
+
 
 
 
