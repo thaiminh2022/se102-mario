@@ -11,6 +11,7 @@ struct NextLevelData
 {
 	Rect zone;
 	int levelToLoad;
+	float delaySeconds;
 };
 enum class BlockDropType: std::uint8_t
 {
@@ -33,13 +34,18 @@ struct BrickBlocData
 	BlockDropType dropType;
 };
 
-
+struct FlagPoleData
+{
+	Rect zone;
+	Vector2Int moveToPosition;
+};
 
 
 struct SceneEntityData
 {
 	Optional<int> backgroundMusicID;
 	Vector2Int playerStarts;
+	Optional<FlagPoleData> flagPole;
 	vector<Vector2Int> goombaStarts;
 	vector<QuestionBlockData> questionBlocks;
 	vector<BrickBlocData> brickBlocks;

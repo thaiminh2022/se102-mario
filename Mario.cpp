@@ -688,7 +688,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			}
 			else
 			{
-					OnMarioHit();
+				OnMarioHit();
 			}
 			return;
 		}

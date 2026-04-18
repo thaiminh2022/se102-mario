@@ -42,6 +42,8 @@ const string COIN = "Coin";
 const string NEXT_LEVEL_ZONE = "NextLevel";
 const string BACKGROUND_MUSIC = "BackgroundMusic";
 const string FIREBALL_TRAP = "FireballTrap";
+const string FLAG_POLE = "FlagPole";
+
 
 /// Return the tilemap object for [level]. Value will be cached if new
 Tilemap* LevelLoader::GetTilemapForLevel(const int level)
@@ -308,12 +310,21 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 	for (const auto& g : nextLevels)
 	{
 		auto zone = Rect::FromXYWH(g->px[0], g->px[1], g->width, g->height);
-		auto value = g->fieldInstances[0].value.get<int>(); // just hard code it for now, since there's only 1 value
+		auto nextLevel = GetFieldValueWithIdentifier(g->fieldInstances, "level_to_load");
+		auto delay = GetFieldValueWithIdentifier(g->fieldInstances, "load_delay");
 
+		if (!nextLevel.hasValue || !delay.hasValue)
+		{
+			continue;
+		}
+
+		int nextLevelValue = -nextLevel.value.get<int>();
+		float delayValue = delay.value.get<float>();
 
 		NextLevelData data{
-			zone, 
-			-value 	// playable levels are stored as 0 or negative values
+			zone,
+			nextLevelValue,
+			delayValue,
 		};
 
 		sceneEntities.nextLevelsData.push_back(data);
@@ -347,6 +358,24 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 		sceneEntities.fireballTraps.emplace_back(g->px[0], g->px[1]);
 	}
 
+	// flag pole
+	const auto flagPoles = GetEntityDataWithIdentifier(entities, FLAG_POLE);
+	Optional<FlagPoleData> flagPoleData;
+	if (!flagPoles.empty())
+	{
+
+		auto flagPole = flagPoles[0]; // only one flag pole per level
+		auto moveTo = flagPole->fieldInstances[0].value.get<LDTKPoint>();
+
+		flagPoleData.Set(FlagPoleData{
+			Rect::FromXYWH(flagPole->px[0], flagPole->px[1], flagPole->width, flagPole->height),
+			Vector2Int(moveTo.cx * 16, moveTo.cy * 16)
+		});
+
+
+	}
+	sceneEntities.flagPole = flagPoleData;
+
 	return sceneEntities;
 }
 
@@ -361,5 +390,19 @@ vector<EntityInstance*> LevelLoader::GetEntityDataWithIdentifier(vector<EntityIn
 		}
 	}
 	return instances;
+}
+
+Optional<json> LevelLoader::GetFieldValueWithIdentifier(const vector<FieldInstance>& v, const std::string& iden)
+{
+	Optional<json> returnVal;
+	for (auto &f : v)
+	{
+		if (f.identifier == iden)
+		{
+			returnVal.Set(f.value);
+			break;
+		} 
+	}
+	return returnVal;
 }
 

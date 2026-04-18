@@ -94,6 +94,16 @@ struct Level
 	int worldY;
 };
 
+struct LDTKPoint
+{
+	int cx;
+	int cy;
+};
+
+
+
+
+
 struct WorldMap
 {
 	std::vector<Level> levels;
@@ -143,7 +153,12 @@ inline void ReadOrDefault(const json& j, const char* key, T& out, const T& defau
 
 	out = it->get<T>();
 }
+inline void from_json(const json& j, LDTKPoint& p)
+{
+	ReadRequired(j, "cx", p.cx);
+	ReadRequired(j, "cy", p.cy);
 
+}
 inline void from_json(const json& j, TileInstance& x)
 {
 	ReadRequired(j, "a", x.a);
