@@ -81,6 +81,14 @@ class Mario : public GameObject
 	MarioPower power;
 
 	void OnMarioHit();
+	bool OnCollisionWithGoomba(const CollisionEvent* e);
+	bool OnCollisionWithPortal(const CollisionEvent* e);
+	bool OnCollisionWithQuestionBlock(CollisionEvent* e);
+	bool OnCollisionWithCoin(CollisionEvent* e);
+	bool OnCollisionWithMushroom(CollisionEvent* e);
+	bool OnCollisionWithFlower(CollisionEvent* e);
+	bool OnCollisionWithStar(CollisionEvent* e);
+	int GetMarioAnimId() const;
 
 public:
 	Mario(int startX, int startY);

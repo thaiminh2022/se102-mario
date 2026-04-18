@@ -520,99 +520,17 @@ void Mario::Render()
 			return; // Skip this frame to create a blinking effect
 		}
 	}
+	
 	auto g = Game::GetInstance();
 	float renderX, renderY;
 	g->GetCamera()
 		->WorldToScreen(position.x, position.y, renderX, renderY);
-	/*g->DrawDebugRectWithCamera(GetBoundingBox(), D3DXCOLOR(1, 0, 0, 1));*/
-
-	if (power == MarioPower::Normal)
-	{
-		switch (state)
-		{
-		case MarioState::Dying:
-			Animations::GetInstance()->Get(MARIO_DEATH_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Growing:
-			Animations::GetInstance()->Get(MARIO_GROWBIG_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Walking:
-		case MarioState::Running:
-			Animations::GetInstance()->Get(MARIO_RUN_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Skidding:
-			Animations::GetInstance()->Get(MARIO_SKID_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Idle:
-			Animations::GetInstance()->Get(MARIO_IDLE_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Jumping:
-			Animations::GetInstance()->Get(MARIO_JUMP_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Firing:
-			Animations::GetInstance()->Get(MARIO_IDLE_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		default:
-			DebugOut(L"[Error] No handling for state: %d\n", state);
-		}
-	}
-	else if (power == MarioPower::Big)
-	{
-		switch (state)
-		{
-		case MarioState::Walking:
-		case MarioState::Running:
-			Animations::GetInstance()->Get(MARIO_BIG_RUN_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Skidding:
-			Animations::GetInstance()->Get(MARIO_BIG_SKID_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Idle:
-			Animations::GetInstance()->Get(MARIO_BIG_IDLE_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Jumping:
-			Animations::GetInstance()->Get(MARIO_BIG_JUMP_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Ducking:
-			Animations::GetInstance()->Get(MARIO_BIG_DUCK_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Shrinking:
-			Animations::GetInstance()->Get(MARIO_SHRINK_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		default:
-			DebugOut(L"[Error] No handling for state: %d\n", state);
-		}
-	}
-	else if (power == MarioPower::Fire)
-	{
-		switch (state)
-		{
-		case MarioState::Walking:
-		case MarioState::Running:
-			Animations::GetInstance()->Get(MARIO_FIRE_RUN_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Skidding:
-			Animations::GetInstance()->Get(MARIO_FIRE_SKID_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Idle:
-			Animations::GetInstance()->Get(MARIO_FIRE_IDLE_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Jumping:
-			Animations::GetInstance()->Get(MARIO_FIRE_JUMP_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Ducking:
-			Animations::GetInstance()->Get(MARIO_FIRE_DUCK_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Firing:
-			Animations::GetInstance()->Get(MARIO_FIRE_FIRE_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		case MarioState::Shrinking:
-			Animations::GetInstance()->Get(MARIO_SHRINK_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, false);
-			break;
-		default:
-			DebugOut(L"[Error] No handling for state: %d\n", state);
-		}
-	}
+	
+	
+	auto animId = GetMarioAnimId();
+	Animations::GetInstance()
+	->Get(animId)
+	->Render(round(renderX), round(renderY), !isFacingRight, false);
 }
 
 Rect Mario::GetBoundingBox()
@@ -641,6 +559,234 @@ void Mario::OnNoCollision(float dt)
 	isGrounded = false;
 }
 
+bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
+{
+	// resolve object collision
+	const auto goomba = dynamic_cast<Goomba*>(e->otherObject);
+
+	if (goomba != nullptr)
+	{
+		if (goomba->GetState() == GoombaState::Dead)
+			return false;
+
+		if (e->normalizedDir.y == -1)
+		{
+			// jump on head
+
+			velocity.y = -240.0f;
+			state = MarioState::Jumping;
+
+			goomba->SetState(GoombaState::Dead);
+
+			goombaKilled++;
+			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
+			return true;
+		}
+
+		// dead
+		OnMarioHit();
+		return true;
+	}
+	return false;
+}
+
+bool Mario::OnCollisionWithPortal(const CollisionEvent* e)
+{
+	const auto portal = dynamic_cast<NextLevelPortal*>(e->otherObject);
+	if (portal != nullptr)
+	{
+		portal->RequestNextLevel();
+		return true;
+	}
+	return false;
+}
+
+bool Mario::OnCollisionWithQuestionBlock(CollisionEvent* e)
+{
+	const auto questionBlock = dynamic_cast<QuestionBlock*>(e->otherObject);
+	if (questionBlock != nullptr) {
+		if (e->normalizedDir.y == -1)
+		{
+			isGrounded = true;
+			return true;
+		}
+
+		if (e->normalizedDir.y == 1)
+		{
+
+			if (!questionBlock->HaveDrop())
+			{
+				if (power == MarioPower::Big || power == MarioPower::Fire)
+				{
+					questionBlock->SetState(QuestionBlockState::Break);
+				}
+			}
+			else
+			{
+				questionBlock->SetState(QuestionBlockState::Opened);
+			}
+		}
+		return true;
+	}
+	return false;
+}
+
+bool Mario::OnCollisionWithCoin(CollisionEvent* e)
+{
+	const auto coin = dynamic_cast<Coin*>(e->otherObject);
+	if (coin != nullptr)
+	{
+		coin->SetState(CoinState::Collected);
+		coinCollected++;
+		AudioManager::GetInstance()->PlaySFX(MARIO_COLLECT_COIN);
+		return true;
+	}
+	return false;
+}
+
+bool Mario::OnCollisionWithMushroom(CollisionEvent* e)
+{
+	const auto mushroom = dynamic_cast<Mushroom*>(e->otherObject);
+	if (mushroom != nullptr)
+	{
+		mushroom->SetState(CollectableItemState::Collected);
+		AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
+
+		if (power == MarioPower::Normal)
+		{
+			state = MarioState::Growing;
+			transformTimer = Timer(MARIO_GROW_TIME);
+			transformTimer.Start();
+			// add some pushback so player won't fall off the ground
+			position.y -= 17;
+		}
+		return true;
+	}
+	return false;
+}
+
+bool Mario::OnCollisionWithFlower(CollisionEvent* e)
+{
+	const auto flower = dynamic_cast<Flower*>(e->otherObject);
+	if (flower != nullptr)
+	{
+		if (power == MarioPower::Normal)
+		{
+			state = MarioState::Growing; // If collect a flower while small, grow to big
+			transformTimer = Timer(MARIO_GROW_TIME);
+			transformTimer.Start();
+			// add some pushback so player won't fall off the ground
+			position.y -= 17;
+		}
+		else if (power == MarioPower::Big)
+		{
+			power = MarioPower::Fire; // Instantly power up to Fire if already Big
+		}
+
+		flower->SetState(CollectableItemState::Collected);
+		AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
+		return true;
+
+	}
+	return false;
+}
+
+bool Mario::OnCollisionWithStar(CollisionEvent* e)
+{
+	const auto star = dynamic_cast<Star*>(e->otherObject);
+	if (star != nullptr)
+	{
+		star->SetState(CollectableItemState::Collected);
+		auto audio = AudioManager::GetInstance();
+			
+			
+		isInvincible = true;
+		invincibleTimer = Timer(15);
+		invincibleTimer.Start();
+
+		audio->PauseMusic();
+		audio->PlaySFX(MARIO_POWERUP);
+		AudioManager::GetInstance()->Play(INVINCIBILITY_THEME, false, []()
+		{
+			AudioManager::GetInstance()->ResumeMusic();
+		});
+		return true;
+	}
+	return false;
+}
+
+int Mario::GetMarioAnimId() const
+{
+	if (power == MarioPower::Normal)
+	{
+		switch (state)
+		{
+		case MarioState::Dying:
+			return MARIO_DEATH_ANIM_ID;
+		case MarioState::Growing:
+			return MARIO_GROWBIG_ANIM_ID;
+		case MarioState::Walking:
+		case MarioState::Running:
+			return MARIO_RUN_ANIM_ID;
+		case MarioState::Skidding:
+			return MARIO_SKID_ANIM_ID;
+		case MarioState::Idle:
+			return MARIO_IDLE_ANIM_ID;
+		case MarioState::Jumping:
+			return MARIO_JUMP_ANIM_ID;
+		case MarioState::Firing:
+			return MARIO_IDLE_ANIM_ID;
+		default:
+			DebugOut(L"[WARNING] No handling for state: %d\n", state);
+		}
+	}
+	else if (power == MarioPower::Big)
+	{
+		switch (state)
+		{
+		case MarioState::Walking:
+		case MarioState::Running:
+			return MARIO_BIG_RUN_ANIM_ID;
+		case MarioState::Skidding:
+			return MARIO_BIG_SKID_ANIM_ID;
+		case MarioState::Idle:
+			return MARIO_BIG_IDLE_ANIM_ID;
+		case MarioState::Jumping:
+			return MARIO_BIG_JUMP_ANIM_ID;
+		case MarioState::Ducking:
+			return MARIO_BIG_DUCK_ANIM_ID;
+		case MarioState::Shrinking:
+			return MARIO_SHRINK_ANIM_ID;
+		default:
+			DebugOut(L"[WARNING] No handling for state: %d\n", state);
+		}
+	}
+	else if (power == MarioPower::Fire)
+	{
+		switch (state)
+		{
+		case MarioState::Walking:
+		case MarioState::Running:
+			return MARIO_FIRE_RUN_ANIM_ID;
+		case MarioState::Skidding:
+			return MARIO_FIRE_SKID_ANIM_ID;
+		case MarioState::Idle:
+			return MARIO_FIRE_IDLE_ANIM_ID;
+		case MarioState::Jumping:
+			return MARIO_FIRE_JUMP_ANIM_ID;
+		case MarioState::Ducking:
+			return MARIO_FIRE_DUCK_ANIM_ID;
+		case MarioState::Firing:
+			return MARIO_FIRE_FIRE_ANIM_ID;
+		case MarioState::Shrinking:
+			return MARIO_SHRINK_ANIM_ID;
+		default:
+			DebugOut(L"[Error] No handling for state: %d\n", state);
+		}
+	}
+	return MARIO_IDLE_ANIM_ID;
+}
+
 void Mario::OnCollisionWith(CollisionEvent* e)
 {
 	//DebugOut(L"Normal %d, %d\n", e->normalizedDir.x, e->normalizedDir.y);
@@ -664,130 +810,13 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 	}
 	else if (e->IsObjectCollision())
 	{
-		// resolve object collision
-		const auto goomba = dynamic_cast<Goomba*>(e->otherObject);
-
-		if (goomba != nullptr)
-		{
-			if (goomba->GetState() == GoombaState::Dead)
-				return;
-
-			if (e->normalizedDir.y == -1)
-			{
-				// jump on head
-
-				velocity.y = -240.0f;
-				state = MarioState::Jumping;
-
-
-				goomba->SetState(GoombaState::Dead);
-
-				goombaKilled++;
-				AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
-
-			}
-			else
-			{
-				OnMarioHit();
-			}
-			return;
-		}
-
-		const auto portal = dynamic_cast<NextLevelPortal*>(e->otherObject);
-		if (portal != nullptr)
-		{
-			portal->RequestNextLevel();
-			return;
-		}
-		const auto questionBlock = dynamic_cast<QuestionBlock*>(e->otherObject);
-		if (questionBlock != nullptr) {
-			if (e->normalizedDir.y == -1)
-			{
-				isGrounded = true;
-				return;
-			}
-
-			if (e->normalizedDir.y == 1)
-			{
-
-				if (!questionBlock->HaveDrop())
-				{
-					if (power == MarioPower::Big || power == MarioPower::Fire)
-					{
-						questionBlock->SetState(QuestionBlockState::Break);
-					}
-				}
-				else
-				{
-					questionBlock->SetState(QuestionBlockState::Opened);
-				}
-			}
-		}
-
-		const auto coin = dynamic_cast<Coin*>(e->otherObject);
-		if (coin != nullptr)
-		{
-			coin->SetState(CoinState::Collected);
-			coinCollected++;
-			AudioManager::GetInstance()->PlaySFX(MARIO_COLLECT_COIN);
-
-		}
-
-		const auto mushroom = dynamic_cast<Mushroom*>(e->otherObject);
-		if (mushroom != nullptr)
-		{
-			mushroom->SetState(CollectableItemState::Collected);
-			AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
-
-			if (power == MarioPower::Normal)
-			{
-				state = MarioState::Growing;
-				transformTimer = Timer(MARIO_GROW_TIME);
-				transformTimer.Start();
-				// add some pushback so player won't fall off the ground
-				position.y -= 17;
-			}
-		}
-
-		const auto flower = dynamic_cast<Flower*>(e->otherObject);
-		if (flower != nullptr)
-		{
-			if (power == MarioPower::Normal)
-			{
-				state = MarioState::Growing; // If collect a flower while small, grow to big
-				transformTimer = Timer(MARIO_GROW_TIME);
-				transformTimer.Start();
-				// add some pushback so player won't fall off the ground
-				position.y -= 17;
-			}
-			else if (power == MarioPower::Big)
-			{
-				power = MarioPower::Fire; // Instantly power up to Fire if already Big
-			}
-
-			flower->SetState(CollectableItemState::Collected);
-			AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
-		}
-
-
-		const auto star = dynamic_cast<Star*>(e->otherObject);
-		if (star != nullptr)
-		{
-			star->SetState(CollectableItemState::Collected);
-			auto audio = AudioManager::GetInstance();
-			
-			
-			isInvincible = true;
-			invincibleTimer = Timer(15);
-			invincibleTimer.Start();
-
-			audio->PauseMusic();
-			audio->PlaySFX(MARIO_POWERUP);
-			AudioManager::GetInstance()->Play(INVINCIBILITY_THEME, false, []()
-			{
-					AudioManager::GetInstance()->ResumeMusic();
-			});
-		}
+		if (OnCollisionWithGoomba(e)) return;
+		if (OnCollisionWithPortal(e)) return;
+		if (OnCollisionWithQuestionBlock(e)) return;
+		if (OnCollisionWithCoin(e)) return;
+		if (OnCollisionWithMushroom(e)) return;
+		if (OnCollisionWithFlower(e)) return;
+		if (OnCollisionWithStar(e)) return;
 
 	}
 }
