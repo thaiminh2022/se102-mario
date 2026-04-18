@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include <vector>
 
+#include "InputManager.h"
 #include "Timer.h"
 
 // A random guy on youtube got these numbers
@@ -81,19 +82,31 @@ class Mario : public GameObject
 	MarioPower power;
 
 	void OnMarioHit();
+
+	// on collision with
 	bool OnCollisionWithGoomba(const CollisionEvent* e);
-	bool OnCollisionWithPortal(const CollisionEvent* e);
-	bool OnCollisionWithQuestionBlock(CollisionEvent* e);
-	bool OnCollisionWithCoin(CollisionEvent* e);
-	bool OnCollisionWithMushroom(CollisionEvent* e);
+	static bool OnCollisionWithPortal(const CollisionEvent* e);
+	bool OnCollisionWithQuestionBlock(const CollisionEvent* e);
+	static bool OnCollisionWithCoin(const CollisionEvent* e);
+	bool OnCollisionWithMushroom(const CollisionEvent* e);
 	bool OnCollisionWithFlower(CollisionEvent* e);
-	bool OnCollisionWithStar(CollisionEvent* e);
+	bool OnCollisionWithStar(const CollisionEvent* e);
 	int GetMarioAnimId() const;
+
+	// update func
+	bool HandleGrowing(float dt);
+	void HandleShrinking(float dt);
+	void WhileGrounded(float dt);
+	void WhileOnAir(float dt);
+	void HandleJump(float dt);
+	void HandleShootFireball(float dt, const vector<GameObject*>& coObjects, const SceneContext* ctx);
+	void ApplyGravityAndClamp(float dt);
+	void UpdateFacingDirection();
+	void RouteAnimationState();
 
 public:
 	Mario(int startX, int startY);
-	bool HandleGrowing(float dt);
-	void HandleStrinking(float dt);
+
 
 	MarioPower GetPowerLevel() const { return power; }
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;

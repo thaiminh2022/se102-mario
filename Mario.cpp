@@ -39,7 +39,7 @@ int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
 
 	for (const auto& co : coObjects)
 	{
-		if (GameObject::IsDeleted(co))
+		if (IsDeleted(co))
 			continue;
 
 		if (dynamic_cast<Fireball*>(co) != nullptr)
@@ -52,12 +52,12 @@ int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
 
 void Mario::OnMarioHit()
 {
-
-	if (!isInvincible) {
+	if (!isInvincible)
+	{
 		if (power != MarioPower::Normal)
 		{
 			state = MarioState::Shrinking;
-			AudioManager::GetInstance()->PlaySFX(PIPE_ENTER);// Original used pipe sound for power down
+			AudioManager::GetInstance()->PlaySFX(PIPE_ENTER); // Original used pipe sound for power down
 			isInvincible = true;
 			transformTimer = Timer(MARIO_SHRINK_TIME);
 			transformTimer.Start();
@@ -70,11 +70,10 @@ void Mario::OnMarioHit()
 		state = MarioState::Dying;
 		AudioManager::GetInstance()->StopAll();
 		AudioManager::GetInstance()->Play(MARIO_DIE, false, []()
-			{
-				Game::GetInstance()->ReloadCurrentScene();
-			});
+		{
+			Game::GetInstance()->ReloadCurrentScene();
+		});
 	}
-
 }
 
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
@@ -106,7 +105,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 
 
 	// idle anim
-	Animation* anim = new Animation(300);
+	auto anim = new Animation(300);
 	anim->Add(MARIO_IDLE_SPRITE_1);
 	anims->Add(MARIO_IDLE_ANIM_ID, anim);
 
@@ -223,7 +222,8 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	sprites->Add(MARIO_FIRE_JUMP_SPRITE_1, 80, 80, 95, 111, marioTex);
 	sprites->Add(MARIO_FIRE_DUCK_SPRITE_1, 96, 80, 111, 111, marioTex);
 
-	sprites->Add(MARIO_FIRE_FIRE_SPRITE_1, 16, 80, 31, 111, marioTex);// Reusing the run sprite for firing since it's the same pose
+	sprites->Add(MARIO_FIRE_FIRE_SPRITE_1, 16, 80, 31, 111, marioTex);
+	// Reusing the run sprite for firing since it's the same pose
 
 	//idle anim
 	anim = new Animation(300);
@@ -275,32 +275,246 @@ bool Mario::HandleGrowing(float dt)
 	transformTimer.ProcessTimer(dt);
 	if (!transformTimer.IsFinished())
 		return true;
-	else {
-		power = MarioPower::Big;
-		if (isGrounded)
-			state = MarioState::Idle;
-		else
-			state = MarioState::Jumping;
-		transformTimer.SetIdle();
-	}
+	power = MarioPower::Big;
+	if (isGrounded)
+		state = MarioState::Idle;
+	else
+		state = MarioState::Jumping;
+	transformTimer.SetIdle();
 	return false;
 }
 
-void Mario::HandleStrinking(float dt)
+void Mario::HandleShrinking(float dt)
 {
 	transformTimer.ProcessTimer(dt);
 	if (!transformTimer.IsFinished())
 		return;
-	else {
-		power = MarioPower::Normal;
-		invincibleTimer = Timer(MARIO_INVINCIBLE_TIME);
-		invincibleTimer.Start();
-		if (isGrounded)
-			state = MarioState::Idle;
+
+	power = MarioPower::Normal;
+	invincibleTimer = Timer(MARIO_INVINCIBLE_TIME);
+	invincibleTimer.Start();
+	if (isGrounded)
+		state = MarioState::Idle;
+	else
+		state = MarioState::Jumping;
+	transformTimer.SetIdle();
+}
+
+void Mario::WhileGrounded(float dt)
+{
+	const auto input = InputManager::GetInstance();
+	if (input->IsKeyDown('S') && (power == MarioPower::Big || power == MarioPower::Fire))
+	{
+		state = MarioState::Ducking;
+		if (velocity.x > 0) velocity.x -= DEC_SKID * dt; // Decelerate to a stop if ducking while moving right
+		else if (velocity.x < 0) velocity.x += DEC_SKID * dt; // Decelerate to a stop if ducking while moving left
+	}
+	// GROUND PHYSICS
+	if (abs(velocity.x) < MIN_WALK)
+	{
+		// Kickstart acceleration
+		velocity.x = 0;
+		if (input->IsKeyDown('A') && state != MarioState::Ducking) velocity.x -= MIN_WALK;
+		if (input->IsKeyDown('D') && state != MarioState::Ducking) velocity.x += MIN_WALK;
+	}
+	else
+	{
+		// Moving: Handle Acceleration & Braking
+		if (velocity.x > 0)
+		{
+			// Currently moving Right
+			if (input->IsKeyDown('D'))
+			{
+				velocity.x += (input->IsKeyDown(VK_SHIFT) ? ACC_RUN : ACC_WALK) * dt;
+			}
+			else if (input->IsKeyDown('A'))
+			{
+				//Skidding
+				velocity.x -= DEC_SKID * dt;
+			}
+			else
+			{
+				// No input, apply friction
+				velocity.x -= DEC_REL * dt;
+				velocity.x = std::max<float>(velocity.x, 0);
+			}
+		}
+		else if (velocity.x < 0)
+		{
+			// Currently moving Left
+			if (input->IsKeyDown('A'))
+			{
+				velocity.x -= (input->IsKeyDown(VK_SHIFT) ? ACC_RUN : ACC_WALK) * dt;
+			}
+			else if (input->IsKeyDown('D'))
+			{
+				// Skidding
+				velocity.x += DEC_SKID * dt;
+			}
+			else
+			{
+				// No input, apply friction
+				velocity.x += DEC_REL * dt;
+				velocity.x = std::min<float>(velocity.x, 0);
+			}
+		}
+	}
+}
+
+void Mario::WhileOnAir(float dt)
+{
+	const auto input = InputManager::GetInstance();
+
+	// AIR PHYSICS
+	// Preserve momentum, only change if input is detected
+	if (input->IsKeyDown('A'))
+	{
+		velocity.x -= (abs(velocity.x) > MAX_WALK ? ACC_RUN : ACC_WALK) * dt;
+	}
+	else if (input->IsKeyDown('D'))
+	{
+		velocity.x += (abs(velocity.x) > MAX_WALK ? ACC_RUN : ACC_WALK) * dt;
+	}
+}
+
+void Mario::HandleJump(float dt)
+{
+	const auto input = InputManager::GetInstance();
+
+
+	// INITIATE JUMP
+	if (input->IsKeyPressed('W') && isGrounded && state != MarioState::Ducking)
+	{
+		// jumped
+		AudioManager::GetInstance()->PlaySFX(MARIO_JUMP_SMALL);
+
+		if (abs(velocity.x) < 16.0f)
+		{
+			//Idle Jump
+			velocity.y = -240.0f;
+			fallAcc = STOP_FALL; // Heavy gravity
+		}
+		else if (abs(velocity.x) < 40.0f)
+		{
+			// Walk Jump
+			velocity.y = -240.0f;
+			fallAcc = WALK_FALL; // Very heavy gravity
+		}
 		else
-			state = MarioState::Jumping;
-		transformTimer.SetIdle();
-		return;
+		{
+			//Run jump
+			velocity.y = -300.0f; // Higher bounce due to momentum
+			fallAcc = RUN_FALL; // Extremely heavy gravity
+		}
+		isGrounded = false; // Lift off the ground
+	}
+
+	// VARIABLE JUMP
+	if (!isGrounded && velocity.y < 0 && input->IsKeyDown('W'))
+	{
+		// Reduce gravity if the player is holding the Jump key
+		if (fallAcc == STOP_FALL) velocity.y -= (STOP_FALL - STOP_FALL_A) * dt;
+		if (fallAcc == WALK_FALL) velocity.y -= (WALK_FALL - WALK_FALL_A) * dt;
+		if (fallAcc == RUN_FALL) velocity.y -= (RUN_FALL - RUN_FALL_A) * dt;
+	}
+}
+
+void Mario::HandleShootFireball(const float dt, const vector<GameObject*>& coObjects, const SceneContext* ctx)
+{
+	if (power == MarioPower::Fire)
+	{
+		auto fireBallCount = GetFireBallCount(coObjects);
+		if (InputManager::GetInstance()->IsKeyPressed(VK_CONTROL)
+			&& state != MarioState::Ducking
+			&& fireBallCount < MAX_FIREBALL_COUNT
+			&& fireCooldownTimer.IsFinished()
+		)
+		{
+			float offsetX = isFacingRight ? 16.0f : -16.0f; // Spawn fireball slightly in front of Mario
+			float offsetY = 8.0f; // Spawn fireball slightly above Mario's center
+			auto f = new Fireball(position.x + offsetX, position.y + offsetY, isFacingRight);
+			ctx->addObject(f);
+			AudioManager::GetInstance()->PlaySFX(FIREBALL);
+			fireCooldownTimer.Start();
+		}
+	}
+	fireCooldownTimer.ProcessTimer(dt);
+	if (!fireCooldownTimer.IsFinished())
+	{
+		state = MarioState::Firing;
+	}
+}
+
+void Mario::ApplyGravityAndClamp(float dt)
+{
+	const auto input = InputManager::GetInstance();
+
+
+	// APPLY GRAVITY
+	velocity.y += fallAcc * dt;
+
+	// Y-axis clamping
+	velocity.y = min(velocity.y, MAX_FALL);
+	velocity.y = max(velocity.y, -MAX_FALL);
+
+	// Absolute X-axis clamping
+	velocity.x = min(velocity.x, MAX_RUN);
+	velocity.x = max(velocity.x, -MAX_RUN);
+
+	// Clamp back to Walk speed if Shift is released
+	if (isGrounded)
+	{
+		if (velocity.x > MAX_WALK && !input->IsKeyDown(VK_SHIFT)) velocity.x = MAX_WALK;
+		if (velocity.x < -MAX_WALK && !input->IsKeyDown(VK_SHIFT)) velocity.x = -MAX_WALK;
+	}
+}
+
+void Mario::UpdateFacingDirection()
+{
+	const auto input = InputManager::GetInstance();
+	if (input->IsKeyDown('A') && !input->IsKeyDown('D') && isGrounded && state != MarioState::Ducking)
+	{
+		isFacingRight = false;
+	}
+	else if (input->IsKeyDown('D') && !input->IsKeyDown('A') && isGrounded && state != MarioState::Ducking)
+	{
+		isFacingRight = true;
+	}
+}
+
+void Mario::RouteAnimationState()
+{
+	const InputManager* input = InputManager::GetInstance();
+	if (!isGrounded)
+	{
+		state = MarioState::Jumping;
+	}
+	else
+	{
+		if ((power == MarioPower::Big || power == MarioPower::Fire) && input->IsKeyDown('S'))
+		{
+			state = MarioState::Ducking;
+		}
+		else if (abs(velocity.x) > MAX_WALK)
+		{
+			state = MarioState::Running;
+		}
+		else if (abs(velocity.x) >= MIN_WALK)
+		{
+			// Detect Skidding: Moving right but pressing left (or vice versa)
+			if ((velocity.x > 0 && input->IsKeyDown('A')) || (velocity.x < 0 && input->IsKeyDown('D')))
+			{
+				state = MarioState::Skidding;
+			}
+			else
+			{
+				state = MarioState::Walking;
+			}
+		}
+		else
+		{
+			state = MarioState::Idle;
+		}
 	}
 }
 
@@ -314,12 +528,14 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		velocity.x = 0;
 		return;
 	}
-	if (state == MarioState::Growing) {
-		if (HandleGrowing(dt)) 
+	if (state == MarioState::Growing)
+	{
+		if (HandleGrowing(dt))
 			return;
 	}
-	if (state == MarioState::Shrinking) {
-		HandleStrinking(dt);
+	if (state == MarioState::Shrinking)
+	{
+		HandleShrinking(dt);
 		return;
 	}
 
@@ -336,173 +552,27 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	auto input = InputManager::GetInstance();
 	if (isGrounded)
 	{
-		if (input->IsKeyDown('S') && (power == MarioPower::Big || power == MarioPower::Fire)) {
-			state = MarioState::Ducking;
-			if (velocity.x > 0) velocity.x -= DEC_SKID * dt; // Decelerate to a stop if ducking while moving right
-			else if (velocity.x < 0) velocity.x += DEC_SKID * dt; // Decelerate to a stop if ducking while moving left
-		}
-		// GROUND PHYSICS
-		if (abs(velocity.x) < MIN_WALK) {
-			// Kickstart acceleration
-			velocity.x = 0;
-			if (input->IsKeyDown('A') && state != MarioState::Ducking) velocity.x -= MIN_WALK;
-			if (input->IsKeyDown('D') && state != MarioState::Ducking) velocity.x += MIN_WALK;
-		}
-		else {
-			// Moving: Handle Acceleration & Braking
-			if (velocity.x > 0) { // Currently moving Right
-				if (input->IsKeyDown('D')) {
-					velocity.x += (input->IsKeyDown(VK_SHIFT) ? ACC_RUN : ACC_WALK) * dt;
-				}
-				else if (input->IsKeyDown('A')) {
-					//Skidding
-					velocity.x -= DEC_SKID * dt;
-				}
-				else {
-					// No input, apply friction
-					velocity.x -= DEC_REL * dt;
-					velocity.x = std::max<float>(velocity.x, 0);
-				}
-			}
-			else if (velocity.x < 0) { // Currently moving Left
-				if (input->IsKeyDown('A')) {
-					velocity.x -= (input->IsKeyDown(VK_SHIFT) ? ACC_RUN : ACC_WALK) * dt;
-				}
-				else if (input->IsKeyDown('D')) {
-					// Skidding
-					velocity.x += DEC_SKID * dt;
-				}
-				else {
-					// No input, apply friction
-					velocity.x += DEC_REL * dt;
-					velocity.x = std::min<float>(velocity.x, 0);
-				}
-			}
-		}
+		WhileGrounded(dt);
 	}
 	else
 	{
-		// AIR PHYSICS
-		// Preserve momentum, only change if input is detected
-		if (input->IsKeyDown('A')) {
-			velocity.x -= (abs(velocity.x) > MAX_WALK ? ACC_RUN : ACC_WALK) * dt;
-		}
-		else if (input->IsKeyDown('D')) {
-			velocity.x += (abs(velocity.x) > MAX_WALK ? ACC_RUN : ACC_WALK) * dt;
-		}
+		WhileOnAir(dt);
 	}
 
-	// INITIATE JUMP
-	if (input->IsKeyPressed('W') && isGrounded && state != MarioState::Ducking)
-	{
-		// jumped
-		AudioManager::GetInstance()->PlaySFX(MARIO_JUMP_SMALL);
-
-		if (abs(velocity.x) < 16.0f) {
-			//Idle Jump
-			velocity.y = -240.0f;
-			fallAcc = STOP_FALL; // Heavy gravity
-		}
-		else if (abs(velocity.x) < 40.0f) {
-			// Walk Jump
-			velocity.y = -240.0f;
-			fallAcc = WALK_FALL; // Very heavy gravity
-		}
-		else {
-			//Run jump
-			velocity.y = -300.0f; // Higher bounce due to momentum
-			fallAcc = RUN_FALL;  // Extremely heavy gravity
-		}
-		isGrounded = false; // Lift off the ground
-	}
-
-	// VARIABLE JUMP
-	if (!isGrounded && velocity.y < 0 && input->IsKeyDown('W'))
-	{
-		// Reduce gravity if the player is holding the Jump key
-		if (fallAcc == STOP_FALL) velocity.y -= (STOP_FALL - STOP_FALL_A) * dt;
-		if (fallAcc == WALK_FALL) velocity.y -= (WALK_FALL - WALK_FALL_A) * dt;
-		if (fallAcc == RUN_FALL)  velocity.y -= (RUN_FALL - RUN_FALL_A) * dt;
-	}
-
-	auto fireBallCount = GetFireBallCount(coObjects);
-	if (input->IsKeyPressed(VK_CONTROL)
-		&& power == MarioPower::Fire
-		&& state != MarioState::Ducking
-		&& fireBallCount < MAX_FIREBALL_COUNT
-		&& fireCooldownTimer.IsFinished()
-		)
-	{
-		float offsetX = isFacingRight ? 16.0f : -16.0f; // Spawn fireball slightly in front of Mario
-		float offsetY = 8.0f; // Spawn fireball slightly above Mario's center
-		Fireball* f = new Fireball(position.x + offsetX, position.y + offsetY, isFacingRight);
-		ctx->addObject(f);
-		AudioManager::GetInstance()->PlaySFX(FIREBALL);
-		fireCooldownTimer.Start();
-	}
-
-	// APPLY GRAVITY
-	velocity.y += fallAcc * dt;
-
-
-	// Y-axis clamping
-	velocity.y = min(velocity.y, MAX_FALL);
-	velocity.y = max(velocity.y, -MAX_FALL);
-
-	// Absolute X-axis clamping
-	velocity.x = min(velocity.x, MAX_RUN);
-	velocity.x = max(velocity.x, -MAX_RUN);
-
-	// Clamp back to Walk speed if Shift is released
-	if (isGrounded) {
-		if (velocity.x > MAX_WALK && !input->IsKeyDown(VK_SHIFT)) velocity.x = MAX_WALK;
-		if (velocity.x < -MAX_WALK && !input->IsKeyDown(VK_SHIFT)) velocity.x = -MAX_WALK;
-	}
+	HandleJump(dt);
+	HandleShootFireball(dt, coObjects, ctx);
+	ApplyGravityAndClamp(dt);
 
 
 	// UPDATE STATE & FACING DIRECTION
 
 	// Update facing direction based on player input and only apply if grounded to prevent mid-air direction change
-	if (input->IsKeyDown('A') && !input->IsKeyDown('D') && isGrounded && state != MarioState::Ducking) {
-		isFacingRight = false;
-	}
-	else if (input->IsKeyDown('D') && !input->IsKeyDown('A') && isGrounded && state != MarioState::Ducking) {
-		isFacingRight = true;
-	}
-
-	// Route Animation State
-	if (!isGrounded) {
-		state = MarioState::Jumping;
-	}
-	else {
-		if ((power == MarioPower::Big || power == MarioPower::Fire) && input->IsKeyDown('S')) {
-			state = MarioState::Ducking;
-		}
-		else if (abs(velocity.x) > MAX_WALK) {
-			state = MarioState::Running;
-		}
-		else if (abs(velocity.x) >= MIN_WALK) {
-			// Detect Skidding: Moving right but pressing left (or vice versa)
-			if ((velocity.x > 0 && input->IsKeyDown('A')) || (velocity.x < 0 && input->IsKeyDown('D'))) {
-				state = MarioState::Skidding;
-			}
-			else {
-				state = MarioState::Walking;
-			}
-		}
-		else {
-			state = MarioState::Idle;
-		}
-	}
-	fireCooldownTimer.ProcessTimer(dt);
-	if (!fireCooldownTimer.IsFinished()) {
-		state = MarioState::Firing;
-	}
+	UpdateFacingDirection();
+	RouteAnimationState();
 
 
 	// FOR NOW, FIREBALL TRAP WILL BE CHECK IN UPDATE
 	// WE SHOULD HAVE A BETTER SOLUTION
-
 	for (const auto& other : coObjects)
 	{
 		const auto fireballTrap = dynamic_cast<FireballTrap*>(other);
@@ -519,28 +589,29 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	}
 
 
-
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }
 
 void Mario::Render()
 {
-	if (isInvincible) {
-		if ((GetTickCount() / 100) % 2 == 0) {
+	if (isInvincible)
+	{
+		if ((GetTickCount() / 100) % 2 == 0)
+		{
 			return; // Skip this frame to create a blinking effect
 		}
 	}
-	
+
 	auto g = Game::GetInstance();
 	float renderX, renderY;
 	g->GetCamera()
-		->WorldToScreen(position.x, position.y, renderX, renderY);
-	
-	
+	 ->WorldToScreen(position.x, position.y, renderX, renderY);
+
+
 	auto animId = GetMarioAnimId();
 	Animations::GetInstance()
-	->Get(animId)
-	->Render(round(renderX), round(renderY), !isFacingRight, false);
+		->Get(animId)
+		->Render(round(renderX), round(renderY), !isFacingRight, false);
 }
 
 Rect Mario::GetBoundingBox()
@@ -611,10 +682,11 @@ bool Mario::OnCollisionWithPortal(const CollisionEvent* e)
 	return false;
 }
 
-bool Mario::OnCollisionWithQuestionBlock(CollisionEvent* e)
+bool Mario::OnCollisionWithQuestionBlock(const CollisionEvent* e)
 {
 	const auto questionBlock = dynamic_cast<QuestionBlock*>(e->otherObject);
-	if (questionBlock != nullptr) {
+	if (questionBlock != nullptr)
+	{
 		if (e->normalizedDir.y == -1)
 		{
 			isGrounded = true;
@@ -623,7 +695,6 @@ bool Mario::OnCollisionWithQuestionBlock(CollisionEvent* e)
 
 		if (e->normalizedDir.y == 1)
 		{
-
 			if (!questionBlock->HaveDrop())
 			{
 				if (power == MarioPower::Big || power == MarioPower::Fire)
@@ -641,7 +712,7 @@ bool Mario::OnCollisionWithQuestionBlock(CollisionEvent* e)
 	return false;
 }
 
-bool Mario::OnCollisionWithCoin(CollisionEvent* e)
+bool Mario::OnCollisionWithCoin(const CollisionEvent* e)
 {
 	const auto coin = dynamic_cast<Coin*>(e->otherObject);
 	if (coin != nullptr)
@@ -654,7 +725,7 @@ bool Mario::OnCollisionWithCoin(CollisionEvent* e)
 	return false;
 }
 
-bool Mario::OnCollisionWithMushroom(CollisionEvent* e)
+bool Mario::OnCollisionWithMushroom(const CollisionEvent* e)
 {
 	const auto mushroom = dynamic_cast<Mushroom*>(e->otherObject);
 	if (mushroom != nullptr)
@@ -696,20 +767,19 @@ bool Mario::OnCollisionWithFlower(CollisionEvent* e)
 		flower->SetState(CollectableItemState::Collected);
 		AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
 		return true;
-
 	}
 	return false;
 }
 
-bool Mario::OnCollisionWithStar(CollisionEvent* e)
+bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 {
 	const auto star = dynamic_cast<Star*>(e->otherObject);
 	if (star != nullptr)
 	{
 		star->SetState(CollectableItemState::Collected);
 		auto audio = AudioManager::GetInstance();
-			
-			
+
+
 		isInvincible = true;
 		invincibleTimer = Timer(15);
 		invincibleTimer.Start();
@@ -813,7 +883,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		if (e->otherTile->IsBlocking()
 			&& e->normalizedDir.y == -1
 			&& e->normalizedDir.x == 0
-			)
+		)
 		{
 			isGrounded = true;
 		}
@@ -827,6 +897,5 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		if (OnCollisionWithMushroom(e)) return;
 		if (OnCollisionWithFlower(e)) return;
 		if (OnCollisionWithStar(e)) return;
-
 	}
 }
