@@ -107,7 +107,7 @@ void PlayableScene::Load()
 	// next level portal
 	for (const auto& pPos : config->entityData.nextLevelsData)
 	{
-		const auto portal = new NextLevelPortal(pPos.zone, pPos.levelToLoad);
+		const auto portal = new NextLevelPortal(pPos.zone, pPos.levelToLoad, pPos.delaySeconds);
 		objects.push_back(portal);
 	}
 

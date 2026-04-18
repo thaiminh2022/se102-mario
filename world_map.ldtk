@@ -11,7 +11,7 @@
 	"iid": "542e4d40-21a0-11f1-b547-3f7639dce03c",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 62,
+	"nextUid": 63,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "Free",
@@ -697,6 +697,43 @@
 					"allowedRefsEntityUid": null,
 					"allowedRefTags": [],
 					"tilesetUid": null
+				},
+				{
+					"identifier": "fireworks_positions",
+					"doc": "Position to shoot firework after player enter",
+					"__type": "Array<Point>",
+					"uid": 62,
+					"type": "F_Point",
+					"isArray": true,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Points",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
 				}
 			]
 		}
@@ -1142,29 +1179,32 @@
 							"px": [864,256],
 							"fieldInstances": [
 								{ "__identifier": "level_to_load", "__type": "Int", "__value": 1, "__tile": null, "defUid": 42, "realEditorValues": [{ "id": "V_Int", "params": [1] }] },
-								{ "__identifier": "load_delay", "__type": "Float", "__value": 1, "__tile": null, "defUid": 60, "realEditorValues": [{ "id": "V_Float", "params": [1] }] }
+								{ "__identifier": "load_delay", "__type": "Float", "__value": 5, "__tile": null, "defUid": 60, "realEditorValues": [{ "id": "V_Float", "params": [5] }] }
 							],
 							"__worldX": 864,
 							"__worldY": 256
 						},
 						{
 							"__identifier": "FlagPole",
-							"__grid": [45,8],
+							"__grid": [45,9],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": null,
 							"__smartColor": "#29FF00",
 							"iid": "4779bd40-21a0-11f1-8dc5-59a989bb4e62",
 							"width": 16,
-							"height": 160,
+							"height": 144,
 							"defUid": 57,
-							"px": [720,128],
-							"fieldInstances": [{ "__identifier": "player_move_to", "__type": "Point", "__value": { "cx": 54, "cy": 17 }, "__tile": null, "defUid": 61, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["54,17"]
-							}] }],
+							"px": [720,144],
+							"fieldInstances": [
+								{ "__identifier": "player_move_to", "__type": "Point", "__value": { "cx": 54, "cy": 17 }, "__tile": null, "defUid": 61, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["54,17"]
+								}] },
+								{ "__identifier": "fireworks_positions", "__type": "Array<Point>", "__value": [], "__tile": null, "defUid": 62, "realEditorValues": [] }
+							],
 							"__worldX": 720,
-							"__worldY": 128
+							"__worldY": 144
 						}
 					]
 				},

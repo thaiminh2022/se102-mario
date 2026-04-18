@@ -209,6 +209,9 @@ static void LoadResource()
 	AudioManager::GetInstance()->LoadWAV(BREAK_BLOCK, L"Assets\\Audio\\SFX\\breakblock.wav");
 	AudioManager::GetInstance()->LoadWAV(PIPE_ENTER, L"Assets\\Audio\\SFX\\pipe.wav");
 	AudioManager::GetInstance()->LoadWAV(INVINCIBILITY_THEME, L"Assets\\Audio\\Soundtracks\\05.InvincibilityTheme.wav");
+	AudioManager::GetInstance()->LoadWAV(FLAG_PULL, L"Assets\\Audio\\SFX\\flagpole.wav");
+	AudioManager::GetInstance()->LoadWAV(STAGE_CLEAR, L"Assets\\Audio\\SFX\\stage_clear.wav");
+
 
 
 

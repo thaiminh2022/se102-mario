@@ -26,6 +26,7 @@
 #include "QuestionBlock.h"
 #include "Fireball.h"
 #include "FireballTrap.h"
+#include "FlagPole.h"
 #include "Flower.h"
 #include "Star.h"
 
@@ -79,6 +80,9 @@ void Mario::OnMarioHit()
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 
 {
+	isRendering = true;
+	slidingToYWinning = 0;
+	flagPoleFlipWaitTimer = Timer(1);
 	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
 
 	auto anims = Animations::GetInstance();
@@ -270,7 +274,116 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	transformTimer = Timer(MARIO_GROW_TIME);
 }
 
-bool Mario::HandleGrowing(float dt)
+void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
+{
+
+	if (state == MarioState::Dying)
+	{
+		// dead animation for now
+		Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
+		velocity.y = 9000.0f * dt;
+		velocity.x = 0;
+		return;
+	}
+	if (state == MarioState::Growing)
+	{
+		if (HandleGrowing(dt))
+			return;
+	}
+	if (state == MarioState::Shrinking)
+	{
+		HandleShrinking(dt);
+		return;
+	}
+
+	if (state == MarioState::PullingFlag)
+	{
+		isCollidable = false;
+
+		if (position.y < slidingToYWinning)
+		{
+			position.y += 150 * dt;
+		}else
+		{
+			if (!flagPoleFlipWaitTimer.IsTicking())
+			{
+				flagPoleFlipWaitTimer.Start();
+				position.y = slidingToYWinning;
+				isFacingRight = false;
+				position.x += 16;
+			}
+
+			flagPoleFlipWaitTimer.ProcessTimer(dt);
+			if (flagPoleFlipWaitTimer.IsFinished())
+			{
+				state = MarioState::WalkingToCastle;
+				flagPoleFlipWaitTimer.SetIdle();
+
+				AudioManager::GetInstance()->PlaySFX(STAGE_CLEAR);
+			}
+
+		}
+		return;
+	}
+	if (state == MarioState::WalkingToCastle)
+	{
+		isCollidable = true;
+
+		if (abs(marioWinningMoveToPosition.x - position.x) > 2)
+		{
+			auto dir = (marioWinningMoveToPosition - position).Normalized();
+			velocity.x = dir.x * 150.0f;
+			velocity.y += 9000 * dt;
+			DebugOutTitle(L"%f %f", dir.x, dir.y);
+			Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
+		}else
+		{
+			isRendering = false;
+		}
+		return;
+	}
+
+
+	if (isInvincible)
+	{
+		invincibleTimer.ProcessTimer(dt);
+		if (invincibleTimer.IsFinished())
+		{
+			isInvincible = false;
+			invincibleTimer.SetIdle();
+		}
+	}
+
+	auto input = InputManager::GetInstance();
+	if (isGrounded)
+	{
+		WhileGrounded(dt);
+	}
+	else
+	{
+		WhileOnAir(dt);
+	}
+
+	HandleJump(dt);
+	HandleShootFireball(dt, coObjects, ctx);
+	ApplyGravityAndClamp(dt);
+
+
+	// UPDATE STATE & FACING DIRECTION
+
+	// Update facing direction based on player input and only apply if grounded to prevent mid-air direction change
+	UpdateFacingDirection();
+	RouteAnimationState();
+
+
+	// FOR NOW, FIREBALL TRAP WILL BE CHECK IN UPDATE
+	// WE SHOULD HAVE A BETTER SOLUTION
+	OnCollisionWithFireballTrap(coObjects);
+
+	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
+}
+
+bool Mario::HandleGrowing(const float dt)
 {
 	transformTimer.ProcessTimer(dt);
 	if (!transformTimer.IsFinished())
@@ -518,61 +631,9 @@ void Mario::RouteAnimationState()
 	}
 }
 
-void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
+void Mario::OnCollisionWithFireballTrap(vector<GameObject*>& coObjects)
 {
-	if (state == MarioState::Dying)
-	{
-		// dead animation for now
-		Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
-		velocity.y = 9000.0f * dt;
-		velocity.x = 0;
-		return;
-	}
-	if (state == MarioState::Growing)
-	{
-		if (HandleGrowing(dt))
-			return;
-	}
-	if (state == MarioState::Shrinking)
-	{
-		HandleShrinking(dt);
-		return;
-	}
 
-	if (isInvincible)
-	{
-		invincibleTimer.ProcessTimer(dt);
-		if (invincibleTimer.IsFinished())
-		{
-			isInvincible = false;
-			invincibleTimer.SetIdle();
-		}
-	}
-
-	auto input = InputManager::GetInstance();
-	if (isGrounded)
-	{
-		WhileGrounded(dt);
-	}
-	else
-	{
-		WhileOnAir(dt);
-	}
-
-	HandleJump(dt);
-	HandleShootFireball(dt, coObjects, ctx);
-	ApplyGravityAndClamp(dt);
-
-
-	// UPDATE STATE & FACING DIRECTION
-
-	// Update facing direction based on player input and only apply if grounded to prevent mid-air direction change
-	UpdateFacingDirection();
-	RouteAnimationState();
-
-
-	// FOR NOW, FIREBALL TRAP WILL BE CHECK IN UPDATE
-	// WE SHOULD HAVE A BETTER SOLUTION
 	for (const auto& other : coObjects)
 	{
 		const auto fireballTrap = dynamic_cast<FireballTrap*>(other);
@@ -587,13 +648,15 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 		OnMarioHit();
 	}
-
-
-	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }
+
+
 
 void Mario::Render()
 {
+	if (!isRendering)
+		return;
+
 	if (isInvincible)
 	{
 		if ((GetTickCount() / 100) % 2 == 0)
@@ -606,7 +669,6 @@ void Mario::Render()
 	float renderX, renderY;
 	g->GetCamera()
 	 ->WorldToScreen(position.x, position.y, renderX, renderY);
-
 
 	auto animId = GetMarioAnimId();
 	Animations::GetInstance()
@@ -795,6 +857,35 @@ bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 	return false;
 }
 
+bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
+{
+	const auto flagPole = dynamic_cast<FlagPole*>(collisionEvent->otherObject);
+	if (flagPole == nullptr)
+		return false;
+
+	AudioManager::GetInstance()->StopAll();
+	AudioManager::GetInstance()->PlaySFX(FLAG_PULL);
+
+	// set state to flag sliding
+	velocity = Vector2(0, 0);
+	state = MarioState::PullingFlag;
+	// make mario face right
+	isFacingRight = true;
+
+	// set flagPole to collided
+	flagPole->SetFlagMove();
+	// initiate sliding down
+	auto snapPosition = flagPole->GetSnapPosition();
+	position.x = snapPosition.x;
+	position.y = max(position.y, snapPosition.y);
+
+	float offset = power == MarioPower::Normal ? 16 : 32;
+
+	slidingToYWinning = flagPole->GetBoundingBox().bottom - offset;
+	marioWinningMoveToPosition = flagPole->GetMoveToPosition();
+	return true;
+}
+
 int Mario::GetMarioAnimId() const
 {
 	if (power == MarioPower::Normal)
@@ -807,8 +898,10 @@ int Mario::GetMarioAnimId() const
 			return MARIO_GROWBIG_ANIM_ID;
 		case MarioState::Walking:
 		case MarioState::Running:
+		case MarioState::WalkingToCastle:
 			return MARIO_RUN_ANIM_ID;
 		case MarioState::Skidding:
+		case MarioState::PullingFlag:
 			return MARIO_SKID_ANIM_ID;
 		case MarioState::Idle:
 			return MARIO_IDLE_ANIM_ID;
@@ -826,8 +919,10 @@ int Mario::GetMarioAnimId() const
 		{
 		case MarioState::Walking:
 		case MarioState::Running:
+		case MarioState::WalkingToCastle:
 			return MARIO_BIG_RUN_ANIM_ID;
 		case MarioState::Skidding:
+		case MarioState::PullingFlag:
 			return MARIO_BIG_SKID_ANIM_ID;
 		case MarioState::Idle:
 			return MARIO_BIG_IDLE_ANIM_ID;
@@ -847,8 +942,10 @@ int Mario::GetMarioAnimId() const
 		{
 		case MarioState::Walking:
 		case MarioState::Running:
+		case MarioState::WalkingToCastle:
 			return MARIO_FIRE_RUN_ANIM_ID;
 		case MarioState::Skidding:
+		case MarioState::PullingFlag:
 			return MARIO_FIRE_SKID_ANIM_ID;
 		case MarioState::Idle:
 			return MARIO_FIRE_IDLE_ANIM_ID;
@@ -897,5 +994,6 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		if (OnCollisionWithMushroom(e)) return;
 		if (OnCollisionWithFlower(e)) return;
 		if (OnCollisionWithStar(e)) return;
+		if (OnCollisionWithFlagPole(e)) return;
 	}
 }

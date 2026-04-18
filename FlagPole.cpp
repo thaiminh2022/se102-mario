@@ -8,6 +8,7 @@
 
 FlagPole::FlagPole(Rect r, Vector2Int moveTo)
 {
+	state = FlagPoleState::Idle;
 	auto anims = Animations::GetInstance();
 	auto sp = Sprites::GetInstance();
 	auto t = Textures::GetInstance()->Get(OVERWORLD_ITEMS_TEX_ID);
@@ -20,7 +21,7 @@ FlagPole::FlagPole(Rect r, Vector2Int moveTo)
 		anims->Add(FLAG_IDLE_ANIM_ID, anim);
 	}
 	position = Vector2Int(r.left, r.top);
-	flagPosition = position + Vector2(-9, 16);
+	flagPosition = position + Vector2(-9, 0);
 
 	zone = r;
 	playerMoveTo = moveTo;
@@ -33,6 +34,18 @@ Rect FlagPole::GetBoundingBox()
 
 void FlagPole::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
+	if (state != FlagPoleState::Move)
+		return;
+	constexpr float offset = -16;
+	if (flagPosition.y < GetBoundingBox().bottom + offset)
+	{
+		constexpr float flagMoveSpeed = 150;
+		flagPosition.y += flagMoveSpeed * dt;
+	}else
+	{
+		flagPosition.y = GetBoundingBox().bottom + offset;
+		state = FlagPoleState::Idle;
+	}
 }
 
 void FlagPole::Render()
@@ -47,6 +60,22 @@ void FlagPole::Render()
 	->Render(round(renderX), round(renderY), false, false);
 }
 
-void FlagPole::OnCollisionWith(CollisionEvent* event)
+void FlagPole::SetFlagMove()
 {
+	state = FlagPoleState::Move;
 }
+
+Vector2 FlagPole::GetSnapPosition() const
+{
+	constexpr float offsetX = -7;
+	return Vector2(flagPosition.x, position.y);
+}
+
+Vector2 FlagPole::GetMoveToPosition()
+{
+	return playerMoveTo;
+}
+
+
+
+

@@ -50,6 +50,7 @@ enum class MarioState : std::uint8_t
 	Jumping,
 	Ducking,
 	PullingFlag,
+	WalkingToCastle,
 	Dying,
 	Firing,
 	Growing,
@@ -68,6 +69,7 @@ class Mario : public GameObject
 {
 	bool isGrounded;
 	bool isInvincible;
+	bool isRendering;
 	static int goombaKilled;
 	static int coinCollected;
 
@@ -81,7 +83,15 @@ class Mario : public GameObject
 	MarioState state;
 	MarioPower power;
 
+	// flag pole interaction
+	Vector2 marioWinningMoveToPosition;
+	float slidingToYWinning;
+	Timer flagPoleFlipWaitTimer;
+
+
 	void OnMarioHit();
+	int GetMarioAnimId() const;
+
 
 	// on collision with
 	bool OnCollisionWithGoomba(const CollisionEvent* e);
@@ -91,7 +101,8 @@ class Mario : public GameObject
 	bool OnCollisionWithMushroom(const CollisionEvent* e);
 	bool OnCollisionWithFlower(CollisionEvent* e);
 	bool OnCollisionWithStar(const CollisionEvent* e);
-	int GetMarioAnimId() const;
+	bool OnCollisionWithFlagPole(const CollisionEvent* collisionEvent);
+
 
 	// update func
 	bool HandleGrowing(float dt);
@@ -103,10 +114,11 @@ class Mario : public GameObject
 	void ApplyGravityAndClamp(float dt);
 	void UpdateFacingDirection();
 	void RouteAnimationState();
+	void OnCollisionWithFireballTrap(vector<GameObject*>& coObjects);
+
 
 public:
 	Mario(int startX, int startY);
-
 
 	MarioPower GetPowerLevel() const { return power; }
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;

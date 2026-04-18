@@ -28,7 +28,7 @@ struct QuestionBlockData
 	BlockDropType dropType;
 };
 
-struct BrickBlocData
+struct BrickBlockData
 {
 	Vector2Int position;
 	BlockDropType dropType;
@@ -38,6 +38,7 @@ struct FlagPoleData
 {
 	Rect zone;
 	Vector2Int moveToPosition;
+	vector<Vector2Int> fireworkPositions;
 };
 
 
@@ -48,7 +49,7 @@ struct SceneEntityData
 	Optional<FlagPoleData> flagPole;
 	vector<Vector2Int> goombaStarts;
 	vector<QuestionBlockData> questionBlocks;
-	vector<BrickBlocData> brickBlocks;
+	vector<BrickBlockData> brickBlocks;
 	vector<Vector2Int> coins;
 	vector<NextLevelData> nextLevelsData;
 	vector<Vector2Int> fireballTraps;
