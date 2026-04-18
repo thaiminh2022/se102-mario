@@ -270,6 +270,40 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	transformTimer = Timer(MARIO_GROW_TIME);
 }
 
+bool Mario::HandleGrowing(float dt)
+{
+	transformTimer.ProcessTimer(dt);
+	if (!transformTimer.IsFinished())
+		return true;
+	else {
+		power = MarioPower::Big;
+		if (isGrounded)
+			state = MarioState::Idle;
+		else
+			state = MarioState::Jumping;
+		transformTimer.SetIdle();
+	}
+	return false;
+}
+
+void Mario::HandleStrinking(float dt)
+{
+	transformTimer.ProcessTimer(dt);
+	if (!transformTimer.IsFinished())
+		return;
+	else {
+		power = MarioPower::Normal;
+		invincibleTimer = Timer(MARIO_INVINCIBLE_TIME);
+		invincibleTimer.Start();
+		if (isGrounded)
+			state = MarioState::Idle;
+		else
+			state = MarioState::Jumping;
+		transformTimer.SetIdle();
+		return;
+	}
+}
+
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 	if (state == MarioState::Dying)
@@ -281,33 +315,12 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		return;
 	}
 	if (state == MarioState::Growing) {
-		transformTimer.ProcessTimer(dt);
-		if (!transformTimer.IsFinished())
+		if (HandleGrowing(dt)) 
 			return;
-		else {
-			power = MarioPower::Big;
-			if (isGrounded)
-				state = MarioState::Idle;
-			else
-				state = MarioState::Jumping;
-			transformTimer.SetIdle();
-		}
 	}
 	if (state == MarioState::Shrinking) {
-		transformTimer.ProcessTimer(dt);
-		if (!transformTimer.IsFinished())
-			return;
-		else {
-			power = MarioPower::Normal;
-			invincibleTimer = Timer(MARIO_INVINCIBLE_TIME);
-			invincibleTimer.Start();
-			if (isGrounded)
-				state = MarioState::Idle;
-			else
-				state = MarioState::Jumping;
-			transformTimer.SetIdle();
-			return;
-		}
+		HandleStrinking(dt);
+		return;
 	}
 
 	if (isInvincible)
@@ -320,13 +333,10 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		}
 	}
 
-	auto g = Game::GetInstance();
 	auto input = InputManager::GetInstance();
 	if (isGrounded)
 	{
 		if (input->IsKeyDown('S') && (power == MarioPower::Big || power == MarioPower::Fire)) {
-			// Ducking has the highest priority, overrides all other states
-			// No horizontal movement while ducking
 			state = MarioState::Ducking;
 			if (velocity.x > 0) velocity.x -= DEC_SKID * dt; // Decelerate to a stop if ducking while moving right
 			else if (velocity.x < 0) velocity.x += DEC_SKID * dt; // Decelerate to a stop if ducking while moving left
@@ -351,7 +361,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 				else {
 					// No input, apply friction
 					velocity.x -= DEC_REL * dt;
-					if (velocity.x < 0) velocity.x = 0;
+					velocity.x = std::max<float>(velocity.x, 0);
 				}
 			}
 			else if (velocity.x < 0) { // Currently moving Left
@@ -365,7 +375,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 				else {
 					// No input, apply friction
 					velocity.x += DEC_REL * dt;
-					if (velocity.x > 0) velocity.x = 0;
+					velocity.x = std::min<float>(velocity.x, 0);
 				}
 			}
 		}

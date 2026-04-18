@@ -92,6 +92,8 @@ class Mario : public GameObject
 
 public:
 	Mario(int startX, int startY);
+	bool HandleGrowing(float dt);
+	void HandleStrinking(float dt);
 
 	MarioPower GetPowerLevel() const { return power; }
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
