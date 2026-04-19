@@ -4,9 +4,9 @@ int StatManager::coinCount = 0;
 int StatManager::score = 0;
 int StatManager::lifeCount = 0;
 
-void StatManager::AddScore(int score)
+void StatManager::AddScore(int addingScore)
 {
-	StatManager::score += score;
+	StatManager::score += addingScore;
 }
 
 void StatManager::AddCoin()
@@ -21,15 +21,15 @@ void StatManager::AddLife()
 
 int StatManager::GetScore()
 {
-    return StatManager::score;
+	return StatManager::score;
 }
 
 int StatManager::GetCoin()
 {
-    return StatManager::coinCount;
+	return StatManager::coinCount;
 }
 
 int StatManager::GetLife()
 {
-    return StatManager::lifeCount;
+	return StatManager::lifeCount;
 }

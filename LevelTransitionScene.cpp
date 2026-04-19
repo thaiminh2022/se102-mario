@@ -11,6 +11,7 @@
 LevelTransitionScene::LevelTransitionScene()
 {
 	targetLevelID = 0;
+	transitionDuration = 3.0f;
 }
 
 LevelTransitionScene::LevelTransitionScene(int targetLevelID, float transitionDuration)

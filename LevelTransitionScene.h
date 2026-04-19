@@ -2,9 +2,10 @@
 #include "Scene.h"
 #include "Timer.h"
 #include <string>
+#include <vector>
 class LevelTransitionScene : public Scene
 {
-	vector <std::wstring> Texts = {
+	std::vector <std::wstring> Texts = {
 		L"MARIO\n12345",
 		L"x21",
 		L"WORLD\n1-2",

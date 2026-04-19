@@ -727,13 +727,15 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 			goombaKilled++;
 			StatManager::AddScore(100);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
-
+			return true;
+		}
+		else {
 			// dead
 			OnMarioHit();
 			return true;
 		}
-		return false;
 	}
+	return false;
 }
 
 bool Mario::OnCollisionWithPortal(const CollisionEvent* e)

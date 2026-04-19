@@ -4,7 +4,7 @@
 #include "Animations.h"
 #include "AssetIDs.h"
 #include "MainMenu.h"
-
+#include "LevelTransitionScene.h"
 Game* Game::_instance = nullptr;
 
 void Game::Init(HWND hWnd)
@@ -401,7 +401,7 @@ void Game::IndicateSceneSwitch(int newID)
 {
 	nextSceneID = newID;
 }
-#include "LevelTransitionScene.h"
+
 void Game::LoadSceneAndEnterFirst()
 {
 	if (scenes.find(MAIN_MENU) == scenes.end())
