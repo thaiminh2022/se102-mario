@@ -49,6 +49,11 @@ constexpr int MARIO_JUMP_SPRITE_1 = 11401;
 constexpr int MARIO_DEATH_ANIM_ID = 11700;
 constexpr int MARIO_DEATH_SPRITE_1 = 11701;
 
+//Flag pulling (A = 800)
+constexpr int MARIO_FLAG_PULL_ANIM_ID = 11800;
+constexpr int MARIO_FLAG_PULL_SPRITE_1 = 11801;
+constexpr int MARIO_FLAG_PULL_SPRITE_2 = 11802;
+
 // ==========================================
 // BIG MARIO 
 // ==========================================
@@ -74,6 +79,11 @@ constexpr int MARIO_BIG_JUMP_SPRITE_1 = 12401;
 // Ducking (A = 500)
 constexpr int MARIO_BIG_DUCK_ANIM_ID = 12500;
 constexpr int MARIO_BIG_DUCK_SPRITE_1 = 12501;
+
+// Flag pulling (A = 800)
+constexpr int MARIO_BIG_FLAG_PULL_ANIM_ID = 12800;
+constexpr int MARIO_BIG_FLAG_PULL_SPRITE_1 = 12801;
+constexpr int MARIO_BIG_FLAG_PULL_SPRITE_2 = 12802;
 
 // ==========================================
 // FIRE MARIO 
@@ -105,6 +115,11 @@ constexpr int MARIO_FIRE_DUCK_SPRITE_1 = 13501;
 // Firing (A = 600)
 constexpr int MARIO_FIRE_FIRE_ANIM_ID = 13600;
 constexpr int MARIO_FIRE_FIRE_SPRITE_1 = 13601;
+
+// Flag pulling (A = 800)
+constexpr int MARIO_FIRE_FLAG_PULL_ANIM_ID = 13800;
+constexpr int MARIO_FIRE_FLAG_PULL_SPRITE_1 = 13801;
+constexpr int MARIO_FIRE_FLAG_PULL_SPRITE_2 = 13802;
 
 // ==========================================
 // TRANSITION STATES 
