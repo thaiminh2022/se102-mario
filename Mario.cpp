@@ -14,6 +14,7 @@
 #include "Textures.h"
 #include <algorithm>
 #include <vector>
+#include "StatManager.h"
 
 #include <cmath>
 
@@ -94,7 +95,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
 	fireCooldownTimer.Start();
 	transformTimer = Timer(MARIO_GROW_TIME);
-	SpriteAndAnimationLoad();
+	LoadSpriteAndAnimation();
 }
 
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
@@ -554,13 +555,15 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 			goomba->SetState(GoombaState::Dead);
 
 			goombaKilled++;
+			StatManager::AddScore(100);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 			return true;
 		}
-
-		// dead
-		OnMarioHit();
-		return true;
+		else {
+			// dead
+			OnMarioHit();
+			return true;
+		}
 	}
 	return false;
 }
@@ -631,11 +634,12 @@ bool Mario::OnCollisionWithMushroom(const CollisionEvent* e)
 		{
 			state = MarioState::Growing;
 			transformTimer = Timer(MARIO_GROW_TIME);
+			StatManager::AddScore(1000);
 			transformTimer.Start();
 			// add some pushback so player won't fall off the ground
 			position.y -= 17;
+			return true;
 		}
-		return true;
 	}
 	return false;
 }
@@ -659,6 +663,7 @@ bool Mario::OnCollisionWithFlower(CollisionEvent* e)
 		}
 
 		flower->SetState(CollectableItemState::Collected);
+		StatManager::AddScore(1000);
 		AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
 		return true;
 	}
@@ -800,7 +805,7 @@ int Mario::GetMarioAnimId() const
 	return MARIO_IDLE_ANIM_ID;
 }
 
-void Mario::SpriteAndAnimationLoad()
+void Mario::LoadSpriteAndAnimation()
 {
 	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
 

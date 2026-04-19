@@ -239,12 +239,21 @@ constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61203;
 
 
 // SCENES THAT ARE NOT PLAYABLE SCENE
+
+/// ================================
+// HUD ELEMENTS
+/// ================================
+constexpr int HUDCOIN_TEX_ID = 50000;
+constexpr int HUDCOIN_SPRITE_ID = 50001;
+constexpr int HUDMARIO_SPRITE_ID = 51000;
+
 // PLAYABLE SCENES IS MANAGE BY LEVEL LOADER (INIT FUNCTION)
 // NEGATIVE VALUE (AND 0) IS FOR PLAYABLE SCENE ONLY
 
 enum NonPlayableScene : std::int8_t
 {
 	MAIN_MENU = 1,
+	LEVELTRANSITION = 99,
 };
 
 /// MUSICS: Background music will be managed by negative values in ldtk
@@ -271,5 +280,6 @@ enum SFX: std::uint8_t
 /// FONT
 enum FONTS: std::uint8_t
 {
-	STATS_FONT = 1
+	STATS_FONT = 1,
+	HUD_FONT = 2
 };
