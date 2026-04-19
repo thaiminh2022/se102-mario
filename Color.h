@@ -29,7 +29,7 @@ struct Color
 		// Keep only hex chars
 		s.erase(
 			std::remove_if(s.begin(), s.end(),
-				[](char c) { return !IsHexChar(c); }),
+				[](const char c) { return !IsHexChar(c); }),
 			s.end()
 		);
 
