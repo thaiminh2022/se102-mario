@@ -66,15 +66,15 @@ void Mario::OnMarioHit()
 			return;
 		}
 		// got kill by goomba, bad
-		velocity.y = -250.0f;
-		velocity.x = 0;
-		isCollidable = false;
 		state = MarioState::Dying;
+		isCollidable = false; // Turn off hitboxes
+		velocity.x = 0;
+		velocity.y = -240.0f;
+		//Mario will jump up a bit
+		transformTimer = Timer(5.0f); // Time until we reset the level
+		transformTimer.Start();
 		AudioManager::GetInstance()->StopAll();
-		AudioManager::GetInstance()->Play(MARIO_DIE, false, []()
-			{
-				Game::GetInstance()->ReloadCurrentScene();
-			});
+		AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
 	}
 }
 
@@ -91,7 +91,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
-	power = MarioPower::Big;
+	power = MarioPower::Normal;
 	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
 	fireCooldownTimer.Start();
 	transformTimer = Timer(MARIO_GROW_TIME);
@@ -103,10 +103,17 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 	if (state == MarioState::Dying)
 	{
-		// dead animation for now
-		Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
-		velocity.y = 9000.0f * dt;
-		velocity.x = 0;
+		// As he goes up, this will slow his negative velocity until it hits its peak - 0.
+		// Then it turns positive, pulling him down faster and faster.
+		velocity.y += RUN_FALL_A * dt;
+		position.y += velocity.y * dt;
+
+		transformTimer.ProcessTimer(dt);
+
+		if (transformTimer.IsFinished()) {
+			transformTimer.SetIdle();
+			Game::GetInstance()->ReloadCurrentScene();
+		}
 		return;
 	}
 	if (state == MarioState::Growing)
@@ -753,7 +760,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::WalkingToCastle:
 			return MARIO_BIG_RUN_ANIM_ID;
 		case MarioState::Skidding:
-	
+
 			return MARIO_BIG_SKID_ANIM_ID;
 		case MarioState::Idle:
 			return MARIO_BIG_IDLE_ANIM_ID;
