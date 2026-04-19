@@ -8,11 +8,14 @@
 #include <vector>
 
 #include "AudioManager.h"
+#include "AssetIDs.h"
 #include "Coin.h"
 #include "FireballTrap.h"
 #include "FlagPole.h"
+#include "FontManager.h"
 #include "Goomba.h"
 #include "NextLevelPortal.h"
+#include "PointPopup.h"
 #include "QuestionBlock.h"
 
 
@@ -59,6 +62,10 @@ void PlayableScene::Load()
 	ctx->addObject =[this](GameObject *go)
 	{
 		AddObject(go);
+	};
+	ctx->addPointPopup = [this](const Vector2& pos, int value)
+	{
+		AddObject(new PointPopup(pos, value));
 	};
 
 	auto config = ctx->tilemap->GetConfig();
@@ -151,12 +158,15 @@ void PlayableScene::Render()
 {
 	LevelLoader::GetInstance()->GetTilemapForLevel(level)->Render();
 
-
 	std::sort(objects.begin(), objects.end(), GameObject::SortRenderIndex);
 	for (const auto& obj : objects)
 	{
 		obj->Render();
 	}
+
+	wchar_t scoreText[32];
+	swprintf_s(scoreText, L"SCORE %06d", Mario::GetScore());
+	FontManager::GetInstance()->Draw(STATS_FONT, Vector2(8, 8), scoreText, Colors::WHITE);
 }
 
 void PlayableScene::CleanupDeletedObjects()

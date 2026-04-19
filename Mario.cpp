@@ -28,6 +28,7 @@
 #include "FireballTrap.h"
 #include "FlagPole.h"
 #include "Flower.h"
+#include "PointPopup.h"
 #include "Star.h"
 
 int Mario::goombaKilled = 0;
@@ -269,6 +270,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
 	power = MarioPower::Big;
+	currentContext = nullptr;
 	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
 	fireCooldownTimer.Start();
 	transformTimer = Timer(MARIO_GROW_TIME);
@@ -276,6 +278,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
+	currentContext = ctx;
 
 	if (state == MarioState::Dying)
 	{
@@ -779,8 +782,14 @@ bool Mario::OnCollisionWithCoin(const CollisionEvent* e)
 	const auto coin = dynamic_cast<Coin*>(e->otherObject);
 	if (coin != nullptr)
 	{
+		constexpr int earnedScore = 200;
 		coin->SetState(CoinState::Collected);
 		coinCollected++;
+		AddScore(earnedScore);
+		if (currentContext != nullptr && currentContext->addPointPopup != nullptr)
+		{
+			currentContext->addPointPopup(coin->position, earnedScore);
+		}
 		AudioManager::GetInstance()->PlaySFX(MARIO_COLLECT_COIN);
 		return true;
 	}
@@ -792,7 +801,13 @@ bool Mario::OnCollisionWithMushroom(const CollisionEvent* e)
 	const auto mushroom = dynamic_cast<Mushroom*>(e->otherObject);
 	if (mushroom != nullptr)
 	{
+		constexpr int earnedScore = 1000;
 		mushroom->SetState(CollectableItemState::Collected);
+		AddScore(earnedScore);
+		if (currentContext != nullptr && currentContext->addPointPopup != nullptr)
+		{
+			currentContext->addPointPopup(mushroom->position, earnedScore);
+		}
 		AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
 
 		if (power == MarioPower::Normal)
@@ -813,6 +828,7 @@ bool Mario::OnCollisionWithFlower(CollisionEvent* e)
 	const auto flower = dynamic_cast<Flower*>(e->otherObject);
 	if (flower != nullptr)
 	{
+		constexpr int earnedScore = 1000;
 		if (power == MarioPower::Normal)
 		{
 			state = MarioState::Growing; // If collect a flower while small, grow to big
@@ -827,6 +843,11 @@ bool Mario::OnCollisionWithFlower(CollisionEvent* e)
 		}
 
 		flower->SetState(CollectableItemState::Collected);
+		AddScore(earnedScore);
+		if (currentContext != nullptr && currentContext->addPointPopup != nullptr)
+		{
+			currentContext->addPointPopup(flower->position, earnedScore);
+		}
 		AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
 		return true;
 	}

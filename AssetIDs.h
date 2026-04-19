@@ -202,6 +202,18 @@ constexpr int STAR_IDLE_SPRITE_4 = 41404;
 constexpr int FLAG_IDLE_ANIM_ID = 41500;
 constexpr int FLAG_IDLE_SPRITE_1 = 41501;
 
+// point popup
+constexpr int POINTS_TEX_ID = 42000;
+
+constexpr int POINT_100_ANIM_ID = 42100;
+constexpr int POINT_100_SPRITE_1 = 42101;
+
+constexpr int POINT_200_ANIM_ID = 42200;
+constexpr int POINT_200_SPRITE_1 = 42201;
+
+constexpr int POINT_1000_ANIM_ID = 42300;
+constexpr int POINT_1000_SPRITE_1 = 42301;
+
 
 /// ================================
 // FIREBALL (E = 60000, T = 1)

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Tilemap.h"
+#include "Vector2.h"
 #include <functional>
 
 class Mario;
@@ -12,6 +13,7 @@ struct SceneContext
 	Mario* mario;
 	Tilemap* tilemap;
 	std::function<void(GameObject*)> addObject;
+	std::function<void(const Vector2&, int)> addPointPopup;
 };
 
 //Abstract class showing the interface of a scene

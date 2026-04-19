@@ -91,6 +91,11 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 
 			if (drop == BlockDropType::Coin)
 			{
+				if (ctx->addPointPopup != nullptr)
+				{
+					Mario::AddScore(200);
+					ctx->addPointPopup(Vector2(startPosition.x, startPosition.y - 16.0f), 200);
+				}
 				ctx->addObject(new Coin(
 					Vector2Int(
 						static_cast<int>(round(startPosition.x)), 

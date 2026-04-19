@@ -70,6 +70,7 @@ class Mario : public GameObject
 	bool isGrounded;
 	bool isInvincible;
 	bool isRendering;
+	SceneContext* currentContext;
 	static int goombaKilled;
 	static int coinCollected;
 	static int score;
@@ -98,7 +99,7 @@ class Mario : public GameObject
 	bool OnCollisionWithGoomba(const CollisionEvent* e);
 	static bool OnCollisionWithPortal(const CollisionEvent* e);
 	bool OnCollisionWithQuestionBlock(const CollisionEvent* e);
-	static bool OnCollisionWithCoin(const CollisionEvent* e);
+	bool OnCollisionWithCoin(const CollisionEvent* e);
 	bool OnCollisionWithMushroom(const CollisionEvent* e);
 	bool OnCollisionWithFlower(CollisionEvent* e);
 	bool OnCollisionWithStar(const CollisionEvent* e);
