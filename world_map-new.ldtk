@@ -2046,7 +2046,7 @@
 						},
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [2,11],
+							"__grid": [9,11],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
@@ -2055,9 +2055,9 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 31,
-							"px": [32,176],
+							"px": [144,176],
 							"fieldInstances": [],
-							"__worldX": 1744,
+							"__worldX": 1856,
 							"__worldY": 496
 						},
 						{
@@ -2431,6 +2431,25 @@
 							"px": [912,128],
 							"fieldInstances": [{ "__identifier": "to_level", "__type": "Int", "__value": 1, "__tile": null, "defUid": 231, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }],
 							"__worldX": 2624,
+							"__worldY": 448
+						},
+						{
+							"__identifier": "NextLevel",
+							"__grid": [0,8],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#BE4A2F",
+							"iid": "1c7f1420-21a0-11f1-bbf0-6d783630dc42",
+							"width": 32,
+							"height": 80,
+							"defUid": 41,
+							"px": [0,128],
+							"fieldInstances": [
+								{ "__identifier": "level_to_load", "__type": "Int", "__value": 1, "__tile": null, "defUid": 227, "realEditorValues": [{ "id": "V_Int", "params": [1] }] },
+								{ "__identifier": "load_delay", "__type": "Float", "__value": 2, "__tile": null, "defUid": 226, "realEditorValues": [] }
+							],
+							"__worldX": 1712,
 							"__worldY": 448
 						}
 					]
