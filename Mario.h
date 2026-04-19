@@ -72,6 +72,7 @@ class Mario : public GameObject
 	bool isRendering;
 	static int goombaKilled;
 	static int coinCollected;
+	static int score;
 
 	float fallAcc = 562.5f;
 	int GetFireBallCount(const vector<GameObject*>& coObjects) const;
@@ -127,5 +128,7 @@ public:
 	void OnNoCollision(float dt) override;
 	void OnCollisionWith(CollisionEvent* event) override;
 	bool IsBlocking() override { return true; }
+	static int GetScore() { return score; }
+	static void AddScore(int value) { score += value; }
 };
 

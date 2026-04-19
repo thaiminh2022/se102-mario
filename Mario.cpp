@@ -32,7 +32,7 @@
 
 int Mario::goombaKilled = 0;
 int Mario::coinCollected = 0;
-
+int Mario::score = 0;
 
 int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
 {
