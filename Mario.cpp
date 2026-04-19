@@ -484,7 +484,7 @@ void Mario::OnCollisionWithFireballTrap(vector<GameObject*>& coObjects)
 	}
 }
 
-int Mario::getFlagBonusScore(float touchingHeight) const
+int Mario::GetFlagBonusScore(float touchingHeight) const
 {
 	int score = 0;
 	// 0 - 17 pixels high : 100 extra points-- - 1 BLOCKWIDTH up from floor + blockwidth
@@ -493,7 +493,7 @@ int Mario::getFlagBonusScore(float touchingHeight) const
 	// 82 - 127 pixels high : 2000 extra points-- 4 - 5 BLOCKWIDTH
 	// 128 - 153 pixels high : 4000 extra points -- above
 
-	if (touchingHeight > 0 && touchingHeight <= 17) {
+	if (touchingHeight >= 0 && touchingHeight <= 17) {
 		score = 100;
 	}
 	else if (touchingHeight > 17 && touchingHeight <= 57) {
@@ -734,11 +734,11 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 	float touchingPoint = position.y + (power == MarioPower::Normal ? 16 : 32); // Mario's feet position
 	float touchingHeight = bottom - touchingPoint;
 
-	score = getFlagBonusScore(touchingHeight);
+	score = GetFlagBonusScore(touchingHeight);
 
 
 	DebugOutTitle(L"Score for flagpole: %f\n", score); //for debugging
-	// StatManager.AddScore(score);
+	StatManager::AddScore(score);
 
 	AudioManager::GetInstance()->StopAll();
 	AudioManager::GetInstance()->PlaySFX(FLAG_PULL);
