@@ -94,7 +94,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
 	fireCooldownTimer.Start();
 	transformTimer = Timer(MARIO_GROW_TIME);
-	SpriteAndAnimationLoad();
+	LoadSpriteAndAnimation();
 }
 
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
@@ -791,7 +791,7 @@ int Mario::GetMarioAnimId() const
 	return MARIO_IDLE_ANIM_ID;
 }
 
-void Mario::SpriteAndAnimationLoad()
+void Mario::LoadSpriteAndAnimation()
 {
 	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
 

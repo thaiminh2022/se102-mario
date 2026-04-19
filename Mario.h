@@ -91,7 +91,7 @@ class Mario : public GameObject
 
 	void OnMarioHit();
 	int GetMarioAnimId() const;
-	void SpriteAndAnimationLoad();
+	void LoadSpriteAndAnimation();
 
 
 	// on collision with
