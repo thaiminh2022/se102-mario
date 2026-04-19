@@ -14,8 +14,8 @@ void Game::Init(HWND hWnd)
 	RECT r;
 	GetClientRect(hWnd, &r);
 
-	backBufferWidth = r.right + 1;
-	backBufferHeight = r.bottom + 1;
+	backBufferWidth = r.right;
+	backBufferHeight = r.bottom;
 
 	// Create & clear the DXGI_SWAP_CHAIN_DESC structure
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;

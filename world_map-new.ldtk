@@ -2447,7 +2447,7 @@
 							"px": [0,128],
 							"fieldInstances": [
 								{ "__identifier": "level_to_load", "__type": "Int", "__value": 1, "__tile": null, "defUid": 227, "realEditorValues": [{ "id": "V_Int", "params": [1] }] },
-								{ "__identifier": "load_delay", "__type": "Float", "__value": 2, "__tile": null, "defUid": 226, "realEditorValues": [] }
+								{ "__identifier": "load_delay", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 226, "realEditorValues": [{ "id": "V_Float", "params": [0.5] }] }
 							],
 							"__worldX": 1712,
 							"__worldY": 448
@@ -3557,25 +3557,6 @@
 							"__worldY": 592
 						},
 						{
-							"__identifier": "NextLevel",
-							"__grid": [13,11],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#BE4A2F",
-							"iid": "352abcf0-21a0-11f1-8f8c-69b6eca38e36",
-							"width": 16,
-							"height": 32,
-							"defUid": 41,
-							"px": [208,176],
-							"fieldInstances": [
-								{ "__identifier": "level_to_load", "__type": "Int", "__value": 0, "__tile": null, "defUid": 227, "realEditorValues": [{ "id": "V_Int", "params": [0] }] },
-								{ "__identifier": "load_delay", "__type": "Float", "__value": 0, "__tile": null, "defUid": 226, "realEditorValues": [{ "id": "V_Float", "params": [0] }] }
-							],
-							"__worldX": 2688,
-							"__worldY": 736
-						},
-						{
 							"__identifier": "BackgroundMusic",
 							"__grid": [0,0],
 							"__pivot": [0,0],
@@ -3593,6 +3574,25 @@
 							}] }],
 							"__worldX": 2480,
 							"__worldY": 560
+						},
+						{
+							"__identifier": "NextLevel",
+							"__grid": [13,11],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#BE4A2F",
+							"iid": "a51f6d70-21a0-11f1-bbf0-f709d45adaff",
+							"width": 16,
+							"height": 32,
+							"defUid": 41,
+							"px": [208,176],
+							"fieldInstances": [
+								{ "__identifier": "level_to_load", "__type": "Int", "__value": 0, "__tile": null, "defUid": 227, "realEditorValues": [{ "id": "V_Int", "params": [0] }] },
+								{ "__identifier": "load_delay", "__type": "Float", "__value": 0.1, "__tile": null, "defUid": 226, "realEditorValues": [{ "id": "V_Float", "params": [0.1] }] }
+							],
+							"__worldX": 2688,
+							"__worldY": 736
 						}
 					]
 				},

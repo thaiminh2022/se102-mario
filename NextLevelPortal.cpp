@@ -19,11 +19,14 @@ void NextLevelPortal::RequestNextLevel()
 
 void NextLevelPortal::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
+	if (!startCountdown)
+		return;
 
-	if (timeBeforeLoad > 0 && startCountdown)
+	if (timeBeforeLoad > 0)
 	{
 		timeBeforeLoad -= dt;
 	}
+
 
 	if (timeBeforeLoad <= 0)
 	{

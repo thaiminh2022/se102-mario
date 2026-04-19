@@ -121,8 +121,25 @@ Tilemap *LevelLoader::ParseLevel(int level)
 		bgColor.Set(Color(levelData.bgColor));
 	}
 
-	
-	auto config = new TilemapConfig(
+	const auto biomeJson = GetFieldValueWithIdentifier(levelData.fieldInstances, "Biome");
+	auto levelBiome = BiomeType::Overworld;
+	if (biomeJson.hasValue)
+	{
+		auto biome = biomeJson.value.get<string>();
+		if (biome == "Overworld")
+		{
+			levelBiome = BiomeType::Overworld;
+		}else if (biome == "Underground")
+		{
+			levelBiome = BiomeType::Underground;
+		}else if (biome == "Castle")
+		{
+			levelBiome = BiomeType::Castle;
+		}
+	}
+
+
+	const auto config = new TilemapConfig(
 		entitiesData,
 		levelData.pxWid,
 		levelData.pxHei,
@@ -130,7 +147,8 @@ Tilemap *LevelLoader::ParseLevel(int level)
 		col.tileHeight,
 		renderLayers,
 		col,
-		bgColor
+		bgColor,
+		levelBiome
 	);
 
 	const auto tilemap = new Tilemap(config);
