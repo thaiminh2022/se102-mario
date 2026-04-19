@@ -71,9 +71,9 @@ void Mario::OnMarioHit()
 		state = MarioState::Dying;
 		AudioManager::GetInstance()->StopAll();
 		AudioManager::GetInstance()->Play(MARIO_DIE, false, []()
-		{
-			Game::GetInstance()->ReloadCurrentScene();
-		});
+			{
+				Game::GetInstance()->ReloadCurrentScene();
+			});
 	}
 }
 
@@ -268,7 +268,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
-	power = MarioPower::Big;
+	power = MarioPower::Normal;
 	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
 	fireCooldownTimer.Start();
 	transformTimer = Timer(MARIO_GROW_TIME);
@@ -303,7 +303,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		if (position.y < slidingToYWinning)
 		{
 			position.y += 150 * dt;
-		}else
+		}
+		else
 		{
 			if (!flagPoleFlipWaitTimer.IsTicking())
 			{
@@ -318,6 +319,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			{
 				state = MarioState::WalkingToCastle;
 				flagPoleFlipWaitTimer.SetIdle();
+				isFacingRight = true;
 
 				AudioManager::GetInstance()->PlaySFX(STAGE_CLEAR);
 			}
@@ -336,7 +338,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			velocity.y += 9000 * dt;
 			DebugOutTitle(L"%f %f", dir.x, dir.y);
 			Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
-		}else
+		}
+		else
 		{
 			isRendering = false;
 		}
@@ -541,7 +544,7 @@ void Mario::HandleShootFireball(const float dt, const vector<GameObject*>& coObj
 			&& state != MarioState::Ducking
 			&& fireBallCount < MAX_FIREBALL_COUNT
 			&& fireCooldownTimer.IsFinished()
-		)
+			)
 		{
 			float offsetX = isFacingRight ? 16.0f : -16.0f; // Spawn fireball slightly in front of Mario
 			float offsetY = 8.0f; // Spawn fireball slightly above Mario's center
@@ -650,6 +653,33 @@ void Mario::OnCollisionWithFireballTrap(vector<GameObject*>& coObjects)
 	}
 }
 
+int Mario::getFlagBonusScore(float touchingHeight) const
+{
+	int score = 0;
+	// 0 - 17 pixels high : 100 extra points-- - 1 BLOCKWIDTH up from floor + blockwidth
+	// 18 - 57 pixels high : 400 extra points-- - 2 - 3 BLOCKWIDTH
+	// 58 - 81 pixels high : 800 extra points-- 3 - 4 BLOCKWIDTH 
+	// 82 - 127 pixels high : 2000 extra points-- 4 - 5 BLOCKWIDTH
+	// 128 - 153 pixels high : 4000 extra points -- above
+
+	if (touchingHeight > 0 && touchingHeight <= 17) {
+		score = 100;
+	}
+	else if (touchingHeight > 17 && touchingHeight <= 57) {
+		score = 400;
+	}
+	else if (touchingHeight > 57 && touchingHeight <= 81) {
+		score = 800;
+	}
+	else if (touchingHeight > 81 && touchingHeight <= 127) {
+		score = 2000;
+	}
+	else {
+		score = 4000;
+	}
+	return score;
+}
+
 
 
 void Mario::Render()
@@ -668,7 +698,7 @@ void Mario::Render()
 	auto g = Game::GetInstance();
 	float renderX, renderY;
 	g->GetCamera()
-	 ->WorldToScreen(position.x, position.y, renderX, renderY);
+		->WorldToScreen(position.x, position.y, renderX, renderY);
 
 	auto animId = GetMarioAnimId();
 	Animations::GetInstance()
@@ -849,9 +879,9 @@ bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 		audio->PauseMusic();
 		audio->PlaySFX(MARIO_POWERUP);
 		AudioManager::GetInstance()->Play(INVINCIBILITY_THEME, false, []()
-		{
-			AudioManager::GetInstance()->ResumeMusic();
-		});
+			{
+				AudioManager::GetInstance()->ResumeMusic();
+			});
 		return true;
 	}
 	return false;
@@ -862,6 +892,18 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 	const auto flagPole = dynamic_cast<FlagPole*>(collisionEvent->otherObject);
 	if (flagPole == nullptr)
 		return false;
+
+
+	float score = 0;
+	float bottom = flagPole->GetBoundingBox().bottom;
+	float touchingPoint = position.y + (power == MarioPower::Normal ? 16 : 32); // Mario's feet position
+	float touchingHeight = bottom - touchingPoint;
+
+	score = getFlagBonusScore(touchingHeight);
+
+
+	DebugOutTitle(L"Score for flagpole: %f\n", score); //for debugging
+	// StatManager.AddScore(score);
 
 	AudioManager::GetInstance()->StopAll();
 	AudioManager::GetInstance()->PlaySFX(FLAG_PULL);
@@ -980,7 +1022,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		if (e->otherTile->IsBlocking()
 			&& e->normalizedDir.y == -1
 			&& e->normalizedDir.x == 0
-		)
+			)
 		{
 			isGrounded = true;
 		}
