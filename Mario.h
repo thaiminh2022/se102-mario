@@ -93,7 +93,6 @@ class Mario : public GameObject
 	int GetMarioAnimId() const;
 	void SpriteAndAnimationLoad();
 
-
 	// on collision with
 	bool OnCollisionWithGoomba(const CollisionEvent* e);
 	static bool OnCollisionWithPortal(const CollisionEvent* e);

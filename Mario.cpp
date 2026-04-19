@@ -65,15 +65,15 @@ void Mario::OnMarioHit()
 			return;
 		}
 		// got kill by goomba, bad
-		velocity.y = -250.0f;
-		velocity.x = 0;
-		isCollidable = false;
 		state = MarioState::Dying;
+		isCollidable = false; // Turn off hitboxes
+		velocity.x = 0;
+		velocity.y = -240.0f;
+		//Mario will jump up a bit
+		transformTimer = Timer(5.0f); // Time until we reset the level
+		transformTimer.Start();
 		AudioManager::GetInstance()->StopAll();
-		AudioManager::GetInstance()->Play(MARIO_DIE, false, []()
-		{
-			Game::GetInstance()->ReloadCurrentScene();
-		});
+		AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
 	}
 }
 
@@ -90,7 +90,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
-	power = MarioPower::Big;
+	power = MarioPower::Normal;
 	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
 	fireCooldownTimer.Start();
 	transformTimer = Timer(MARIO_GROW_TIME);
@@ -102,10 +102,17 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 	if (state == MarioState::Dying)
 	{
-		// dead animation for now
-		Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
-		velocity.y = 9000.0f * dt;
-		velocity.x = 0;
+		// As he goes up, this will slow his negative velocity until it hits its peak - 0.
+		// Then it turns positive, pulling him down faster and faster.
+		velocity.y += RUN_FALL_A * dt;
+		position.y += velocity.y * dt;
+
+		transformTimer.ProcessTimer(dt);
+
+		if (transformTimer.IsFinished()) {
+			transformTimer.SetIdle();
+			Game::GetInstance()->ReloadCurrentScene();
+		}
 		return;
 	}
 	if (state == MarioState::Growing)
@@ -126,7 +133,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		if (position.y < slidingToYWinning)
 		{
 			position.y += 150 * dt;
-		}else
+		}
+		else
 		{
 			if (!flagPoleFlipWaitTimer.IsTicking())
 			{
@@ -159,7 +167,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			velocity.y += 9000 * dt;
 			DebugOutTitle(L"%f %f", dir.x, dir.y);
 			Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
-		}else
+		}
+		else
 		{
 			isRendering = false;
 		}
@@ -364,7 +373,7 @@ void Mario::HandleShootFireball(const float dt, const vector<GameObject*>& coObj
 			&& state != MarioState::Ducking
 			&& fireBallCount < MAX_FIREBALL_COUNT
 			&& fireCooldownTimer.IsFinished()
-		)
+			)
 		{
 			float offsetX = isFacingRight ? 16.0f : -16.0f; // Spawn fireball slightly in front of Mario
 			float offsetY = 8.0f; // Spawn fireball slightly above Mario's center
@@ -491,7 +500,7 @@ void Mario::Render()
 	auto g = Game::GetInstance();
 	float renderX, renderY;
 	g->GetCamera()
-	 ->WorldToScreen(position.x, position.y, renderX, renderY);
+		->WorldToScreen(position.x, position.y, renderX, renderY);
 
 	auto animId = GetMarioAnimId();
 	Animations::GetInstance()
@@ -672,9 +681,9 @@ bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 		audio->PauseMusic();
 		audio->PlaySFX(MARIO_POWERUP);
 		AudioManager::GetInstance()->Play(INVINCIBILITY_THEME, false, []()
-		{
-			AudioManager::GetInstance()->ResumeMusic();
-		});
+			{
+				AudioManager::GetInstance()->ResumeMusic();
+			});
 		return true;
 	}
 	return false;
@@ -746,7 +755,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::WalkingToCastle:
 			return MARIO_BIG_RUN_ANIM_ID;
 		case MarioState::Skidding:
-	
+
 			return MARIO_BIG_SKID_ANIM_ID;
 		case MarioState::Idle:
 			return MARIO_BIG_IDLE_ANIM_ID;
@@ -1012,7 +1021,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		if (e->otherTile->IsBlocking()
 			&& e->normalizedDir.y == -1
 			&& e->normalizedDir.x == 0
-		)
+			)
 		{
 			isGrounded = true;
 		}
