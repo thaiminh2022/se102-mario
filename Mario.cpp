@@ -728,12 +728,16 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 			StatManager::AddScore(100);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 
-			// dead
+			return true;
+		}
+		else
+		{
+			// side collision - Mario gets hit
 			OnMarioHit();
 			return true;
 		}
-		return false;
 	}
+	return false;
 }
 
 bool Mario::OnCollisionWithPortal(const CollisionEvent* e)
