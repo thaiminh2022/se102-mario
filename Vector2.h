@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 struct Vector2Int
 {
 	int x;
@@ -10,7 +12,6 @@ struct Vector2Int
 		this->x = x;
 		this->y = y;
 	}
-
 
 	Vector2Int operator+(const Vector2Int& other) const
 	{
@@ -48,6 +49,9 @@ struct Vector2Int
 	{
 		return Vector2Int(0, -1);
 	}
+
+	
+
 };
 
 
@@ -62,10 +66,32 @@ struct Vector2
 		this->y = y;
 	}
 
+
 	Vector2(const Vector2Int& vec)
 	{
 		this->x = static_cast<float>(vec.x);
 		this->y = static_cast<float>(vec.y);
+	}
+
+	float Length() const
+	{
+		return sqrt(x * x + y * y);
+	}
+
+	Vector2 Normalized() const
+	{
+		const float l = abs(Length());
+		if (l == 0)
+		{
+			return Vector2();
+		}
+
+		return Vector2(x / l, y / l);
+	}
+	float Distance(const Vector2& other)
+	{
+		Vector2 diff = other - *this;
+		return sqrt(diff.x * diff.x + diff.y * diff.y);
 	}
 
 	Vector2 operator+(const Vector2& other) const 

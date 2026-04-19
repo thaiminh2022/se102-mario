@@ -12,6 +12,8 @@
 
 class Collision
 {
+	static Collision* _instance;
+
 	void GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*& tilemap, GameObject
 	                      *& go, float dt);
 	void Filter(vector<CollisionEvent>& events, CollisionEvent*& colMinX, CollisionEvent*& colMinY, bool filterX, bool filterY);
@@ -19,8 +21,10 @@ class Collision
 public:
 	static Collision* GetInstance()
 	{
-		static Collision _instance;
-		return &_instance;
+		if (_instance == nullptr)
+			_instance = new Collision;
+
+		return _instance;
 	}
 
 	// 1 dynamic object and 1 static object (tile or non-moving object)

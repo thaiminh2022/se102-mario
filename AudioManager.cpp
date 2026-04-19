@@ -167,6 +167,7 @@ void AudioManager::Shutdown()
 
 void AudioManager::Update()
 {
+
     for (auto& it : activeInstances)
     {
         auto& instance = it.second;

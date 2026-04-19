@@ -1,9 +1,10 @@
-#pragma once
+﻿#pragma once
 #include "GameObject.h"
 #include "Rect.h"
 #include "Scene.h"
 #include <vector>
 
+#include "InputManager.h"
 #include "Timer.h"
 
 // A random guy on youtube got these numbers
@@ -36,6 +37,10 @@ const float MAX_FALL = 270.0f;
 const int MAX_FIREBALL_COUNT = 2;
 const float MARIO_TIME_BTW_FIRE = 0.15f;
 
+const float MARIO_GROW_TIME = 0.7f;
+const float MARIO_SHRINK_TIME = 0.75f;
+const float MARIO_INVINCIBLE_TIME = 2.0f;
+
 enum class MarioState : std::uint8_t
 {
 	Idle,
@@ -45,8 +50,11 @@ enum class MarioState : std::uint8_t
 	Jumping,
 	Ducking,
 	PullingFlag,
+	WalkingToCastle,
 	Dying,
-	Firing
+	Firing,
+	Growing,
+	Shrinking
 };
 
 enum class MarioPower
@@ -60,6 +68,8 @@ enum class MarioPower
 class Mario : public GameObject
 {
 	bool isGrounded;
+	bool isInvincible;
+	bool isRendering;
 	static int goombaKilled;
 	static int koopaKilled;
 	static int coinCollected;
@@ -67,8 +77,46 @@ class Mario : public GameObject
 	float fallAcc = 562.5f;
 	int GetFireBallCount(const vector<GameObject*>& coObjects) const;
 	Timer fireCooldownTimer;
+	Timer invincibleTimer;
+
+	Timer transformTimer; //used for growing and shrinking
+
 	MarioState state;
 	MarioPower power;
+
+	// flag pole interaction
+	Vector2 marioWinningMoveToPosition;
+	float slidingToYWinning;
+	Timer flagPoleFlipWaitTimer;
+
+
+	void OnMarioHit();
+	int GetMarioAnimId() const;
+
+
+	// on collision with
+	bool OnCollisionWithGoomba(const CollisionEvent* e);
+	static bool OnCollisionWithPortal(const CollisionEvent* e);
+	bool OnCollisionWithQuestionBlock(const CollisionEvent* e);
+	static bool OnCollisionWithCoin(const CollisionEvent* e);
+	bool OnCollisionWithMushroom(const CollisionEvent* e);
+	bool OnCollisionWithFlower(CollisionEvent* e);
+	bool OnCollisionWithStar(const CollisionEvent* e);
+	bool OnCollisionWithFlagPole(const CollisionEvent* collisionEvent);
+
+
+	// update func
+	bool HandleGrowing(float dt);
+	void HandleShrinking(float dt);
+	void WhileGrounded(float dt);
+	void WhileOnAir(float dt);
+	void HandleJump(float dt);
+	void HandleShootFireball(float dt, const vector<GameObject*>& coObjects, const SceneContext* ctx);
+	void ApplyGravityAndClamp(float dt);
+	void UpdateFacingDirection();
+	void RouteAnimationState();
+	void OnCollisionWithFireballTrap(vector<GameObject*>& coObjects);
+
 
 public:
 	Mario(int startX, int startY);

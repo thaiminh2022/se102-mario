@@ -76,11 +76,11 @@ void FontManager::Draw(const int id, const FontDrawConfig& config)
 		-1,
 		&r,
 		config.format,
-		config.color
+		config.color.GetD3DXColor()
 	);
 }
 
-void FontManager::Draw(const int id, const Vector2& pos, const LPCWSTR message, const D3DXCOLOR color)
+void FontManager::Draw(const int id, const Vector2& pos, const LPCWSTR message, const Color color)
 {
 
 	const auto& font = fonts[id];
@@ -92,7 +92,7 @@ void FontManager::Draw(const int id, const Vector2& pos, const LPCWSTR message, 
 		-1,
 		&r,
 		TextFormat::Left | TextFormat::NoClip,
-		color
+		color.GetD3DXColor()
 	);
 }
 

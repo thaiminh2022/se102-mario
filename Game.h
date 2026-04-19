@@ -8,6 +8,7 @@
 #include <xaudio2.h>
 
 #include "Camera.h"
+#include "Color.h"
 #include "PlayableScene.h"
 
 using std::unordered_map;
@@ -31,14 +32,18 @@ class Game
 	int currentSceneID;
 	int nextSceneID;
 	unordered_map<int, Scene *> scenes;
+	bool forceReload;
+
 	vector<std::pair<Rect, D3DXCOLOR>> debugRects;
 
+	Optional<Color> bgColor;
 	Camera* camera;
 	Game() : hWnd(nullptr), currentSceneID(0), nextSceneID(0)
 	{
 		camera = new Camera;
 		currentSceneID = -100;
 		nextSceneID = -200;
+		forceReload = false;
 	}
 
 public:
@@ -51,7 +56,7 @@ public:
 	}
 
 	void Init(HWND hWnd);
-	void Draw(float x, float y, Texture* tex, Rect* rect = nullptr);
+	void Draw(float x, float y, Texture* tex, Rect* rect = nullptr) const;
 	void Draw(float x, float y, Texture *tex, int l, int t, int r, int b)
 	{
 		Rect rect;
@@ -63,8 +68,8 @@ public:
 	}
 
 	// Debug helper
-	void DrawDebugRectRaw(Rect r, D3DXCOLOR color);
-	void DrawDebugRectWithCamera(Rect r, D3DXCOLOR color);
+	void DrawDebugRectRaw(Rect r, Color color);
+	void DrawDebugRectWithCamera(Rect r, Color color);
 
 	void FlushDebugRect();
 	void ClearDebugRect() { debugRects.clear(); }
@@ -75,7 +80,9 @@ public:
 	IDXGISwapChain *GetSwapChain() const { return this->swapChain; }
 	ID3D10RenderTargetView *GetRenderTargetView() const { return this->renderTargetView; }
 	ID3DX10Sprite *GetSpriteHandler() const { return this->spriteObject; }
-	ID3D10BlendState *GetAlphaBlending() const { return blendStateAlpha; };
+	ID3D10BlendState *GetAlphaBlending() const { return blendStateAlpha; }
+	Optional<D3DXCOLOR> GetBackgroundColor() const;
+	void SetBackgroundColor(const Optional<Color>& c);  
 
 
 	int GetBackBufferWidth() const { return backBufferWidth; }
@@ -86,6 +93,10 @@ public:
 	void SwitchScene();
 	void IndicateSceneSwitch(int newID);
 	void LoadSceneAndEnterFirst();
+	void AddScene(int id, Scene* scene);
+	bool HaveSceneWithID(int id);
+	void ReloadCurrentScene();
+
 
 	// Camera related	
 	Camera* GetCamera() const { return camera; }

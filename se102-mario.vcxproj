@@ -137,6 +137,8 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionEvent.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="FireballTrap.cpp" />
+    <ClCompile Include="FlagPole.cpp" />
     <ClCompile Include="Flower.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="FontManager.cpp" />
@@ -146,6 +148,7 @@
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="NextLevelPortal.cpp" />
@@ -168,7 +171,10 @@
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionEvent.h" />
+    <ClInclude Include="Color.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="FireballTrap.h" />
+    <ClInclude Include="FlagPole.h" />
     <ClInclude Include="Flower.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="FontManager.h" />
@@ -179,6 +185,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="NextLevelPortal.h" />

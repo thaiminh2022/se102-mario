@@ -29,6 +29,13 @@ void Timer::Pause()
 	state = TimerState::Paused;
 }
 
+void Timer::Resume()
+{
+	if (state == TimerState::Paused) {
+		state = TimerState::Ticking;
+	}
+}
+
 void Timer::ProcessTimer(const float dt)
 {
 	if (state != TimerState::Ticking)

@@ -1,7 +1,5 @@
 #include "InputManager.h"
 
-#include "Debug.h"
-
 InputManager* InputManager::_instance = nullptr;
 
 void InputManager::KeyDown(const unsigned char key)
@@ -13,6 +11,12 @@ void InputManager::KeyUp(const unsigned char key)
 {
 	currentKeys[key] = false;
 }
+
+bool InputManager::IsKeyDownThisFrame(unsigned char key) const
+{
+	return currentKeys[key] &&!previousKeys[key];
+}
+
 void InputManager::Update()
 {
 	std::memcpy(previousKeys, currentKeys, sizeof(currentKeys));

@@ -34,6 +34,10 @@ struct Rect
 	{
 		return Rect{ left, top, left + width, top + height};
 	}
+	static Rect FromXYWH(float left, float top, int width, int height)
+	{
+		return Rect{ static_cast<int>(left), static_cast<int>(top), static_cast<int>(left) + width, static_cast<int>(top) + height };
+	}
 
 	Rect(const RECT& r) {
 		left = r.left;
@@ -68,12 +72,12 @@ struct Rect
 	Vector2Int GetPushDir(const Rect& other, float& pushAmount) const
 	{
 		if (!IsColliding(other))
-			return Vector2Int{};
+			return Vector2Int(0, 0);
 
-		float pushLeft = right - other.left;   // move other left
-		float pushRight = other.right - left;   // move other right
-		float pushUp = bottom - other.top;   // move other up
-		float pushDown = other.bottom - top;   // move other down
+		float pushLeft = static_cast<float>(right - other.left);   // move other left
+		float pushRight = static_cast<float>(other.right - left);   // move other right
+		float pushUp = static_cast<float>(bottom - other.top);   // move other up
+		float pushDown = static_cast<float>(other.bottom - top);   // move other down
 		pushAmount = pushLeft;
 
 		Vector2Int dir = Vector2Int::Right();

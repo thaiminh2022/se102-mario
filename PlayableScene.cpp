@@ -9,6 +9,8 @@
 
 #include "AudioManager.h"
 #include "Coin.h"
+#include "FireballTrap.h"
+#include "FlagPole.h"
 #include "Goomba.h"
 #include "Koopa.h"
 #include "NextLevelPortal.h"
@@ -54,7 +56,7 @@ void PlayableScene::Load()
 	{
 		ctx = new SceneContext;
 	}
-	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(id);
+	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
 	ctx->addObject =[this](GameObject *go)
 	{
 		AddObject(go);
@@ -105,7 +107,7 @@ void PlayableScene::Load()
 	//bricks
 	for (const auto& qbData : config->entityData.brickBlocks)
 	{
-		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, true, false);
+		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, true, qbData.isHidden);
 		objects.push_back(qb);
 	}
 
@@ -120,8 +122,22 @@ void PlayableScene::Load()
 	// next level portal
 	for (const auto& pPos : config->entityData.nextLevelsData)
 	{
-		const auto portal = new NextLevelPortal(pPos.zone, pPos.levelToLoad);
+		const auto portal = new NextLevelPortal(pPos.zone, pPos.levelToLoad, pPos.delaySeconds);
 		objects.push_back(portal);
+	}
+
+	// fire trap
+	for (const auto& pPos : config->entityData.fireballTraps)
+	{
+		const auto trap = new FireballTrap(pPos);
+		objects.push_back(trap);
+	}
+
+	// flagpole
+	if (config->entityData.flagPole.hasValue)
+	{
+		const auto flag = config->entityData.flagPole.value;
+		objects.push_back(new FlagPole(flag.zone, flag.moveToPosition));
 	}
 
 	// background music
@@ -129,6 +145,9 @@ void PlayableScene::Load()
 	{
 		AudioManager::GetInstance()->PlayMusic(config->entityData.backgroundMusicID.value);
 	}
+
+	// background color
+	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
 }
 
 void PlayableScene::UnLoad()
@@ -145,7 +164,7 @@ void PlayableScene::UnLoad()
 
 void PlayableScene::Render()
 {
-	LevelLoader::GetInstance()->GetTilemapForLevel(id)->Render();
+	LevelLoader::GetInstance()->GetTilemapForLevel(level)->Render();
 
 
 	std::sort(objects.begin(), objects.end(), GameObject::SortRenderIndex);

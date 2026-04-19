@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "GameObject.h"
-#include "Mario.h"
 
 using std::vector;
 
@@ -16,11 +15,13 @@ class PlayableScene :
 
 	vector<GameObject*> objects;
 	SceneContext* ctx;
+	int level;
 	
 public:
 	int maxFireballs = 2; // Max fireballs allowed on screen at once, to prevent spamming
-	explicit PlayableScene(const int level) : Scene(level)
+	explicit PlayableScene(const int level)
 	{
+		this->level = level;
 		ctx = nullptr; // init on load
 	}
 
@@ -34,7 +35,6 @@ public:
 	int GetMaxFireballs() const {
 		return maxFireballs;
 	}
-	int GetActiveFireballsCount() const;
 };
 
 

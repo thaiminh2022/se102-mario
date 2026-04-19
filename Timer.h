@@ -27,6 +27,11 @@ public:
 	void Stop();
 	void SetIdle();
 	void Pause();
+	void Resume();
 	void ProcessTimer(float dt);
 	bool IsFinished() const;
+	bool IsTicking() const
+	{
+		return state == TimerState::Ticking;
+	}
 };

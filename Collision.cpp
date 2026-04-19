@@ -12,7 +12,11 @@
 #include <vector>
 #include <Windows.h>
 
+#include "Game.h"
+
 constexpr float PUSH_BACK_FACTOR = 0.001f;
+Collision* Collision::_instance = nullptr;
+
 
 void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*& tilemap, GameObject*& go, float dt)
 {
@@ -24,14 +28,14 @@ void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*&
 		vector<CollisionTile*> collisionTiles;
 		
 		auto futureLeft = srcBounds.left + srcVelocity.x * dt;
-		auto future_ = srcBounds.right + srcVelocity.x * dt;
+		auto futureRight = srcBounds.right + srcVelocity.x * dt;
 		auto futureTop = srcBounds.top + srcVelocity.y * dt;
 		auto futureBottom = srcBounds.bottom + srcVelocity.y * dt;
 
-		float minX = min(srcBounds.left, futureLeft -16);
-		float maxX = max(srcBounds.right, future_ + 16);
-		float minY = min(srcBounds.top, futureTop - 16);
-		float maxY = max(srcBounds.bottom, futureBottom + 16);
+		float minX = min(srcBounds.left, futureLeft);
+		float maxX = max(srcBounds.right, futureRight);
+		float minY = min(srcBounds.top, futureTop);
+		float maxY = max(srcBounds.bottom, futureBottom);
 
 		auto r = RectF(
 			minX,
@@ -39,6 +43,7 @@ void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*&
 			maxX,
 			maxY);
 
+		//Game::GetInstance()->DrawDebugRectWithCamera(r, Colors::YELLOW);
 		tilemap->GetPotentialCollidableCells(r, collisionTiles);
 
 		if (collisionTiles.empty())

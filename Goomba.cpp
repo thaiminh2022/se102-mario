@@ -28,9 +28,9 @@ Goomba::Goomba(int startX, int startY) : GameObject(static_cast<float>(startX), 
 
 	if (!anims->Contains(GOOMBA_WALK_ANIM_ID))
 	{
-		auto walkAnim = new Animation(100);
-		walkAnim->Add(GOOMBA_WALK_SPRITE_1);
-		walkAnim->Add(GOOMBA_WALK_SPRITE_2);
+		auto walkAnim = new Animation(300);
+		walkAnim->Add(GOOMBA_WALK_SPRITE_1, 150);
+		walkAnim->Add(GOOMBA_WALK_SPRITE_2, 150);
 		anims->Add(GOOMBA_WALK_ANIM_ID, walkAnim);
 	}
 	if (!anims->Contains(GOOMBA_DEAD_ANIM_ID))
@@ -91,6 +91,7 @@ void Goomba::Render()
 	Animations::GetInstance()
 	->Get(state == GoombaState::Moving ? GOOMBA_WALK_ANIM_ID : GOOMBA_DEAD_ANIM_ID)
 	->Render(round(renderX), round(renderY), false, state == GoombaState::DeadUpsideDown);
+	//Game::GetInstance()->DrawDebugRectWithCamera(GetBoundingBox(), D3DXCOLOR(1, 0, 0, 1));
 }
 
 void Goomba::OnNoCollision(float dt)

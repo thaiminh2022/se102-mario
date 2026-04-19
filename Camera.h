@@ -15,10 +15,14 @@ public:
 
 	void GetPosition(float& x, float& y) const;
 	void WorldToScreen(float worldX, float worldY, float &ox, float&oy) const;
+	void WorldToScreen(int worldX, int worldY, float& ox, float& oy) const;
+
 
 	void Update();
 	bool IsInView(float left, float top, float right, float bottom) const;
-	float getX();
-	float getY();
+	bool IsInView(int left, int top, int right, int bottom) const;
+
+	float GetX() const;
+	float GetY() const;
 };
 

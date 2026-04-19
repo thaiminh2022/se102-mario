@@ -4,12 +4,13 @@
 #include "Vector2.h"
 #include "Rect.h"
 #include "Scene.h"
+#include <cinttypes>
 
 struct CollisionEvent;
 using std::vector;
 
 
-enum class CollectableItemState
+enum class CollectableItemState : std::uint8_t
 {
 	Emerging,
 	Collectable,
@@ -27,9 +28,22 @@ protected:
 public:
 	Vector2 position;
 	Vector2 velocity;
-	explicit GameObject(float x = 0, float y = 0) {
-		position = Vector2(x, y); isDeleted = false; isCollidable = true; isBlocking = true; isFacingRight = true;
+	explicit GameObject(const float x = 0, const float y = 0) {
+		position = Vector2(x, y); 
+		isDeleted = false; 
+		isCollidable = true; 
+		isBlocking = true; 
+		isFacingRight = true;
 	}
+
+	explicit GameObject(const Vector2& position) {
+		this->position = position;
+		isDeleted = false;
+		isCollidable = true;
+		isBlocking = true;
+		isFacingRight = true;
+	}
+
 
 	virtual void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx = nullptr) {}
 	virtual void Render() {}

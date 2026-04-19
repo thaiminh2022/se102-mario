@@ -33,11 +33,10 @@ struct RenderLayer
 
 enum class CollisionTileType : std::uint8_t
 {
-	None,
-	Ground,
-	OneWay,
-	Death,
-	Pipe,
+	None = 0,
+	Ground = 1,
+	OneWay = 2,
+	Death = 3,
 };
 
 struct CollisionTile
@@ -54,9 +53,8 @@ struct CollisionTile
 	// tiles that will make player back tf off
 	bool IsBlocking() const
 	{
-		return type == CollisionTileType::Ground || type == CollisionTileType::OneWay || type == CollisionTileType::Pipe;
+		return type == CollisionTileType::Ground || type == CollisionTileType::OneWay;
 	}
-
 };
 
 struct CollisionLayer
