@@ -14,6 +14,7 @@
 #include "Textures.h"
 #include <algorithm>
 #include <vector>
+#include "StatManager.h"
 
 #include <cmath>
 
@@ -71,9 +72,9 @@ void Mario::OnMarioHit()
 		state = MarioState::Dying;
 		AudioManager::GetInstance()->StopAll();
 		AudioManager::GetInstance()->Play(MARIO_DIE, false, []()
-		{
-			Game::GetInstance()->ReloadCurrentScene();
-		});
+			{
+				Game::GetInstance()->ReloadCurrentScene();
+			});
 	}
 }
 
@@ -303,7 +304,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		if (position.y < slidingToYWinning)
 		{
 			position.y += 150 * dt;
-		}else
+		}
+		else
 		{
 			if (!flagPoleFlipWaitTimer.IsTicking())
 			{
@@ -336,7 +338,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			velocity.y += 9000 * dt;
 			DebugOutTitle(L"%f %f", dir.x, dir.y);
 			Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
-		}else
+		}
+		else
 		{
 			isRendering = false;
 		}
@@ -541,7 +544,7 @@ void Mario::HandleShootFireball(const float dt, const vector<GameObject*>& coObj
 			&& state != MarioState::Ducking
 			&& fireBallCount < MAX_FIREBALL_COUNT
 			&& fireCooldownTimer.IsFinished()
-		)
+			)
 		{
 			float offsetX = isFacingRight ? 16.0f : -16.0f; // Spawn fireball slightly in front of Mario
 			float offsetY = 8.0f; // Spawn fireball slightly above Mario's center
@@ -668,7 +671,7 @@ void Mario::Render()
 	auto g = Game::GetInstance();
 	float renderX, renderY;
 	g->GetCamera()
-	 ->WorldToScreen(position.x, position.y, renderX, renderY);
+		->WorldToScreen(position.x, position.y, renderX, renderY);
 
 	auto animId = GetMarioAnimId();
 	Animations::GetInstance()
@@ -722,13 +725,15 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 			goomba->SetState(GoombaState::Dead);
 
 			goombaKilled++;
+			StatManager::AddScore(100);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 			return true;
 		}
-
-		// dead
-		OnMarioHit();
-		return true;
+		else {
+			// dead
+			OnMarioHit();
+			return true;
+		}
 	}
 	return false;
 }
@@ -799,11 +804,12 @@ bool Mario::OnCollisionWithMushroom(const CollisionEvent* e)
 		{
 			state = MarioState::Growing;
 			transformTimer = Timer(MARIO_GROW_TIME);
+			StatManager::AddScore(1000);
 			transformTimer.Start();
 			// add some pushback so player won't fall off the ground
 			position.y -= 17;
+			return true;
 		}
-		return true;
 	}
 	return false;
 }
@@ -827,6 +833,7 @@ bool Mario::OnCollisionWithFlower(CollisionEvent* e)
 		}
 
 		flower->SetState(CollectableItemState::Collected);
+		StatManager::AddScore(1000);
 		AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
 		return true;
 	}
@@ -849,9 +856,9 @@ bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 		audio->PauseMusic();
 		audio->PlaySFX(MARIO_POWERUP);
 		AudioManager::GetInstance()->Play(INVINCIBILITY_THEME, false, []()
-		{
-			AudioManager::GetInstance()->ResumeMusic();
-		});
+			{
+				AudioManager::GetInstance()->ResumeMusic();
+			});
 		return true;
 	}
 	return false;
@@ -980,7 +987,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		if (e->otherTile->IsBlocking()
 			&& e->normalizedDir.y == -1
 			&& e->normalizedDir.x == 0
-		)
+			)
 		{
 			isGrounded = true;
 		}

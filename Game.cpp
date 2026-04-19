@@ -4,7 +4,7 @@
 #include "Animations.h"
 #include "AssetIDs.h"
 #include "MainMenu.h"
-
+#include "LevelTransitionScene.h"
 Game* Game::_instance = nullptr;
 
 void Game::Init(HWND hWnd)
@@ -410,6 +410,16 @@ void Game::LoadSceneAndEnterFirst()
 	}
 	IndicateSceneSwitch(MAIN_MENU);
 	SwitchScene();
+
+	/*if (scenes.find(LEVELTRANSITION) == scenes.end())
+    {
+        auto transitionScene = new LevelTransitionScene(0, 3.0f);
+        
+        AddScene(LEVELTRANSITION, transitionScene);
+    }*/
+
+    //IndicateSceneSwitch(LEVELTRANSITION);
+    //SwitchScene();
 }
 	
 void Game::AddScene(int id, Scene* scene)
