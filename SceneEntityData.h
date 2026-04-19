@@ -32,6 +32,7 @@ struct BrickBlockData
 {
 	Vector2Int position;
 	BlockDropType dropType;
+	bool isHidden;
 };
 
 struct FlagPoleData
@@ -41,13 +42,30 @@ struct FlagPoleData
 	vector<Vector2Int> fireworkPositions;
 };
 
+struct BridgeData
+{
+	Rect zone;
+	Vector2Int axePosition;
+};
+
+
+
 
 struct SceneEntityData
 {
+	Optional<BridgeData> bridge;
 	Optional<int> backgroundMusicID;
 	Vector2Int playerStarts;
+	
 	Optional<FlagPoleData> flagPole;
+	Optional<Vector2Int> bowserStart;
+	Optional<Vector2Int> toadStart;
+
+
 	vector<Vector2Int> goombaStarts;
+	vector<Vector2Int> koopaStarts;
+
+	
 	vector<QuestionBlockData> questionBlocks;
 	vector<BrickBlockData> brickBlocks;
 	vector<Vector2Int> coins;

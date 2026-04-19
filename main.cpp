@@ -22,8 +22,8 @@
 
 enum : std::uint16_t
 {
-	SCREEN_WIDTH = 640,
-	SCREEN_HEIGHT = 320
+	SCREEN_WIDTH = 320,
+	SCREEN_HEIGHT = 240
 };
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -72,8 +72,10 @@ void Render()
 
 	if (pD3DDevice != nullptr)
 	{
+		Optional<D3DXCOLOR> clearColor = g->GetBackgroundColor();
+
 		// clear the background
-		pD3DDevice->ClearRenderTargetView(pRenderTargetView, BACKGROUND_COLOR);
+		pD3DDevice->ClearRenderTargetView(pRenderTargetView, clearColor.hasValue ? clearColor.value : BACKGROUND_COLOR);
 
 		spriteHandler->Begin(D3DX10_SPRITE_SORT_TEXTURE);
 
@@ -237,7 +239,6 @@ int WINAPI WinMain(
 	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 
-	//SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 	auto g = Game::GetInstance();
 	g->Init(hWnd);
@@ -246,6 +247,8 @@ int WINAPI WinMain(
 	LoadResource();
 
 	g->LoadSceneAndEnterFirst();
+	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+
 	Run();
 
 	delete g;

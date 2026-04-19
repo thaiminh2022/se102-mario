@@ -36,6 +36,7 @@ class Game
 
 	vector<std::pair<Rect, D3DXCOLOR>> debugRects;
 
+	Optional<Color> bgColor;
 	Camera* camera;
 	Game() : hWnd(nullptr), currentSceneID(0), nextSceneID(0)
 	{
@@ -79,7 +80,9 @@ public:
 	IDXGISwapChain *GetSwapChain() const { return this->swapChain; }
 	ID3D10RenderTargetView *GetRenderTargetView() const { return this->renderTargetView; }
 	ID3DX10Sprite *GetSpriteHandler() const { return this->spriteObject; }
-	ID3D10BlendState *GetAlphaBlending() const { return blendStateAlpha; };
+	ID3D10BlendState *GetAlphaBlending() const { return blendStateAlpha; }
+	Optional<D3DXCOLOR> GetBackgroundColor() const;
+	void SetBackgroundColor(const Optional<Color>& c);  
 
 
 	int GetBackBufferWidth() const { return backBufferWidth; }

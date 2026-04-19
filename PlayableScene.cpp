@@ -130,6 +130,9 @@ void PlayableScene::Load()
 	{
 		AudioManager::GetInstance()->PlayMusic(config->entityData.backgroundMusicID.value);
 	}
+
+	// background color
+	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
 }
 
 void PlayableScene::UnLoad()

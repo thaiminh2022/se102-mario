@@ -363,6 +363,21 @@ Texture* Game::LoadTexture(LPCWSTR texturePath) const
 	return new Texture(tex, gSpriteTextureRV);
 }
 
+Optional<D3DXCOLOR> Game::GetBackgroundColor() const
+{
+	Optional<D3DXCOLOR> c;
+	if (bgColor.hasValue)
+	{
+		c.Set(bgColor.value.GetD3DXColor());
+	}
+	return c;
+}
+
+void Game::SetBackgroundColor(const Optional<Color>& c)
+{
+	bgColor = c;
+}
+
 void Game::SwitchScene()
 {
 

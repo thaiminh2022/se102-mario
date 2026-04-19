@@ -3,6 +3,8 @@
 #include "Tile.h"
 #include <vector>
 
+#include "Color.h"
+
 struct TilemapConfig
 {
 	SceneEntityData entityData;
@@ -15,16 +17,19 @@ struct TilemapConfig
 
 	vector<RenderLayer> renderLayers;
 	CollisionLayer collisionLayer;
+	Optional<Color> backgroundColor;
 
-	TilemapConfig(const SceneEntityData& entity_data, int world_width, int world_height, int tile_width,
-		int tile_height, const vector<RenderLayer>& render_layers, const CollisionLayer& collision_layer)
-		: entityData(entity_data),
-		  worldWidth(world_width),
-		  worldHeight(world_height),
-		  tileWidth(tile_width),
-		  tileHeight(tile_height),
-		  renderLayers(render_layers),
-		  collisionLayer(collision_layer)
+	TilemapConfig(SceneEntityData entityData, int worldWidth, int worldHeight, int tileWidth, int tileHeight,
+	              const vector<RenderLayer>& renderLayers, CollisionLayer collisionLayer,
+	              const Optional<Color>& backgroundColor)
+		: entityData(std::move(entityData)),
+		  worldWidth(worldWidth),
+		  worldHeight(worldHeight),
+		  tileWidth(tileWidth),
+		  tileHeight(tileHeight),
+		  renderLayers(renderLayers),
+		  collisionLayer(std::move(collisionLayer)),
+		  backgroundColor(backgroundColor)
 	{
 	}
 };
