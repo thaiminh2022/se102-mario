@@ -53,7 +53,7 @@ void QuestionBlock::Render()
 	anim->Render(round(renderX), round(renderY), false, false);
 }
 
-void QuestionBlock::CheckHitBounce(vector<GameObject*>& coObjects) const
+void QuestionBlock::CheckHitBounce(vector<GameObject*>& coObjects, SceneContext* ctx) const
 {
 	for (auto& go : coObjects)
 	{
@@ -73,7 +73,15 @@ void QuestionBlock::CheckHitBounce(vector<GameObject*>& coObjects) const
 		auto goomba = dynamic_cast<Goomba*>(go);
 		if (goomba != nullptr)
 		{
+			if (goomba->GetState() != GoombaState::Moving)
+				continue;
+
 			goomba->SetState(GoombaState::DeadUpsideDown);
+			Mario::AddScore(100);
+			if (ctx != nullptr && ctx->addPointPopup != nullptr)
+			{
+				ctx->addPointPopup(goomba->position, 100);
+			}
 		}
 	}
 }
@@ -87,7 +95,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 	{
 		if (!spawnInternalItem)
 		{
-			CheckHitBounce(coObjects);
+			CheckHitBounce(coObjects, ctx);
 
 			if (drop == BlockDropType::Coin)
 			{
@@ -150,7 +158,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 
 	if (state == QuestionBlockState::Break)
 	{
-		CheckHitBounce(coObjects);
+		CheckHitBounce(coObjects, ctx);
 		auto debris = new BrickExplode(startPosition);
 		ctx->addObject(debris);
 		isDeleted = true;

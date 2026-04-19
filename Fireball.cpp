@@ -22,6 +22,7 @@
 #include "AudioManager.h"
 #include "FontManager.h"
 
+constexpr int GOOMBA_FIREBALL_SCORE = 100;
 
 constexpr float FIREBALL_SPEED = 200.0f;
 constexpr float FIREBALL_GRAVITY = 900.0f;
@@ -75,10 +76,12 @@ Fireball::Fireball(float x, float y, bool isFacingRight)
 	state = FireballState::Bouncing;
 	this->isFacingRight = isFacingRight;
 	velocity.x = this->isFacingRight ? FIREBALL_SPEED : -FIREBALL_SPEED;
+	currentContext = nullptr;
 }
 
 void Fireball::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
+	currentContext = ctx;
 	lifeTimeTimer.ProcessTimer(dt);
 	if (lifeTimeTimer.IsFinished()) {
 		isExploded = true;
@@ -167,10 +170,15 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 		const auto goomba = dynamic_cast<Goomba*>(e->otherObject);
 		if (goomba != nullptr)
 		{
-			if (goomba->GetState() == GoombaState::Dead)
+			if (goomba->GetState() != GoombaState::Moving)
 				return;
 			this->isExploded = true;
 			goomba->SetState(GoombaState::Dead);
+			Mario::AddScore(GOOMBA_FIREBALL_SCORE);
+			if (currentContext != nullptr && currentContext->addPointPopup != nullptr)
+			{
+				currentContext->addPointPopup(goomba->position, GOOMBA_FIREBALL_SCORE);
+			}
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 			Explode();
 			return;

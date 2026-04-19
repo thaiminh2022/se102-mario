@@ -71,6 +71,7 @@ class Mario : public GameObject
 	bool isInvincible;
 	bool isRendering;
 	SceneContext* currentContext;
+	int stompChainCount;
 	static int goombaKilled;
 	static int coinCollected;
 	static int score;
@@ -117,6 +118,8 @@ class Mario : public GameObject
 	void UpdateFacingDirection();
 	void RouteAnimationState();
 	void OnCollisionWithFireballTrap(vector<GameObject*>& coObjects);
+	int GetEnemyStompScore() const;
+	void AwardPointsAt(const Vector2& pos, int value) const;
 
 
 public:

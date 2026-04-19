@@ -17,6 +17,7 @@ class Fireball : public GameObject
 {
 	Timer lifeTimeTimer;
 	Timer explodeTimer;
+	SceneContext* currentContext;
 
 	void Explode();
 public:

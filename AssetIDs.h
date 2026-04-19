@@ -211,8 +211,29 @@ constexpr int POINT_100_SPRITE_1 = 42101;
 constexpr int POINT_200_ANIM_ID = 42200;
 constexpr int POINT_200_SPRITE_1 = 42201;
 
-constexpr int POINT_1000_ANIM_ID = 42300;
-constexpr int POINT_1000_SPRITE_1 = 42301;
+constexpr int POINT_400_ANIM_ID = 42300;
+constexpr int POINT_400_SPRITE_1 = 42301;
+
+constexpr int POINT_500_ANIM_ID = 42400;
+constexpr int POINT_500_SPRITE_1 = 42401;
+
+constexpr int POINT_800_ANIM_ID = 42500;
+constexpr int POINT_800_SPRITE_1 = 42501;
+
+constexpr int POINT_1000_ANIM_ID = 42600;
+constexpr int POINT_1000_SPRITE_1 = 42601;
+
+constexpr int POINT_2000_ANIM_ID = 42700;
+constexpr int POINT_2000_SPRITE_1 = 42701;
+
+constexpr int POINT_4000_ANIM_ID = 42800;
+constexpr int POINT_4000_SPRITE_1 = 42801;
+
+constexpr int POINT_5000_ANIM_ID = 42900;
+constexpr int POINT_5000_SPRITE_1 = 42901;
+
+constexpr int POINT_8000_ANIM_ID = 43000;
+constexpr int POINT_8000_SPRITE_1 = 43001;
 
 
 /// ================================

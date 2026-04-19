@@ -35,6 +35,32 @@ int Mario::goombaKilled = 0;
 int Mario::coinCollected = 0;
 int Mario::score = 0;
 
+namespace
+{
+	int GetNesStompComboScore(const int stompChainCount)
+	{
+		switch (stompChainCount)
+		{
+		case 1:
+			return 100;
+		case 2:
+			return 200;
+		case 3:
+			return 400;
+		case 4:
+			return 800;
+		case 5:
+			return 1000;
+		case 6:
+			return 2000;
+		case 7:
+			return 4000;
+		default:
+			return 8000;
+		}
+	}
+}
+
 int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
 {
 	int count = 0;
@@ -271,6 +297,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	state = MarioState::Idle;
 	power = MarioPower::Big;
 	currentContext = nullptr;
+	stompChainCount = 0;
 	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
 	fireCooldownTimer.Start();
 	transformTimer = Timer(MARIO_GROW_TIME);
@@ -360,6 +387,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	auto input = InputManager::GetInstance();
 	if (isGrounded)
 	{
+		stompChainCount = 0;
 		WhileGrounded(dt);
 	}
 	else
@@ -705,6 +733,20 @@ void Mario::OnNoCollision(float dt)
 	isGrounded = false;
 }
 
+int Mario::GetEnemyStompScore() const
+{
+	return GetNesStompComboScore(stompChainCount);
+}
+
+void Mario::AwardPointsAt(const Vector2& pos, const int value) const
+{
+	AddScore(value);
+	if (currentContext != nullptr && currentContext->addPointPopup != nullptr)
+	{
+		currentContext->addPointPopup(pos, value);
+	}
+}
+
 bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 {
 	// resolve object collision
@@ -712,7 +754,7 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 
 	if (goomba != nullptr)
 	{
-		if (goomba->GetState() == GoombaState::Dead)
+		if (goomba->GetState() != GoombaState::Moving)
 			return false;
 
 		if (e->normalizedDir.y == -1)
@@ -723,6 +765,8 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 			state = MarioState::Jumping;
 
 			goomba->SetState(GoombaState::Dead);
+			stompChainCount++;
+			AwardPointsAt(goomba->position, GetEnemyStompScore());
 
 			goombaKilled++;
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
