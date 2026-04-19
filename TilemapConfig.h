@@ -2,6 +2,15 @@
 #include "SceneEntityData.h"
 #include "Tile.h"
 #include <vector>
+#include <cinttypes>
+#include "Color.h"
+
+enum class BiomeType : std::uint8_t
+{
+	Overworld,
+	Underground,
+	Castle
+};
 
 struct TilemapConfig
 {
@@ -15,16 +24,20 @@ struct TilemapConfig
 
 	vector<RenderLayer> renderLayers;
 	CollisionLayer collisionLayer;
+	Optional<Color> backgroundColor;
+	BiomeType biome;
 
-	TilemapConfig(const SceneEntityData& entity_data, int world_width, int world_height, int tile_width,
-		int tile_height, const vector<RenderLayer>& render_layers, const CollisionLayer& collision_layer)
-		: entityData(entity_data),
-		  worldWidth(world_width),
-		  worldHeight(world_height),
-		  tileWidth(tile_width),
-		  tileHeight(tile_height),
-		  renderLayers(render_layers),
-		  collisionLayer(collision_layer)
+	TilemapConfig(SceneEntityData entityData, int worldWidth, int worldHeight, int tileWidth, int tileHeight,
+	              const vector<RenderLayer>& renderLayers, CollisionLayer collisionLayer,
+	              const Optional<Color>& backgroundColor, BiomeType biomeType)
+		: entityData(std::move(entityData)),
+		  worldWidth(worldWidth),
+		  worldHeight(worldHeight),
+		  tileWidth(tileWidth),
+		  tileHeight(tileHeight),
+		  renderLayers(renderLayers),
+		  collisionLayer(std::move(collisionLayer)),
+		  backgroundColor(backgroundColor), biome(biomeType)
 	{
 	}
 };

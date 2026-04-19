@@ -1,7 +1,5 @@
 #include "InputManager.h"
 
-#include "Debug.h"
-
 InputManager* InputManager::_instance = nullptr;
 
 void InputManager::KeyDown(const unsigned char key)

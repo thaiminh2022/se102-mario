@@ -138,7 +138,6 @@ constexpr int GOOMBA_DEAD_ANIM_ID = 21200;
 constexpr int GOOMBA_DEAD_SPRITE_1 = 21201;
 
 
-
 /// ================================
 
 // Question blocks + brick (E = 3000, T = 1 (overworld))
@@ -199,6 +198,9 @@ constexpr int STAR_IDLE_SPRITE_2 = 41402;
 constexpr int STAR_IDLE_SPRITE_3 = 41403;
 constexpr int STAR_IDLE_SPRITE_4 = 41404;
 
+// flag
+constexpr int FLAG_IDLE_ANIM_ID = 41500;
+constexpr int FLAG_IDLE_SPRITE_1 = 41501;
 
 
 /// ================================
@@ -256,6 +258,8 @@ enum SFX: std::uint8_t
 	BREAK_BLOCK,
 	PIPE_ENTER,
 	INVINCIBILITY_THEME,
+	FLAG_PULL,
+	STAGE_CLEAR,
 };
 
 /// FONT

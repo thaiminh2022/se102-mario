@@ -14,8 +14,8 @@ void Game::Init(HWND hWnd)
 	RECT r;
 	GetClientRect(hWnd, &r);
 
-	backBufferWidth = r.right + 1;
-	backBufferHeight = r.bottom + 1;
+	backBufferWidth = r.right;
+	backBufferHeight = r.bottom;
 
 	// Create & clear the DXGI_SWAP_CHAIN_DESC structure
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
@@ -361,6 +361,21 @@ Texture* Game::LoadTexture(LPCWSTR texturePath) const
 	DebugOut(L"[INFO] Texture loaded Ok from file: %s \n", texturePath);
 
 	return new Texture(tex, gSpriteTextureRV);
+}
+
+Optional<D3DXCOLOR> Game::GetBackgroundColor() const
+{
+	Optional<D3DXCOLOR> c;
+	if (bgColor.hasValue)
+	{
+		c.Set(bgColor.value.GetD3DXColor());
+	}
+	return c;
+}
+
+void Game::SetBackgroundColor(const Optional<Color>& c)
+{
+	bgColor = c;
 }
 
 void Game::SwitchScene()

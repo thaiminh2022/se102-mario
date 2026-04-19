@@ -109,8 +109,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 				if (power == MarioPower::Normal)
 				{
 					ctx->addObject(new Mushroom(position));
-				}
-				if (power == MarioPower::Big)
+				}else
 				{
 					ctx->addObject(new Flower(position));
 				}

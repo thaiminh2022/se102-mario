@@ -1,25 +1,61 @@
 #pragma once
-#include "d3dx10math.h"
+#include <string>
+#include <D3DX10math.h>
 
 // streamline color behavior
 struct Color
 {
 	float r, g, b, a;
 
+	Color()
+	{
+		r = g = b = 0;
+		a = 1;
+	}
 	constexpr Color(float r, float g, float b, float a = 1.0f)
 		: r(r), g(g), b(b), a(a) {}
 
-	explicit Color (const unsigned int hex)
+	static bool IsHexChar(char c)
 	{
-		r = (hex >> 24 & 0xFF) / 255.0f;
-		g = (hex >> 16 & 0xFF) / 255.0f;
-		b = (hex >> 8 & 0xFF) / 255.0f;
-		a = (0xFF & hex) / 255.0f;
+		return std::isxdigit(static_cast<unsigned char>(c)) != 0;
+	}
+
+	static std::string NormalizeToRRGGBBAA(std::string s)
+	{
+		// Remove leading #
+		if (!s.empty() && s[0] == '#')
+			s.erase(0, 1);
+
+		// Keep only hex chars
+		s.erase(
+			std::remove_if(s.begin(), s.end(),
+				[](const char c) { return !IsHexChar(c); }),
+			s.end()
+		);
+
+		// Pad with F or truncate to 8 chars
+		if (s.size() < 8)
+			s.append(8 - s.size(), 'F');
+		else if (s.size() > 8)
+			s.resize(8);
+
+		return s;
+	}
+
+	explicit Color(const std::string& s)
+	{
+		std::string hexStr = NormalizeToRRGGBBAA(s);
+		unsigned int hex = std::stoul(hexStr, nullptr, 16);
+
+		r = ((hex >> 24) & 0xFF) / 255.0f;
+		g = ((hex >> 16) & 0xFF) / 255.0f;
+		b = ((hex >> 8) & 0xFF) / 255.0f;
+		a = (hex & 0xFF) / 255.0f;
 	}
 
 	D3DXCOLOR GetD3DXColor() const
 	{
-		return D3DXCOLOR(r, g, b, a);
+		return { r, g, b, a };
 	}
 	Color WithAlpha(const float newAlpha) const
 	{
