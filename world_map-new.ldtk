@@ -2282,7 +2282,7 @@
 							"px": [3264,176],
 							"fieldInstances": [
 								{ "__identifier": "level_to_load", "__type": "Int", "__value": 2, "__tile": null, "defUid": 227, "realEditorValues": [{ "id": "V_Int", "params": [2] }] },
-								{ "__identifier": "load_delay", "__type": "Float", "__value": 2, "__tile": null, "defUid": 226, "realEditorValues": [] }
+								{ "__identifier": "load_delay", "__type": "Float", "__value": 5, "__tile": null, "defUid": 226, "realEditorValues": [{ "id": "V_Float", "params": [5] }] }
 							],
 							"__worldX": 4976,
 							"__worldY": 496
