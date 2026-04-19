@@ -5,7 +5,7 @@ class StatManager
 	static int score;
 	static int lifeCount;
 public:
-	static void AddScore(int score);
+	static void AddScore(int addingScore);
 	static void AddCoin();
 	static void AddLife();
 	static int GetScore();
