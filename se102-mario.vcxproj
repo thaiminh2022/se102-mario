@@ -146,6 +146,7 @@
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
+    <ClCompile Include="LevelTransitionScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Mario.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Star.cpp" />
+    <ClCompile Include="StatManager.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -183,6 +185,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="LevelTransitionScene.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Mushroom.h" />
@@ -195,6 +198,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Star.h" />
+    <ClInclude Include="StatManager.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Tile.h" />
