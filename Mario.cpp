@@ -150,6 +150,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			{
 				state = MarioState::WalkingToCastle;
 				flagPoleFlipWaitTimer.SetIdle();
+				isFacingRight = true;
 
 				AudioManager::GetInstance()->PlaySFX(STAGE_CLEAR);
 			}
@@ -483,6 +484,33 @@ void Mario::OnCollisionWithFireballTrap(vector<GameObject*>& coObjects)
 	}
 }
 
+int Mario::GetFlagBonusScore(float touchingHeight) const
+{
+	int score = 0;
+	// 0 - 17 pixels high : 100 extra points-- - 1 BLOCKWIDTH up from floor + blockwidth
+	// 18 - 57 pixels high : 400 extra points-- - 2 - 3 BLOCKWIDTH
+	// 58 - 81 pixels high : 800 extra points-- 3 - 4 BLOCKWIDTH 
+	// 82 - 127 pixels high : 2000 extra points-- 4 - 5 BLOCKWIDTH
+	// 128 - 153 pixels high : 4000 extra points -- above
+
+	if (touchingHeight >= 0 && touchingHeight <= 17) {
+		score = 100;
+	}
+	else if (touchingHeight > 17 && touchingHeight <= 57) {
+		score = 400;
+	}
+	else if (touchingHeight > 57 && touchingHeight <= 81) {
+		score = 800;
+	}
+	else if (touchingHeight > 81 && touchingHeight <= 127) {
+		score = 2000;
+	}
+	else {
+		score = 4000;
+	}
+	return score;
+}
+
 
 
 void Mario::Render()
@@ -699,6 +727,18 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 	const auto flagPole = dynamic_cast<FlagPole*>(collisionEvent->otherObject);
 	if (flagPole == nullptr)
 		return false;
+
+
+	float score = 0;
+	float bottom = flagPole->GetBoundingBox().bottom;
+	float touchingPoint = position.y + (power == MarioPower::Normal ? 16 : 32); // Mario's feet position
+	float touchingHeight = bottom - touchingPoint;
+
+	score = GetFlagBonusScore(touchingHeight);
+
+
+	DebugOutTitle(L"Score for flagpole: %f\n", score); //for debugging
+	StatManager::AddScore(score);
 
 	AudioManager::GetInstance()->StopAll();
 	AudioManager::GetInstance()->PlaySFX(FLAG_PULL);
