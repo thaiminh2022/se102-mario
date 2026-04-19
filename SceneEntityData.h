@@ -41,6 +41,8 @@ struct SceneEntityData
 	Optional<int> backgroundMusicID;
 	Vector2Int playerStarts;
 	vector<Vector2Int> goombaStarts;
+	vector<Vector2Int> koopaStarts;
+	vector<Vector2Int> flyingKoopaStarts;
 	vector<QuestionBlockData> questionBlocks;
 	vector<BrickBlocData> brickBlocks;
 	vector<Vector2Int> coins;

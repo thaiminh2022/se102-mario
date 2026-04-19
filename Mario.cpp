@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Goomba.h"
+#include "Koopa.h"
 #include "InputManager.h"
 #include "Rect.h"
 #include "Scene.h"
@@ -28,6 +29,7 @@
 #include "Flower.h"
 
 int Mario::goombaKilled = 0;
+int Mario::koopaKilled = 0;
 int Mario::coinCollected = 0;
 
 
@@ -579,6 +581,59 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 					questionBlock->SetState(QuestionBlockState::Opened);
 				}
 			}
+		}
+
+		//koopa
+		const auto koopa = dynamic_cast<Koopa*>(e->otherObject);
+		if (koopa != nullptr)
+		{
+			if (koopa->GetState() == KoopaState::Dead)
+				return;
+			if (e->normalizedDir.y == -1)
+			{
+				// jump on head
+				velocity.y = -240.0f;
+				state = MarioState::Jumping;
+
+				if (koopa->GetForm() == KoopaForm::Flying)
+				{
+					koopa->SetForm(KoopaForm::Normal);
+				}
+				else if (koopa->GetForm() == KoopaForm::Normal)
+				{
+					koopa->SetForm(KoopaForm::HiddingInShell);
+					koopa->SetState(KoopaState::NotMoving);
+				}
+				else if (koopa->GetForm() == KoopaForm::HiddingInShell)
+				{
+					if (koopa->GetState() == KoopaState::NotMoving)
+					{
+						koopa->SetState(KoopaState::Moving);
+					}
+					else
+					{
+						koopa->SetState(KoopaState::Dead);
+						koopaKilled++;
+					}
+				}
+			}
+			else 
+			{
+				if (power != MarioPower::Normal)
+				{
+					power = MarioPower::Normal;
+					state = MarioState::Idle;
+					return;
+				}
+				// got kill by koopa, bad
+				velocity.y = -250.0f;
+				velocity.x = 0;
+				isCollidable = false;
+				state = MarioState::Dying;
+				AudioManager::GetInstance()->StopAll();
+				AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
+			}
+			return;
 		}
 
 		const auto coin = dynamic_cast<Coin*>(e->otherObject);

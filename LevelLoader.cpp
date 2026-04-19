@@ -35,6 +35,8 @@ const string DYNAMIC_LAYER = "Dynamic";
 // ENTITY
 const string PLAYER_START = "PlayerStart";
 const string GOOMBA_START= "GoombaStart";
+const string KOOPA_START= "KoopaStart";
+const string FLYING_KOOPA_START = "FlyingKoopaStart";
 const string QUESTION_BLOCK= "QuestionBlock";
 const string EMPTY_BRICK_BLOCK= "EmptyBrickBlock";
 const string COIN = "Coin";
@@ -215,6 +217,20 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 	for (const auto& g: goombas)
 	{
 		sceneEntities.goombaStarts.emplace_back(g->px[0], g->px[1]);
+	}
+	
+	// Koopa
+	const auto koopas = GetEntityDataWithIdentifier(entities, KOOPA_START);
+	for (const auto& k : koopas)
+	{
+		sceneEntities.koopaStarts.emplace_back(k->px[0], k->px[1]);
+	}
+
+	// Flying Koopa
+	const auto flyingKoopas = GetEntityDataWithIdentifier(entities, FLYING_KOOPA_START);
+	for (const auto& fk : flyingKoopas)
+	{
+		sceneEntities.flyingKoopaStarts.emplace_back(fk->px[0], fk->px[1]);
 	}
 
 	// Question

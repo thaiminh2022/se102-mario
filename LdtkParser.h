@@ -243,3 +243,4 @@ inline void from_json(const json& j, WorldMap& x)
 	ReadRequired(j, "worlds", x.worlds);
 	ReadRequired(j, "dummyWorldIid", x.dummyWorldIid);
 }
+

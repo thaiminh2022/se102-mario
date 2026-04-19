@@ -1,6 +1,7 @@
 #include "Koopa.h"
 #include "Collision.h"
 #include "GameObject.h"
+#include "Goomba.h"
 #include "Scene.h"
 #include <vector>
 
@@ -20,18 +21,18 @@ Koopa::Koopa(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	// Load the animations
 	auto t = Textures::GetInstance()->Get(KOOPA_TEX_ID);
 	auto sp = Sprites::GetInstance();
-	sp->Add(KOOPA_WALK_SPRITE_1, 0, 0, 15, 15, t);
-	sp->Add(KOOPA_WALK_SPRITE_2, 16, 0, 31, 15, t);
+	sp->Add(KOOPA_WALK_SPRITE_1, 0, 0, 15, 23, t);
+	sp->Add(KOOPA_WALK_SPRITE_2, 17, 0, 35, 23, t);
 
-	sp->Add(FLYING_KOOPA_FLY_SPRITE_1, 0, 16, 15, 31, t);
-	sp->Add(FLYING_KOOPA_FLY_SPRITE_2, 16, 16, 31, 31, t);
+	sp->Add(FLYING_KOOPA_FLY_SPRITE_1, 35, 0, 53, 23, t);
+	sp->Add(FLYING_KOOPA_FLY_SPRITE_2, 53, 0, 71, 23, t);
 
-	sp->Add(HIDING_KOOPA_HIDE_SPRITE, 0, 32, 15, 47, t);
+	sp->Add(HIDING_KOOPA_HIDE_SPRITE, 71, 0, 88, 23, t);
 
-	sp->Add(HIDING_KOOPA_SPIN_SPRITE_1, 16, 32, 31, 47, t);
-	sp->Add(HIDING_KOOPA_SPIN_SPRITE_2, 32, 32, 47, 47, t);
+	sp->Add(HIDING_KOOPA_SPIN_SPRITE_1, 71, 0, 88, 23, t);
+	sp->Add(HIDING_KOOPA_SPIN_SPRITE_2, 88, 0, 105, 23, t);
 
-	sp->Add(KOOPA_DEAD_SPRITE, 48, 0, 63, 15, t);
+	sp->Add(KOOPA_DEAD_SPRITE, 71, 0, 88, 23, t);
 
 	auto anims = Animations::GetInstance();
 	if (!anims->Contains(KOOPA_WALK_ANIM_ID))
@@ -71,8 +72,11 @@ Koopa::Koopa(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	state = KoopaState::Moving;
 	form = KoopaForm::Normal;
 	deadTimer = Timer(1.0f);
-	isGrounded = true;
-	moveUp = true;
+}
+
+Koopa::Koopa(int startX, int startY, KoopaForm form) : Koopa(startX, startY)
+{
+	this->form = form;
 }
 
 void Koopa::SetState(KoopaState newState)
@@ -113,18 +117,8 @@ void Koopa::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	switch (form)
 	{ 	
 	case KoopaForm::Normal:
-		velocity.x = moveLeft ? -50.0f : 50.0f;
-		break;
 	case KoopaForm::Flying:
 		velocity.x = moveLeft ? -50.0f : 50.0f;
-		if (isGrounded)
-		{
-			velocity.y = -50.0f;
-		}
-		else
-		{
-			velocity.y = moveUp ? -50.0f : 50.0f;
-		}
 		break;
 	case KoopaForm::HiddingInShell:
 		if (state == KoopaState::Moving)
@@ -136,9 +130,9 @@ void Koopa::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			velocity.x = 0;
 		}
 		break;
-
-		Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 	}
+	velocity.y += 500.0f * dt; 
+	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }
 
 void Koopa::Render()
@@ -150,7 +144,7 @@ void Koopa::Render()
 		->Get(state == KoopaState::Dead || state == KoopaState::DeadUpsideDown ? KOOPA_DEAD_ANIM_ID :
 			(form == KoopaForm::Normal ? KOOPA_WALK_ANIM_ID :
 				(form == KoopaForm::Flying ? FLYING_KOOPA_FLY_ANIM_ID : HIDING_KOOPA_HIDE_ANIM_ID)))
-		->Render(round(renderX), round(renderY),false,state == KoopaState::DeadUpsideDown || state == KoopaState::Dead);
+		->Render(round(renderX), round(renderY),!moveLeft,state == KoopaState::DeadUpsideDown || state == KoopaState::Dead);
 }
 
 void Koopa::OnNoCollision(float dt)
@@ -169,45 +163,51 @@ void Koopa::OnCollisionWith(CollisionEvent* event)
 			SetState(KoopaState::Dead);
 			return;
 		}
-		if (event->normalizedDir.y < 0)
-		{
-			isGrounded = true;
-			moveUp = false;
-		}
-		else if (event->normalizedDir.y > 0)
-		{
-			moveUp = true;
-		}
-		else if (event->normalizedDir.x != 0)
+		if (event->normalizedDir.x != 0)
 		{
 			moveLeft = !moveLeft;
+		}
+		if (this->form == KoopaForm::Flying)
+		{
+			if (event->normalizedDir.y < 0)
+			{
+				velocity.y = -KOOPA_JUMP_SPEED;
+			}
+			else if (event->normalizedDir.y > 0)
+			{
+				position.y = event->otherTile->worldY + event->otherTile->tileHeight;
+			}
 		}
 		
 	}
 	else if (event->IsObjectCollision())
 	{
-		if (event->otherObject->IsBlocking())
+		if (this->form == KoopaForm::HiddingInShell  && this->state == KoopaState::Moving)
 		{
-			if (event->normalizedDir.x != 0)
+			// Goomba
+			auto goomba = dynamic_cast<Goomba*>(event->otherObject);
+			if (goomba != nullptr)
 			{
-				moveLeft = !moveLeft;
-				if (form == KoopaForm::HiddingInShell)
-				{
-					SetState(KoopaState::Moving);
-				}
+				goomba->SetState(GoombaState::Dead);
 			}
-			else if (event->normalizedDir.y < 0)
+
+			// Koopa
+			auto koopa = dynamic_cast<Koopa*>(event->otherObject);
+			if (koopa != nullptr)
 			{
-				isGrounded = true;
-				moveUp = false;
+				if (koopa->GetState() != KoopaState::Dead && koopa->GetState() != KoopaState::DeadUpsideDown)
+					if (koopa->GetForm() == KoopaForm::HiddingInShell && koopa->GetState() == KoopaState::Moving)
+					{
+						moveLeft = !moveLeft;
+					}
+					else
+						koopa->SetState(KoopaState::Dead);
 			}
-			else if (event->normalizedDir.y > 0)
-			{
-				moveUp = true;
-			}
-			
 		}
-		
+		else if (event->normalizedDir.x != 0)
+		{
+			moveLeft = !moveLeft;
+		}
 	
 	}
 }

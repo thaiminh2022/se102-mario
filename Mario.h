@@ -61,6 +61,7 @@ class Mario : public GameObject
 {
 	bool isGrounded;
 	static int goombaKilled;
+	static int koopaKilled;
 	static int coinCollected;
 
 	float fallAcc = 562.5f;

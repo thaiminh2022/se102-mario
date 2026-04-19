@@ -10,6 +10,7 @@
 #include "AudioManager.h"
 #include "Coin.h"
 #include "Goomba.h"
+#include "Koopa.h"
 #include "NextLevelPortal.h"
 #include "QuestionBlock.h"
 
@@ -77,6 +78,20 @@ void PlayableScene::Load()
 	{
 		const auto gb = new Goomba(gPos.x, gPos.y);
 		objects.push_back(gb);
+	}
+
+	//koopa 
+	for (const auto& kPos : config->entityData.koopaStarts)
+	{
+		const auto kp = new Koopa(kPos.x, kPos.y);
+		objects.push_back(kp);
+	}
+
+	// flying koopa
+	for (const auto& fkPos : config->entityData.flyingKoopaStarts)
+	{
+		const auto fkp = new Koopa(fkPos.x, fkPos.y, KoopaForm::Flying);
+		objects.push_back(fkp);
 	}
 
 	// question
