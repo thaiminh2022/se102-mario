@@ -23,10 +23,12 @@ Flower::Flower(Vector2 startPos) : GameObject(startPos.x, startPos.y)
 	preferPos = position;
 
 	auto anims = Animations::GetInstance();
+	isCollidable = false;
+	preferPos.y -= 16;
+	isBlocking = false;
 
 	if (!anims->Contains(FLOWER_IDLE_ANIM_ID))
 	{
-		preferPos.y -= 16;
 
 		auto t = Textures::GetInstance()->Get(OVERWORLD_ITEMS_TEX_ID);
 		auto sp = Sprites::GetInstance();
@@ -53,8 +55,6 @@ void Flower::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 	if (state == CollectableItemState::Emerging)
 	{
-		isCollidable = false;
-		isBlocking = false;
 		if (position.y > preferPos.y)
 		{
 			position.y -= 20 * dt;
