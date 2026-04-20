@@ -243,12 +243,15 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 
 	// Keep track of non-blocking entities we touch this frame 
 	// to prevent triggering them twice (once in X, once in Y)
+	// Yes, i use void*, fight me idc
 	std::vector<void*> touchedNonBlocking;
 
 	// ==========================================
 	// STEP 1: MOVE AND RESOLVE X-AXIS ONLY
 	// ==========================================
+	
 
+	// Temporarily shutdown y velocity to solve x
 	float originalVy = go->velocity.y;
 	go->velocity.y = 0;
 
@@ -262,6 +265,7 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 		CollisionEvent* dummyY = nullptr;
 		Filter(eventsX, colX, dummyY, true, false);
 
+		// solve X
 		if (colX != nullptr)
 		{
 			go->position.x += go->velocity.x * dt * colX->t + colX->normalizedDir.x * PUSH_BACK_FACTOR;
@@ -273,14 +277,15 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 			go->position.x += go->velocity.x * dt;
 		}
 
-		// RESTORED: Handle non-blocking events for X
+		// Handle non-blocking events for X
 		for (auto& v : eventsX)
 		{
 			if (!v.isInvalid && !v.IsBlocking())
 			{
 				// Get a generic pointer to whatever we hit (Tile or Object)
-				void* entity = v.IsTileCollision() ? (void*)v.otherTile : (void*)v.otherObject;
+				void* entity = v.IsTileCollision() ? static_cast<void*>(v.otherTile) : static_cast<void*>(v.otherObject);
 
+				// check if we resolve this before
 				if (std::find(touchedNonBlocking.begin(), touchedNonBlocking.end(), entity) == touchedNonBlocking.end())
 				{
 					go->OnCollisionWith(&v);
@@ -300,6 +305,7 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 	// STEP 2: MOVE AND RESOLVE Y-AXIS ONLY
 	// ==========================================
 
+	// shutdown x to solve for y, also restore y
 	go->velocity.y = originalVy;
 	float originalVx = go->velocity.x;
 	go->velocity.x = 0;
@@ -325,7 +331,7 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 			go->position.y += go->velocity.y * dt;
 		}
 
-		// RESTORED: Handle non-blocking events for Y
+		// Handle non-blocking events for Y
 		for (auto& v : eventsY)
 		{
 			if (!v.isInvalid && !v.IsBlocking())
