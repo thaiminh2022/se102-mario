@@ -40,7 +40,7 @@ Goomba::Goomba(int startX, int startY) : GameObject(static_cast<float>(startX), 
 		anims->Add(GOOMBA_DEAD_ANIM_ID, deadAnim);
 	}
 
-	moveLeft = false;
+	moveLeft = true;
 	state = GoombaState::Moving;
 	deadTimer = Timer(1.0f);
 }

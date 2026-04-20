@@ -56,14 +56,9 @@ void Tilemap::GetPotentialCollidableCells(const RectF& bound, vector<CollisionTi
 	{
 		for (int col = startCol; col <= endCol; ++col)
 		{
-			// 4. Retrieve the tile from your 1D or 2D array.
-			// Replace this with however your Tilemap stores its tiles.
 			CollisionTile* tile = config->collisionLayer.GetCell(col, row);
 
-			// 5. If the tile exists and is solid/collidable, add it to our list.
-			// (If your array stores nullptrs for empty air tiles, check for that).
-
-			if (tile != nullptr)
+			if (tile != nullptr && tile->type != CollisionTileType::None)
 			{
 				outCells.push_back(tile);
 			}

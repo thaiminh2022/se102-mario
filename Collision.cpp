@@ -241,127 +241,112 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 		return;
 	}
 
-	vector<CollisionEvent> events;
-	GetTilemapEvents(events, tilemap, go, dt);
-	GetObjectEvents(events, go, coObjects, dt);
+	// Keep track of non-blocking entities we touch this frame 
+	// to prevent triggering them twice (once in X, once in Y)
+	std::vector<void*> touchedNonBlocking;
 
-	std::sort(events.begin(), events.end(), CollisionEvent::Compare);
+	// ==========================================
+	// STEP 1: MOVE AND RESOLVE X-AXIS ONLY
+	// ==========================================
 
-	if (events.empty())
+	float originalVy = go->velocity.y;
+	go->velocity.y = 0;
+
+	vector<CollisionEvent> eventsX;
+	GetTilemapEvents(eventsX, tilemap, go, dt);
+	GetObjectEvents(eventsX, go, coObjects, dt);
+
+	if (!eventsX.empty())
 	{
-		go->OnNoCollision(dt);
-		return;
-	}
+		CollisionEvent* colX = nullptr;
+		CollisionEvent* dummyY = nullptr;
+		Filter(eventsX, colX, dummyY, true, false);
 
-	CollisionEvent* colX = nullptr, *colY = nullptr;
-
-	Filter(events, colX, colY);
-	auto position = go->position;
-	auto srcVelocity = go->velocity;
-	
-	if (colX != nullptr && colY != nullptr  )
-	{
-		// have collision on x, y
-		if (colX->t < colY->t)
+		if (colX != nullptr)
 		{
-			// x happen first
-			position.x += srcVelocity.x * dt * colX->t + colX->normalizedDir.x * PUSH_BACK_FACTOR;
-			go->position = position;
-			go->OnCollisionWith(colX);
+			go->position.x += go->velocity.x * dt * colX->t + colX->normalizedDir.x * PUSH_BACK_FACTOR;
 			go->velocity.x = 0;
-
-			// ok after move x, is there still collision on y
-			colY->isInvalid = true;
-
-			CollisionEvent* colYOther = nullptr;
-			if (colY->IsTileCollision())
-			{
-				const auto r = SweptAABB(go, colY->otherTile, dt);
-				events.push_back(CollisionEvent::CreateTileCollisionEvent(go, colY->otherTile, r));
-			}else
-			{
-				const auto r = SweptAABB(go, colY->otherObject, dt);
-				events.push_back(CollisionEvent::CreateObjectCollisionEvent(go, colY->otherObject, r));
-			}
-
-			Filter(events, colX, colYOther, false, true);
-			if (colYOther != nullptr)
-			{
-				position.y += srcVelocity.y * dt * colYOther->t + colYOther->normalizedDir.y * PUSH_BACK_FACTOR;
-				go->OnCollisionWith(colYOther);
-			}
-			else
-			{
-				position.y += srcVelocity.y * dt;
-			}
-		}else
+			go->OnCollisionWith(colX);
+		}
+		else
 		{
-			// col y happens first
-			position.y += srcVelocity.y * dt * colY->t + colY->normalizedDir.y * PUSH_BACK_FACTOR;
-			go->position = position;
-			go->OnCollisionWith(colY);
-			go->velocity.y = 0;
-
-			// ok after move y, is there still collision on x?
-			colX->isInvalid = true;
-
-			CollisionEvent* colXOther = nullptr;
-			if (colX->IsTileCollision())
-			{
-				const auto r = SweptAABB(go, colX->otherTile, dt);
-				events.push_back(CollisionEvent::CreateTileCollisionEvent(go, colX->otherTile, r));
-			}
-			else
-			{
-				const auto r = SweptAABB(go, colX->otherObject, dt);
-				events.push_back(CollisionEvent::CreateObjectCollisionEvent(go, colX->otherObject, r));
-			}
-
-			Filter(events, colXOther, colY, true, false);
-			if (colXOther != nullptr)
-			{
-				position.x += srcVelocity.x * dt * colXOther->t + colXOther->normalizedDir.x * PUSH_BACK_FACTOR;
-				go->OnCollisionWith(colXOther);
-			}
-			else
-			{
-				position.x += srcVelocity.x * dt;
-			}
+			go->position.x += go->velocity.x * dt;
 		}
 
+		// RESTORED: Handle non-blocking events for X
+		for (auto& v : eventsX)
+		{
+			if (!v.isInvalid && !v.IsBlocking())
+			{
+				// Get a generic pointer to whatever we hit (Tile or Object)
+				void* entity = v.IsTileCollision() ? (void*)v.otherTile : (void*)v.otherObject;
+
+				if (std::find(touchedNonBlocking.begin(), touchedNonBlocking.end(), entity) == touchedNonBlocking.end())
+				{
+					go->OnCollisionWith(&v);
+					touchedNonBlocking.push_back(entity);
+				}
+			}
+		}
 	}
-	else if (colX != nullptr)
+	else
 	{
-		// have collision on x only
-		position.x += srcVelocity.x * dt * colX->t + colX->normalizedDir.x * PUSH_BACK_FACTOR;
-		position.y += srcVelocity.y * dt;
-		go->velocity.x = 0;
-		go->OnCollisionWith(colX);
-
-	}else if (colY != nullptr)
-	{
-		// have collision on y only
-		position.y += srcVelocity.y * dt * colY->t + colY->normalizedDir.y * PUSH_BACK_FACTOR;
-		position.x += srcVelocity.x * dt;
-		go->velocity.y = 0;
-		go->OnCollisionWith(colY);
-	}else
-	{
-		position += srcVelocity * dt;
-	}
-	go->position = position;
-
-
-	for (auto& v : events)
-	{
-		if (v.isInvalid) 
-			continue;
-
-		if (v.IsBlocking())
-			continue;
-
-		go->OnCollisionWith(&v);
+		go->position.x += go->velocity.x * dt;
 	}
 
-	events.clear();
+	eventsX.clear();
+
+	// ==========================================
+	// STEP 2: MOVE AND RESOLVE Y-AXIS ONLY
+	// ==========================================
+
+	go->velocity.y = originalVy;
+	float originalVx = go->velocity.x;
+	go->velocity.x = 0;
+
+	vector<CollisionEvent> eventsY;
+	GetTilemapEvents(eventsY, tilemap, go, dt);
+	GetObjectEvents(eventsY, go, coObjects, dt);
+
+	if (!eventsY.empty())
+	{
+		CollisionEvent* dummyX = nullptr;
+		CollisionEvent* colY = nullptr;
+		Filter(eventsY, dummyX, colY, false, true);
+
+		if (colY != nullptr)
+		{
+			go->position.y += go->velocity.y * dt * colY->t + colY->normalizedDir.y * PUSH_BACK_FACTOR;
+			go->velocity.y = 0;
+			go->OnCollisionWith(colY);
+		}
+		else
+		{
+			go->position.y += go->velocity.y * dt;
+		}
+
+		// RESTORED: Handle non-blocking events for Y
+		for (auto& v : eventsY)
+		{
+			if (!v.isInvalid && !v.IsBlocking())
+			{
+				void* entity = v.IsTileCollision() ? (void*)v.otherTile : (void*)v.otherObject;
+
+				// Only trigger if we didn't already touch it during the X sweep
+				if (std::find(touchedNonBlocking.begin(), touchedNonBlocking.end(), entity) == touchedNonBlocking.end())
+				{
+					go->OnCollisionWith(&v);
+					touchedNonBlocking.push_back(entity);
+				}
+			}
+		}
+	}
+	else
+	{
+		go->position.y += go->velocity.y * dt;
+	}
+
+	// Restore the original X velocity (it will be 0 if we hit a wall in Step 1, which is correct)
+	go->velocity.x = originalVx;
+	eventsY.clear();
 }
