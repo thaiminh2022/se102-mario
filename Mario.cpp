@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Goomba.h"
+#include "Koopa.h"
 #include "InputManager.h"
 #include "Rect.h"
 #include "Scene.h"
@@ -32,6 +33,7 @@
 #include "Star.h"
 
 int Mario::goombaKilled = 0;
+int Mario::koopaKilled = 0;
 int Mario::coinCollected = 0;
 
 
@@ -65,7 +67,10 @@ void Mario::OnMarioHit()
 			transformTimer.Start();
 			return;
 		}
-		// got kill by goomba, bad
+		// got kill by enemy, bad
+		velocity.y = -250.0f;
+		velocity.x = 0;
+		isCollidable = false;
 		state = MarioState::Dying;
 		isCollidable = false; // Turn off hitboxes
 		velocity.x = 0;
@@ -596,6 +601,46 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 	return false;
 }
 
+bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
+{
+	const auto koopa = dynamic_cast<Koopa*>(e->otherObject);
+	if (koopa != nullptr)
+	{
+		if (koopa->GetState() == KoopaState::Dead)
+			return false;
+
+		if (e->normalizedDir.y == -1)
+		{
+			// jump on head
+			velocity.y = -240.0f;
+			state = MarioState::Jumping;
+			if (koopa->GetForm() == KoopaForm::Winged)
+			{
+				koopa->SetForm(KoopaForm::Normal);
+			}
+			else if (koopa->GetForm() == KoopaForm::Normal)
+			{
+				koopa->SetForm(KoopaForm::HiddingInShell);
+				koopa->SetState(KoopaState::NotMoving);
+			}
+			else if (koopa->GetForm() == KoopaForm::HiddingInShell)
+			{
+				if (koopa->GetState() == KoopaState::NotMoving)
+					koopa->SetState(KoopaState::Moving);
+				else
+				{
+					koopa->SetState(KoopaState::Dead);
+					koopaKilled++;
+				}
+			}
+			return true;
+		}
+		OnMarioHit();
+		return true;
+	}
+	return false;
+}
+
 bool Mario::OnCollisionWithPortal(const CollisionEvent* e)
 {
 	const auto portal = dynamic_cast<NextLevelPortal*>(e->otherObject);
@@ -636,6 +681,7 @@ bool Mario::OnCollisionWithQuestionBlock(const CollisionEvent* e)
 	}
 	return false;
 }
+	
 
 bool Mario::OnCollisionWithCoin(const CollisionEvent* e)
 {
@@ -1074,6 +1120,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 	else if (e->IsObjectCollision())
 	{
 		if (OnCollisionWithGoomba(e)) return;
+		if (OnCollisionWithKoopa(e)) return;
 		if (OnCollisionWithPortal(e)) return;
 		if (OnCollisionWithQuestionBlock(e)) return;
 		if (OnCollisionWithCoin(e)) return;

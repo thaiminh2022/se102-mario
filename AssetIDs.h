@@ -235,7 +235,48 @@ constexpr int FIREBALL_COLLIDE_SPRITE_1 = 61201;
 constexpr int FIREBALL_COLLIDE_SPRITE_2 = 61202;
 constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61203;
 
+/// ================================
+// KOOPA (E = 70000)
+/// ================================
 
+/// ================================ 
+//  NORMAL KOOPA (T = 1)
+/// ================================
+constexpr int KOOPA_TEX_ID = 71000;
+
+// Walking (A = 100)
+constexpr int KOOPA_WALK_ANIM_ID = 71100;
+constexpr int KOOPA_WALK_SPRITE_1 = 71101;
+constexpr int KOOPA_WALK_SPRITE_2 = 71102;
+
+
+/// ===============================
+// WINGED KOOPA (T = 2)
+/// ===============================
+constexpr int WINGED_KOOPA_TEX_ID = 72000;
+
+// Winged (A = 100)
+constexpr int WINGED_KOOPA_FLY_ANIM_ID = 72100;
+constexpr int WINGED_KOOPA_FLY_SPRITE_1 = 72101;
+constexpr int WINGED_KOOPA_FLY_SPRITE_2 = 72102;
+
+/// ===============================
+// HIDING KOOPA (T = 3)
+/// ===============================
+constexpr int HIDING_KOOPA_TEX_ID = 73000;
+
+// Hiding (A = 100)
+constexpr int HIDING_KOOPA_HIDE_ANIM_ID = 73100;
+constexpr int HIDING_KOOPA_HIDE_SPRITE = 73101;
+
+// Spinning (A = 200)
+constexpr int HIDING_KOOPA_SPIN_ANIM_ID = 73200;
+constexpr int HIDING_KOOPA_SPIN_SPRITE_1 = 73201;
+constexpr int HIDING_KOOPA_SPIN_SPRITE_2 = 73202;
+
+// Died (A = 300)
+constexpr int KOOPA_DEAD_ANIM_ID = 73300;
+constexpr int KOOPA_DEAD_SPRITE = 73301;
 
 
 // SCENES THAT ARE NOT PLAYABLE SCENE

@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Goomba.h"
+#include "Koopa.h"
 #include "Rect.h"
 #include "Scene.h"
 #include "Sprites.h"
@@ -172,6 +173,17 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 			this->isExploded = true;
 			goomba->SetState(GoombaState::Dead);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
+			Explode();
+			return;
+		}
+
+		const auto koopa = dynamic_cast<Koopa*>(e->otherObject);
+		if (koopa != nullptr)
+		{
+			if (koopa->GetState() == KoopaState::Dead || koopa->GetState() == KoopaState::DeadUpsideDown)
+				return;
+			this->isExploded = true;
+			koopa->SetState(KoopaState::Dead);
 			Explode();
 			return;
 		}
