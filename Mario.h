@@ -115,7 +115,7 @@ class Mario : public GameObject
 	void UpdateFacingDirection();
 	void RouteAnimationState();
 	void OnCollisionWithFireballTrap(vector<GameObject*>& coObjects);
-	int getFlagBonusScore(float touchingHeight) const;
+	int GetFlagBonusScore(float touchingHeight) const;
 
 public:
 	Mario(int startX, int startY);
