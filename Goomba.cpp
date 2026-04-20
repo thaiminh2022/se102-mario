@@ -86,18 +86,12 @@ void Goomba::Render()
 	float renderX, renderY;
 	Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
 
-
-
 	Animations::GetInstance()
 	->Get(state == GoombaState::Moving ? GOOMBA_WALK_ANIM_ID : GOOMBA_DEAD_ANIM_ID)
 	->Render(round(renderX), round(renderY), false, state == GoombaState::DeadUpsideDown);
 	//Game::GetInstance()->DrawDebugRectWithCamera(GetBoundingBox(), D3DXCOLOR(1, 0, 0, 1));
 }
 
-void Goomba::OnNoCollision(float dt)
-{
-	position += velocity * dt;
-}
 
 void Goomba::OnCollisionWith(CollisionEvent* event)
 {

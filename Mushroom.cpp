@@ -86,10 +86,6 @@ void Mushroom::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ct
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }
 
-void Mushroom::OnNoCollision(float dt)
-{
-	position += velocity * dt;
-}
 
 void Mushroom::OnCollisionWith(CollisionEvent* event)
 {

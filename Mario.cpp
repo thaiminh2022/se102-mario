@@ -202,7 +202,6 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	HandleShootFireball(dt, coObjects, ctx);
 	ApplyGravityAndClamp(dt);
 
-
 	// UPDATE STATE & FACING DIRECTION
 
 	// Update facing direction based on player input and only apply if grounded to prevent mid-air direction change
@@ -213,7 +212,6 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	// FOR NOW, FIREBALL TRAP WILL BE CHECK IN UPDATE
 	// WE SHOULD HAVE A BETTER SOLUTION
 	OnCollisionWithFireballTrap(coObjects);
-
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }
 
@@ -559,8 +557,8 @@ Rect Mario::GetBoundingBox()
 
 void Mario::OnNoCollision(float dt)
 {
-	position += velocity * dt;
 	isGrounded = false;
+	DebugOut(L"On No collision\n");
 }
 
 bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
