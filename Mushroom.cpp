@@ -4,7 +4,6 @@
 #include "AssetIDs.h"
 #include "AudioManager.h"
 #include "Collision.h"
-#include "Debug.h"
 #include "Game.h"
 #include "Sprites.h"
 #include "Textures.h"
@@ -20,12 +19,10 @@ void Mushroom::SetState(CollectableItemState newState)
 
 Mushroom::Mushroom(const Vector2 startPos) : GameObject(startPos.x, startPos.y)
 {
-	moveLeft = true;
+	moveLeft = false;
 	state = CollectableItemState::Emerging;
 	preferPosition = startPos;
 	preferPosition.y -= 16;
-
-
 
 	auto anims = Animations::GetInstance();
 
@@ -38,7 +35,6 @@ Mushroom::Mushroom(const Vector2 startPos) : GameObject(startPos.x, startPos.y)
 		anim->Add(MUSHROOM_SPRITE_1);
 		anims->Add(MUSHROOM_ANIM_ID, anim);
 	}
-
 
 	AudioManager::GetInstance()->PlaySFX(POWERUP_APPEARS);
 }

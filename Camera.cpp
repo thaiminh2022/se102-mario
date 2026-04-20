@@ -116,5 +116,10 @@ bool Camera::IsInView(int left, int top, int right, int bottom) const
 	);
 }
 
+bool Camera::IsInView(Rect r) const
+{
+	return IsInView(r.left, r.top, r.right, r.bottom);
+}
+
 float Camera::GetX() const { return x; }
 float Camera::GetY() const { return y; }

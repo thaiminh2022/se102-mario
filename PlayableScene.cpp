@@ -22,11 +22,27 @@ void PlayableScene::Update(float dt)
 	vector<GameObject*> coObjects;
 	for (const auto& obj : objects)
 	{
+		auto box = obj->GetBoundingBox();
+		auto inView = Game::GetInstance()->GetCamera()->IsInView(box);
+		if (inView)
+		{
+			//Game::GetInstance()->DrawDebugRectWithCamera(box, Colors::GREEN.WithAlpha(0.3f));
+			obj->SetActive(true);
+		}
+		else
+		{
+			obj->SetActive(false);
+		}
+
+		if (!obj->IsActive())
+		{
+			continue;
+		}
+
 		// make co-objects
 		coObjects.clear();
 		if (obj->IsCollidable())
 		{
-
 			for (auto other : objects)
 			{
 				if (!other->IsCollidable()) continue;
@@ -150,11 +166,12 @@ void PlayableScene::UnLoad()
 void PlayableScene::Render()
 {
 	LevelLoader::GetInstance()->GetTilemapForLevel(level)->Render();
-
-
 	std::sort(objects.begin(), objects.end(), GameObject::SortRenderIndex);
 	for (const auto& obj : objects)
 	{
+		if (!obj->IsActive())
+			continue;
+
 		obj->Render();
 	}
 }

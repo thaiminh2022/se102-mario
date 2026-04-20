@@ -32,9 +32,10 @@ public:
 	bool IsCollidable() override { return false; }
 	bool IsBlocking() override { return false; }
 	int GetRenderIndex() override { return 1; }
+	bool IsActive() override { return true; }
 	Rect GetBoundingBox() override
 	{
-		return Rect();
+		return Rect::FromXYWH(position.x, position.y, 16, 16);
 	}
 };
 
