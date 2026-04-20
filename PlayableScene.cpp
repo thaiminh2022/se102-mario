@@ -52,7 +52,7 @@ void PlayableScene::Update(float dt)
 			}
 		}
 
-		obj->Update(dt, coObjects, ctx);
+		obj->Update(dt, coObjects, sceneContext);
 	}
 	Game::GetInstance()->GetCamera()->Update();
 	CleanupDeletedObjects();
@@ -65,19 +65,19 @@ void PlayableScene::Update(float dt)
 	}
 }
 
-void PlayableScene::Load()
+void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 {
-	if (ctx == nullptr)
+	if (sceneContext == nullptr)
 	{
-		ctx = new SceneContext;
+		sceneContext = new SceneContext;
 	}
-	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
-	ctx->addObject =[this](GameObject *go)
+	sceneContext->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
+	sceneContext->addObject =[this](GameObject *go)
 	{
 		AddObject(go);
 	};
 
-	auto config = ctx->tilemap->GetConfig();
+	auto config = sceneContext->tilemap->GetConfig();
 
 	// camera
 	auto c = Game::GetInstance()->GetCamera();
@@ -85,10 +85,10 @@ void PlayableScene::Load()
 
 	// player
 	auto playerStart = config->entityData.playerStarts;
-	ctx->mario = new Mario(playerStart.x, playerStart.y);
+	sceneContext->mario = new Mario(playerStart.x, playerStart.y);
 
-	c->SetTarget(ctx->mario);
-	objects.push_back(ctx->mario);
+	c->SetTarget(sceneContext->mario);
+	objects.push_back(sceneContext->mario);
 
 	// goomba
 	for (const auto& gPos : config->entityData.goombaStarts)

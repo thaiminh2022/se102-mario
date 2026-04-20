@@ -249,11 +249,10 @@ constexpr int HUDMARIO_SPRITE_ID = 51000;
 
 // PLAYABLE SCENES IS MANAGE BY LEVEL LOADER (INIT FUNCTION)
 // NEGATIVE VALUE (AND 0) IS FOR PLAYABLE SCENE ONLY
-
 enum NonPlayableScene : std::int8_t
 {
 	MAIN_MENU = 1,
-	LEVELTRANSITION = 99,
+	LEVEL_TRANSITION = 99,
 };
 
 /// MUSICS: Background music will be managed by negative values in ldtk

@@ -18,12 +18,10 @@ private:
 	Timer transitionTimer;
 public:
 	LevelTransitionScene();
-	LevelTransitionScene(int targetLevelID, float transitionDuration);
+	LevelTransitionScene(float transitionDuration);
 	void SetTargetLevelID(int targetLevelID);
 	void Update(float dt) override;
 	void Render() override;
-	void Load() override;
-	void UnLoad() override;
-
+	void Load(const Optional<SceneSwitchContext>& ctx) override;
 };
 

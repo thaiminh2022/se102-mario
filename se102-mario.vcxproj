@@ -195,6 +195,7 @@
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEntityData.h" />
+    <ClInclude Include="SceneSwitchContext.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Star.h" />

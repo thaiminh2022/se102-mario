@@ -14,9 +14,9 @@ LevelTransitionScene::LevelTransitionScene()
 	transitionDuration = 3.0f;
 }
 
-LevelTransitionScene::LevelTransitionScene(int targetLevelID, float transitionDuration)
+LevelTransitionScene::LevelTransitionScene(float transitionDuration)
 {
-	this->targetLevelID = targetLevelID;
+	targetLevelID = 0;
 	this->transitionDuration = transitionDuration;
 }
 
@@ -31,7 +31,7 @@ void LevelTransitionScene::Update(float dt)
 
 	if (transitionTimer.IsFinished())
 	{
-		Game::GetInstance()->IndicateSceneSwitch(targetLevelID);
+		Game::GetInstance()->IndicateSceneSwitch(targetLevelID, {});
 	}
 }
 
@@ -71,7 +71,7 @@ void LevelTransitionScene::Render()
 	}
 }
 
-void LevelTransitionScene::Load()
+void LevelTransitionScene::Load(const Optional<SceneSwitchContext>& ctx)
 {
 
 	Texts[0] = L"MARIO\n" + std::to_wstring(StatManager::GetScore());
@@ -82,8 +82,4 @@ void LevelTransitionScene::Load()
 	
 	transitionTimer = Timer(transitionDuration);
 	transitionTimer.Start();
-}
-
-void LevelTransitionScene::UnLoad()
-{
 }

@@ -3,6 +3,8 @@
 int StatManager::coinCount = 0;
 int StatManager::score = 0;
 int StatManager::lifeCount = 0;
+int StatManager::currentLevel = 1;
+
 
 void StatManager::AddScore(int addingScore)
 {
@@ -17,6 +19,16 @@ void StatManager::AddCoin()
 void StatManager::AddLife()
 {
 	StatManager::lifeCount++;
+}
+
+void StatManager::SetLevel(int newLevel)
+{
+	StatManager::currentLevel = newLevel;
+}
+
+int StatManager::GetLevel()
+{
+	return StatManager::currentLevel;
 }
 
 int StatManager::GetScore()

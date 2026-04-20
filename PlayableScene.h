@@ -14,7 +14,7 @@ class PlayableScene :
     std::queue<GameObject*> addPendingGos;
 
 	vector<GameObject*> objects;
-	SceneContext* ctx;
+	SceneContext* sceneContext;
 	int level;
 	
 public:
@@ -22,11 +22,11 @@ public:
 	explicit PlayableScene(const int level)
 	{
 		this->level = level;
-		ctx = nullptr; // init on load
+		sceneContext = nullptr; // init on load
 	}
 
     void Update(float dt) override;
-    void Load() override;
+    void Load(const Optional<SceneSwitchContext>& ctx) override;
     void UnLoad() override;
     void Render() override;
     void CleanupDeletedObjects();

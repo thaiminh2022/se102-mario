@@ -30,7 +30,7 @@ void NextLevelPortal::Update(float dt, vector<GameObject*>& coObjects, SceneCont
 
 	if (timeBeforeLoad <= 0)
 	{
-		Game::GetInstance()->IndicateSceneSwitch(levelToLoad);
+		Game::GetInstance()->IndicateSceneSwitch(levelToLoad, {});
 	}
 }
 
