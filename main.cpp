@@ -221,14 +221,14 @@ static void LoadResource()
 		STATS_FONT,
 		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
 		L"Super Mario Bros. NES",
-		FontData(25)
+		FontData(16)
 	);
 
 	FontManager::GetInstance()->AddFontCustom(
 		HUD_FONT,
 		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
 		L"Super Mario Bros. NES",
-		FontData(16)
+		FontData(14)
 	);
 }
 
