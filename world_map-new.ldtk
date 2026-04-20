@@ -1317,9 +1317,9 @@
 							"height": 16,
 							"defUid": 35,
 							"px": [1248,144],
-							"fieldInstances": [{ "__identifier": "QuestionBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "JewDestroyer", "__tile": null, "defUid": 52, "realEditorValues": [{
+							"fieldInstances": [{ "__identifier": "QuestionBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "Starman", "__tile": null, "defUid": 52, "realEditorValues": [{
 								"id": "V_String",
-								"params": ["JewDestroyer"]
+								"params": ["Starman"]
 							}] }],
 							"__worldX": 2960,
 							"__worldY": 464
@@ -1451,7 +1451,10 @@
 							"height": 16,
 							"defUid": 35,
 							"px": [2720,144],
-							"fieldInstances": [{ "__identifier": "QuestionBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "Coin", "__tile": null, "defUid": 52, "realEditorValues": [] }],
+							"fieldInstances": [{ "__identifier": "QuestionBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "Coin", "__tile": null, "defUid": 52, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["Coin"]
+							}] }],
 							"__worldX": 4432,
 							"__worldY": 464
 						},

@@ -19,7 +19,7 @@ void Mushroom::SetState(CollectableItemState newState)
 
 Mushroom::Mushroom(const Vector2 startPos) : GameObject(startPos.x, startPos.y)
 {
-	moveLeft = true;
+	moveLeft = false;
 	state = CollectableItemState::Emerging;
 	preferPosition = startPos;
 	preferPosition.y -= 16;

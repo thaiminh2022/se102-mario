@@ -142,7 +142,7 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 	return hWnd;
 }
 
-constexpr int MAX_FRAME_RATE = 165;
+constexpr int MAX_FRAME_RATE = 180;
 
 int Run()
 {
