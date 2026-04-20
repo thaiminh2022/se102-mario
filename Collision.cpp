@@ -241,8 +241,6 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 		return;
 	}
 
-	bool collidedX = false, collidedY = false;
-
 	// Keep track of non-blocking entities we touch this frame 
 	// to prevent triggering them twice (once in X, once in Y)
 	// Yes, i use void*, fight me idc
@@ -252,6 +250,7 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 	// STEP 1: MOVE AND RESOLVE X-AXIS ONLY
 	// ==========================================
 	
+
 	// Temporarily shutdown y velocity to solve x
 	float originalVy = go->velocity.y;
 	go->velocity.y = 0;
@@ -269,7 +268,6 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 		// solve X
 		if (colX != nullptr)
 		{
-			collidedX = true;
 			go->position.x += go->velocity.x * dt * colX->t + colX->normalizedDir.x * PUSH_BACK_FACTOR;
 			go->velocity.x = 0;
 			go->OnCollisionWith(colX);
@@ -321,10 +319,9 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 		CollisionEvent* dummyX = nullptr;
 		CollisionEvent* colY = nullptr;
 		Filter(eventsY, dummyX, colY, false, true);
-			
+
 		if (colY != nullptr)
 		{
-			collidedY = true;
 			go->position.y += go->velocity.y * dt * colY->t + colY->normalizedDir.y * PUSH_BACK_FACTOR;
 			go->velocity.y = 0;
 			go->OnCollisionWith(colY);
@@ -354,13 +351,8 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 	{
 		go->position.y += go->velocity.y * dt;
 	}
+
 	// Restore the original X velocity (it will be 0 if we hit a wall in Step 1, which is correct)
 	go->velocity.x = originalVx;
 	eventsY.clear();
-
-	if (!collidedX && !collidedY)
-	{
-		go->OnNoCollision(dt);
-	}
-
 }

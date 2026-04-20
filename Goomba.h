@@ -23,6 +23,7 @@ public:
 	GoombaState GetState() const { return state; }
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
+	void OnNoCollision(float dt) override;
 	void OnCollisionWith(CollisionEvent* event) override;
 	Rect GetBoundingBox() override
 	{
