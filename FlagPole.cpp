@@ -41,7 +41,8 @@ void FlagPole::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ct
 	{
 		constexpr float flagMoveSpeed = 150;
 		flagPosition.y += flagMoveSpeed * dt;
-	}else
+	}
+	else
 	{
 		flagPosition.y = GetBoundingBox().bottom + offset;
 		state = FlagPoleState::Idle;
@@ -52,12 +53,12 @@ void FlagPole::Render()
 {
 	float renderX, renderY;
 	Game::GetInstance()
-	->GetCamera()
-	->WorldToScreen(flagPosition.x, flagPosition.y, renderX, renderY);
+		->GetCamera()
+		->WorldToScreen(flagPosition.x, flagPosition.y, renderX, renderY);
 
 	Animations::GetInstance()
-	->Get(FLAG_IDLE_ANIM_ID)
-	->Render(round(renderX), round(renderY), false, false);
+		->Get(FLAG_IDLE_ANIM_ID)
+		->Render(round(renderX), round(renderY), false, false);
 }
 
 void FlagPole::SetFlagMove()

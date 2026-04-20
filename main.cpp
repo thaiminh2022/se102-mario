@@ -199,6 +199,7 @@ static void LoadResource()
 	t->Add(OVERWORLD_ITEMS_TEX_ID, L"Assets/Sprites/overworld_items.png");
 	t->Add(KOOPA_TEX_ID, L"Assets/Sprites/koopa_sprites.png");
 	
+	t->Add(HUDCOIN_TEX_ID, L"Assets/Sprites/HUDCoin.png");
 
 
 	// Audios
@@ -225,6 +226,12 @@ static void LoadResource()
 		FontData(25)
 	);
 
+	FontManager::GetInstance()->AddFontCustom(
+		HUD_FONT,
+		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
+		L"Super Mario Bros. NES",
+		FontData(16)
+	);
 }
 
 int WINAPI WinMain(

@@ -15,6 +15,7 @@
 #include "Textures.h"
 #include <algorithm>
 #include <vector>
+#include "StatManager.h"
 
 #include <cmath>
 
@@ -71,11 +72,14 @@ void Mario::OnMarioHit()
 		velocity.x = 0;
 		isCollidable = false;
 		state = MarioState::Dying;
+		isCollidable = false; // Turn off hitboxes
+		velocity.x = 0;
+		velocity.y = -240.0f;
+		//Mario will jump up a bit
+		transformTimer = Timer(5.0f); // Time until we reset the level
+		transformTimer.Start();
 		AudioManager::GetInstance()->StopAll();
-		AudioManager::GetInstance()->Play(MARIO_DIE, false, []()
-		{
-			Game::GetInstance()->ReloadCurrentScene();
-		});
+		AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
 	}
 }
 
@@ -85,184 +89,6 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	isRendering = true;
 	slidingToYWinning = 0;
 	flagPoleFlipWaitTimer = Timer(1);
-	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
-
-	auto anims = Animations::GetInstance();
-	auto sprites = Sprites::GetInstance();
-
-	/// ================================
-	// Normal sprites
-	/// ================================
-	sprites->Add(MARIO_IDLE_SPRITE_1, 0, 0, 15, 15, marioTex);
-
-	sprites->Add(MARIO_RUN_SPRITE_1, 16, 0, 31, 15, marioTex);
-	sprites->Add(MARIO_RUN_SPRITE_2, 32, 0, 47, 15, marioTex);
-	sprites->Add(MARIO_RUN_SPRITE_3, 48, 0, 63, 15, marioTex);
-
-	sprites->Add(MARIO_SKID_SPRITE_1, 64, 0, 79, 15, marioTex);
-
-	sprites->Add(MARIO_JUMP_SPRITE_1, 80, 0, 95, 15, marioTex);
-
-	sprites->Add(MARIO_DEATH_SPRITE_1, 96, 0, 111, 15, marioTex);
-
-	sprites->Add(MARIO_GROWBIG_SPRITE_1, 0, 48, 15, 79, marioTex);
-	sprites->Add(MARIO_GROWBIG_SPRITE_2, 16, 48, 31, 79, marioTex);
-	sprites->Add(MARIO_GROWBIG_SPRITE_3, 0, 16, 15, 47, marioTex);
-
-
-	// idle anim
-	auto anim = new Animation(300);
-	anim->Add(MARIO_IDLE_SPRITE_1);
-	anims->Add(MARIO_IDLE_ANIM_ID, anim);
-
-	// walk anim
-	anim = new Animation(100);
-	anim->Add(MARIO_RUN_SPRITE_1);
-	anim->Add(MARIO_RUN_SPRITE_2);
-	anim->Add(MARIO_RUN_SPRITE_3);
-	anims->Add(MARIO_RUN_ANIM_ID, anim);
-
-	// skid anim
-	anim = new Animation(100);
-	anim->Add(MARIO_SKID_SPRITE_1);
-	anims->Add(MARIO_SKID_ANIM_ID, anim);
-
-	// jump anim
-	anim = new Animation(100);
-	anim->Add(MARIO_JUMP_SPRITE_1);
-	anims->Add(MARIO_JUMP_ANIM_ID, anim);
-
-	// death anim
-	anim = new Animation(100);
-	anim->Add(MARIO_DEATH_SPRITE_1);
-	anims->Add(MARIO_DEATH_ANIM_ID, anim);
-
-	// grow to big anim
-	anim = new Animation(150);
-	anim->Add(MARIO_GROWBIG_SPRITE_1, 100);
-	anim->Add(MARIO_GROWBIG_SPRITE_2, 100);
-	anim->Add(MARIO_GROWBIG_SPRITE_1, 100);
-	anim->Add(MARIO_GROWBIG_SPRITE_2, 100);
-	anim->Add(MARIO_GROWBIG_SPRITE_3, 100);
-	anim->Add(MARIO_GROWBIG_SPRITE_2, 100);
-	anim->Add(MARIO_GROWBIG_SPRITE_3, 100);
-	anims->Add(MARIO_GROWBIG_ANIM_ID, anim);
-
-	/// ================================
-	// BIG sprites
-	/// ================================
-	sprites->Add(MARIO_BIG_IDLE_SPRITE_1, 0, 16, 15, 47, marioTex);
-
-	sprites->Add(MARIO_BIG_RUN_SPRITE_1, 16, 16, 31, 47, marioTex);
-	sprites->Add(MARIO_BIG_RUN_SPRITE_2, 32, 16, 47, 47, marioTex);
-	sprites->Add(MARIO_BIG_RUN_SPRITE_3, 48, 16, 63, 47, marioTex);
-
-	sprites->Add(MARIO_BIG_SKID_SPRITE_1, 64, 16, 79, 47, marioTex);
-
-	sprites->Add(MARIO_BIG_JUMP_SPRITE_1, 80, 16, 95, 47, marioTex);
-
-	sprites->Add(MARIO_BIG_DUCK_SPRITE_1, 96, 16, 111, 47, marioTex);
-
-	sprites->Add(MARIO_SHRINK_SPRITE_1, 32, 48, 47, 79, marioTex);
-	sprites->Add(MARIO_SHRINK_SPRITE_2, 48, 48, 63, 79, marioTex);
-	sprites->Add(MARIO_SHRINK_SPRITE_3, 64, 48, 79, 79, marioTex);
-
-
-	anim = new Animation(100);
-	// idle anim
-	anim->Add(MARIO_BIG_IDLE_SPRITE_1);
-	anims->Add(MARIO_BIG_IDLE_ANIM_ID, anim);
-
-	// walk anim
-	anim = new Animation(100);
-	anim->Add(MARIO_BIG_RUN_SPRITE_1);
-	anim->Add(MARIO_BIG_RUN_SPRITE_2);
-	anim->Add(MARIO_BIG_RUN_SPRITE_3);
-	anims->Add(MARIO_BIG_RUN_ANIM_ID, anim);
-
-	// skid anim
-	anim = new Animation(100);
-	anim->Add(MARIO_BIG_SKID_SPRITE_1);
-	anims->Add(MARIO_BIG_SKID_ANIM_ID, anim);
-
-	// jump anim
-	anim = new Animation(100);
-	anim->Add(MARIO_BIG_JUMP_SPRITE_1);
-	anims->Add(MARIO_BIG_JUMP_ANIM_ID, anim);
-
-	// duck anim
-	anim = new Animation(100);
-	anim->Add(MARIO_BIG_DUCK_SPRITE_1);
-	anims->Add(MARIO_BIG_DUCK_ANIM_ID, anim);
-
-	//shrink anim
-	anim = new Animation(100);
-	anim->Add(MARIO_SHRINK_SPRITE_1, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_1, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_1, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_1, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_2, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_2, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_2, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
-	anim->Add(MARIO_SHRINK_SPRITE_2, 50);
-	anims->Add(MARIO_SHRINK_ANIM_ID, anim);
-
-
-	/// ================================
-	// FIRE sprites
-	/// ================================
-	sprites->Add(MARIO_FIRE_IDLE_SPRITE_1, 0, 80, 15, 111, marioTex);
-
-	sprites->Add(MARIO_FIRE_RUN_SPRITE_1, 16, 80, 31, 111, marioTex);
-	sprites->Add(MARIO_FIRE_RUN_SPRITE_2, 32, 80, 47, 111, marioTex);
-	sprites->Add(MARIO_FIRE_RUN_SPRITE_3, 48, 80, 63, 111, marioTex);
-	sprites->Add(MARIO_FIRE_SKID_SPRITE_1, 64, 80, 79, 111, marioTex);
-
-	sprites->Add(MARIO_FIRE_JUMP_SPRITE_1, 80, 80, 95, 111, marioTex);
-	sprites->Add(MARIO_FIRE_DUCK_SPRITE_1, 96, 80, 111, 111, marioTex);
-
-	sprites->Add(MARIO_FIRE_FIRE_SPRITE_1, 16, 80, 31, 111, marioTex);
-	// Reusing the run sprite for firing since it's the same pose
-
-	//idle anim
-	anim = new Animation(300);
-	anim->Add(MARIO_FIRE_IDLE_SPRITE_1);
-	anims->Add(MARIO_FIRE_IDLE_ANIM_ID, anim);
-
-	// walk anim
-	anim = new Animation(100);
-	anim->Add(MARIO_FIRE_RUN_SPRITE_1);
-	anim->Add(MARIO_FIRE_RUN_SPRITE_2);
-	anim->Add(MARIO_FIRE_RUN_SPRITE_3);
-	anims->Add(MARIO_FIRE_RUN_ANIM_ID, anim);
-
-	// skid anim
-	anim = new Animation(100);
-	anim->Add(MARIO_FIRE_SKID_SPRITE_1);
-	anims->Add(MARIO_FIRE_SKID_ANIM_ID, anim);
-
-	// jump anim
-	anim = new Animation(100);
-	anim->Add(MARIO_FIRE_JUMP_SPRITE_1);
-	anims->Add(MARIO_FIRE_JUMP_ANIM_ID, anim);
-
-	// duck anim
-	anim = new Animation(100);
-	anim->Add(MARIO_FIRE_DUCK_SPRITE_1);
-	anims->Add(MARIO_FIRE_DUCK_ANIM_ID, anim);
-
-	// fire anim
-	anim = new Animation(300);
-	anim->Add(MARIO_FIRE_FIRE_SPRITE_1);
-	anims->Add(MARIO_FIRE_FIRE_ANIM_ID, anim);
-
 	isGrounded = false;
 	isInvincible = false;
 	isCollidable = true;
@@ -270,10 +96,11 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
-	power = MarioPower::Big;
+	power = MarioPower::Normal;
 	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
 	fireCooldownTimer.Start();
 	transformTimer = Timer(MARIO_GROW_TIME);
+	LoadSpriteAndAnimation();
 }
 
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
@@ -281,10 +108,17 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 	if (state == MarioState::Dying)
 	{
-		// dead animation for now
-		Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
-		velocity.y = 9000.0f * dt;
-		velocity.x = 0;
+		// As he goes up, this will slow his negative velocity until it hits its peak - 0.
+		// Then it turns positive, pulling him down faster and faster.
+		velocity.y += RUN_FALL_A * dt;
+		position.y += velocity.y * dt;
+
+		transformTimer.ProcessTimer(dt);
+
+		if (transformTimer.IsFinished()) {
+			transformTimer.SetIdle();
+			Game::GetInstance()->ReloadCurrentScene();
+		}
 		return;
 	}
 	if (state == MarioState::Growing)
@@ -305,7 +139,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		if (position.y < slidingToYWinning)
 		{
 			position.y += 150 * dt;
-		}else
+		}
+		else
 		{
 			if (!flagPoleFlipWaitTimer.IsTicking())
 			{
@@ -320,6 +155,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			{
 				state = MarioState::WalkingToCastle;
 				flagPoleFlipWaitTimer.SetIdle();
+				isFacingRight = true;
 
 				AudioManager::GetInstance()->PlaySFX(STAGE_CLEAR);
 			}
@@ -338,7 +174,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			velocity.y += 9000 * dt;
 			DebugOutTitle(L"%f %f", dir.x, dir.y);
 			Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
-		}else
+		}
+		else
 		{
 			isRendering = false;
 		}
@@ -543,7 +380,7 @@ void Mario::HandleShootFireball(const float dt, const vector<GameObject*>& coObj
 			&& state != MarioState::Ducking
 			&& fireBallCount < MAX_FIREBALL_COUNT
 			&& fireCooldownTimer.IsFinished()
-		)
+			)
 		{
 			float offsetX = isFacingRight ? 16.0f : -16.0f; // Spawn fireball slightly in front of Mario
 			float offsetY = 8.0f; // Spawn fireball slightly above Mario's center
@@ -652,6 +489,33 @@ void Mario::OnCollisionWithFireballTrap(vector<GameObject*>& coObjects)
 	}
 }
 
+int Mario::GetFlagBonusScore(float touchingHeight) const
+{
+	int score = 0;
+	// 0 - 17 pixels high : 100 extra points-- - 1 BLOCKWIDTH up from floor + blockwidth
+	// 18 - 57 pixels high : 400 extra points-- - 2 - 3 BLOCKWIDTH
+	// 58 - 81 pixels high : 800 extra points-- 3 - 4 BLOCKWIDTH 
+	// 82 - 127 pixels high : 2000 extra points-- 4 - 5 BLOCKWIDTH
+	// 128 - 153 pixels high : 4000 extra points -- above
+
+	if (touchingHeight >= 0 && touchingHeight <= 17) {
+		score = 100;
+	}
+	else if (touchingHeight > 17 && touchingHeight <= 57) {
+		score = 400;
+	}
+	else if (touchingHeight > 57 && touchingHeight <= 81) {
+		score = 800;
+	}
+	else if (touchingHeight > 81 && touchingHeight <= 127) {
+		score = 2000;
+	}
+	else {
+		score = 4000;
+	}
+	return score;
+}
+
 
 
 void Mario::Render()
@@ -670,7 +534,7 @@ void Mario::Render()
 	auto g = Game::GetInstance();
 	float renderX, renderY;
 	g->GetCamera()
-	 ->WorldToScreen(position.x, position.y, renderX, renderY);
+		->WorldToScreen(position.x, position.y, renderX, renderY);
 
 	auto animId = GetMarioAnimId();
 	Animations::GetInstance()
@@ -724,13 +588,15 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 			goomba->SetState(GoombaState::Dead);
 
 			goombaKilled++;
+			StatManager::AddScore(100);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 			return true;
 		}
-
-		// dead
-		OnMarioHit();
-		return true;
+		else {
+			// dead
+			OnMarioHit();
+			return true;
+		}
 	}
 	return false;
 }
@@ -842,11 +708,12 @@ bool Mario::OnCollisionWithMushroom(const CollisionEvent* e)
 		{
 			state = MarioState::Growing;
 			transformTimer = Timer(MARIO_GROW_TIME);
+			StatManager::AddScore(1000);
 			transformTimer.Start();
 			// add some pushback so player won't fall off the ground
 			position.y -= 17;
+			return true;
 		}
-		return true;
 	}
 	return false;
 }
@@ -870,6 +737,7 @@ bool Mario::OnCollisionWithFlower(CollisionEvent* e)
 		}
 
 		flower->SetState(CollectableItemState::Collected);
+		StatManager::AddScore(1000);
 		AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
 		return true;
 	}
@@ -892,9 +760,9 @@ bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 		audio->PauseMusic();
 		audio->PlaySFX(MARIO_POWERUP);
 		AudioManager::GetInstance()->Play(INVINCIBILITY_THEME, false, []()
-		{
-			AudioManager::GetInstance()->ResumeMusic();
-		});
+			{
+				AudioManager::GetInstance()->ResumeMusic();
+			});
 		return true;
 	}
 	return false;
@@ -905,6 +773,18 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 	const auto flagPole = dynamic_cast<FlagPole*>(collisionEvent->otherObject);
 	if (flagPole == nullptr)
 		return false;
+
+
+	float score = 0;
+	float bottom = flagPole->GetBoundingBox().bottom;
+	float touchingPoint = position.y + (power == MarioPower::Normal ? 16 : 32); // Mario's feet position
+	float touchingHeight = bottom - touchingPoint;
+
+	score = GetFlagBonusScore(touchingHeight);
+
+
+	DebugOutTitle(L"Score for flagpole: %f\n", score); //for debugging
+	StatManager::AddScore(score);
 
 	AudioManager::GetInstance()->StopAll();
 	AudioManager::GetInstance()->PlaySFX(FLAG_PULL);
@@ -944,7 +824,6 @@ int Mario::GetMarioAnimId() const
 		case MarioState::WalkingToCastle:
 			return MARIO_RUN_ANIM_ID;
 		case MarioState::Skidding:
-		case MarioState::PullingFlag:
 			return MARIO_SKID_ANIM_ID;
 		case MarioState::Idle:
 			return MARIO_IDLE_ANIM_ID;
@@ -952,6 +831,8 @@ int Mario::GetMarioAnimId() const
 			return MARIO_JUMP_ANIM_ID;
 		case MarioState::Firing:
 			return MARIO_IDLE_ANIM_ID;
+		case MarioState::PullingFlag:
+			return MARIO_FLAG_PULL_ANIM_ID;
 		default:
 			DebugOut(L"[WARNING] No handling for state: %d\n", state);
 		}
@@ -965,7 +846,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::WalkingToCastle:
 			return MARIO_BIG_RUN_ANIM_ID;
 		case MarioState::Skidding:
-		case MarioState::PullingFlag:
+
 			return MARIO_BIG_SKID_ANIM_ID;
 		case MarioState::Idle:
 			return MARIO_BIG_IDLE_ANIM_ID;
@@ -975,6 +856,8 @@ int Mario::GetMarioAnimId() const
 			return MARIO_BIG_DUCK_ANIM_ID;
 		case MarioState::Shrinking:
 			return MARIO_SHRINK_ANIM_ID;
+		case MarioState::PullingFlag:
+			return MARIO_BIG_FLAG_PULL_ANIM_ID;
 		default:
 			DebugOut(L"[WARNING] No handling for state: %d\n", state);
 		}
@@ -988,7 +871,6 @@ int Mario::GetMarioAnimId() const
 		case MarioState::WalkingToCastle:
 			return MARIO_FIRE_RUN_ANIM_ID;
 		case MarioState::Skidding:
-		case MarioState::PullingFlag:
 			return MARIO_FIRE_SKID_ANIM_ID;
 		case MarioState::Idle:
 			return MARIO_FIRE_IDLE_ANIM_ID;
@@ -1000,11 +882,218 @@ int Mario::GetMarioAnimId() const
 			return MARIO_FIRE_FIRE_ANIM_ID;
 		case MarioState::Shrinking:
 			return MARIO_SHRINK_ANIM_ID;
+		case MarioState::PullingFlag:
+			return MARIO_FIRE_FLAG_PULL_ANIM_ID;
 		default:
 			DebugOut(L"[Error] No handling for state: %d\n", state);
 		}
 	}
 	return MARIO_IDLE_ANIM_ID;
+}
+
+void Mario::LoadSpriteAndAnimation()
+{
+	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
+
+	auto anims = Animations::GetInstance();
+	auto sprites = Sprites::GetInstance();
+
+	/// ================================
+	// Normal sprites
+	/// ================================
+	sprites->Add(MARIO_IDLE_SPRITE_1, 0, 0, 15, 15, marioTex);
+
+	sprites->Add(MARIO_RUN_SPRITE_1, 16, 0, 31, 15, marioTex);
+	sprites->Add(MARIO_RUN_SPRITE_2, 32, 0, 47, 15, marioTex);
+	sprites->Add(MARIO_RUN_SPRITE_3, 48, 0, 63, 15, marioTex);
+
+	sprites->Add(MARIO_SKID_SPRITE_1, 64, 0, 79, 15, marioTex);
+
+	sprites->Add(MARIO_JUMP_SPRITE_1, 80, 0, 95, 15, marioTex);
+
+	sprites->Add(MARIO_DEATH_SPRITE_1, 96, 0, 111, 15, marioTex);
+
+	sprites->Add(MARIO_FLAG_PULL_SPRITE_1, 112, 0, 127, 15, marioTex);
+	sprites->Add(MARIO_FLAG_PULL_SPRITE_2, 128, 0, 143, 15, marioTex);
+
+	sprites->Add(MARIO_GROWBIG_SPRITE_1, 0, 48, 15, 79, marioTex);
+	sprites->Add(MARIO_GROWBIG_SPRITE_2, 16, 48, 31, 79, marioTex);
+	sprites->Add(MARIO_GROWBIG_SPRITE_3, 0, 16, 15, 47, marioTex);
+
+	// idle anim
+	auto anim = new Animation(300);
+	anim->Add(MARIO_IDLE_SPRITE_1);
+	anims->Add(MARIO_IDLE_ANIM_ID, anim);
+
+	// walk anim
+	anim = new Animation(100);
+	anim->Add(MARIO_RUN_SPRITE_1);
+	anim->Add(MARIO_RUN_SPRITE_2);
+	anim->Add(MARIO_RUN_SPRITE_3);
+	anims->Add(MARIO_RUN_ANIM_ID, anim);
+
+	// skid anim
+	anim = new Animation(100);
+	anim->Add(MARIO_SKID_SPRITE_1);
+	anims->Add(MARIO_SKID_ANIM_ID, anim);
+
+	// jump anim
+	anim = new Animation(100);
+	anim->Add(MARIO_JUMP_SPRITE_1);
+	anims->Add(MARIO_JUMP_ANIM_ID, anim);
+
+	// death anim
+	anim = new Animation(100);
+	anim->Add(MARIO_DEATH_SPRITE_1);
+	anims->Add(MARIO_DEATH_ANIM_ID, anim);
+
+	// grow to big anim
+	anim = new Animation(150);
+	anim->Add(MARIO_GROWBIG_SPRITE_1, 100);
+	anim->Add(MARIO_GROWBIG_SPRITE_2, 100);
+	anim->Add(MARIO_GROWBIG_SPRITE_1, 100);
+	anim->Add(MARIO_GROWBIG_SPRITE_2, 100);
+	anim->Add(MARIO_GROWBIG_SPRITE_3, 100);
+	anim->Add(MARIO_GROWBIG_SPRITE_2, 100);
+	anim->Add(MARIO_GROWBIG_SPRITE_3, 100);
+	anims->Add(MARIO_GROWBIG_ANIM_ID, anim);
+
+	// flag pull anim
+	anim = new Animation(150);
+	anim->Add(MARIO_FLAG_PULL_SPRITE_1, 150);
+	anim->Add(MARIO_FLAG_PULL_SPRITE_2, 150);
+	anims->Add(MARIO_FLAG_PULL_ANIM_ID, anim);
+
+	/// ================================
+	// BIG sprites
+	/// ================================
+	sprites->Add(MARIO_BIG_IDLE_SPRITE_1, 0, 16, 15, 47, marioTex);
+
+	sprites->Add(MARIO_BIG_RUN_SPRITE_1, 16, 16, 31, 47, marioTex);
+	sprites->Add(MARIO_BIG_RUN_SPRITE_2, 32, 16, 47, 47, marioTex);
+	sprites->Add(MARIO_BIG_RUN_SPRITE_3, 48, 16, 63, 47, marioTex);
+
+	sprites->Add(MARIO_BIG_SKID_SPRITE_1, 64, 16, 79, 47, marioTex);
+
+	sprites->Add(MARIO_BIG_JUMP_SPRITE_1, 80, 16, 95, 47, marioTex);
+
+	sprites->Add(MARIO_BIG_DUCK_SPRITE_1, 96, 16, 111, 47, marioTex);
+
+	sprites->Add(MARIO_SHRINK_SPRITE_1, 32, 48, 47, 79, marioTex);
+	sprites->Add(MARIO_SHRINK_SPRITE_2, 48, 48, 63, 79, marioTex);
+	sprites->Add(MARIO_SHRINK_SPRITE_3, 64, 48, 79, 79, marioTex);
+
+	sprites->Add(MARIO_BIG_FLAG_PULL_SPRITE_1, 112, 16, 127, 47, marioTex);
+	sprites->Add(MARIO_BIG_FLAG_PULL_SPRITE_2, 128, 16, 143, 47, marioTex);
+
+
+	anim = new Animation(100);
+	// idle anim
+	anim->Add(MARIO_BIG_IDLE_SPRITE_1);
+	anims->Add(MARIO_BIG_IDLE_ANIM_ID, anim);
+
+	// walk anim
+	anim = new Animation(100);
+	anim->Add(MARIO_BIG_RUN_SPRITE_1);
+	anim->Add(MARIO_BIG_RUN_SPRITE_2);
+	anim->Add(MARIO_BIG_RUN_SPRITE_3);
+	anims->Add(MARIO_BIG_RUN_ANIM_ID, anim);
+
+	// skid anim
+	anim = new Animation(100);
+	anim->Add(MARIO_BIG_SKID_SPRITE_1);
+	anims->Add(MARIO_BIG_SKID_ANIM_ID, anim);
+
+	// jump anim
+	anim = new Animation(100);
+	anim->Add(MARIO_BIG_JUMP_SPRITE_1);
+	anims->Add(MARIO_BIG_JUMP_ANIM_ID, anim);
+
+	// duck anim
+	anim = new Animation(100);
+	anim->Add(MARIO_BIG_DUCK_SPRITE_1);
+	anims->Add(MARIO_BIG_DUCK_ANIM_ID, anim);
+
+	//shrink anim
+	anim = new Animation(100);
+	anim->Add(MARIO_SHRINK_SPRITE_1, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_1, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_1, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_1, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_2, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_2, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_2, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_3, 50);
+	anim->Add(MARIO_SHRINK_SPRITE_2, 50);
+	anims->Add(MARIO_SHRINK_ANIM_ID, anim);
+
+	//flag pull anim
+	anim = new Animation(150);
+	anim->Add(MARIO_BIG_FLAG_PULL_SPRITE_1, 150);
+	anim->Add(MARIO_BIG_FLAG_PULL_SPRITE_2, 150);
+	anims->Add(MARIO_BIG_FLAG_PULL_ANIM_ID, anim);
+
+	/// ================================
+	// FIRE sprites
+	/// ================================
+	sprites->Add(MARIO_FIRE_IDLE_SPRITE_1, 0, 80, 15, 111, marioTex);
+
+	sprites->Add(MARIO_FIRE_RUN_SPRITE_1, 16, 80, 31, 111, marioTex);
+	sprites->Add(MARIO_FIRE_RUN_SPRITE_2, 32, 80, 47, 111, marioTex);
+	sprites->Add(MARIO_FIRE_RUN_SPRITE_3, 48, 80, 63, 111, marioTex);
+	sprites->Add(MARIO_FIRE_SKID_SPRITE_1, 64, 80, 79, 111, marioTex);
+
+	sprites->Add(MARIO_FIRE_JUMP_SPRITE_1, 80, 80, 95, 111, marioTex);
+	sprites->Add(MARIO_FIRE_DUCK_SPRITE_1, 96, 80, 111, 111, marioTex);
+
+	sprites->Add(MARIO_FIRE_FIRE_SPRITE_1, 16, 80, 31, 111, marioTex);
+	// Reusing the run sprite for firing since it's the same pose
+	sprites->Add(MARIO_FIRE_FLAG_PULL_SPRITE_1, 112, 80, 127, 111, marioTex);
+	sprites->Add(MARIO_FIRE_FLAG_PULL_SPRITE_2, 128, 80, 143, 111, marioTex);
+
+	//idle anim
+	anim = new Animation(300);
+	anim->Add(MARIO_FIRE_IDLE_SPRITE_1);
+	anims->Add(MARIO_FIRE_IDLE_ANIM_ID, anim);
+
+	// walk anim
+	anim = new Animation(100);
+	anim->Add(MARIO_FIRE_RUN_SPRITE_1);
+	anim->Add(MARIO_FIRE_RUN_SPRITE_2);
+	anim->Add(MARIO_FIRE_RUN_SPRITE_3);
+	anims->Add(MARIO_FIRE_RUN_ANIM_ID, anim);
+
+	// skid anim
+	anim = new Animation(100);
+	anim->Add(MARIO_FIRE_SKID_SPRITE_1);
+	anims->Add(MARIO_FIRE_SKID_ANIM_ID, anim);
+
+	// jump anim
+	anim = new Animation(100);
+	anim->Add(MARIO_FIRE_JUMP_SPRITE_1);
+	anims->Add(MARIO_FIRE_JUMP_ANIM_ID, anim);
+
+	// duck anim
+	anim = new Animation(100);
+	anim->Add(MARIO_FIRE_DUCK_SPRITE_1);
+	anims->Add(MARIO_FIRE_DUCK_ANIM_ID, anim);
+
+	// fire anim
+	anim = new Animation(300);
+	anim->Add(MARIO_FIRE_FIRE_SPRITE_1);
+	anims->Add(MARIO_FIRE_FIRE_ANIM_ID, anim);
+
+	//flag pull anim
+	anim = new Animation(150);
+	anim->Add(MARIO_FIRE_FLAG_PULL_SPRITE_1, 150);
+	anim->Add(MARIO_FIRE_FLAG_PULL_SPRITE_2, 150);
+	anims->Add(MARIO_FIRE_FLAG_PULL_ANIM_ID, anim);
 }
 
 void Mario::OnCollisionWith(CollisionEvent* e)
@@ -1023,7 +1112,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		if (e->otherTile->IsBlocking()
 			&& e->normalizedDir.y == -1
 			&& e->normalizedDir.x == 0
-		)
+			)
 		{
 			isGrounded = true;
 		}

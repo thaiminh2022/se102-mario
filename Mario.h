@@ -92,7 +92,7 @@ class Mario : public GameObject
 
 	void OnMarioHit();
 	int GetMarioAnimId() const;
-
+	void LoadSpriteAndAnimation();
 
 	// on collision with
 	bool OnCollisionWithGoomba(const CollisionEvent* e);
@@ -117,7 +117,7 @@ class Mario : public GameObject
 	void UpdateFacingDirection();
 	void RouteAnimationState();
 	void OnCollisionWithFireballTrap(vector<GameObject*>& coObjects);
-
+	int GetFlagBonusScore(float touchingHeight) const;
 
 public:
 	Mario(int startX, int startY);
