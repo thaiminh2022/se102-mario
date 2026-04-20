@@ -66,7 +66,7 @@ void Mario::OnMarioHit()
 			transformTimer.Start();
 			return;
 		}
-		// got kill by goomba, bad
+		// got kill by enemy, bad
 		velocity.y = -250.0f;
 		velocity.x = 0;
 		isCollidable = false;
@@ -735,6 +735,46 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 	return false;
 }
 
+bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
+{
+	const auto koopa = dynamic_cast<Koopa*>(e->otherObject);
+	if (koopa != nullptr)
+	{
+		if (koopa->GetState() == KoopaState::Dead)
+			return false;
+
+		if (e->normalizedDir.y == -1)
+		{
+			// jump on head
+			velocity.y = -240.0f;
+			state = MarioState::Jumping;
+			if (koopa->GetForm() == KoopaForm::Winged)
+			{
+				koopa->SetForm(KoopaForm::Normal);
+			}
+			else if (koopa->GetForm() == KoopaForm::Normal)
+			{
+				koopa->SetForm(KoopaForm::HiddingInShell);
+				koopa->SetState(KoopaState::NotMoving);
+			}
+			else if (koopa->GetForm() == KoopaForm::HiddingInShell)
+			{
+				if (koopa->GetState() == KoopaState::NotMoving)
+					koopa->SetState(KoopaState::Moving);
+				else
+				{
+					koopa->SetState(KoopaState::Dead);
+					koopaKilled++;
+				}
+			}
+			return true;
+		}
+		OnMarioHit();
+		return true;
+	}
+	return false;
+}
+
 bool Mario::OnCollisionWithPortal(const CollisionEvent* e)
 {
 	const auto portal = dynamic_cast<NextLevelPortal*>(e->otherObject);
@@ -775,88 +815,7 @@ bool Mario::OnCollisionWithQuestionBlock(const CollisionEvent* e)
 	}
 	return false;
 }
-		const auto portal = dynamic_cast<NextLevelPortal*>(e->otherObject);
-		if (portal != nullptr)
-		{
-			portal->RequestNextLevel();
-			return;
-		}
-		const auto questionBlock = dynamic_cast<QuestionBlock*>(e->otherObject);
-		if (questionBlock != nullptr){
-			if (e->normalizedDir.y == -1)
-			{
-				isGrounded = true;
-				return;
-			}
-			
-			if (e->normalizedDir.y == 1)
-			{
-				
-				if (!questionBlock->HaveDrop())
-				{
-					if (power == MarioPower::Big || power == MarioPower::Fire)
-					{
-						questionBlock->SetState(QuestionBlockState::Break);
-					}
-				}else
-				{
-					questionBlock->SetState(QuestionBlockState::Opened);
-				}
-			}
-		}
-
-		//koopa
-		const auto koopa = dynamic_cast<Koopa*>(e->otherObject);
-		if (koopa != nullptr)
-		{
-			if (koopa->GetState() == KoopaState::Dead)
-				return;
-			if (e->normalizedDir.y == -1)
-			{
-				// jump on head
-				velocity.y = -240.0f;
-				state = MarioState::Jumping;
-
-				if (koopa->GetForm() == KoopaForm::Flying)
-				{
-					koopa->SetForm(KoopaForm::Normal);
-				}
-				else if (koopa->GetForm() == KoopaForm::Normal)
-				{
-					koopa->SetForm(KoopaForm::HiddingInShell);
-					koopa->SetState(KoopaState::NotMoving);
-				}
-				else if (koopa->GetForm() == KoopaForm::HiddingInShell)
-				{
-					if (koopa->GetState() == KoopaState::NotMoving)
-					{
-						koopa->SetState(KoopaState::Moving);
-					}
-					else
-					{
-						koopa->SetState(KoopaState::Dead);
-						koopaKilled++;
-					}
-				}
-			}
-			else 
-			{
-				if (power != MarioPower::Normal)
-				{
-					power = MarioPower::Normal;
-					state = MarioState::Idle;
-					return;
-				}
-				// got kill by koopa, bad
-				velocity.y = -250.0f;
-				velocity.x = 0;
-				isCollidable = false;
-				state = MarioState::Dying;
-				AudioManager::GetInstance()->StopAll();
-				AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
-			}
-			return;
-		}
+	
 
 bool Mario::OnCollisionWithCoin(const CollisionEvent* e)
 {
@@ -1072,6 +1031,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 	else if (e->IsObjectCollision())
 	{
 		if (OnCollisionWithGoomba(e)) return;
+		if (OnCollisionWithKoopa(e)) return;
 		if (OnCollisionWithPortal(e)) return;
 		if (OnCollisionWithQuestionBlock(e)) return;
 		if (OnCollisionWithCoin(e)) return;

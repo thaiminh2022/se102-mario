@@ -89,10 +89,10 @@ void PlayableScene::Load()
 		objects.push_back(kp);
 	}
 
-	// flying koopa
-	for (const auto& fkPos : config->entityData.flyingKoopaStarts)
+	// Winged koopa
+	for (const auto& fkPos : config->entityData.WingedKoopaStarts)
 	{
-		const auto fkp = new Koopa(fkPos.x, fkPos.y, KoopaForm::Flying);
+		const auto fkp = new Koopa(fkPos.x, fkPos.y, KoopaForm::Winged);
 		objects.push_back(fkp);
 	}
 

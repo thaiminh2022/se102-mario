@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "Goomba.h"
 #include "Scene.h"
+#include "Mario.h"
 #include <vector>
 
 #include "Animation.h"
@@ -22,17 +23,17 @@ Koopa::Koopa(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	auto t = Textures::GetInstance()->Get(KOOPA_TEX_ID);
 	auto sp = Sprites::GetInstance();
 	sp->Add(KOOPA_WALK_SPRITE_1, 0, 0, 15, 23, t);
-	sp->Add(KOOPA_WALK_SPRITE_2, 17, 0, 35, 23, t);
+	sp->Add(KOOPA_WALK_SPRITE_2, 18, 0, 33, 23, t);
 
-	sp->Add(FLYING_KOOPA_FLY_SPRITE_1, 35, 0, 53, 23, t);
-	sp->Add(FLYING_KOOPA_FLY_SPRITE_2, 53, 0, 71, 23, t);
+	sp->Add(WINGED_KOOPA_FLY_SPRITE_1, 36, 0, 51, 23, t);
+	sp->Add(WINGED_KOOPA_FLY_SPRITE_2, 54, 0, 69, 23, t);
 
-	sp->Add(HIDING_KOOPA_HIDE_SPRITE, 71, 0, 88, 23, t);
+	sp->Add(HIDING_KOOPA_HIDE_SPRITE, 72, 8, 87, 23, t);
 
-	sp->Add(HIDING_KOOPA_SPIN_SPRITE_1, 71, 0, 88, 23, t);
-	sp->Add(HIDING_KOOPA_SPIN_SPRITE_2, 88, 0, 105, 23, t);
+	sp->Add(HIDING_KOOPA_SPIN_SPRITE_1, 72, 8, 87, 23, t);
+	sp->Add(HIDING_KOOPA_SPIN_SPRITE_2, 90, 8, 105, 23, t);
 
-	sp->Add(KOOPA_DEAD_SPRITE, 71, 0, 88, 23, t);
+	sp->Add(KOOPA_DEAD_SPRITE, 72, 8, 87, 23, t);
 
 	auto anims = Animations::GetInstance();
 	if (!anims->Contains(KOOPA_WALK_ANIM_ID))
@@ -42,12 +43,12 @@ Koopa::Koopa(int startX, int startY) : GameObject(static_cast<float>(startX), st
 		walkAnim->Add(KOOPA_WALK_SPRITE_2);
 		anims->Add(KOOPA_WALK_ANIM_ID, walkAnim);
 	}
-	if (!anims->Contains(FLYING_KOOPA_FLY_ANIM_ID))
+	if (!anims->Contains(WINGED_KOOPA_FLY_ANIM_ID))
 	{
 		auto flyAnim = new Animation(100);
-		flyAnim->Add(FLYING_KOOPA_FLY_SPRITE_1);
-		flyAnim->Add(FLYING_KOOPA_FLY_SPRITE_2);
-		anims->Add(FLYING_KOOPA_FLY_ANIM_ID, flyAnim);
+		flyAnim->Add(WINGED_KOOPA_FLY_SPRITE_1);
+		flyAnim->Add(WINGED_KOOPA_FLY_SPRITE_2);
+		anims->Add(WINGED_KOOPA_FLY_ANIM_ID, flyAnim);
 	}
 	if (!anims->Contains(HIDING_KOOPA_HIDE_ANIM_ID))
 	{
@@ -107,6 +108,7 @@ void Koopa::SetForm(KoopaForm newForm)
 	form = newForm;
 	if (form == KoopaForm::HiddingInShell)
 	{
+		position.y -= 8; 
 		SetState(KoopaState::NotMoving);
 	}
 
@@ -117,7 +119,7 @@ void Koopa::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	switch (form)
 	{ 	
 	case KoopaForm::Normal:
-	case KoopaForm::Flying:
+	case KoopaForm::Winged:
 		velocity.x = moveLeft ? -50.0f : 50.0f;
 		break;
 	case KoopaForm::HiddingInShell:
@@ -143,7 +145,8 @@ void Koopa::Render()
 	Animations::GetInstance()
 		->Get(state == KoopaState::Dead || state == KoopaState::DeadUpsideDown ? KOOPA_DEAD_ANIM_ID :
 			(form == KoopaForm::Normal ? KOOPA_WALK_ANIM_ID :
-				(form == KoopaForm::Flying ? FLYING_KOOPA_FLY_ANIM_ID : HIDING_KOOPA_HIDE_ANIM_ID)))
+				(form == KoopaForm::Winged ? WINGED_KOOPA_FLY_ANIM_ID : 
+					(state == KoopaState::Moving ? HIDING_KOOPA_SPIN_ANIM_ID : HIDING_KOOPA_HIDE_ANIM_ID))))
 		->Render(round(renderX), round(renderY),!moveLeft,state == KoopaState::DeadUpsideDown || state == KoopaState::Dead);
 }
 
@@ -163,17 +166,17 @@ void Koopa::OnCollisionWith(CollisionEvent* event)
 			SetState(KoopaState::Dead);
 			return;
 		}
-		if (event->normalizedDir.x != 0)
+		if (event->normalizedDir.x != 0 && event->otherTile->IsBlocking())
 		{
 			moveLeft = !moveLeft;
 		}
-		if (this->form == KoopaForm::Flying)
+		if (this->form == KoopaForm::Winged)
 		{
-			if (event->normalizedDir.y < 0)
+			if (event->normalizedDir.y < 0 && velocity.y >= 0.0f && event->otherTile->IsBlocking())
 			{
 				velocity.y = -KOOPA_JUMP_SPEED;
 			}
-			else if (event->normalizedDir.y > 0)
+			else if (event->normalizedDir.y > 0 && event->otherTile->IsBlocking())
 			{
 				position.y = event->otherTile->worldY + event->otherTile->tileHeight;
 			}
@@ -191,7 +194,7 @@ void Koopa::OnCollisionWith(CollisionEvent* event)
 				goomba->SetState(GoombaState::Dead);
 			}
 
-			// Koopa
+			// Other Koopa
 			auto koopa = dynamic_cast<Koopa*>(event->otherObject);
 			if (koopa != nullptr)
 			{
@@ -204,7 +207,8 @@ void Koopa::OnCollisionWith(CollisionEvent* event)
 						koopa->SetState(KoopaState::Dead);
 			}
 		}
-		else if (event->normalizedDir.x != 0)
+
+		else if (event->normalizedDir.x != 0 && event->otherObject != dynamic_cast<Mario*>(event->otherObject))
 		{
 			moveLeft = !moveLeft;
 		}

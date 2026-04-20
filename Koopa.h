@@ -18,7 +18,7 @@ enum class KoopaState : std::uint8_t
 enum class KoopaForm : std::uint8_t
 {
 	Normal,
-	Flying,
+	Winged,
 	HiddingInShell
 };
 
@@ -42,7 +42,9 @@ public:
 	void OnCollisionWith(CollisionEvent* event) override;
 	Rect GetBoundingBox() override
 	{
-		return Rect::FromXYWH(static_cast<int>(position.x), static_cast<int>(position.y), 16, 24);
+		return form == KoopaForm::HiddingInShell 
+			? Rect::FromXYWH(static_cast<int>(position.x), static_cast<int>(position.y), 16, 16) 
+			: Rect::FromXYWH(static_cast<int>(position.x), static_cast<int>(position.y), 16, 24);
 	}
 	bool IsBlocking() override
 	{

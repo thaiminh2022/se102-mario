@@ -236,14 +236,14 @@ constexpr int KOOPA_WALK_SPRITE_2 = 71102;
 
 
 /// ===============================
-// FLYING KOOPA (T = 2)
+// WINGED KOOPA (T = 2)
 /// ===============================
-constexpr int FLYING_KOOPA_TEX_ID = 72000;
+constexpr int WINGED_KOOPA_TEX_ID = 72000;
 
-// Flying (A = 100)
-constexpr int FLYING_KOOPA_FLY_ANIM_ID = 72100;
-constexpr int FLYING_KOOPA_FLY_SPRITE_1 = 72101;
-constexpr int FLYING_KOOPA_FLY_SPRITE_2 = 72102;
+// Winged (A = 100)
+constexpr int WINGED_KOOPA_FLY_ANIM_ID = 72100;
+constexpr int WINGED_KOOPA_FLY_SPRITE_1 = 72101;
+constexpr int WINGED_KOOPA_FLY_SPRITE_2 = 72102;
 
 /// ===============================
 // HIDING KOOPA (T = 3)

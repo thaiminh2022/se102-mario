@@ -34,7 +34,7 @@ const string DYNAMIC_LAYER = "Dynamic";
 const string PLAYER_START = "PlayerStart";
 const string GOOMBA_START= "GoombaStart";
 const string KOOPA_START= "KoopaStart";
-const string FLYING_KOOPA_START = "FlyingKoopaStart";
+const string WINGED_KOOPA_START = "WingedKoopaStart";
 const string QUESTION_BLOCK= "QuestionBlock";
 const string BRICK_BLOCK= "EmptyBrickBlock";
 const string COIN = "Coin";
@@ -263,6 +263,15 @@ void LevelLoader::ParseKoopas(SceneEntityData& sceneEntities, vector<EntityInsta
 	}
 }
 
+void LevelLoader::ParseWingedKoopas(SceneEntityData& sceneEntities, vector<EntityInstance> entities)
+{
+	const auto WingedKoopas = GetEntityDataWithIdentifier(entities, WINGED_KOOPA_START);
+	for (const auto& g : WingedKoopas)
+	{
+		sceneEntities.WingedKoopaStarts.emplace_back(g->px[0], g->px[1]);
+	}
+}
+
 void LevelLoader::ParseBowsers(SceneEntityData& sceneEntities, vector<EntityInstance> entities)
 {
 	const auto bowserStart = GetEntityDataWithIdentifier(entities, BOWSER_START);
@@ -307,20 +316,6 @@ void LevelLoader::ParseBridge(SceneEntityData& sceneEntities, vector<EntityInsta
 
 void LevelLoader::ParseQuestionBlock(SceneEntityData& sceneEntities, vector<EntityInstance> entities)
 {
-	
-	// Koopa
-	const auto koopas = GetEntityDataWithIdentifier(entities, KOOPA_START);
-	for (const auto& k : koopas)
-	{
-		sceneEntities.koopaStarts.emplace_back(k->px[0], k->px[1]);
-	}
-
-	// Flying Koopa
-	const auto flyingKoopas = GetEntityDataWithIdentifier(entities, FLYING_KOOPA_START);
-	for (const auto& fk : flyingKoopas)
-	{
-		sceneEntities.flyingKoopaStarts.emplace_back(fk->px[0], fk->px[1]);
-	}
 
 	// Question
 	const auto qBlocks = GetEntityDataWithIdentifier(entities, QUESTION_BLOCK);
@@ -523,6 +518,7 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 	// NOTE: emplace_back is push_back but takes in a constructor, so no temp object creation is needed
 	ParseGoombas(sceneEntities, entities);
 	ParseKoopas(sceneEntities, entities);
+	ParseWingedKoopas(sceneEntities, entities);
 	ParseBowsers(sceneEntities, entities);
 	ParseToad(sceneEntities, entities);
 	ParseBridge(sceneEntities, entities);
