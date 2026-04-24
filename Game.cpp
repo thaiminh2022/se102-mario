@@ -4,6 +4,7 @@
 #include "Animations.h"
 #include "AssetIDs.h"
 #include "MainMenu.h"
+#include "Mario.h"
 
 Game* Game::_instance = nullptr;
 
@@ -427,6 +428,7 @@ bool Game::HaveSceneWithID(const int id)
 
 void Game::ReloadCurrentScene()
 {
+	Mario::ResetStats();
 	forceReload = true;
 	IndicateSceneSwitch(currentSceneID);
 }

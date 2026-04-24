@@ -8,11 +8,9 @@
 #include <vector>
 
 #include "AudioManager.h"
-#include "AssetIDs.h"
 #include "Coin.h"
 #include "FireballTrap.h"
 #include "FlagPole.h"
-#include "FontManager.h"
 #include "Goomba.h"
 #include "NextLevelPortal.h"
 #include "PointPopup.h"
@@ -163,10 +161,6 @@ void PlayableScene::Render()
 	{
 		obj->Render();
 	}
-
-	wchar_t scoreText[32];
-	swprintf_s(scoreText, L"SCORE %06d", Mario::GetScore());
-	FontManager::GetInstance()->Draw(STATS_FONT, Vector2(8, 8), scoreText, Colors::WHITE);
 }
 
 void PlayableScene::CleanupDeletedObjects()

@@ -134,5 +134,10 @@ public:
 	bool IsBlocking() override { return true; }
 	static int GetScore() { return score; }
 	static void AddScore(int value) { score += value; }
+	static void ResetStats()
+	{
+		score = 0;
+		coinCollected = 0;
+	}
 };
 
