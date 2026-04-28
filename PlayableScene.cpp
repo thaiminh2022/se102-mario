@@ -104,9 +104,13 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	// player
 	auto playerStart = config->entityData.playerStarts;
 	sceneContext->mario = new Mario(playerStart.x, playerStart.y);
+	objects.push_back(sceneContext->mario);
+	if (ctx.hasValue && ctx.value.marioCtx.hasValue)
+	{
+		sceneContext->mario->SetExitPipe(ctx.value.marioCtx.value);
+	}
 
 	c->SetTarget(sceneContext->mario);
-	objects.push_back(sceneContext->mario);
 
 	// goomba
 	for (const auto& gPos : config->entityData.goombaStarts)

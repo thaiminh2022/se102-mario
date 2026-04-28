@@ -1,34 +1,26 @@
 ﻿#pragma once
 #include "OptionalType.h"
 #include "Vector2.h"
+#include "Rect.h"
 
-enum class SceneEnterType
+struct MarioPipeCtx
 {
-	None,
-	MarioFromPipe,
+	Vector2Int dir;
+	Rect returnZone;
+	Vector2Int moveTo;
 };
 
 struct SceneSwitchContext
 {
 	bool useTransitionScene;
-	Optional<Vector2Int> preferSpawnPoint;
-	SceneEnterType sceneEnterType;
-
-	SceneSwitchContext(const bool useTransitionScene, const Optional<Vector2Int>& preferSpawnPoint, SceneEnterType sceneEnterType)
-		: useTransitionScene(useTransitionScene),
-		  preferSpawnPoint(preferSpawnPoint),
-		  sceneEnterType(sceneEnterType)
-	{
-	}
-	SceneSwitchContext()
-	{
-		useTransitionScene = false;
-		preferSpawnPoint = {};
-		sceneEnterType = SceneEnterType::None;
-	}
+	Optional<MarioPipeCtx> marioCtx;
 
 	static SceneSwitchContext UseTransitionScene()
 	{
-		return SceneSwitchContext(true, {}, SceneEnterType::None);
+		return { true, {}};
+	}
+	static SceneSwitchContext WithMarioPipeExit(const MarioPipeCtx& ctx)
+	{
+		return { false, Optional<MarioPipeCtx>(ctx) };
 	}
 };

@@ -63,9 +63,24 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 		if (transitionTimer.IsFinished())
 		{
-			Game::GetInstance()
-			->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, 
-				Optional<SceneSwitchContext>(SceneSwitchContext::UseTransitionScene()));
+			if (pipeData.returnPipeData.hasValue)
+			{
+				auto returnData = pipeData.returnPipeData.value;
+				auto marioPipeCtx = MarioPipeCtx{
+					returnData.returnDirection,
+					returnData.returnRect,
+					returnData.moveTo,
+				};
+				Optional<SceneSwitchContext> switchCtx = SceneSwitchContext::WithMarioPipeExit(marioPipeCtx);
+
+				Game::GetInstance()
+					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, switchCtx);
+			}else
+			{
+				Game::GetInstance()
+					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, SceneSwitchContext::UseTransitionScene());
+			}
+		
 		}
 	}
 	

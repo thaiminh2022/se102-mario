@@ -47,7 +47,7 @@ class LevelLoader
 	// helper
 	static vector<EntityInstance*> GetEntityDataWithIdentifier(vector<EntityInstance>& v, const std::string& iden);
 	static Optional<json> GetFieldValueWithIdentifier(const vector<FieldInstance>& v, const std::string& iden);
-	EntityInstance* ParseEntityRef(const LDTKEntityRef& entityRef) const;
+	Optional<EntityInstance> ParseEntityRef(const LDTKEntityRef& entityRef) const;
 
 
 public:

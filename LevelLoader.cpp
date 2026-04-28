@@ -522,13 +522,14 @@ void LevelLoader::ParsePipe(SceneEntityData& sceneEntities, std::vector<EntityIn
 		if (pipeRefJson.hasValue && !pipeRefJson.value.is_null())
 		{
 			auto entityRef = pipeRefJson.value.get<LDTKEntityRef>();
-			auto otherPipe = ParseEntityRef(entityRef);
+			auto otherPipeData = ParseEntityRef(entityRef);
 
-			if (otherPipe != nullptr)
+			if (otherPipeData.hasValue)
 			{
-				auto otherReturnJson = GetFieldValueWithIdentifier(p->fieldInstances, "is_return_pipe");
-				auto otherDirJson = GetFieldValueWithIdentifier(p->fieldInstances, "pipe_direction");
-				auto otherMoveToJson = GetFieldValueWithIdentifier(p->fieldInstances, "move_to");
+				const auto& otherPipe = otherPipeData.value;
+				auto otherReturnJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "is_return_pipe");
+				auto otherDirJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "pipe_direction");
+				auto otherMoveToJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "move_to");
 
 				if (otherReturnJson.hasValue && otherDirJson.hasValue && otherMoveToJson.hasValue)
 				{
@@ -536,7 +537,7 @@ void LevelLoader::ParsePipe(SceneEntityData& sceneEntities, std::vector<EntityIn
 
 					returnPipeData.Set({
 						PipeData::GetDirection(otherDirJson.value),
-						Rect::FromXYWH(otherPipe->px[0], otherPipe->px[1], otherPipe->width, otherPipe->height),
+						Rect::FromXYWH(otherPipe.px[0], otherPipe.px[1], otherPipe.width, otherPipe.height),
 						Vector2Int(otherMoveTo.cx * 16, otherMoveTo.cy * 16)
 					});
 				}
@@ -611,31 +612,31 @@ Optional<json> LevelLoader::GetFieldValueWithIdentifier(const vector<FieldInstan
 	return returnVal;
 }
 
-EntityInstance* LevelLoader::ParseEntityRef(const LDTKEntityRef& entityRef) const
+Optional<EntityInstance> LevelLoader::ParseEntityRef(const LDTKEntityRef& entityRef) const
 {
 	if (!worldMap.hasValue)
-		return nullptr;
+		return {};
 	auto worldMapValue = worldMap.value;
 	
 	for (auto& lvl : worldMapValue.levels)
 	{
-		if (lvl.identifier != entityRef.levelIid)
+		if (lvl.iid != entityRef.levelIid)
 			continue;
 
 		for (auto& layer : lvl.layerInstances.value)
 		{
-			if (layer.identifier != entityRef.layerIid)
+			if (layer.iid != entityRef.layerIid)
 				continue;
 
 			for (auto& e : layer.entityInstances)
 			{
-				if (e.identifier == entityRef.entityIid)
+				if (e.iid == entityRef.entityIid)
 				{
-					return &e;
+					return e;
 				}
 			}
 		}
 	}
-	return nullptr;
+	return {};
 }
 

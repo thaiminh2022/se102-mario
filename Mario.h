@@ -50,6 +50,7 @@ enum class MarioState : std::uint8_t
 	PullingFlag,
 	WalkingToCastle,
 	EnteringPipe,
+	ExitingPipe,
 	Dying,
 	Firing,
 	Growing,
@@ -89,6 +90,7 @@ class Mario : public GameObject
 
 	// pipe interaction
 	PipeData pipeData;
+	MarioPipeCtx pipeExitingData;
 
 
 	void OnMarioHit();
@@ -123,7 +125,10 @@ public:
 	Mario(int startX, int startY);
 
 	MarioPower GetPowerLevel() const { return power; }
+	
 	void SetEnterPipe(const PipeData& pipe);
+	void SetExitPipe(const MarioPipeCtx& returnPipeData);
+
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
 	Rect GetBoundingBox() override;

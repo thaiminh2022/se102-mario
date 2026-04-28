@@ -104,6 +104,32 @@ void Mario::SetEnterPipe(const PipeData& pipe)
 	pipeData = pipe;
 }
 
+void Mario::SetExitPipe(const MarioPipeCtx& returnPipeData)
+{
+	state = MarioState::ExitingPipe;
+	AudioManager::GetInstance()->PlaySFX(PIPE_ENTER);
+	pipeExitingData = returnPipeData;
+	const auto& pipeRect = pipeExitingData.returnZone;
+	if (pipeExitingData.dir == Vector2Int::Up())
+	{
+		position.x = pipeRect.left + 8;
+		position.y = pipeRect.bottom;
+	}
+	if (pipeExitingData.dir == Vector2Int::Down())
+	{
+	}
+	if (pipeExitingData.dir == Vector2Int::Left())
+	{
+
+	}
+	if (pipeExitingData.dir == Vector2Int::Right())
+	{
+	}
+
+	Game::GetInstance()->GetCamera()->SetPosition(position.x, position.y);
+
+}
+
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 
@@ -189,7 +215,6 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		// set render index to behind pipe
 		renderIndex = -2;
 		const auto& pipeRect = pipeData.zone;
-
 		
 		// move to position
 		if (pipeData.enterDirection == Vector2Int::Up())
@@ -227,6 +252,39 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 		}
 		position += Vector2(pipeData.enterDirection) * 50.0f * dt;
+		return;
+	}
+
+	if (state == MarioState::ExitingPipe)
+	{
+		isCollidable = false;
+		//isRendering = false;
+		renderIndex = -2;
+		
+		const auto& pipeRect = pipeExitingData.returnZone;
+
+		position += Vector2(pipeExitingData.dir) * 50.0f * dt;
+
+		if (pipeExitingData.dir == Vector2Int::Up())
+		{
+			if (position.y < pipeExitingData.moveTo.y)
+			{
+				state = MarioState::Idle;
+				renderIndex = 0;
+				isRendering = true;
+				isCollidable = true;
+			}
+		}
+		if (pipeExitingData.dir == Vector2Int::Down())
+		{
+		}
+		if (pipeExitingData.dir == Vector2Int::Left())
+		{
+
+		}
+		if (pipeExitingData.dir == Vector2Int::Right())
+		{
+		}
 		return;
 	}
 
