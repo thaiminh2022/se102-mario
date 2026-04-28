@@ -3,8 +3,6 @@
 #include "Rect.h"
 #include "Scene.h"
 #include <vector>
-
-#include "InputManager.h"
 #include "Timer.h"
 
 // A random guy on youtube got these numbers
@@ -51,6 +49,7 @@ enum class MarioState : std::uint8_t
 	Ducking,
 	PullingFlag,
 	WalkingToCastle,
+	EnteringPipe,
 	Dying,
 	Firing,
 	Growing,
@@ -88,6 +87,9 @@ class Mario : public GameObject
 	float slidingToYWinning;
 	Timer flagPoleFlipWaitTimer;
 
+	// pipe interaction
+	PipeData pipeData;
+
 
 	void OnMarioHit();
 	int GetMarioAnimId() const;
@@ -121,6 +123,7 @@ public:
 	Mario(int startX, int startY);
 
 	MarioPower GetPowerLevel() const { return power; }
+	void SetEnterPipe(const PipeData& pipe);
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
 	Rect GetBoundingBox() override;

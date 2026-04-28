@@ -98,6 +98,12 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	LoadSpriteAndAnimation();
 }
 
+void Mario::SetEnterPipe(const PipeData& pipe)
+{
+	state = MarioState::EnteringPipe;
+	pipeData = pipe;
+}
+
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 
@@ -174,6 +180,53 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		{
 			isRendering = false;
 		}
+		return;
+	}
+
+	if (state == MarioState::EnteringPipe)
+	{
+		isCollidable = false;
+		// set render index to behind pipe
+		renderIndex = -2;
+		const auto& pipeRect = pipeData.zone;
+
+		
+		// move to position
+		if (pipeData.enterDirection == Vector2Int::Up())
+		{
+			// snap x to middle of pipe
+			position.x = pipeRect.left + pipeRect.GetWidth() / 2 - 8.0f;
+			position.y = std::max<float>(position.y, pipeData.moveTo.y);
+		}
+		if (pipeData.enterDirection == Vector2Int::Down())
+		{
+			// snap x to middle of pipe
+			position.x = pipeRect.left + pipeRect.GetWidth() / 2 - 8.0f;
+			position.y = std::min<float>(position.y, pipeData.moveTo.y);
+		}
+		if (pipeData.enterDirection == Vector2Int::Left())
+		{
+			if (position.x < pipeData.zone.left)
+			{
+				isRendering = false;
+			}
+
+			position.x = std::max<float>(position.x, pipeData.moveTo.x);
+			position.y = pipeData.zone.bottom - GetBoundingBox().GetHeight();
+
+		}
+		if (pipeData.enterDirection == Vector2Int::Right())
+		{
+			if (position.x > pipeData.zone.right)
+			{
+				isRendering = false;
+			}
+
+			position.x = std::min<float>(position.x, pipeData.moveTo.x);
+			position.y = pipeData.zone.bottom - GetBoundingBox().GetHeight();
+
+		}
+		position += Vector2(pipeData.enterDirection) * 50.0f * dt;
 		return;
 	}
 
@@ -542,14 +595,14 @@ Rect Mario::GetBoundingBox()
 	RectF r;
 	if (power == MarioPower::Normal)
 	{
-		r.top = position.y + 3;
+		r.top = position.y;
 		r.left = position.x + 1;
 		r.bottom = position.y + 16;
 		r.right = position.x + 14;
 	}
 	else if (power == MarioPower::Big || power == MarioPower::Fire)
 	{
-		r.top = position.y + 5;
+		r.top = position.y;
 		r.left = position.x + 2;
 		r.bottom = position.y + 32;
 		r.right = position.x + 14;
@@ -776,6 +829,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Walking:
 		case MarioState::Running:
 		case MarioState::WalkingToCastle:
+		case MarioState::EnteringPipe:
 			return MARIO_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return MARIO_SKID_ANIM_ID;
@@ -798,6 +852,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Walking:
 		case MarioState::Running:
 		case MarioState::WalkingToCastle:
+		case MarioState::EnteringPipe:
 			return MARIO_BIG_RUN_ANIM_ID;
 		case MarioState::Skidding:
 
@@ -823,6 +878,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Walking:
 		case MarioState::Running:
 		case MarioState::WalkingToCastle:
+		case MarioState::EnteringPipe:
 			return MARIO_FIRE_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return MARIO_FIRE_SKID_ANIM_ID;

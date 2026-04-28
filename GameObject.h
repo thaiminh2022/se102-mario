@@ -25,6 +25,7 @@ protected:
 	bool isBlocking;
 	bool isFacingRight;	
 	bool isActive;
+	int renderIndex;
 
 public:
 	Vector2 position;
@@ -36,6 +37,7 @@ public:
 		isBlocking = true; 
 		isFacingRight = true;
 		isActive = true;
+		renderIndex = 0;
 
 	}
 
@@ -46,12 +48,13 @@ public:
 		isBlocking = true;
 		isFacingRight = true;
 		isActive = true;
+		renderIndex = 0;
 	}
 
 
 	virtual void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx = nullptr) {}
 	virtual void Render() {}
-	virtual int GetRenderIndex() { return 0; }
+	virtual int GetRenderIndex() { return renderIndex; }
 
 
 	virtual bool IsCollidable() { return isCollidable; }

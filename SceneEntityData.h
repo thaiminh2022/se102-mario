@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+
 #include "Vector2.h"
 #include <vector>
 
@@ -48,6 +50,45 @@ struct BridgeData
 	Vector2Int axePosition;
 };
 
+struct ReturnPipeData
+{
+	Vector2Int returnDirection;
+	Rect returnRect;
+	Vector2Int moveTo;
+};
+struct PipeData
+{
+	Rect zone;
+
+	Optional<int> nextLevelToLoad;
+	Optional<ReturnPipeData> returnPipeData;
+
+	bool isReturnPipe;
+	Vector2Int enterDirection;
+	Vector2Int moveTo;
+
+	static Vector2Int GetDirection(const std::string& dir)
+	{
+
+		if (dir == "Up")
+		{
+			return Vector2Int::Up();
+		}
+		if (dir == "Down")
+		{
+			return Vector2Int::Down();
+		}
+		if (dir == "Left")
+		{
+			return Vector2Int::Left();
+		}
+		if (dir == "Right")
+		{
+			return Vector2Int::Right();
+		}
+		return Vector2Int{};
+	}
+};
 
 
 
@@ -57,7 +98,9 @@ struct SceneEntityData
 	Optional<int> backgroundMusicID;
 	Vector2Int playerStarts;
 	
+	vector<PipeData> pipes;
 	Optional<FlagPoleData> flagPole;
+	
 	Optional<Vector2Int> bowserStart;
 	Optional<Vector2Int> toadStart;
 
