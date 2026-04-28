@@ -15,6 +15,7 @@
 #include "Koopa.h"
 #include "NextLevelPortal.h"
 #include "QuestionBlock.h"
+#include "HUD.h"
 
 
 void PlayableScene::Update(float dt)
@@ -63,6 +64,14 @@ void PlayableScene::Update(float dt)
 		auto& g = addPendingGos.front();
 		objects.push_back(g);
 		addPendingGos.pop();
+	}
+	HUD::GetInstance()->Update(dt);
+	levelTimer.ProcessTimer(dt);
+	HUD::GetInstance()->GetElement(3)->SetText(L"TIME\n" + std::to_wstring(static_cast<int>(levelTimer.GetTimeLeft())));
+	if (levelTimer.IsFinished())
+	{
+		// Time's up, kill Mario
+		//ctx->mario->OnMarioHit();
 	}
 }
 
@@ -161,7 +170,8 @@ void PlayableScene::Load()
 	{
 		AudioManager::GetInstance()->PlayMusic(config->entityData.backgroundMusicID.value);
 	}
-
+	levelTimer = Timer(timeLeftForLevel);
+	levelTimer.Start();
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
 }
@@ -189,6 +199,7 @@ void PlayableScene::Render()
 
 		obj->Render();
 	}
+	HUD::GetInstance()->Render();
 }
 
 void PlayableScene::CleanupDeletedObjects()
