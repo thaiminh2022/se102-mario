@@ -100,6 +100,13 @@ struct LDTKPoint
 	int cy;
 };
 
+struct LDTKEntityRef
+{
+	std::string entityIid;
+	std::string layerIid;
+	std::string levelIid;
+	std::string worldIid;
+};
 
 
 
@@ -158,6 +165,14 @@ inline void from_json(const json& j, LDTKPoint& p)
 	ReadRequired(j, "cx", p.cx);
 	ReadRequired(j, "cy", p.cy);
 
+}
+
+inline void from_json(const json& j, LDTKEntityRef& p)
+{
+	ReadRequired(j, "entityIid", p.entityIid);
+	ReadRequired(j, "layerIid", p.layerIid);
+	ReadRequired(j, "levelIid", p.levelIid);
+	ReadRequired(j, "worldIid", p.worldIid);
 }
 inline void from_json(const json& j, TileInstance& x)
 {

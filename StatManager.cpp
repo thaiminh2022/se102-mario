@@ -22,6 +22,7 @@ void StatManager::Reset()
 	lifeCount = 3; // Starting lives
 }
 
+
 void StatManager::AddScore(int addingScore)
 {
 	score += addingScore;
@@ -35,6 +36,16 @@ void StatManager::AddCoin(int addingCoin)
 void StatManager::AddLife(int addingLife)
 {
 	lifeCount += addingLife;
+}
+
+void StatManager::SetLevel(int newLevel)
+{
+	currentLevel = newLevel;
+}
+
+int StatManager::GetLevel()
+{
+	return currentLevel;
 }
 
 int StatManager::GetScore()

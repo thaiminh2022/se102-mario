@@ -45,6 +45,7 @@ const string FLAG_POLE = "FlagPole";
 const string BOWSER_START = "FlagPole";
 const string BRIDGE = "Bridge";
 const string TOAD_START = "FlagPole";
+const string PIPE = "Pipe";
 
 
 
@@ -502,9 +503,72 @@ void LevelLoader::ParseFlagPole(SceneEntityData& sceneEntities, std::vector<Enti
 	sceneEntities.flagPole = flagPoleData;
 }
 
+void LevelLoader::ParsePipe(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities)
+{
+	const auto pipes = GetEntityDataWithIdentifier(entities, PIPE);
+	for (auto p : pipes)
+	{
+		auto isReturnJson = GetFieldValueWithIdentifier(p->fieldInstances, "is_return_pipe");
+		auto pipeDirectionJson = GetFieldValueWithIdentifier(p->fieldInstances, "pipe_direction");
+		auto pipeRefJson = GetFieldValueWithIdentifier(p->fieldInstances, "return_pipe_ref");
+		auto nextLevelJson = GetFieldValueWithIdentifier(p->fieldInstances, "level_to_load");
+		auto moveToJson = GetFieldValueWithIdentifier(p->fieldInstances, "move_to");
+
+		if (!isReturnJson.hasValue || !pipeDirectionJson.hasValue || !moveToJson.hasValue)
+			continue;
+		
+		auto zone = Rect::FromXYWH(p->px[0], p->px[1], p->width, p->height);
+		bool isReturnPipe = isReturnJson.value.get<bool>();
+		auto pipeDir = pipeDirectionJson.value.get<string>();
+		auto moveTo = moveToJson.value.get<LDTKPoint>();
+
+		// parse next level
+		Optional<int> nextLevel;
+		if (nextLevelJson.hasValue && !nextLevelJson.value.is_null())
+		{
+			nextLevel.Set(-nextLevelJson.value.get<int>());
+		}
+
+		// parse return pipe
+		Optional<ReturnPipeData> returnPipeData;
+		if (pipeRefJson.hasValue && !pipeRefJson.value.is_null())
+		{
+			auto entityRef = pipeRefJson.value.get<LDTKEntityRef>();
+			auto otherPipeData = ParseEntityRef(entityRef);
+
+			if (otherPipeData.hasValue)
+			{
+				const auto& otherPipe = otherPipeData.value;
+				auto otherReturnJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "is_return_pipe");
+				auto otherDirJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "pipe_direction");
+				auto otherMoveToJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "move_to");
+
+				if (otherReturnJson.hasValue && otherDirJson.hasValue && otherMoveToJson.hasValue)
+				{
+					auto otherMoveTo = otherMoveToJson.value.get<LDTKPoint>();
+
+					returnPipeData.Set({
+						PipeData::GetDirection(otherDirJson.value),
+						Rect::FromXYWH(otherPipe.px[0], otherPipe.px[1], otherPipe.width, otherPipe.height),
+						Vector2Int(otherMoveTo.cx * 16, otherMoveTo.cy * 16)
+					});
+				}
+			}
+		}
+
+		sceneEntities.pipes.push_back({ zone,
+			nextLevel,
+			returnPipeData,
+			isReturnPipe,
+			PipeData::GetDirection(pipeDir),
+			Vector2Int(moveTo.cx * 16, moveTo.cy * 16)
+		});
+	}
+}
+
 SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<LayerInstance>& v)
 {
-	SceneEntityData sceneEntities;
+	SceneEntityData sceneEntities{};
 	
 	auto layer = GetLayerWithIdentifier(v, DYNAMIC_LAYER);
 	auto entities = layer->entityInstances;
@@ -529,6 +593,7 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 	ParseBackgroundMusic(level, sceneEntities, entities);
 	ParseFireballTrap(sceneEntities, entities);
 	ParseFlagPole(sceneEntities, entities);
+	ParsePipe(sceneEntities, entities);
 
 	return sceneEntities;
 }
@@ -558,5 +623,33 @@ Optional<json> LevelLoader::GetFieldValueWithIdentifier(const vector<FieldInstan
 		} 
 	}
 	return returnVal;
+}
+
+Optional<EntityInstance> LevelLoader::ParseEntityRef(const LDTKEntityRef& entityRef) const
+{
+	if (!worldMap.hasValue)
+		return {};
+	auto worldMapValue = worldMap.value;
+	
+	for (auto& lvl : worldMapValue.levels)
+	{
+		if (lvl.iid != entityRef.levelIid)
+			continue;
+
+		for (auto& layer : lvl.layerInstances.value)
+		{
+			if (layer.iid != entityRef.layerIid)
+				continue;
+
+			for (auto& e : layer.entityInstances)
+			{
+				if (e.iid == entityRef.entityIid)
+				{
+					return e;
+				}
+			}
+		}
+	}
+	return {};
 }
 

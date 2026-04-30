@@ -5,6 +5,8 @@ private:
 	int coinCount;
 	int score;
 	int lifeCount;
+	int currentLevel;
+
 
 	static StatManager* _instance;
 	StatManager();
@@ -16,7 +18,8 @@ public:
 	int GetScore();
 	int GetCoin();
 	int GetLife();
-
 	void Reset();
+	void SetLevel(int newLevel);
+	int GetLevel();
 };
 

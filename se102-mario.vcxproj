@@ -154,6 +154,7 @@
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="NextLevelPortal.cpp" />
+    <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PlayableScene.cpp" />
     <ClCompile Include="QuestionBlock.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -196,11 +197,13 @@
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="NextLevelPortal.h" />
+    <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlayableScene.h" />
     <ClInclude Include="QuestionBlock.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEntityData.h" />
+    <ClInclude Include="SceneSwitchContext.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Star.h" />

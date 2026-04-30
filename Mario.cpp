@@ -104,6 +104,38 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	LoadSpriteAndAnimation();
 }
 
+void Mario::SetEnterPipe(const PipeData& pipe)
+{
+	state = MarioState::EnteringPipe;
+	pipeData = pipe;
+}
+
+void Mario::SetExitPipe(const MarioPipeCtx& returnPipeData)
+{
+	state = MarioState::ExitingPipe;
+	AudioManager::GetInstance()->PlaySFX(PIPE_ENTER);
+	pipeExitingData = returnPipeData;
+	const auto& pipeRect = pipeExitingData.returnZone;
+	if (pipeExitingData.dir == Vector2Int::Up())
+	{
+		position.x = pipeRect.left + 8;
+		position.y = pipeRect.bottom;
+	}
+	if (pipeExitingData.dir == Vector2Int::Down())
+	{
+	}
+	if (pipeExitingData.dir == Vector2Int::Left())
+	{
+
+	}
+	if (pipeExitingData.dir == Vector2Int::Right())
+	{
+	}
+
+	Game::GetInstance()->GetCamera()->SetPosition(position.x, position.y);
+
+}
+
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 
@@ -179,6 +211,85 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		else
 		{
 			isRendering = false;
+		}
+		return;
+	}
+
+	if (state == MarioState::EnteringPipe)
+	{
+		isCollidable = false;
+		// set render index to behind pipe
+		renderIndex = -2;
+		const auto& pipeRect = pipeData.zone;
+		
+		// move to position
+		if (pipeData.enterDirection == Vector2Int::Up())
+		{
+			// snap x to middle of pipe
+			position.x = pipeRect.left + pipeRect.GetWidth() / 2 - 8.0f;
+			position.y = std::max<float>(position.y, pipeData.moveTo.y);
+		}
+		if (pipeData.enterDirection == Vector2Int::Down())
+		{
+			// snap x to middle of pipe
+			position.x = pipeRect.left + pipeRect.GetWidth() / 2 - 8.0f;
+			position.y = std::min<float>(position.y, pipeData.moveTo.y);
+		}
+		if (pipeData.enterDirection == Vector2Int::Left())
+		{
+			if (position.x < pipeData.zone.left)
+			{
+				isRendering = false;
+			}
+
+			position.x = std::max<float>(position.x, pipeData.moveTo.x);
+			position.y = pipeData.zone.bottom - GetBoundingBox().GetHeight();
+
+		}
+		if (pipeData.enterDirection == Vector2Int::Right())
+		{
+			if (position.x > pipeData.zone.right)
+			{
+				isRendering = false;
+			}
+
+			position.x = std::min<float>(position.x, pipeData.moveTo.x);
+			position.y = pipeData.zone.bottom - GetBoundingBox().GetHeight();
+
+		}
+		position += Vector2(pipeData.enterDirection) * 50.0f * dt;
+		return;
+	}
+
+	if (state == MarioState::ExitingPipe)
+	{
+		isCollidable = false;
+		//isRendering = false;
+		renderIndex = -2;
+		
+		const auto& pipeRect = pipeExitingData.returnZone;
+
+		position += Vector2(pipeExitingData.dir) * 50.0f * dt;
+
+		if (pipeExitingData.dir == Vector2Int::Up())
+		{
+			if (position.y < pipeExitingData.moveTo.y)
+			{
+				state = MarioState::Idle;
+				renderIndex = 0;
+				isRendering = true;
+				isCollidable = true;
+			}
+		}
+		if (pipeExitingData.dir == Vector2Int::Down())
+		{
+		}
+		if (pipeExitingData.dir == Vector2Int::Left())
+		{
+
+		}
+		if (pipeExitingData.dir == Vector2Int::Right())
+		{
 		}
 		return;
 	}
@@ -548,14 +659,14 @@ Rect Mario::GetBoundingBox()
 	RectF r;
 	if (power == MarioPower::Normal)
 	{
-		r.top = position.y + 3;
+		r.top = position.y;
 		r.left = position.x + 1;
 		r.bottom = position.y + 16;
 		r.right = position.x + 14;
 	}
 	else if (power == MarioPower::Big || power == MarioPower::Fire)
 	{
-		r.top = position.y + 5;
+		r.top = position.y;
 		r.left = position.x + 2;
 		r.bottom = position.y + 32;
 		r.right = position.x + 14;
@@ -634,7 +745,10 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 					koopaKilled++;
 				}
 			}
+			AudioManager::GetInstance()->PlaySFX(SFX::GOOMBA_STOMP);
+			
 			return true;
+
 		}
 		OnMarioHit();
 		return true;
@@ -824,6 +938,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Walking:
 		case MarioState::Running:
 		case MarioState::WalkingToCastle:
+		case MarioState::EnteringPipe:
 			return MARIO_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return MARIO_SKID_ANIM_ID;
@@ -846,6 +961,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Walking:
 		case MarioState::Running:
 		case MarioState::WalkingToCastle:
+		case MarioState::EnteringPipe:
 			return MARIO_BIG_RUN_ANIM_ID;
 		case MarioState::Skidding:
 
@@ -871,6 +987,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Walking:
 		case MarioState::Running:
 		case MarioState::WalkingToCastle:
+		case MarioState::EnteringPipe:
 			return MARIO_FIRE_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return MARIO_FIRE_SKID_ANIM_ID;

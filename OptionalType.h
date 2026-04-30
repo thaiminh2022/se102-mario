@@ -7,7 +7,7 @@ struct Optional
 	T value;
 
 	Optional() : hasValue(false), value() {}
-	explicit Optional(const T& v) : hasValue(true), value(v) {}
+	Optional(const T& v) : hasValue(true), value(v) {}
 
 	void Reset()
 	{

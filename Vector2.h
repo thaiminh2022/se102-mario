@@ -31,6 +31,9 @@ struct Vector2Int
 	{
 		return Vector2Int{ x / other, y / other };
 	}
+	bool operator==(const Vector2Int& rhs) const {
+		return (this->x == rhs.x) && (this->y == rhs.y);
+	}
 
 	static Vector2Int Right()
 	{
