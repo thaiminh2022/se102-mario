@@ -19,7 +19,7 @@ class PlayableScene :
 	int level;
 
 	Timer levelTimer;
-	float timeLeftForLevel = 160; //seconds, originaly 400 frames w/ each frame ~0.4s
+	float timeLeftForLevel = 160; //seconds, originally 400 frames w/ each frame ~0.4s
 	
 public:
 	int maxFireballs = 2; // Max fireballs allowed on screen at once, to prevent spamming
