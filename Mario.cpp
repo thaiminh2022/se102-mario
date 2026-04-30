@@ -80,6 +80,7 @@ void Mario::OnMarioHit()
 		transformTimer.Start();
 		AudioManager::GetInstance()->StopAll();
 		AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
+		StatManager::GetInstance()->AddLife(-1);
 	}
 }
 
@@ -588,7 +589,7 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 			goomba->SetState(GoombaState::Dead);
 
 			goombaKilled++;
-			StatManager::AddScore(100);
+			StatManager::GetInstance()->AddScore(100);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 			return true;
 		}
@@ -690,6 +691,7 @@ bool Mario::OnCollisionWithCoin(const CollisionEvent* e)
 	{
 		coin->SetState(CoinState::Collected);
 		coinCollected++;
+		StatManager::GetInstance()->AddCoin(1);
 		AudioManager::GetInstance()->PlaySFX(MARIO_COLLECT_COIN);
 		return true;
 	}
@@ -708,7 +710,7 @@ bool Mario::OnCollisionWithMushroom(const CollisionEvent* e)
 		{
 			state = MarioState::Growing;
 			transformTimer = Timer(MARIO_GROW_TIME);
-			StatManager::AddScore(1000);
+			StatManager::GetInstance()->AddScore(1000);
 			transformTimer.Start();
 			// add some pushback so player won't fall off the ground
 			position.y -= 17;
@@ -737,7 +739,7 @@ bool Mario::OnCollisionWithFlower(CollisionEvent* e)
 		}
 
 		flower->SetState(CollectableItemState::Collected);
-		StatManager::AddScore(1000);
+		StatManager::GetInstance()->AddScore(1000);
 		AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
 		return true;
 	}
@@ -784,7 +786,7 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 
 
 	DebugOutTitle(L"Score for flagpole: %f\n", score); //for debugging
-	StatManager::AddScore(score);
+	StatManager::GetInstance()->AddScore(score);
 
 	AudioManager::GetInstance()->StopAll();
 	AudioManager::GetInstance()->PlaySFX(FLAG_PULL);

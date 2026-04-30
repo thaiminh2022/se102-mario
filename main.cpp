@@ -230,7 +230,7 @@ static void LoadResource()
 		HUD_FONT,
 		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
 		L"Super Mario Bros. NES",
-		FontData(14)
+		FontData(10)
 	);
 }
 

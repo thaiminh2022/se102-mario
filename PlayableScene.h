@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "GameObject.h"
+#include "Timer.h"
 
 using std::vector;
 
@@ -16,6 +17,9 @@ class PlayableScene :
 	vector<GameObject*> objects;
 	SceneContext* ctx;
 	int level;
+
+	Timer levelTimer;
+	float timeLeftForLevel = 160; //seconds, originally 400 frames w/ each frame ~0.4s
 	
 public:
 	int maxFireballs = 2; // Max fireballs allowed on screen at once, to prevent spamming
@@ -34,6 +38,9 @@ public:
 
 	int GetMaxFireballs() const {
 		return maxFireballs;
+	}
+	float GetTimeLeft() const {
+		return levelTimer.GetTimeLeft();
 	}
 };
 

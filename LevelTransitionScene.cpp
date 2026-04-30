@@ -74,8 +74,8 @@ void LevelTransitionScene::Render()
 void LevelTransitionScene::Load()
 {
 
-	Texts[0] = L"MARIO\n" + std::to_wstring(StatManager::GetScore());
-	Texts[1] = L"x " + std::to_wstring(StatManager::GetCoin());
+	Texts[0] = L"MARIO\n" + std::to_wstring(StatManager::GetInstance()->GetScore());
+	Texts[1] = L"x " + std::to_wstring(StatManager::GetInstance()->GetCoin());
 	Texts[2] = L"WORLD\n1-" + std::to_wstring(targetLevelID + 1);
 	auto sprites = Sprites::GetInstance();
 	sprites->Add(HUDCOIN_SPRITE_ID, 0, 0, 15, 15, Textures::GetInstance()->Get(HUDCOIN_TEX_ID));
