@@ -32,6 +32,8 @@ class LevelLoader
 	void ParsePlayerStart(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseGoombas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseKoopas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseWingedKoopas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+
 	void ParseBowsers(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseToad(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseBridge(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
