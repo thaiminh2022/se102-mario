@@ -34,4 +34,5 @@ public:
 	{
 		return state == TimerState::Ticking;
 	}
+	float GetTimeLeft() const;
 };

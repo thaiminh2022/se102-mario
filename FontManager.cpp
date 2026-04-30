@@ -95,6 +95,23 @@ void FontManager::Draw(const int id, const Vector2& pos, const LPCWSTR message, 
 		color.GetD3DXColor()
 	);
 }
+Vector2 FontManager::MeasureString(int id, LPCWSTR message)
+{
+	RECT r = { 0, 0, 0, 0 };
+
+	// we pass NULL for the sprite handler because we aren't drawing
+	fonts[id]->DrawTextW(
+		NULL,
+		message,
+		-1,
+		&r,
+		TextFormat::CalcRect,
+		D3DXCOLOR(0, 0, 0, 0)
+	);
+
+	// Width = right - left, Height = bottom - top
+	return Vector2((float)(r.right - r.left), (float)(r.bottom - r.top));
+}
 
 FontManager::~FontManager()
 {

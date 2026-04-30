@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Goomba.h"
+#include "Koopa.h"
 #include "Rect.h"
 #include "Scene.h"
 #include "Sprites.h"
@@ -21,6 +22,7 @@
 #include "Debug.h"
 #include "AudioManager.h"
 #include "FontManager.h"
+#include "StatManager.h"
 
 
 constexpr float FIREBALL_SPEED = 200.0f;
@@ -172,6 +174,18 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 			this->isExploded = true;
 			goomba->SetState(GoombaState::Dead);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
+			Explode();
+			return;
+		}
+
+		const auto koopa = dynamic_cast<Koopa*>(e->otherObject);
+		if (koopa != nullptr)
+		{
+			if (koopa->GetState() == KoopaState::Dead || koopa->GetState() == KoopaState::DeadUpsideDown)
+				return;
+			this->isExploded = true;
+			koopa->SetState(KoopaState::Dead);
+			StatManager::GetInstance()->AddScore(100);
 			Explode();
 			return;
 		}

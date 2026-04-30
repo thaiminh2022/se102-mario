@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Goomba.h"
+#include "Koopa.h"
 #include "InputManager.h"
 #include "Rect.h"
 #include "Scene.h"
@@ -32,6 +33,7 @@
 #include "Star.h"
 
 int Mario::goombaKilled = 0;
+int Mario::koopaKilled = 0;
 int Mario::coinCollected = 0;
 
 
@@ -65,7 +67,10 @@ void Mario::OnMarioHit()
 			transformTimer.Start();
 			return;
 		}
-		// got kill by goomba, bad
+		// got kill by enemy, bad
+		velocity.y = -250.0f;
+		velocity.x = 0;
+		isCollidable = false;
 		state = MarioState::Dying;
 		isCollidable = false; // Turn off hitboxes
 		velocity.x = 0;
@@ -75,6 +80,7 @@ void Mario::OnMarioHit()
 		transformTimer.Start();
 		AudioManager::GetInstance()->StopAll();
 		AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
+		StatManager::GetInstance()->AddLife(-1);
 	}
 }
 
@@ -694,7 +700,7 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 			goomba->SetState(GoombaState::Dead);
 
 			goombaKilled++;
-			StatManager::AddScore(100);
+			StatManager::GetInstance()->AddScore(100);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 			return true;
 		}
@@ -703,6 +709,46 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 			OnMarioHit();
 			return true;
 		}
+	}
+	return false;
+}
+
+bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
+{
+	const auto koopa = dynamic_cast<Koopa*>(e->otherObject);
+	if (koopa != nullptr)
+	{
+		if (koopa->GetState() == KoopaState::Dead)
+			return false;
+
+		if (e->normalizedDir.y == -1)
+		{
+			// jump on head
+			velocity.y = -240.0f;
+			state = MarioState::Jumping;
+			if (koopa->GetForm() == KoopaForm::Winged)
+			{
+				koopa->SetForm(KoopaForm::Normal);
+			}
+			else if (koopa->GetForm() == KoopaForm::Normal)
+			{
+				koopa->SetForm(KoopaForm::HiddingInShell);
+				koopa->SetState(KoopaState::NotMoving);
+			}
+			else if (koopa->GetForm() == KoopaForm::HiddingInShell)
+			{
+				if (koopa->GetState() == KoopaState::NotMoving)
+					koopa->SetState(KoopaState::Moving);
+				else
+				{
+					koopa->SetState(KoopaState::Dead);
+					koopaKilled++;
+				}
+			}
+			return true;
+		}
+		OnMarioHit();
+		return true;
 	}
 	return false;
 }
@@ -747,6 +793,7 @@ bool Mario::OnCollisionWithQuestionBlock(const CollisionEvent* e)
 	}
 	return false;
 }
+	
 
 bool Mario::OnCollisionWithCoin(const CollisionEvent* e)
 {
@@ -755,6 +802,7 @@ bool Mario::OnCollisionWithCoin(const CollisionEvent* e)
 	{
 		coin->SetState(CoinState::Collected);
 		coinCollected++;
+		StatManager::GetInstance()->AddCoin(1);
 		AudioManager::GetInstance()->PlaySFX(MARIO_COLLECT_COIN);
 		return true;
 	}
@@ -773,7 +821,7 @@ bool Mario::OnCollisionWithMushroom(const CollisionEvent* e)
 		{
 			state = MarioState::Growing;
 			transformTimer = Timer(MARIO_GROW_TIME);
-			StatManager::AddScore(1000);
+			StatManager::GetInstance()->AddScore(1000);
 			transformTimer.Start();
 			// add some pushback so player won't fall off the ground
 			position.y -= 17;
@@ -802,7 +850,7 @@ bool Mario::OnCollisionWithFlower(CollisionEvent* e)
 		}
 
 		flower->SetState(CollectableItemState::Collected);
-		StatManager::AddScore(1000);
+		StatManager::GetInstance()->AddScore(1000);
 		AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
 		return true;
 	}
@@ -849,7 +897,7 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 
 
 	DebugOutTitle(L"Score for flagpole: %f\n", score); //for debugging
-	StatManager::AddScore(score);
+	StatManager::GetInstance()->AddScore(score);
 
 	AudioManager::GetInstance()->StopAll();
 	AudioManager::GetInstance()->PlaySFX(FLAG_PULL);
@@ -1188,6 +1236,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 	else if (e->IsObjectCollision())
 	{
 		if (OnCollisionWithGoomba(e)) return;
+		if (OnCollisionWithKoopa(e)) return;
 		if (OnCollisionWithPortal(e)) return;
 		if (OnCollisionWithQuestionBlock(e)) return;
 		if (OnCollisionWithCoin(e)) return;

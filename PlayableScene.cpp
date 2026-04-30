@@ -12,9 +12,11 @@
 #include "FireballTrap.h"
 #include "FlagPole.h"
 #include "Goomba.h"
+#include "Koopa.h"
 #include "NextLevelPortal.h"
 #include "Pipe.h"
 #include "QuestionBlock.h"
+#include "HUD.h"
 #include <queue>
 
 
@@ -81,6 +83,14 @@ void PlayableScene::Update(float dt)
 		objects.push_back(g);
 		addPendingGos.pop();
 	}
+	HUD::GetInstance()->Update(dt);
+	levelTimer.ProcessTimer(dt);
+	HUD::GetInstance()->GetElement(3)->SetText(L"TIME\n" + std::to_wstring(static_cast<int>(levelTimer.GetTimeLeft())));
+	if (levelTimer.IsFinished())
+	{
+		// Time's up, kill Mario
+		//ctx->mario->OnMarioHit();
+	}
 }
 
 void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
@@ -117,6 +127,20 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		const auto gb = new Goomba(gPos.x, gPos.y);
 		objects.push_back(gb);
+	}
+
+	//koopa 
+	for (const auto& kPos : config->entityData.koopaStarts)
+	{
+		const auto kp = new Koopa(kPos.x, kPos.y);
+		objects.push_back(kp);
+	}
+
+	// Winged koopa
+	for (const auto& fkPos : config->entityData.WingedKoopaStarts)
+	{
+		const auto fkp = new Koopa(fkPos.x, fkPos.y, KoopaForm::Winged);
+		objects.push_back(fkp);
 	}
 
 	// question
@@ -176,7 +200,8 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		AudioManager::GetInstance()->PlayMusic(config->entityData.backgroundMusicID.value);
 	}
-
+	levelTimer = Timer(timeLeftForLevel);
+	levelTimer.Start();
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
 }
@@ -221,7 +246,7 @@ void PlayableScene::Render()
 		obj.second();
 		renderQueue.pop();
 	}
-
+	HUD::GetInstance()->Render();
 }
 
 void PlayableScene::CleanupDeletedObjects()
