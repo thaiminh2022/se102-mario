@@ -239,9 +239,6 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 	if (!go->IsCollidable())
 	{
 		go->OnNoCollision(dt);
-		if (dynamic_cast<Mario*>(go) != nullptr) {
-			//
-		}
 		return;
 	}
 
