@@ -301,7 +301,7 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 
 	eventsX.clear();
 	auto mario = dynamic_cast<Mario*>(go);
-	if (mario != nullptr && mario->getState() == MarioState::Dying) {
+	if (mario != nullptr && mario->GetState() == MarioState::Dying) {
 		//ignore physics and collisions if mario is dying, for dying animation.
 		return;
 	}
