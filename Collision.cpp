@@ -13,7 +13,6 @@
 #include <Windows.h>
 
 #include "Game.h"
-#include "Debug.h"
 
 constexpr float PUSH_BACK_FACTOR = 0.001f;
 Collision* Collision::_instance = nullptr;
