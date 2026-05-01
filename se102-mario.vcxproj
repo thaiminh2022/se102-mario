@@ -152,6 +152,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="MarioCollision.cpp" />
+    <ClCompile Include="MarioInput.cpp" />
+    <ClCompile Include="MarioLoader.cpp" />
+    <ClCompile Include="MarioRendering.cpp" />
+    <ClCompile Include="MarioSpecialStates.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="NextLevelPortal.cpp" />
     <ClCompile Include="Pipe.cpp" />
