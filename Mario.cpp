@@ -141,7 +141,6 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	{
 		// As he goes up, this will slow his negative velocity until it hits its peak - 0.
 		// Then it turns positive, pulling him down faster and faster.
-		float vely = velocity.y;
 		velocity.y += RUN_FALL_A * dt;
 		position.y += velocity.y * dt;
 		transformTimer.ProcessTimer(dt);
