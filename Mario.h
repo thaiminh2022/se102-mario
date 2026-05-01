@@ -138,5 +138,6 @@ public:
 	void OnCollisionWith(CollisionEvent* event) override;
 	bool IsBlocking() override { return true; }
 	bool IsActive() override { return true; }
+	MarioState getState() const { return state; }
 };
 

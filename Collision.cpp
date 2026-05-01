@@ -3,7 +3,7 @@
 #include <algorithm>
 
 #include "GameObject.h"
-
+#include "Mario.h"
 #include "Rect.h"
 #include "Tile.h"
 #include "Tilemap.h"
@@ -13,6 +13,7 @@
 #include <Windows.h>
 
 #include "Game.h"
+#include "Debug.h"
 
 constexpr float PUSH_BACK_FACTOR = 0.001f;
 Collision* Collision::_instance = nullptr;
@@ -238,6 +239,9 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 	if (!go->IsCollidable())
 	{
 		go->OnNoCollision(dt);
+		if (dynamic_cast<Mario*>(go) != nullptr) {
+			//
+		}
 		return;
 	}
 
@@ -300,16 +304,18 @@ void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coOb
 	}
 
 	eventsX.clear();
-
+	auto mario = dynamic_cast<Mario*>(go);
+	if (mario != nullptr && mario->getState() == MarioState::Dying) {
+		//ignore physics and collisions if mario is dying, for dying animation.
+		return;
+	}
 	// ==========================================
 	// STEP 2: MOVE AND RESOLVE Y-AXIS ONLY
 	// ==========================================
-
 	// shutdown x to solve for y, also restore y
 	go->velocity.y = originalVy;
 	float originalVx = go->velocity.x;
 	go->velocity.x = 0;
-
 	vector<CollisionEvent> eventsY;
 	GetTilemapEvents(eventsY, tilemap, go, dt);
 	GetObjectEvents(eventsY, go, coObjects, dt);

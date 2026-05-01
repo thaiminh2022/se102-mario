@@ -68,9 +68,7 @@ void Mario::OnMarioHit()
 			return;
 		}
 		// got kill by enemy, bad
-		velocity.y = -250.0f;
-		velocity.x = 0;
-		isCollidable = false;
+
 		state = MarioState::Dying;
 		isCollidable = false; // Turn off hitboxes
 		velocity.x = 0;
@@ -143,9 +141,9 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	{
 		// As he goes up, this will slow his negative velocity until it hits its peak - 0.
 		// Then it turns positive, pulling him down faster and faster.
+		float vely = velocity.y;
 		velocity.y += RUN_FALL_A * dt;
 		position.y += velocity.y * dt;
-
 		transformTimer.ProcessTimer(dt);
 
 		if (transformTimer.IsFinished()) {
