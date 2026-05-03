@@ -68,6 +68,7 @@ class Mario : public GameObject
 	bool isGrounded;
 	bool isInvincible;
 	bool isRendering;
+	bool isInWater;
 	static int goombaKilled;
 	static int koopaKilled;
 	static int coinCollected;
@@ -138,8 +139,10 @@ public:
 	
 	void SetEnterPipe(const PipeData& pipe);
 	void SetExitPipe(const MarioPipeCtx& returnPipeData);
-	
+	void SetIsInWater(bool newIsInWater) {isInWater = newIsInWater;}
 
+
+	void HandleSwim(float dt);
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
 	Rect GetBoundingBox() override;

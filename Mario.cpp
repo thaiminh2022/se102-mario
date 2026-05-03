@@ -36,6 +36,7 @@ int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 
 {
+	isInWater = true;
 	isRendering = true;
 	slidingToYWinning = 0;
 	flagPoleFlipWaitTimer = Timer(1);
@@ -146,6 +147,8 @@ void Mario::ClampMarioXToCameraX()
 	}
 }
 
+
+
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 
@@ -212,6 +215,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 
 	HandleJump(dt);
+	HandleSwim(dt);
 	HandleShootFireball(dt, coObjects, ctx);
 	ApplyGravityAndClamp(dt);
 	UpdateFacingDirection();

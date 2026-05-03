@@ -72,6 +72,8 @@ void LevelLoader::Init()
 	t->Add(-1, L"Assets/Sprites/tileset_overworld.png");
 	t->Add(-2, L"Assets/Sprites/tileset_underground.png"); 
 	t->Add(-3, L"Assets/Sprites/tileset_castle.png");
+	t->Add(-4, L"Assets/Sprites/tileset_water.png");
+
 
 	ifstream f(WORLD_PATH);
 	const auto data = json::parse(f);
@@ -218,7 +220,7 @@ RenderLayer LevelLoader::ParseBackgroundLayer(const vector<LayerInstance>& v)
 
 	if (!Textures::GetInstance()->HaveTextureWithPath(path, tID))
 	{
-		DebugOut(L"[ERROR] Cannot fine tileset");
+		DebugOut(L"[ERROR] Cannot find tileset");
 		throw;
 	}
 	renderLayer.textureID = tID;
