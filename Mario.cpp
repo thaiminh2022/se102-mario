@@ -1,6 +1,4 @@
 ﻿#include "Mario.h"
-
-#include "Animation.h"
 #include "AssetIDs.h"
 #include "Collision.h"
 #include "Game.h"
@@ -9,10 +7,8 @@
 #include "InputManager.h"
 #include "Rect.h"
 #include "Scene.h"
-#include <algorithm>
 #include <vector>
 #include "AudioManager.h"
-#include "Debug.h"
 #include "FontManager.h"
 #include "Fireball.h"
 

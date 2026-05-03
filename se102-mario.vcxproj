@@ -135,7 +135,6 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="CollisionEvent.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="FireballTrap.cpp" />
     <ClCompile Include="FlagPole.cpp" />

@@ -1,7 +1,6 @@
 #include "AssetIDs.h"
 #include "AudioManager.h"
 #include "Coin.h"
-#include "Debug.h"
 #include "FireballTrap.h"
 #include "FlagPole.h"
 #include "Flower.h"
