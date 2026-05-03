@@ -71,14 +71,14 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 					returnData.returnRect,
 					returnData.moveTo,
 				};
-				Optional<SceneSwitchContext> switchCtx = SceneSwitchContext::WithMarioPipeExit(marioPipeCtx);
+				Optional<SceneSwitchContext> switchCtx = SceneSwitchContext::PipeTransition(marioPipeCtx, ctx->mario->GetPowerLevel());
 
 				Game::GetInstance()
 					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, switchCtx);
 			}else
 			{
 				Game::GetInstance()
-					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, SceneSwitchContext::UseTransitionScene());
+					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, SceneSwitchContext::NormalTransition(ctx->mario->GetPowerLevel()));
 			}
 		
 		}

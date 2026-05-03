@@ -13,7 +13,7 @@ void Mario::LoadSpriteAndAnimation()
 	auto sprites = Sprites::GetInstance();
 
 	/// ================================
-	// Normal sprites
+	// NormalTransition sprites
 	/// ================================
 	sprites->Add(MARIO_IDLE_SPRITE_1, 0, 0, 15, 15, marioTex);
 

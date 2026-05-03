@@ -132,6 +132,7 @@ public:
 	Mario(int startX, int startY);
 
 	MarioPower GetPowerLevel() const { return power; }
+	void SetPowerLevel(const MarioPower newPower) { power = newPower; }
 	
 	void SetEnterPipe(const PipeData& pipe);
 	void SetExitPipe(const MarioPipeCtx& returnPipeData);

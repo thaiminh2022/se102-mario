@@ -283,7 +283,7 @@ void Mario::OnCollisionWithFireballTrap(vector<GameObject*>& coObjects)
 
 void Mario::OnCollisionWith(CollisionEvent* e)
 {
-	//DebugOut(L"Normal %d, %d\n", e->normalizedDir.x, e->normalizedDir.y);
+	//DebugOut(L"NormalTransition %d, %d\n", e->normalizedDir.x, e->normalizedDir.y);
 
 	if (e->IsTileCollision())
 	{
