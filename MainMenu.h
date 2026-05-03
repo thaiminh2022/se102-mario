@@ -20,7 +20,7 @@ public:
 	MainMenu();
 	void Update(float dt) override;
 	void Render() override;
-	void Load() override;
+	void Load(const Optional<SceneSwitchContext>& ctx) override;
 	void UnLoad() override;
 };
 

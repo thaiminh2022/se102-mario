@@ -13,6 +13,7 @@
 #include "Star.h"
 #include "Texture.h"
 #include "Textures.h"
+#include "StatManager.h"
 
 void QuestionBlock::SetState(const QuestionBlockState newState)
 {
@@ -98,6 +99,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 					),
 					CoinState::CollectedFromQuestionBox)
 				);
+				StatManager::GetInstance()->AddCoin(1);
 			}
 			else if (drop == BlockDropType::JewDestroyer)
 			{

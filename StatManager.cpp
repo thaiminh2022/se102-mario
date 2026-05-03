@@ -1,35 +1,64 @@
 #include "StatManager.h"
 
-int StatManager::coinCount = 0;
-int StatManager::score = 0;
-int StatManager::lifeCount = 0;
+StatManager* StatManager::_instance = nullptr;
+
+StatManager* StatManager::GetInstance()
+{
+	if (_instance == nullptr)
+	{
+		_instance = new StatManager();
+	}
+	return _instance;
+}
+StatManager::StatManager()
+{
+	Reset(); // Set initial values when created
+}
+
+void StatManager::Reset()
+{
+	coinCount = 0;
+	score = 0;
+	lifeCount = 3; // Starting lives
+}
+
 
 void StatManager::AddScore(int addingScore)
 {
-	StatManager::score += addingScore;
+	score += addingScore;
 }
 
-void StatManager::AddCoin()
+void StatManager::AddCoin(int addingCoin)
 {
-	StatManager::coinCount++;
+	coinCount+= addingCoin;
 }
 
-void StatManager::AddLife()
+void StatManager::AddLife(int addingLife)
 {
-	StatManager::lifeCount++;
+	lifeCount += addingLife;
+}
+
+void StatManager::SetLevel(int newLevel)
+{
+	currentLevel = newLevel;
+}
+
+int StatManager::GetLevel()
+{
+	return currentLevel;
 }
 
 int StatManager::GetScore()
 {
-	return StatManager::score;
+	return score;
 }
 
 int StatManager::GetCoin()
 {
-	return StatManager::coinCount;
+	return coinCount;
 }
 
 int StatManager::GetLife()
 {
-	return StatManager::lifeCount;
+	return lifeCount;
 }

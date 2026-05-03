@@ -6,23 +6,24 @@
 #include "Sprites.h"
 #include "Color.h"
 #include "FontManager.h"
+#include "Mario.h"
 #include "StatManager.h"
 
 LevelTransitionScene::LevelTransitionScene()
 {
 	targetLevelID = 0;
-	transitionDuration = 3.0f;
+	transitionDuration = 2.0f;
 }
 
-LevelTransitionScene::LevelTransitionScene(int targetLevelID, float transitionDuration)
+LevelTransitionScene::LevelTransitionScene(float transitionDuration)
 {
-	this->targetLevelID = targetLevelID;
+	targetLevelID = 0;
 	this->transitionDuration = transitionDuration;
 }
 
-void LevelTransitionScene::SetTargetLevelID(int targetLevelID)
+void LevelTransitionScene::SetTargetLevelID(int targetLevelId)
 {
-	this->targetLevelID = targetLevelID;
+	this->targetLevelID = targetLevelId;
 }
 
 void LevelTransitionScene::Update(float dt)
@@ -31,7 +32,10 @@ void LevelTransitionScene::Update(float dt)
 
 	if (transitionTimer.IsFinished())
 	{
-		Game::GetInstance()->IndicateSceneSwitch(targetLevelID);
+		const auto marioPowerValue = marioPower.hasValue ? marioPower.value : static_cast<MarioPower>(0);
+
+		Game::GetInstance()
+		->IndicateSceneSwitch(targetLevelID, SceneSwitchContext::NoTransition(marioPowerValue));
 	}
 }
 
@@ -71,19 +75,23 @@ void LevelTransitionScene::Render()
 	}
 }
 
-void LevelTransitionScene::Load()
+void LevelTransitionScene::Load(const Optional<SceneSwitchContext>& ctx)
 {
 
-	Texts[0] = L"MARIO\n" + std::to_wstring(StatManager::GetScore());
-	Texts[1] = L"x " + std::to_wstring(StatManager::GetCoin());
+	Texts[0] = L"MARIO\n" + std::to_wstring(StatManager::GetInstance()->GetScore());
+	Texts[1] = L"x " + std::to_wstring(StatManager::GetInstance()->GetCoin());
 	Texts[2] = L"WORLD\n1-" + std::to_wstring(targetLevelID + 1);
 	auto sprites = Sprites::GetInstance();
 	sprites->Add(HUDCOIN_SPRITE_ID, 0, 0, 15, 15, Textures::GetInstance()->Get(HUDCOIN_TEX_ID));
 	
 	transitionTimer = Timer(transitionDuration);
 	transitionTimer.Start();
-}
 
-void LevelTransitionScene::UnLoad()
-{
+	if (ctx.hasValue)
+	{
+		marioPower = ctx.value.marioPower;
+	}else
+	{
+		marioPower = {};
+	}
 }

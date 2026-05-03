@@ -22,6 +22,7 @@
 #include "Debug.h"
 #include "AudioManager.h"
 #include "FontManager.h"
+#include "StatManager.h"
 
 
 constexpr float FIREBALL_SPEED = 200.0f;
@@ -184,6 +185,7 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 				return;
 			this->isExploded = true;
 			koopa->SetState(KoopaState::Dead);
+			StatManager::GetInstance()->AddScore(100);
 			Explode();
 			return;
 		}

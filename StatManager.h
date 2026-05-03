@@ -1,15 +1,25 @@
 #pragma once
 class StatManager
 {
-	static int coinCount;
-	static int score;
-	static int lifeCount;
+private:
+	int coinCount;
+	int score;
+	int lifeCount;
+	int currentLevel;
+
+
+	static StatManager* _instance;
+	StatManager();
 public:
-	static void AddScore(int addingScore);
-	static void AddCoin();
-	static void AddLife();
-	static int GetScore();
-	static int GetCoin();
-	static int GetLife();
+	static StatManager* GetInstance();
+	void AddScore(int addingScore);
+	void AddCoin(int addingCoin);
+	void AddLife(int addingLife);
+	int GetScore();
+	int GetCoin();
+	int GetLife();
+	void Reset();
+	void SetLevel(int newLevel);
+	int GetLevel();
 };
 

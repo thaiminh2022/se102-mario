@@ -231,7 +231,7 @@ static void LoadResource()
 		HUD_FONT,
 		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
 		L"Super Mario Bros. NES",
-		FontData(14)
+		FontData(10)
 	);
 }
 
@@ -252,7 +252,7 @@ int WINAPI WinMain(
 	LoadResource();
 
 	g->LoadSceneAndEnterFirst();
-	//SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 	Run();
 

@@ -87,6 +87,7 @@ public:
 	void AddFontCustom(int id, LPCWSTR filePath, LPCWSTR faceName, FontData fontData);
 	void Draw(int id, const FontDrawConfig& config);
 	void Draw(int id, const Vector2& pos, LPCWSTR message, Color color);
+	Vector2 MeasureString(int id, LPCWSTR message);
 	~FontManager();
 }; 
 

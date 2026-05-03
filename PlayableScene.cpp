@@ -14,8 +14,28 @@
 #include "Goomba.h"
 #include "Koopa.h"
 #include "NextLevelPortal.h"
+#include "Pipe.h"
 #include "QuestionBlock.h"
 #include "Bowser.h"
+#include "HUD.h"
+#include <queue>
+
+
+using std::priority_queue;
+using std::pair;
+
+typedef pair<int, std::function<void()>> render_item;
+
+
+struct RenderCompare
+{
+	bool operator()(const render_item& a, const render_item& b) const
+	{
+		return a.first > b.first;
+	}
+};
+
+typedef priority_queue<render_item, vector<render_item>, RenderCompare> render_queue;
 
 void PlayableScene::Update(float dt)
 {
@@ -53,7 +73,7 @@ void PlayableScene::Update(float dt)
 			}
 		}
 
-		obj->Update(dt, coObjects, ctx);
+		obj->Update(dt, coObjects, sceneContext);
 	}
 	Game::GetInstance()->GetCamera()->Update();
 	CleanupDeletedObjects();
@@ -64,21 +84,29 @@ void PlayableScene::Update(float dt)
 		objects.push_back(g);
 		addPendingGos.pop();
 	}
+	HUD::GetInstance()->Update(dt);
+	levelTimer.ProcessTimer(dt);
+	HUD::GetInstance()->GetElement(3)->SetText(L"TIME\n" + std::to_wstring(static_cast<int>(levelTimer.GetTimeLeft())));
+	if (levelTimer.IsFinished())
+	{
+		// Time's up, kill Mario
+		//ctx->mario->OnMarioHit();
+	}
 }
 
-void PlayableScene::Load()
+void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 {
-	if (ctx == nullptr)
+	if (sceneContext == nullptr)
 	{
-		ctx = new SceneContext;
+		sceneContext = new SceneContext;
 	}
-	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
-	ctx->addObject =[this](GameObject *go)
+	sceneContext->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
+	sceneContext->addObject =[this](GameObject *go)
 	{
 		AddObject(go);
 	};
 
-	auto config = ctx->tilemap->GetConfig();
+	auto config = sceneContext->tilemap->GetConfig();
 
 	// camera
 	auto c = Game::GetInstance()->GetCamera();
@@ -86,10 +114,18 @@ void PlayableScene::Load()
 
 	// player
 	auto playerStart = config->entityData.playerStarts;
-	ctx->mario = new Mario(playerStart.x, playerStart.y);
+	sceneContext->mario = new Mario(playerStart.x, playerStart.y);
+	objects.push_back(sceneContext->mario);
+	if (ctx.hasValue)
+	{
+		sceneContext->mario->SetPowerLevel(ctx.value.marioPower);
+		if (ctx.value.marioCtx.hasValue)
+		{
+			sceneContext->mario->SetExitPipe(ctx.value.marioCtx.value);
+		}
+	}
 
-	c->SetTarget(ctx->mario);
-	objects.push_back(ctx->mario);
+	c->SetTarget(sceneContext->mario);
 
 	// goomba
 	for (const auto& gPos : config->entityData.goombaStarts)
@@ -98,7 +134,7 @@ void PlayableScene::Load()
 		objects.push_back(gb);
 	}
 
-	//koopa 
+	// koopa 
 	for (const auto& kPos : config->entityData.koopaStarts)
 	{
 		const auto kp = new Koopa(kPos.x, kPos.y);
@@ -164,12 +200,21 @@ void PlayableScene::Load()
 		objects.push_back(new FlagPole(flag.zone, flag.moveToPosition));
 	}
 
+
+	// pipes
+	for (const auto& pipeData : config->entityData.pipes)
+	{
+		const auto pipe = new Pipe(pipeData);
+		objects.push_back(pipe);
+	}
+
 	// background music
 	if (config->entityData.backgroundMusicID.hasValue)
 	{
 		AudioManager::GetInstance()->PlayMusic(config->entityData.backgroundMusicID.value);
 	}
-
+	levelTimer = Timer(timeLeftForLevel);
+	levelTimer.Start();
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
 }
@@ -188,15 +233,33 @@ void PlayableScene::UnLoad()
 
 void PlayableScene::Render()
 {
-	LevelLoader::GetInstance()->GetTilemapForLevel(level)->Render();
-	std::sort(objects.begin(), objects.end(), GameObject::SortRenderIndex);
+	render_queue renderQueue;
+	const auto tileMap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
+
+
+	renderQueue.emplace(tileMap->GetRenderIndex(), [&tileMap]
+	{
+		tileMap->Render();
+	});
+
 	for (const auto& obj : objects)
 	{
 		if (!obj->IsActive())
 			continue;
 
-		obj->Render();
+		renderQueue.emplace(obj->GetRenderIndex(), [&obj]
+		{
+			obj->Render();
+		});
 	}
+
+	while (!renderQueue.empty())
+	{
+		auto& obj = renderQueue.top();
+		obj.second();
+		renderQueue.pop();
+	}
+	HUD::GetInstance()->Render();
 }
 
 void PlayableScene::CleanupDeletedObjects()

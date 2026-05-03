@@ -33,6 +33,8 @@ public:
 	}
 	int GetTileWidth() const { return config->tileWidth; }
 	int GetTileHeight() const { return config->tileHeight; }
+	int GetRenderIndex() { return -1; }
+
 
 	void GetPotentialCollidableCells(const RectF& bound, vector<CollisionTile*>& outCells) const;
 };

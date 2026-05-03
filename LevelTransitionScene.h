@@ -12,18 +12,16 @@ class LevelTransitionScene : public Scene
 		L"TIME"
 	};
 
-private:
+	Optional<MarioPower> marioPower;
 	int targetLevelID;
 	float transitionDuration;
 	Timer transitionTimer;
 public:
 	LevelTransitionScene();
-	LevelTransitionScene(int targetLevelID, float transitionDuration);
-	void SetTargetLevelID(int targetLevelID);
+	LevelTransitionScene(float transitionDuration);
+	void SetTargetLevelID(int targetLevelId);
 	void Update(float dt) override;
 	void Render() override;
-	void Load() override;
-	void UnLoad() override;
-
+	void Load(const Optional<SceneSwitchContext>& ctx) override;
 };
 
