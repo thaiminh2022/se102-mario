@@ -128,7 +128,7 @@ class Mario : public GameObject
 	void MarioEnteringPipe(float dt);
 	void MarioExitingPipe(float dt);
 	bool CheckMarioFalloffMap();
-	void ClampMarioX();
+	void ClampMarioXToCameraX();
 
 public:
 	Mario(int startX, int startY);

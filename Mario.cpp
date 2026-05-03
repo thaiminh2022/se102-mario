@@ -139,10 +139,15 @@ bool Mario::CheckMarioFalloffMap()
 	return false;
 }
 
-void Mario::ClampMarioX()
+void Mario::ClampMarioXToCameraX()
 {
 	auto cam = Game::GetInstance()->GetCamera();
-	position.x = max(position.x, cam->GetX());
+	if (position.x < cam->GetX())
+	{
+		velocity.x = 0;
+		state = MarioState::Idle;
+		position.x = cam->GetX();
+	}
 }
 
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
@@ -171,7 +176,13 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	case MarioState::Shrinking:
 		HandleShrinking(dt);
 		return;
-	default:
+	case MarioState::Idle:
+	case MarioState::Walking:
+	case MarioState::Running:
+	case MarioState::Skidding:
+	case MarioState::Jumping:
+	case MarioState::Ducking:
+	case MarioState::Firing:
 		break;
 	}
 
@@ -203,16 +214,15 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		WhileOnAir(dt);
 	}
 
-	ClampMarioX();
-
 
 	HandleJump(dt);
 	HandleShootFireball(dt, coObjects, ctx);
 	ApplyGravityAndClamp(dt);
-
-
 	UpdateFacingDirection();
+	
+	ClampMarioXToCameraX();
 	RouteAnimationState();
+
 
 	// FOR NOW, FIREBALL TRAP WILL BE CHECK IN UPDATE
 	// WE SHOULD HAVE A BETTER SOLUTION
