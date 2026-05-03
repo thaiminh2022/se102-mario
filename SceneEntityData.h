@@ -65,6 +65,7 @@ struct SceneEntityData
 	vector<Vector2Int> goombaStarts;
 	vector<Vector2Int> koopaStarts;
 	vector<Vector2Int> WingedKoopaStarts;
+	vector<Vector2Int> bowserStarts;
 	vector<QuestionBlockData> questionBlocks;
 	vector<BrickBlockData> brickBlocks;
 	vector<Vector2Int> coins;

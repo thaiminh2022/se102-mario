@@ -641,6 +641,35 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 	return false;
 }
 
+bool Mario::OnCollisionWithBowser(const CollisionEvent* e)
+{
+	const auto bowser = dynamic_cast<Bowser*>(e->otherObject);
+	const auto bowserFireBullet = dynamic_cast<BowserFireBullet*>(e->otherObject);
+	const auto bowserHammer = dynamic_cast<BowserHammer*>(e->otherObject);
+	if (bowser != nullptr )
+	{
+		OnMarioHit();
+		return true;
+	}
+	else if (bowserFireBullet != nullptr)
+	{
+		if (bowserFireBullet->GetState() == BowserFireBulletState::Discarded)
+			return false;
+		bowserFireBullet->SetState(BowserFireBulletState::Discarded);
+		OnMarioHit();
+		return true;
+	}
+	else if (bowserHammer != nullptr)
+	{
+		if (bowserHammer->GetState() == BowserHammerState::Discarded)
+			return false;
+		bowserHammer->SetState(BowserHammerState::Discarded);
+		OnMarioHit();
+		return true;
+	}
+	return false;
+}
+
 bool Mario::OnCollisionWithPortal(const CollisionEvent* e)
 {
 	const auto portal = dynamic_cast<NextLevelPortal*>(e->otherObject);
@@ -1121,6 +1150,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 	{
 		if (OnCollisionWithGoomba(e)) return;
 		if (OnCollisionWithKoopa(e)) return;
+		if (OnCollisionWithBowser(e)) return;
 		if (OnCollisionWithPortal(e)) return;
 		if (OnCollisionWithQuestionBlock(e)) return;
 		if (OnCollisionWithCoin(e)) return;

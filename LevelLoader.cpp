@@ -42,7 +42,7 @@ const string NEXT_LEVEL_ZONE = "NextLevel";
 const string BACKGROUND_MUSIC = "BackgroundMusic";
 const string FIREBALL_TRAP = "FireballTrap";
 const string FLAG_POLE = "FlagPole";
-const string BOWSER_START = "FlagPole";
+const string BOWSER_START = "BowserStart";
 const string BRIDGE = "Bridge";
 const string TOAD_START = "FlagPole";
 

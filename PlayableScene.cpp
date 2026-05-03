@@ -15,7 +15,7 @@
 #include "Koopa.h"
 #include "NextLevelPortal.h"
 #include "QuestionBlock.h"
-
+#include "Bowser.h"
 
 void PlayableScene::Update(float dt)
 {
@@ -110,6 +110,14 @@ void PlayableScene::Load()
 	{
 		const auto fkp = new Koopa(fkPos.x, fkPos.y, KoopaForm::Winged);
 		objects.push_back(fkp);
+	}
+
+	// Bowser
+	if (config->entityData.bowserStart.hasValue)
+	{
+		auto pos = config->entityData.bowserStart.value;
+		const auto bowser = new Bowser(pos.x, pos.y, ctx->mario);
+		objects.push_back(bowser);
 	}
 
 	// question
