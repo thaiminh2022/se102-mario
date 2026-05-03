@@ -62,6 +62,7 @@ public:
 	void HammerThrowAttack(int index, vector<GameObject*>& coObjects, SceneContext* ctx);
 	void OnNoCollision(float dt) override;
 	void OnCollisionWith(CollisionEvent* event) override;
+	bool IsBlocking() override { return false; }
 	Rect GetBoundingBox() override
 	{
 		return Rect::FromXYWH(static_cast<int>(position.x), static_cast<int>(position.y), 32, 32);
