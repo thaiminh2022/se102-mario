@@ -120,6 +120,23 @@ void Mario::MarioExitingPipe(float dt)
 	}
 }
 
+bool Mario::CheckMarioFalloffMap()
+{
+	auto vpHeight = Game::GetInstance()->GetBackBufferHeight();
+
+	// Check Mario fall off map
+	constexpr float marioMaxHeightOffset = 32.0f;
+	if (position.y > vpHeight + marioMaxHeightOffset && state != MarioState::Dying)
+	{
+		isInvincible = false;
+		invincibleTimer.Stop();
+		state = MarioState::Dying;
+		OnMarioHit();
+		return true;
+	}
+	return false;
+}
+
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 
@@ -161,6 +178,14 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		}
 	}
 
+	auto vpWidth = Game::GetInstance()->GetBackBufferWidth();
+
+
+	if (CheckMarioFalloffMap())
+	{
+		return;
+	}
+
 	auto input = InputManager::GetInstance();
 	if (isGrounded)
 	{
@@ -176,12 +201,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	ApplyGravityAndClamp(dt);
 
 
-	// UPDATE STATE & FACING DIRECTION
-
-	// Update facing direction based on player input and only apply if grounded to prevent mid-air direction change
 	UpdateFacingDirection();
 	RouteAnimationState();
-
 
 	// FOR NOW, FIREBALL TRAP WILL BE CHECK IN UPDATE
 	// WE SHOULD HAVE A BETTER SOLUTION

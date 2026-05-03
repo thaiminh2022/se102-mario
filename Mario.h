@@ -127,6 +127,7 @@ class Mario : public GameObject
 	void MarioWalkingToCastle(float dt, vector<GameObject*>& coObjects, SceneContext* ctx);
 	void MarioEnteringPipe(float dt);
 	void MarioExitingPipe(float dt);
+	bool CheckMarioFalloffMap();
 
 public:
 	Mario(int startX, int startY);
