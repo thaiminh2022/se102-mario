@@ -234,7 +234,7 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 	score = GetFlagBonusScore(touchingHeight);
 
 
-	DebugOutTitle(L"Score for flagpole: %f\n", score); //for debugging
+	// DebugOutTitle(L"Score for flagpole: %f\n", score); //for debugging
 	StatManager::GetInstance()->AddScore(score);
 
 	AudioManager::GetInstance()->StopAll();

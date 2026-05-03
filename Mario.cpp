@@ -9,8 +9,10 @@
 #include "InputManager.h"
 #include "Rect.h"
 #include "Scene.h"
+#include <algorithm>
 #include <vector>
 #include "AudioManager.h"
+#include "Debug.h"
 #include "FontManager.h"
 #include "Fireball.h"
 
@@ -137,6 +139,12 @@ bool Mario::CheckMarioFalloffMap()
 	return false;
 }
 
+void Mario::ClampMarioX()
+{
+	auto cam = Game::GetInstance()->GetCamera();
+	position.x = max(position.x, cam->GetX());
+}
+
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 
@@ -178,7 +186,6 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		}
 	}
 
-	auto vpWidth = Game::GetInstance()->GetBackBufferWidth();
 
 
 	if (CheckMarioFalloffMap())
@@ -195,6 +202,9 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	{
 		WhileOnAir(dt);
 	}
+
+	ClampMarioX();
+
 
 	HandleJump(dt);
 	HandleShootFireball(dt, coObjects, ctx);

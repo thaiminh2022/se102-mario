@@ -92,7 +92,6 @@ void Mario::MarioWalkingToCastle(float dt, vector<GameObject*>& coObjects, Scene
 		auto dir = (marioWinningMoveToPosition - position).Normalized();
 		velocity.x = dir.x * 150.0f;
 		velocity.y += 9000 * dt;
-		DebugOutTitle(L"%f %f", dir.x, dir.y);
 		Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 	}
 	else
