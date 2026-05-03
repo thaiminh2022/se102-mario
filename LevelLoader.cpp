@@ -338,10 +338,6 @@ void LevelLoader::ParseQuestionBlock(SceneEntityData& sceneEntities, vector<Enti
 		{
 			blockDropValue = BlockDropType::Starman;
 
-		}else
-		{
-			DebugOut(L"[Error] block drop value not exists, default to none");
-
 		}
 
 

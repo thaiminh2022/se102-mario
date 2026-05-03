@@ -1,7 +1,7 @@
 #include "NextLevelPortal.h"
 
 #include "Game.h"
-
+#include "Mario.h"
 
 
 NextLevelPortal::NextLevelPortal(Rect zone, int levelToLoad, float timeBeforeLoad)
@@ -29,7 +29,7 @@ void NextLevelPortal::Update(float dt, vector<GameObject*>& coObjects, SceneCont
 
 	if (timeBeforeLoad <= 0)
 	{
-		Game::GetInstance()->IndicateSceneSwitch(levelToLoad, Optional<SceneSwitchContext>(SceneSwitchContext::UseTransitionScene()));
+		Game::GetInstance()->IndicateSceneSwitch(levelToLoad, SceneSwitchContext::NormalTransition(ctx->mario->GetPowerLevel()));
 	}
 }
 
