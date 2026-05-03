@@ -2483,22 +2483,6 @@
 							"__worldY": 512
 						},
 						{
-							"__identifier": "GoombaStart",
-							"__grid": [40,12],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#D77643",
-							"iid": "2e1fdd00-21a0-11f1-b1fa-933e0279c500",
-							"width": 16,
-							"height": 16,
-							"defUid": 32,
-							"px": [640,192],
-							"fieldInstances": [],
-							"__worldX": 2352,
-							"__worldY": 512
-						},
-						{
 							"__identifier": "EmptyBrickBlock",
 							"__grid": [64,8],
 							"__pivot": [0,0],
@@ -2644,38 +2628,6 @@
 							"__worldY": 448
 						},
 						{
-							"__identifier": "WingedKoopaStart",
-							"__grid": [35,10],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#6DD743",
-							"iid": "e53c7940-21a0-11f1-a2db-3d6fe35ae6a8",
-							"width": 16,
-							"height": 24,
-							"defUid": 233,
-							"px": [560,160],
-							"fieldInstances": [],
-							"__worldX": 2272,
-							"__worldY": 480
-						},
-						{
-							"__identifier": "PlayerStart",
-							"__grid": [3,11],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
-							"__smartColor": "#63C74D",
-							"iid": "1e4f9f40-21a0-11f1-8cda-f19e2cb6af0a",
-							"width": 16,
-							"height": 16,
-							"defUid": 31,
-							"px": [48,176],
-							"fieldInstances": [],
-							"__worldX": 1760,
-							"__worldY": 496
-						},
-						{
 							"__identifier": "Pipe",
 							"__grid": [163,11],
 							"__pivot": [0,0],
@@ -2705,6 +2657,38 @@
 							],
 							"__worldX": 4320,
 							"__worldY": 496
+						},
+						{
+							"__identifier": "PlayerStart",
+							"__grid": [39,9],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
+							"__smartColor": "#63C74D",
+							"iid": "97966eb0-21a0-11f1-a13a-7f923be876a1",
+							"width": 16,
+							"height": 16,
+							"defUid": 31,
+							"px": [624,144],
+							"fieldInstances": [],
+							"__worldX": 2336,
+							"__worldY": 464
+						},
+						{
+							"__identifier": "BowserStart",
+							"__grid": [46,7],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#FF0044",
+							"iid": "a5ad7520-21a0-11f1-a13a-45c784643286",
+							"width": 16,
+							"height": 16,
+							"defUid": 213,
+							"px": [736,112],
+							"fieldInstances": [],
+							"__worldX": 2448,
+							"__worldY": 432
 						}
 					]
 				},
@@ -4351,7 +4335,7 @@
 						},
 						{
 							"__identifier": "BowserStart",
-							"__grid": [137,9],
+							"__grid": [137,8],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": null,
@@ -4360,10 +4344,10 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 213,
-							"px": [2192,144],
+							"px": [2192,128],
 							"fieldInstances": [],
 							"__worldX": 7280,
-							"__worldY": 464
+							"__worldY": 448
 						},
 						{
 							"__identifier": "Bridge",

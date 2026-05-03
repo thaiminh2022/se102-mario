@@ -28,6 +28,7 @@ constexpr float BOWSER_JUMPING_SPEED = 200.0f;
 
 enum class BowserState : std::uint8_t
 {
+	Stop,
 	Walking,
 	Jumping,
 	Dead,

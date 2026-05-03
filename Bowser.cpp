@@ -98,6 +98,9 @@ void Bowser::SetState(BowserState newState)
 	state = newState;
 	switch (state)
 	{
+	case BowserState::Stop:
+		velocity.x = 0;
+		break;
 	case BowserState::Walking:
 		velocity.x = moveLeft ? -BOWSER_WALKING_SPEED : BOWSER_WALKING_SPEED;
 		break;
@@ -119,6 +122,8 @@ void Bowser::SetState(BowserState newState)
 }
 void Bowser::UpdateDirection()
 {
+	if (state == BowserState::Dead || state == BowserState::Falling || state == BowserState::Stop)
+		return;
 	if (target->position.x < position.x)
 	{
 		isFacingRight = false;
@@ -155,8 +160,13 @@ void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	}
 	velocity.y += 500.0f * dt;
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
-	TimerHandler(dt, coObjects, ctx);
 
+	if (target->GetState() == MarioState::Dying)
+	{
+		SetState(BowserState::Stop);
+		return;
+	}
+	TimerHandler(dt, coObjects, ctx);
 }
 
 void Bowser::Render()
@@ -218,7 +228,6 @@ void Bowser::TimerHandler(float dt, vector<GameObject*>& coObjects, SceneContext
 		nextJumpTimer.Start();
 	}
 
-	// these timers are used to control how long the attack animation should last, not the attack cooldown, so they are handled separately
 	if (isFireBreathing)
 	{
 		fireBreathAnimTimer.ProcessTimer(dt);

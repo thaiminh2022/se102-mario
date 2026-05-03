@@ -40,7 +40,8 @@ enum class BowserBulletHeight : std::uint8_t
 
 class BowserFireBullet :public GameObject
 {
-	BowserBulletHeight height;
+	BowserBulletHeight heightLevel;
+	float height;
 	BowserFireBulletState state;
 	Timer appearTimer;
 public:
@@ -48,6 +49,7 @@ public:
 	void SetRandomHeight();
 	void SetState(BowserFireBulletState newState);
 	BowserFireBulletState GetState() const { return state; }
+	void AnimTransition();
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 
 	void Render() override;
