@@ -48,7 +48,6 @@ void StatManager::Reset()
 	lifeCount = 3; // Starting lives
 }
 
-#include "Debug.h"
 void StatManager::AddScore(int addingScore)
 {
 	score += addingScore;
@@ -87,7 +86,6 @@ void StatManager::AddEnemyKillScore(int sequenceCount)
 
 void StatManager::AddShellKillScore(int sequenceCount)
 {
-	int score = 0;
 	if (sequenceCount < 0)
 		return;
 	else if (sequenceCount >= 0 && sequenceCount < 7) {

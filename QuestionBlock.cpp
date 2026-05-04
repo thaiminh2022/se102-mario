@@ -57,6 +57,8 @@ void QuestionBlock::Render()
 
 void QuestionBlock::CheckHitBounce(vector<GameObject*>& coObjects, SceneContext* ctx) const
 {
+	auto sm = StatManager::GetInstance();
+	auto mario = ctx->mario;
 	for (auto& go : coObjects)
 	{
 		if (!go->GetBoundingBox().IsColliding(bounceCheckBox))
@@ -72,8 +74,6 @@ void QuestionBlock::CheckHitBounce(vector<GameObject*>& coObjects, SceneContext*
 				mushroom->SetMoveDirX(pushDir.x);
 			}
 		}
-		auto sm = StatManager::GetInstance();
-		auto mario = ctx->mario;
 		auto goomba = dynamic_cast<Goomba*>(go);
 		if (goomba != nullptr)
 		{

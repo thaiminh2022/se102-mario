@@ -95,15 +95,15 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 			if (koopa->GetForm() == KoopaForm::Winged)
 			{
 				koopa->SetForm(KoopaForm::Normal);
-				enemySequenceKilledCount++;
 				sm->AddEnemyKillScore(enemySequenceKilledCount);
+				enemySequenceKilledCount++;
 			}
 			else if (koopa->GetForm() == KoopaForm::Normal)
 			{
 				koopa->SetForm(KoopaForm::HiddingInShell);
 				koopa->SetState(KoopaState::NotMoving);
-				enemySequenceKilledCount++;
 				sm->AddEnemyKillScore(enemySequenceKilledCount);
+				enemySequenceKilledCount++;
 			}
 			else if (koopa->GetForm() == KoopaForm::HiddingInShell)
 			{
