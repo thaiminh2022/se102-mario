@@ -2625,25 +2625,6 @@
 							"__worldY": 448
 						},
 						{
-							"__identifier": "NextLevel",
-							"__grid": [0,8],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#BE4A2F",
-							"iid": "1c7f1420-21a0-11f1-bbf0-6d783630dc42",
-							"width": 32,
-							"height": 80,
-							"defUid": 41,
-							"px": [0,128],
-							"fieldInstances": [
-								{ "__identifier": "level_to_load", "__type": "Int", "__value": 1, "__tile": null, "defUid": 227, "realEditorValues": [{ "id": "V_Int", "params": [1] }] },
-								{ "__identifier": "load_delay", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 226, "realEditorValues": [{ "id": "V_Float", "params": [0.5] }] }
-							],
-							"__worldX": 1712,
-							"__worldY": 448
-						},
-						{
 							"__identifier": "WingedKoopaStart",
 							"__grid": [35,10],
 							"__pivot": [0,0],

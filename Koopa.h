@@ -29,6 +29,7 @@ class Koopa : public GameObject
 	KoopaForm form;
 	Timer deadTimer;
 	float fallAcc = 562.5f;
+	int enemyKilledByShellCount = 0; // used for scoring when player kick shell and kill enemies
 public:
 	Koopa(int startX, int startY);
 	Koopa(int startX, int startY, KoopaForm form);
@@ -40,6 +41,8 @@ public:
 	void Render() override;
 	void OnNoCollision(float dt) override;
 	void OnCollisionWith(CollisionEvent* event) override;
+	void SetMoveDir(bool moveLeft);
+	void ResetKillCount() { enemyKilledByShellCount = 0; }
 	Rect GetBoundingBox() override
 	{
 		return form == KoopaForm::HiddingInShell 
