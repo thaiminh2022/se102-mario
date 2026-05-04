@@ -22,31 +22,35 @@ class LevelLoader
 	unordered_map<int, Tilemap*> tilemaps;
 	Optional<WorldMap> worldMap;
 
-	// Helpers
 	Tilemap* ParseLevel(int level);
 	static const LayerInstance* GetLayerWithIdentifier(const vector<LayerInstance>& v, const std::string& identifier);
 	static CollisionLayer ParseCollisionLayer(const vector<LayerInstance>& v);
 	static RenderLayer ParseBackgroundLayer(const vector<LayerInstance>& v);
+	SceneEntityData ParseEntityLayer(int level, const vector<LayerInstance>& v);
 
 	// parsing function
-	static void ParsePlayerStart(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	static void ParseGoombas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	static void ParseKoopas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	static void ParseBowsers(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	static void ParseToad(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	static void ParseBridge(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	static void ParseQuestionBlock(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	static void ParseBrickBlock(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	static void ParseCoin(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	static void ParseNextLevelZone(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	static void ParseBackgroundMusic(int level, SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	static void ParseFireballTrap(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	static void ParseFlagPole(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParsePlayerStart(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseGoombas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseKoopas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseWingedKoopas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+
+	void ParseBowsers(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseToad(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseBridge(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseQuestionBlock(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseBrickBlock(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseCoin(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseNextLevelZone(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseBackgroundMusic(int level, SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseFireballTrap(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseFlagPole(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParsePipe(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	
 	// helper
-	static SceneEntityData ParseEntityLayer(int level, const vector<LayerInstance>& v);
 	static vector<EntityInstance*> GetEntityDataWithIdentifier(vector<EntityInstance>& v, const std::string& iden);
 	static Optional<json> GetFieldValueWithIdentifier(const vector<FieldInstance>& v, const std::string& iden);
+	Optional<EntityInstance> ParseEntityRef(const LDTKEntityRef& entityRef) const;
+
 
 public:
 	static LevelLoader* GetInstance()

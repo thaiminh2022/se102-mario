@@ -135,7 +135,6 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="CollisionEvent.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="FireballTrap.cpp" />
     <ClCompile Include="FlagPole.cpp" />
@@ -144,22 +143,34 @@
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
+    <ClCompile Include="LevelTransitionScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="MarioCollision.cpp" />
+    <ClCompile Include="MarioInput.cpp" />
+    <ClCompile Include="MarioLoader.cpp" />
+    <ClCompile Include="MarioRendering.cpp" />
+    <ClCompile Include="MarioSpecialStates.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="NextLevelPortal.cpp" />
+    <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PlayableScene.cpp" />
     <ClCompile Include="PointPopup.cpp" />
     <ClCompile Include="QuestionBlock.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Star.cpp" />
+    <ClCompile Include="StatManager.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="UIElement.cpp" />
+    <ClCompile Include="UILabel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -179,24 +190,30 @@
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Goomba.h" />
+    <ClInclude Include="HUD.h" />
+    <ClInclude Include="Koopa.h" />
     <ClInclude Include="LdtkParser.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="LevelTransitionScene.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="NextLevelPortal.h" />
+    <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlayableScene.h" />
     <ClInclude Include="PointPopup.h" />
     <ClInclude Include="QuestionBlock.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEntityData.h" />
+    <ClInclude Include="SceneSwitchContext.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Star.h" />
+    <ClInclude Include="StatManager.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Tile.h" />
@@ -204,6 +221,8 @@
     <ClInclude Include="TilemapConfig.h" />
     <ClInclude Include="OptionalType.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="UIElement.h" />
+    <ClInclude Include="UILabel.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>

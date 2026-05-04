@@ -21,6 +21,8 @@ public:
 	void Update();
 	bool IsInView(float left, float top, float right, float bottom) const;
 	bool IsInView(int left, int top, int right, int bottom) const;
+	bool IsInView(Rect r) const;
+
 
 	float GetX() const;
 	float GetY() const;

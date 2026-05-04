@@ -12,10 +12,30 @@
 #include "FireballTrap.h"
 #include "FlagPole.h"
 #include "Goomba.h"
+#include "Koopa.h"
 #include "NextLevelPortal.h"
 #include "PointPopup.h"
+#include "Pipe.h"
 #include "QuestionBlock.h"
+#include "HUD.h"
+#include <queue>
 
+
+using std::priority_queue;
+using std::pair;
+
+typedef pair<int, std::function<void()>> render_item;
+
+
+struct RenderCompare
+{
+	bool operator()(const render_item& a, const render_item& b) const
+	{
+		return a.first > b.first;
+	}
+};
+
+typedef priority_queue<render_item, vector<render_item>, RenderCompare> render_queue;
 
 void PlayableScene::Update(float dt)
 {
@@ -23,11 +43,27 @@ void PlayableScene::Update(float dt)
 	vector<GameObject*> coObjects;
 	for (const auto& obj : objects)
 	{
+		auto box = obj->GetBoundingBox();
+		auto inView = Game::GetInstance()->GetCamera()->IsInView(box);
+		if (inView)
+		{
+			//Game::GetInstance()->DrawDebugRectWithCamera(box, Colors::GREEN.WithAlpha(0.3f));
+			obj->SetActive(true);
+		}
+		else
+		{
+			obj->SetActive(false);
+		}
+
+		if (!obj->IsActive())
+		{
+			continue;
+		}
+
 		// make co-objects
 		coObjects.clear();
 		if (obj->IsCollidable())
 		{
-
 			for (auto other : objects)
 			{
 				if (!other->IsCollidable()) continue;
@@ -37,7 +73,7 @@ void PlayableScene::Update(float dt)
 			}
 		}
 
-		obj->Update(dt, coObjects, ctx);
+		obj->Update(dt, coObjects, sceneContext);
 	}
 	Game::GetInstance()->GetCamera()->Update();
 	CleanupDeletedObjects();
@@ -48,25 +84,29 @@ void PlayableScene::Update(float dt)
 		objects.push_back(g);
 		addPendingGos.pop();
 	}
+	HUD::GetInstance()->Update(dt);
+	levelTimer.ProcessTimer(dt);
+	HUD::GetInstance()->GetElement(3)->SetText(L"TIME\n" + std::to_wstring(static_cast<int>(levelTimer.GetTimeLeft())));
+	if (levelTimer.IsFinished())
+	{
+		// Time's up, kill Mario
+		//ctx->mario->OnMarioHit();
+	}
 }
 
-void PlayableScene::Load()
+void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 {
-	if (ctx == nullptr)
+	if (sceneContext == nullptr)
 	{
-		ctx = new SceneContext;
+		sceneContext = new SceneContext;
 	}
-	ctx->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
-	ctx->addObject =[this](GameObject *go)
+	sceneContext->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
+	sceneContext->addObject =[this](GameObject *go)
 	{
 		AddObject(go);
 	};
-	ctx->addPointPopup = [this](const Vector2& pos, int value)
-	{
-		AddObject(new PointPopup(pos, value));
-	};
 
-	auto config = ctx->tilemap->GetConfig();
+	auto config = sceneContext->tilemap->GetConfig();
 
 	// camera
 	auto c = Game::GetInstance()->GetCamera();
@@ -74,16 +114,38 @@ void PlayableScene::Load()
 
 	// player
 	auto playerStart = config->entityData.playerStarts;
-	ctx->mario = new Mario(playerStart.x, playerStart.y);
+	sceneContext->mario = new Mario(playerStart.x, playerStart.y);
+	objects.push_back(sceneContext->mario);
+	if (ctx.hasValue)
+	{
+		sceneContext->mario->SetPowerLevel(ctx.value.marioPower);
+		if (ctx.value.marioCtx.hasValue)
+		{
+			sceneContext->mario->SetExitPipe(ctx.value.marioCtx.value);
+		}
+	}
 
-	c->SetTarget(ctx->mario);
-	objects.push_back(ctx->mario);
+	c->SetTarget(sceneContext->mario);
 
 	// goomba
 	for (const auto& gPos : config->entityData.goombaStarts)
 	{
 		const auto gb = new Goomba(gPos.x, gPos.y);
 		objects.push_back(gb);
+	}
+
+	// koopa 
+	for (const auto& kPos : config->entityData.koopaStarts)
+	{
+		const auto kp = new Koopa(kPos.x, kPos.y);
+		objects.push_back(kp);
+	}
+
+	// Winged koopa
+	for (const auto& fkPos : config->entityData.WingedKoopaStarts)
+	{
+		const auto fkp = new Koopa(fkPos.x, fkPos.y, KoopaForm::Winged);
+		objects.push_back(fkp);
 	}
 
 	// question
@@ -130,12 +192,21 @@ void PlayableScene::Load()
 		objects.push_back(new FlagPole(flag.zone, flag.moveToPosition));
 	}
 
+
+	// pipes
+	for (const auto& pipeData : config->entityData.pipes)
+	{
+		const auto pipe = new Pipe(pipeData);
+		objects.push_back(pipe);
+	}
+
 	// background music
 	if (config->entityData.backgroundMusicID.hasValue)
 	{
 		AudioManager::GetInstance()->PlayMusic(config->entityData.backgroundMusicID.value);
 	}
-
+	levelTimer = Timer(timeLeftForLevel);
+	levelTimer.Start();
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
 }
@@ -154,13 +225,33 @@ void PlayableScene::UnLoad()
 
 void PlayableScene::Render()
 {
-	LevelLoader::GetInstance()->GetTilemapForLevel(level)->Render();
+	render_queue renderQueue;
+	const auto tileMap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
 
-	std::sort(objects.begin(), objects.end(), GameObject::SortRenderIndex);
+
+	renderQueue.emplace(tileMap->GetRenderIndex(), [&tileMap]
+	{
+		tileMap->Render();
+	});
+
 	for (const auto& obj : objects)
 	{
-		obj->Render();
+		if (!obj->IsActive())
+			continue;
+
+		renderQueue.emplace(obj->GetRenderIndex(), [&obj]
+		{
+			obj->Render();
+		});
 	}
+
+	while (!renderQueue.empty())
+	{
+		auto& obj = renderQueue.top();
+		obj.second();
+		renderQueue.pop();
+	}
+	HUD::GetInstance()->Render();
 }
 
 void PlayableScene::CleanupDeletedObjects()

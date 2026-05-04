@@ -142,7 +142,7 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 	return hWnd;
 }
 
-constexpr int MAX_FRAME_RATE = 165;
+constexpr int MAX_FRAME_RATE = 180;
 
 int Run()
 {
@@ -197,7 +197,11 @@ static void LoadResource()
 	t->Add(FIREBALL_TEX_ID, L"Assets/Sprites/fireball.png");
 	t->Add(BLOCKS_OVERWORLD_TEX_ID, L"Assets/Sprites/overworld_blocks.png");
 	t->Add(OVERWORLD_ITEMS_TEX_ID, L"Assets/Sprites/overworld_items.png");
+	t->Add(KOOPA_TEX_ID, L"Assets/Sprites/koopa_sprites.png");
+	
+	t->Add(HUDCOIN_TEX_ID, L"Assets/Sprites/HUDCoin.png");
 	t->Add(POINTS_TEX_ID, L"Assets/Sprites/point.png");
+
 
 
 	// Audios
@@ -221,9 +225,15 @@ static void LoadResource()
 		STATS_FONT,
 		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
 		L"Super Mario Bros. NES",
-		FontData(25)
+		FontData(16)
 	);
 
+	FontManager::GetInstance()->AddFontCustom(
+		HUD_FONT,
+		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
+		L"Super Mario Bros. NES",
+		FontData(10)
+	);
 }
 
 int WINAPI WinMain(

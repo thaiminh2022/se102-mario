@@ -4,6 +4,8 @@
 #include "Vector2.h"
 #include <functional>
 
+#include "SceneSwitchContext.h"
+
 class Mario;
 class GameObject;
 using std::vector;
@@ -23,7 +25,7 @@ class Scene
 public:
 	virtual void Update(float dt) {}
 	virtual void Render() {}
-	virtual void Load() {}
+	virtual void Load(const Optional<SceneSwitchContext>& ctx) {}
 	virtual void UnLoad() {}
 
 	virtual  ~Scene() = default;

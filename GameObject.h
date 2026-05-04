@@ -24,6 +24,8 @@ protected:
 	bool isCollidable;
 	bool isBlocking;
 	bool isFacingRight;	
+	bool isActive;
+	int renderIndex;
 
 public:
 	Vector2 position;
@@ -34,6 +36,9 @@ public:
 		isCollidable = true; 
 		isBlocking = true; 
 		isFacingRight = true;
+		isActive = true;
+		renderIndex = 0;
+
 	}
 
 	explicit GameObject(const Vector2& position) {
@@ -42,16 +47,21 @@ public:
 		isCollidable = true;
 		isBlocking = true;
 		isFacingRight = true;
+		isActive = true;
+		renderIndex = 0;
 	}
 
 
 	virtual void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx = nullptr) {}
 	virtual void Render() {}
-	virtual int GetRenderIndex() { return 0; }
+	virtual int GetRenderIndex() { return renderIndex; }
 
 
 	virtual bool IsCollidable() { return isCollidable; }
 	virtual bool IsBlocking() { return isBlocking; }
+	virtual bool IsActive() { return isActive; }
+	virtual void SetActive(bool newActive) { isActive = newActive; }
+
 	virtual void OnNoCollision(float dt) {} // Call every collision check but returns no collision
 	virtual void OnCollisionWith(CollisionEvent* event) {} // Call every collision check with collision data
 	virtual Rect GetBoundingBox() = 0;

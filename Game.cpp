@@ -4,6 +4,7 @@
 #include "Animations.h"
 #include "AssetIDs.h"
 #include "MainMenu.h"
+#include "LevelTransitionScene.h"
 #include "Mario.h"
 
 Game* Game::_instance = nullptr;
@@ -11,7 +12,7 @@ Game* Game::_instance = nullptr;
 void Game::Init(HWND hWnd)
 {
 
-	// retrieve client area width & height so that we can create backbuffer height & width accordingly
+	// retrieve client area width & height so that we can create back buffer height & width accordingly
 	RECT r;
 	GetClientRect(hWnd, &r);
 
@@ -381,36 +382,59 @@ void Game::SetBackgroundColor(const Optional<Color>& c)
 
 void Game::SwitchScene()
 {
-
 	if (!forceReload && nextSceneID == currentSceneID)
 		return;
 
-	DebugOut(L"[INFO] Switching to scene %d\n", nextSceneID);
 	if (scenes.find(currentSceneID) != scenes.end())
 	{
 		scenes[currentSceneID]->UnLoad();
 	}
+
 	Sprites::GetInstance()->Clear();
 	Animations::GetInstance()->Clear();
 
+
+	auto preferNextScene = nextSceneID;
+	auto useTransition = sceneSwitchCtx.hasValue && sceneSwitchCtx.value.useTransitionScene;
+	
+	if (useTransition)
+	{
+		nextSceneID = LEVEL_TRANSITION;
+	}
+
+
 	currentSceneID = nextSceneID;
-	scenes[currentSceneID]->Load();
+	auto targetScene = scenes[currentSceneID];
+
+	if (useTransition)
+	{
+		auto transitionScene = dynamic_cast<LevelTransitionScene*>(targetScene);
+		if (transitionScene != nullptr)
+		{
+			transitionScene->SetTargetLevelID(preferNextScene);
+		}
+	}
+
+	DebugOut(L"[INFO] Switching to scene %d\n", currentSceneID);
+	targetScene->Load(sceneSwitchCtx);
 	forceReload = false;
+	sceneSwitchCtx = {};
 }
 
-void Game::IndicateSceneSwitch(int newID)
+void Game::IndicateSceneSwitch(int newID, const Optional<SceneSwitchContext>& ctx)
 {
+	this->sceneSwitchCtx = ctx;
 	nextSceneID = newID;
 }
 
 void Game::LoadSceneAndEnterFirst()
 {
-	if (scenes.find(MAIN_MENU) == scenes.end())
-	{
-		AddScene(MAIN_MENU, new MainMenu());
-	}
-	IndicateSceneSwitch(MAIN_MENU);
+	AddScene(MAIN_MENU, new MainMenu());
+	AddScene(LEVEL_TRANSITION, new LevelTransitionScene());
+
+	IndicateSceneSwitch(MAIN_MENU, {});
 	SwitchScene();
+
 }
 	
 void Game::AddScene(int id, Scene* scene)
@@ -428,9 +452,8 @@ bool Game::HaveSceneWithID(const int id)
 
 void Game::ReloadCurrentScene()
 {
-	Mario::ResetStats();
 	forceReload = true;
-	IndicateSceneSwitch(currentSceneID);
+	IndicateSceneSwitch(currentSceneID, sceneSwitchCtx);
 }
 
 Game::~Game()

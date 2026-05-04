@@ -54,3 +54,8 @@ bool Timer::IsFinished() const
 {
 	return internalTime <= 0 && state == TimerState::Stopped;
 }
+
+float Timer::GetTimeLeft() const
+{
+	return internalTime;
+}

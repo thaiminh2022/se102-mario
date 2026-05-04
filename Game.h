@@ -35,6 +35,9 @@ class Game
 	bool forceReload;
 
 	vector<std::pair<Rect, D3DXCOLOR>> debugRects;
+	
+	Optional<SceneSwitchContext> sceneSwitchCtx;
+
 
 	Optional<Color> bgColor;
 	Camera* camera;
@@ -91,7 +94,7 @@ public:
 
 	// Scene related
 	void SwitchScene();
-	void IndicateSceneSwitch(int newID);
+	void IndicateSceneSwitch(int newID, const Optional<SceneSwitchContext>& ctx);
 	void LoadSceneAndEnterFirst();
 	void AddScene(int id, Scene* scene);
 	bool HaveSceneWithID(int id);

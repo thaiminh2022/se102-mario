@@ -32,5 +32,6 @@ public:
 	Rect GetBoundingBox() override;
 	void OnNoCollision(float dt) override;
 	void OnCollisionWith(CollisionEvent* e) override;
+	bool IsActive() override { return true; }
 };
 

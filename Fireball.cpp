@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Goomba.h"
+#include "Koopa.h"
 #include "Rect.h"
 #include "Scene.h"
 #include "Sprites.h"
@@ -21,6 +22,7 @@
 #include "Debug.h"
 #include "AudioManager.h"
 #include "FontManager.h"
+#include "StatManager.h"
 
 constexpr int GOOMBA_FIREBALL_SCORE = 100;
 
@@ -163,7 +165,7 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 {
 	if (state == FireballState::Exploding) return;
 
-
+	auto sm = StatManager::GetInstance();
 	if (e->IsObjectCollision())
 	{
 		// resolve object collision
@@ -174,12 +176,25 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 				return;
 			this->isExploded = true;
 			goomba->SetState(GoombaState::Dead);
+			sm->AddScore(100);
 			Mario::AddScore(GOOMBA_FIREBALL_SCORE);
 			if (currentContext != nullptr && currentContext->addPointPopup != nullptr)
 			{
 				currentContext->addPointPopup(goomba->position, GOOMBA_FIREBALL_SCORE);
 			}
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
+			Explode();
+			return;
+		}
+
+		const auto koopa = dynamic_cast<Koopa*>(e->otherObject);
+		if (koopa != nullptr)
+		{
+			if (koopa->GetState() == KoopaState::Dead || koopa->GetState() == KoopaState::DeadUpsideDown)
+				return;
+			this->isExploded = true;
+			koopa->SetState(KoopaState::Dead);
+			sm->AddScore(200);
 			Explode();
 			return;
 		}

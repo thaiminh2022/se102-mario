@@ -13,6 +13,8 @@
 #include "Star.h"
 #include "Texture.h"
 #include "Textures.h"
+#include "StatManager.h"
+#include "Koopa.h"
 
 void QuestionBlock::SetState(const QuestionBlockState newState)
 {
@@ -48,13 +50,15 @@ void QuestionBlock::Render()
 	float renderX, renderY;
 
 	Game::GetInstance()
-	->GetCamera()
-	->WorldToScreen(renderPosition.x, renderPosition.y, renderX, renderY);
+		->GetCamera()
+		->WorldToScreen(renderPosition.x, renderPosition.y, renderX, renderY);
 	anim->Render(round(renderX), round(renderY), false, false);
 }
 
 void QuestionBlock::CheckHitBounce(vector<GameObject*>& coObjects, SceneContext* ctx) const
 {
+	auto sm = StatManager::GetInstance();
+	auto mario = ctx->mario;
 	for (auto& go : coObjects)
 	{
 		if (!go->GetBoundingBox().IsColliding(bounceCheckBox))
@@ -77,11 +81,13 @@ void QuestionBlock::CheckHitBounce(vector<GameObject*>& coObjects, SceneContext*
 				continue;
 
 			goomba->SetState(GoombaState::DeadUpsideDown);
-			Mario::AddScore(100);
-			if (ctx != nullptr && ctx->addPointPopup != nullptr)
-			{
-				ctx->addPointPopup(goomba->position, 100);
-			}
+			sm->AddEnemyKillScore(mario->GetEnemyKilledOnSequenceCount());
+		}
+		auto koopa = dynamic_cast<Koopa*>(go);
+		if (koopa != nullptr)
+		{
+			if (koopa->GetForm() != KoopaForm::Winged)
+				koopa->SetState(KoopaState::DeadUpsideDown);
 		}
 	}
 }
@@ -106,11 +112,12 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 				}
 				ctx->addObject(new Coin(
 					Vector2Int(
-						static_cast<int>(round(startPosition.x)), 
+						static_cast<int>(round(startPosition.x)),
 						static_cast<int>(round(startPosition.y - 8))
 					),
 					CoinState::CollectedFromQuestionBox)
 				);
+				StatManager::GetInstance()->AddCoin(1);
 			}
 			else if (drop == BlockDropType::JewDestroyer)
 			{
@@ -122,12 +129,14 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 				if (power == MarioPower::Normal)
 				{
 					ctx->addObject(new Mushroom(position));
-				}else
+				}
+				else
 				{
 					ctx->addObject(new Flower(position));
 				}
 
-			}else if (drop == BlockDropType::Starman)
+			}
+			else if (drop == BlockDropType::Starman)
 			{
 				ctx->addObject(new Star(startPosition));
 			}
@@ -164,12 +173,12 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 		isDeleted = true;
 		state = QuestionBlockState::Blocked;
 	}
-	
+
 }
 
 QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop, const bool isBrick, const bool isHidden) : GameObject(startPos)
 {
-	
+
 	state = QuestionBlockState::Closed;
 	const auto t = Textures::GetInstance()->Get(BLOCKS_OVERWORLD_TEX_ID);
 	const auto sp = Sprites::GetInstance();
