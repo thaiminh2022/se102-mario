@@ -43,8 +43,6 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
 	power = MarioPower::Big;
-	currentContext = nullptr;
-	stompChainCount = 0;
 	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
 	fireCooldownTimer.Start();
 	transformTimer = Timer(MARIO_GROW_TIME);

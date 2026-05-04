@@ -1,4 +1,5 @@
 #pragma once
+#include "Vector2.h"
 class StatManager
 {
 private:
@@ -15,17 +16,17 @@ private:
 public:
 	static StatManager* GetInstance();
 	void Init();
-	void AddScore(int addingScore);
+	void AddScore(int addingScore, Vector2 pos);
 	void AddCoin(int addingCoin);
-	void AddLife(int addingLife);
+	void AddLife(int addingLife, Vector2 pos);
 	int GetScore();
 	int GetCoin();
 	int GetLife();
 	void Reset();
 	void SetLevel(int newLevel);
 	int GetLevel();
-	void AddEnemyKillScore(int sequenceCount);
-	void AddShellKillScore(int sequenceCount);
-	void AddShellKickScore(int sequenceCount);
+	void AddEnemyKillScore(int sequenceCount, Vector2 pos);
+	void AddShellKillScore(int sequenceCount, Vector2 pos);
+	void AddShellKickScore(int sequenceCount, Vector2 pos);
 };
 

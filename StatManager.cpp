@@ -1,4 +1,6 @@
 #include "StatManager.h"
+#include "PointPopup.h"
+#include "Game.h"
 
 StatManager* StatManager::_instance = nullptr;
 
@@ -48,9 +50,14 @@ void StatManager::Reset()
 	lifeCount = 3; // Starting lives
 }
 
-void StatManager::AddScore(int addingScore)
+void StatManager::AddScore(int addingScore, Vector2 pos)
 {
 	score += addingScore;
+	PointPopup* popup = new PointPopup(pos, score);
+	auto ctx = dynamic_cast<PlayableScene*>(Game::GetInstance()->GetCurrentScene());
+	if (ctx != nullptr) {
+		ctx->AddObject(popup); //currently, will think of a better way to add popup later
+	}
 }
 
 void StatManager::AddCoin(int addingCoin)
@@ -58,7 +65,7 @@ void StatManager::AddCoin(int addingCoin)
 	coinCount += addingCoin;
 }
 
-void StatManager::AddLife(int addingLife)
+void StatManager::AddLife(int addingLife, Vector2 pos)
 {
 	lifeCount += addingLife;
 }
@@ -72,41 +79,41 @@ int StatManager::GetLevel()
 {
 	return currentLevel;
 }
-void StatManager::AddEnemyKillScore(int sequenceCount)
+void StatManager::AddEnemyKillScore(int sequenceCount, Vector2 pos)
 {
 	if (sequenceCount < 0)
 		return;
 	else if (sequenceCount >= 0 && sequenceCount < 10) {
 		int score = enemyKillScoreList[sequenceCount];
-		AddScore(score);
+		AddScore(score, pos);
 	}
 	else
-		AddLife(1);
+		AddLife(1, pos);//currently no popup for 1up, will change later
 }
 
-void StatManager::AddShellKillScore(int sequenceCount)
+void StatManager::AddShellKillScore(int sequenceCount, Vector2 pos)
 {
 	if (sequenceCount < 0)
 		return;
 	else if (sequenceCount >= 0 && sequenceCount < 7) {
 		int score = shellKillScoreList[sequenceCount];
-		AddScore(score);
+		AddScore(score, pos);
 	}
 	else
-		AddLife(1);
+		AddLife(1, pos);
 }
 
-void StatManager::AddShellKickScore(int sequenceCount)
+void StatManager::AddShellKickScore(int sequenceCount, Vector2 pos)
 {
 	if (sequenceCount < 0)
 		return;
 	else if (sequenceCount >= 0 && sequenceCount < 3) {
 		int score = shellKickScoreList[sequenceCount];
-		AddScore(score);
+		AddScore(score, pos);
 	}
 	else {
 		int score = shellKickScoreList[2];
-		AddScore(score);
+		AddScore(score, pos);
 	}
 }
 

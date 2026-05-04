@@ -6,6 +6,7 @@
 #include "AssetIDs.h"
 #include "Sprites.h"
 #include "Textures.h"
+#include "Debug.h"
 
 void PointPopup::EnsureAssets()
 {
@@ -131,7 +132,16 @@ void PointPopup::Render()
 	float renderX, renderY;
 	Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
 
-	Animations::GetInstance()->Get(animId)->Render(round(renderX), round(renderY), false, false);
+	Animation* anim = Animations::GetInstance()->Get(animId);
+	if (anim != nullptr)
+	{
+		anim->Render(round(renderX), round(renderY), false, false);
+	}
+	else
+	{
+		// Optional: Print a warning to the console so you know an ID is missing
+		DebugOutTitle(L"[WARNING] PointPopup tried to render missing animId: %d\n", animId);
+	}
 }
 
 Rect PointPopup::GetBoundingBox()

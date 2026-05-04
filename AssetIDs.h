@@ -235,38 +235,40 @@ constexpr int BRICK_EXPLODE_SPRITE_2 = 32702;
 constexpr int BRICK_EXPLODE_SPRITE_3 = 32703;
 constexpr int BRICK_EXPLODE_SPRITE_4 = 32704;
 
-// point popup
-constexpr int POINTS_TEX_ID = 42000;
+// ==========================================
+// POINT POPUPS (E = 9) - MOVED TO 90000 RANGE
+// ==========================================
+constexpr int POINTS_TEX_ID = 90000;
 
-constexpr int POINT_100_ANIM_ID = 42100;
-constexpr int POINT_100_SPRITE_1 = 42101;
+constexpr int POINT_100_ANIM_ID = 90100;
+constexpr int POINT_100_SPRITE_1 = 90101;
 
-constexpr int POINT_200_ANIM_ID = 42200;
-constexpr int POINT_200_SPRITE_1 = 42201;
+constexpr int POINT_200_ANIM_ID = 90200;
+constexpr int POINT_200_SPRITE_1 = 90201;
 
-constexpr int POINT_400_ANIM_ID = 42300;
-constexpr int POINT_400_SPRITE_1 = 42301;
+constexpr int POINT_400_ANIM_ID = 90400;
+constexpr int POINT_400_SPRITE_1 = 90401;
 
-constexpr int POINT_500_ANIM_ID = 42400;
-constexpr int POINT_500_SPRITE_1 = 42401;
+constexpr int POINT_500_ANIM_ID = 90500;
+constexpr int POINT_500_SPRITE_1 = 90501;
 
-constexpr int POINT_800_ANIM_ID = 42500;
-constexpr int POINT_800_SPRITE_1 = 42501;
+constexpr int POINT_800_ANIM_ID = 90800;
+constexpr int POINT_800_SPRITE_1 = 90801;
 
-constexpr int POINT_1000_ANIM_ID = 42600;
-constexpr int POINT_1000_SPRITE_1 = 42601;
+constexpr int POINT_1000_ANIM_ID = 91000;
+constexpr int POINT_1000_SPRITE_1 = 91001;
 
-constexpr int POINT_2000_ANIM_ID = 42700;
-constexpr int POINT_2000_SPRITE_1 = 42701;
+constexpr int POINT_2000_ANIM_ID = 92000;
+constexpr int POINT_2000_SPRITE_1 = 92001;
 
-constexpr int POINT_4000_ANIM_ID = 42800;
-constexpr int POINT_4000_SPRITE_1 = 42801;
+constexpr int POINT_4000_ANIM_ID = 94000;
+constexpr int POINT_4000_SPRITE_1 = 94001;
 
-constexpr int POINT_5000_ANIM_ID = 42900;
-constexpr int POINT_5000_SPRITE_1 = 42901;
+constexpr int POINT_5000_ANIM_ID = 95000;
+constexpr int POINT_5000_SPRITE_1 = 95001;
 
-constexpr int POINT_8000_ANIM_ID = 43000;
-constexpr int POINT_8000_SPRITE_1 = 43001;
+constexpr int POINT_8000_ANIM_ID = 98000;
+constexpr int POINT_8000_SPRITE_1 = 98001;
 
 
 // ==========================================

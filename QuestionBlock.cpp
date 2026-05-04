@@ -81,7 +81,7 @@ void QuestionBlock::CheckHitBounce(vector<GameObject*>& coObjects, SceneContext*
 				continue;
 
 			goomba->SetState(GoombaState::DeadUpsideDown);
-			sm->AddEnemyKillScore(mario->GetEnemyKilledOnSequenceCount());
+			sm->AddEnemyKillScore(mario->GetEnemyKilledOnSequenceCount(), this->position);
 		}
 		auto koopa = dynamic_cast<Koopa*>(go);
 		if (koopa != nullptr)
@@ -96,7 +96,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 {
 	if (state == QuestionBlockState::Blocked)
 		return;
-
+	auto sm = StatManager::GetInstance();
 	if (state == QuestionBlockState::Opened)
 	{
 		if (!spawnInternalItem)
@@ -107,7 +107,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 			{
 				if (ctx->addPointPopup != nullptr)
 				{
-					Mario::AddScore(200);
+					sm->AddScore(200, this->position);
 					ctx->addPointPopup(Vector2(startPosition.x, startPosition.y - 16.0f), 200);
 				}
 				ctx->addObject(new Coin(

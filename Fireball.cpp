@@ -176,8 +176,7 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 				return;
 			this->isExploded = true;
 			goomba->SetState(GoombaState::Dead);
-			sm->AddScore(100);
-			Mario::AddScore(GOOMBA_FIREBALL_SCORE);
+			sm->AddScore(GOOMBA_FIREBALL_SCORE, this->position);
 			if (currentContext != nullptr && currentContext->addPointPopup != nullptr)
 			{
 				currentContext->addPointPopup(goomba->position, GOOMBA_FIREBALL_SCORE);
@@ -194,7 +193,7 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 				return;
 			this->isExploded = true;
 			koopa->SetState(KoopaState::Dead);
-			sm->AddScore(200);
+			sm->AddScore(200, this->position);
 			Explode();
 			return;
 		}
