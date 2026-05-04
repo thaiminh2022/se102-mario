@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "AssetIDs.h"
 #include "AudioManager.h"
 #include "Game.h"
 #include "LdtkParser.h"	
@@ -28,6 +29,7 @@ const string WORLD_PATH = "world_map-new.ldtk";
 // LAYER
 const string COLLISION_LAYER = "Collision";
 const string BACKGROUND_LAYER = "Background";
+const string ALT_LAYER = "AltBackground";
 const string DYNAMIC_LAYER = "Dynamic";
 
 // ENTITY
@@ -46,6 +48,8 @@ const string BOWSER_START = "FlagPole";
 const string BRIDGE = "Bridge";
 const string TOAD_START = "FlagPole";
 const string PIPE = "Pipe";
+const string TELEPORT_PIPE = "TeleportPipe";
+
 
 
 
@@ -68,11 +72,21 @@ Tilemap* LevelLoader::GetTilemapForLevel(const int level)
 /// Parse the [worldMap.ldtk] json file and store in memory
 void LevelLoader::Init()
 {
+	// world texture loading
+	
 	const auto t = Textures::GetInstance();
 	t->Add(-1, L"Assets/Sprites/tileset_overworld.png");
 	t->Add(-2, L"Assets/Sprites/tileset_underground.png"); 
 	t->Add(-3, L"Assets/Sprites/tileset_castle.png");
 	t->Add(-4, L"Assets/Sprites/tileset_water.png");
+
+
+	// world music loading
+	const auto audio = AudioManager::GetInstance();
+	audio->LoadWAV(GROUND_THEME, L"Assets/Audio/Soundtracks/01.GroundTheme.wav");
+	audio->LoadWAV(UNDERGROUND_THEME, L"Assets/Audio/Soundtracks/02.UndergroundTheme.wav");
+	audio->LoadWAV(UNDERWATER_THEME, L"Assets/Audio/Soundtracks/03.UnderwaterTheme.wav");
+	audio->LoadWAV(CASTLE_THEME, L"Assets/Audio/Soundtracks/04.CastleTheme.wav");
 
 
 	ifstream f(WORLD_PATH);
@@ -115,8 +129,14 @@ Tilemap *LevelLoader::ParseLevel(int level)
 	vector<RenderLayer> renderLayers;
 	const auto col = ParseCollisionLayer(layersValue);
 	const auto r1 = ParseBackgroundLayer(layersValue);
-	auto entitiesData = ParseEntityLayer(level, layersValue);
+	const auto r2 = ParseAltLayer(layersValue);
+	const auto entitiesData = ParseEntityLayer(level, layersValue);
 	renderLayers.push_back(r1);
+
+	if (r2.hasValue)
+	{
+		renderLayers.push_back(r2.value);
+	}
 
 	
 	Optional<Color> bgColor;
@@ -237,6 +257,50 @@ RenderLayer LevelLoader::ParseBackgroundLayer(const vector<LayerInstance>& v)
 		t.height = 16;
 		renderLayer.tiles.push_back(t);
 	}
+	return renderLayer;
+}
+
+Optional<RenderLayer> LevelLoader::ParseAltLayer(const vector<LayerInstance>& v)
+{
+	auto layerData = GetLayerWithIdentifier(v, ALT_LAYER);
+	auto renderLayer = RenderLayer();
+	int tID = -1;
+
+	auto texturePath = layerData->tilesetRelPath;
+	wstring path;
+
+	if (texturePath.hasValue)
+	{
+		path = wstring(texturePath.value.begin(), texturePath.value.end());
+	}else
+	{
+		return {};
+	}
+
+	if (!Textures::GetInstance()->HaveTextureWithPath(path, tID))
+	{
+		DebugOut(L"[ERROR] Cannot fine tileset");
+		throw;
+	}
+	renderLayer.textureID = tID;
+
+	for (auto l : layerData->gridTiles)
+	{
+		RenderTile t;
+		t.worldX = l.px[0];
+		t.worldY = l.px[1];
+		t.srcX = l.src[0];
+		t.srcY = l.src[1];
+
+		t.width = 16;
+		t.height = 16;
+		renderLayer.tiles.push_back(t);
+	}
+	if (renderLayer.tiles.empty())
+	{
+		return {};
+	}
+
 	return renderLayer;
 }
 
@@ -433,26 +497,42 @@ void LevelLoader::ParseNextLevelZone(SceneEntityData& sceneEntities, vector<Enti
 
 void LevelLoader::ParseBackgroundMusic(int level, SceneEntityData& sceneEntities, vector<EntityInstance> entities)
 {
-	const auto bgMusic = GetEntityDataWithIdentifier(entities, BACKGROUND_MUSIC);
-	
-	if (!bgMusic.empty())
+	const auto bgMusics = GetEntityDataWithIdentifier(entities, BACKGROUND_MUSIC);
+	Optional<int> bgMusicId;
+	for (const auto& bgMusic : bgMusics)
 	{
-		const auto data = bgMusic[0]->fieldInstances[0];
-		const auto musicPath = data.value.get<string>();
-		const auto utf16String = wstring(musicPath.begin(), musicPath.end());
-
-		auto id = AudioManager::GetInstance()->GetIdForWAVFile(utf16String.c_str());
-
-		if (id.hasValue)
+		const auto audioJson = GetFieldValueWithIdentifier(bgMusic->fieldInstances, "Audio");
+		const auto isTriggerJson = GetFieldValueWithIdentifier(bgMusic->fieldInstances, "is_trigger");
+	
+		if (!audioJson.hasValue || !isTriggerJson.hasValue)
 		{
-			sceneEntities.backgroundMusicID.Set(id.value); // load the music here too
-		}else
-		{
-			AudioManager::GetInstance()->LoadWAV(-1 - level, utf16String.c_str());
-			sceneEntities.backgroundMusicID.Set(-1 - level);
+			continue;
 		}
 
+		const auto audioPath = audioJson.value.get<string>();
+		const auto isTrigger = isTriggerJson.value.get<bool>();
+
+		const auto utf16String = wstring(audioPath.begin(), audioPath.end());
+
+		auto idData = AudioManager::GetInstance()
+		->GetIdForWAVFile(utf16String.c_str());
+
+		if (isTrigger == false)
+		{
+			bgMusicId = idData.value;
+		}
+
+		if (!idData.hasValue)
+			continue;
+		const auto rect = Rect::FromXYWH(bgMusic->px[0],
+			bgMusic->px[1], 
+			bgMusic->width, 
+			bgMusic->height
+		);
+
+		sceneEntities.musicTriggers.push_back({idData.value, rect});
 	}
+	sceneEntities.backgroundMusicID = bgMusicId;
 }
 
 void LevelLoader::ParseFireballTrap(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities)
@@ -559,8 +639,65 @@ void LevelLoader::ParsePipe(SceneEntityData& sceneEntities, std::vector<EntityIn
 			returnPipeData,
 			isReturnPipe,
 			PipeData::GetDirection(pipeDir),
-			Vector2Int(moveTo.cx * 16, moveTo.cy * 16)
+			Vector2Int(moveTo.cx * 16, moveTo.cy * 16),
+			false,
 		});
+	}
+}
+
+void LevelLoader::ParseTeleportPipe(SceneEntityData& sceneEntities,  vector<EntityInstance>& entities)
+{
+	const auto pipes = GetEntityDataWithIdentifier(entities, TELEPORT_PIPE);
+	for (auto p : pipes)
+	{
+		auto isReturnJson = GetFieldValueWithIdentifier(p->fieldInstances, "is_return_pipe");
+		auto pipeDirectionJson = GetFieldValueWithIdentifier(p->fieldInstances, "pipe_direction");
+		auto pipeRefJson = GetFieldValueWithIdentifier(p->fieldInstances, "teleport_to");
+		auto moveToJson = GetFieldValueWithIdentifier(p->fieldInstances, "move_to");
+
+		if (!isReturnJson.hasValue || !pipeDirectionJson.hasValue || !moveToJson.hasValue)
+			continue;
+
+		auto zone = Rect::FromXYWH(p->px[0], p->px[1], p->width, p->height);
+		bool isReturnPipe = isReturnJson.value.get<bool>();
+		auto pipeDir = pipeDirectionJson.value.get<string>();
+		auto moveTo = moveToJson.value.get<LDTKPoint>();
+
+		// parse return pipe
+		Optional<ReturnPipeData> returnPipeData;
+		if (pipeRefJson.hasValue && !pipeRefJson.value.is_null())
+		{
+			auto entityRef = pipeRefJson.value.get<LDTKEntityRef>();
+			auto otherPipeData = ParseEntityRef(entityRef);
+
+			if (otherPipeData.hasValue)
+			{
+				const auto& otherPipe = otherPipeData.value;
+				auto otherReturnJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "is_return_pipe");
+				auto otherDirJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "pipe_direction");
+				auto otherMoveToJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "move_to");
+
+				if (otherReturnJson.hasValue && otherDirJson.hasValue && otherMoveToJson.hasValue)
+				{
+					auto otherMoveTo = otherMoveToJson.value.get<LDTKPoint>();
+
+					returnPipeData.Set({
+						PipeData::GetDirection(otherDirJson.value),
+						Rect::FromXYWH(otherPipe.px[0], otherPipe.px[1], otherPipe.width, otherPipe.height),
+						Vector2Int(otherMoveTo.cx * 16, otherMoveTo.cy * 16)
+						});
+				}
+			}
+		}
+		const Optional<int> nextLevel;
+		sceneEntities.pipes.push_back({ zone,
+			nextLevel,
+			returnPipeData,
+			isReturnPipe,
+			PipeData::GetDirection(pipeDir),
+			Vector2Int(moveTo.cx * 16, moveTo.cy * 16),
+			true
+			});
 	}
 }
 
@@ -592,6 +729,8 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 	ParseFireballTrap(sceneEntities, entities);
 	ParseFlagPole(sceneEntities, entities);
 	ParsePipe(sceneEntities, entities);
+	ParseTeleportPipe(sceneEntities, entities);
+
 
 	return sceneEntities;
 }

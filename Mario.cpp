@@ -63,6 +63,7 @@ void Mario::SetEnterPipe(const PipeData& pipe)
 void Mario::SetExitPipe(const MarioPipeCtx& returnPipeData)
 {
 	state = MarioState::ExitingPipe;
+	AudioManager::GetInstance()->ResumeMusic();
 	AudioManager::GetInstance()->PlaySFX(PIPE_ENTER);
 	pipeExitingData = returnPipeData;
 	const auto& pipeRect = pipeExitingData.returnZone;
@@ -82,7 +83,7 @@ void Mario::SetExitPipe(const MarioPipeCtx& returnPipeData)
 	{
 	}
 
-	Game::GetInstance()->GetCamera()->SetPosition(position.x, position.y);
+	Game::GetInstance()->GetCamera()->SetPosition(position.x - 64, 0);
 
 }
 

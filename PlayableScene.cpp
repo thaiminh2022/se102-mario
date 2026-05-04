@@ -19,6 +19,8 @@
 #include "HUD.h"
 #include <queue>
 
+#include "BgMusicTrigger.h"
+
 
 using std::priority_queue;
 using std::pair;
@@ -191,12 +193,17 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(new FlagPole(flag.zone, flag.moveToPosition));
 	}
 
-
 	// pipes
 	for (const auto& pipeData : config->entityData.pipes)
 	{
 		const auto pipe = new Pipe(pipeData);
 		objects.push_back(pipe);
+	}
+	// music triggers
+	for (const auto& musicTriggerData : config->entityData.musicTriggers)
+	{
+		const auto musicTrigger = new BgMusicTrigger(musicTriggerData.id, musicTriggerData.zone);
+		objects.push_back(musicTrigger);
 	}
 
 	// background music

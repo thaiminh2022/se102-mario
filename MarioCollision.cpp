@@ -79,7 +79,7 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 					koopaKilled++;
 				}
 			}
-			AudioManager::GetInstance()->PlaySFX(SFX::GOOMBA_STOMP);
+			AudioManager::GetInstance()->PlaySFX(AUDIOS::GOOMBA_STOMP);
 
 			return true;
 

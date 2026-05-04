@@ -26,6 +26,8 @@ class LevelLoader
 	static const LayerInstance* GetLayerWithIdentifier(const vector<LayerInstance>& v, const std::string& identifier);
 	static CollisionLayer ParseCollisionLayer(const vector<LayerInstance>& v);
 	static RenderLayer ParseBackgroundLayer(const vector<LayerInstance>& v);
+	static Optional<RenderLayer> ParseAltLayer(const vector<LayerInstance>& v);
+
 	SceneEntityData ParseEntityLayer(int level, const vector<LayerInstance>& v);
 
 	// parsing function
@@ -45,7 +47,8 @@ class LevelLoader
 	void ParseFireballTrap(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseFlagPole(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParsePipe(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	
+	void ParseTeleportPipe(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
+
 	// helper
 	static vector<EntityInstance*> GetEntityDataWithIdentifier(vector<EntityInstance>& v, const std::string& iden);
 	static Optional<json> GetFieldValueWithIdentifier(const vector<FieldInstance>& v, const std::string& iden);

@@ -23,6 +23,12 @@ enum class BlockDropType: std::uint8_t
 	JewDestroyer,
 };
 
+struct MusicTriggerData
+{
+	int id;
+	Rect zone;
+};
+
 
 struct QuestionBlockData
 {
@@ -66,6 +72,7 @@ struct PipeData
 	bool isReturnPipe;
 	Vector2Int enterDirection;
 	Vector2Int moveTo;
+	bool isTeleportPipe;
 
 	static Vector2Int GetDirection(const std::string& dir)
 	{
@@ -96,6 +103,7 @@ struct SceneEntityData
 {
 	Optional<BridgeData> bridge;
 	Optional<int> backgroundMusicID;
+	vector<MusicTriggerData> musicTriggers;
 	Vector2Int playerStarts;
 	
 	vector<PipeData> pipes;

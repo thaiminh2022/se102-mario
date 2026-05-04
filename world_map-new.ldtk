@@ -11,7 +11,7 @@
 	"iid": "542e4d40-21a0-11f1-b547-3f7639dce03c",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 248,
+	"nextUid": 262,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "Free",
@@ -146,6 +146,41 @@
 			"autoRuleGroups": [],
 			"autoSourceLayerDefUid": null,
 			"tilesetDefUid": 2,
+			"tilePivotX": 0,
+			"tilePivotY": 0,
+			"biomeFieldUid": null
+		},
+		{
+			"__type": "Tiles",
+			"identifier": "AltBackground",
+			"type": "Tiles",
+			"uid": 246,
+			"doc": "Some level have two type of tiles",
+			"uiColor": null,
+			"gridSize": 16,
+			"guideGridWid": 0,
+			"guideGridHei": 0,
+			"displayOpacity": 1,
+			"inactiveOpacity": 1,
+			"hideInList": false,
+			"hideFieldsWhenInactive": false,
+			"canSelectWhenInactive": true,
+			"renderInWorldView": true,
+			"pxOffsetX": 0,
+			"pxOffsetY": 0,
+			"parallaxFactorX": 0,
+			"parallaxFactorY": 0,
+			"parallaxScaling": true,
+			"requiredTags": [],
+			"excludedTags": [],
+			"autoTilesKilledByOtherLayerUid": null,
+			"uiFilterTags": [],
+			"useAsyncRender": false,
+			"intGridValues": [],
+			"intGridValuesGroups": [],
+			"autoRuleGroups": [],
+			"autoSourceLayerDefUid": null,
+			"tilesetDefUid": null,
 			"tilePivotX": 0,
 			"tilePivotY": 0,
 			"biomeFieldUid": null
@@ -634,11 +669,11 @@
 			"doc": "The background music of this scene, one per level",
 			"width": 16,
 			"height": 16,
-			"resizableX": false,
-			"resizableY": false,
-			"minWidth": null,
+			"resizableX": true,
+			"resizableY": true,
+			"minWidth": 16,
 			"maxWidth": null,
-			"minHeight": null,
+			"minHeight": 16,
 			"maxHeight": null,
 			"keepAspectRatio": false,
 			"tileOpacity": 1,
@@ -653,7 +688,7 @@
 			"tileRect": { "tilesetUid": 49, "x": 240, "y": 48, "w": 16, "h": 16 },
 			"uiTileRect": { "tilesetUid": 49, "x": 240, "y": 48, "w": 16, "h": 16 },
 			"nineSliceBorders": [],
-			"maxCount": 1,
+			"maxCount": 0,
 			"limitScope": "PerLevel",
 			"limitBehavior": "PreventAdding",
 			"pivotX": 0,
@@ -686,6 +721,43 @@
 					"max": null,
 					"regex": null,
 					"acceptFileTypes": [".wav"],
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "is_trigger",
+					"doc": "Player needs to enter the zone to start playing music, this only work once",
+					"__type": "Bool",
+					"uid": 260,
+					"type": "F_Bool",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
 					"defaultOverride": null,
 					"textLanguageMode": null,
 					"symmetricalRef": false,
@@ -992,7 +1064,7 @@
 			"tags": [],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
-			"doc": null,
+			"doc": "Pipe that loads another level",
 			"width": 16,
 			"height": 16,
 			"resizableX": true,
@@ -1199,6 +1271,193 @@
 						"id": "V_String",
 						"params": ["Up"]
 					},
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				}
+			]
+		},
+		{
+			"identifier": "TeleportPipe",
+			"uid": 248,
+			"tags": [],
+			"exportToToc": false,
+			"allowOutOfBounds": false,
+			"doc": "Pipe that load in-level",
+			"width": 16,
+			"height": 16,
+			"resizableX": true,
+			"resizableY": true,
+			"minWidth": 16,
+			"maxWidth": null,
+			"minHeight": 16,
+			"maxHeight": null,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 0.51,
+			"lineOpacity": 1,
+			"hollow": false,
+			"color": "#00FF86",
+			"renderMode": "Rectangle",
+			"showName": true,
+			"tilesetId": null,
+			"tileRenderMode": "FitInside",
+			"tileRect": null,
+			"uiTileRect": null,
+			"nineSliceBorders": [],
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": [
+				{
+					"identifier": "pipe_direction",
+					"doc": null,
+					"__type": "LocalEnum.Direction",
+					"uid": 258,
+					"type": "F_Enum(234)",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": {
+						"id": "V_String",
+						"params": ["Up"]
+					},
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "move_to",
+					"doc": null,
+					"__type": "Point",
+					"uid": 255,
+					"type": "F_Point",
+					"isArray": false,
+					"canBeNull": true,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "PointPath",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "teleport_to",
+					"doc": null,
+					"__type": "EntityRef",
+					"uid": 259,
+					"type": "F_EntityRef",
+					"isArray": false,
+					"canBeNull": true,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "RefLinkBetweenCenters",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": false,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "is_return_pipe",
+					"doc": null,
+					"__type": "Bool",
+					"uid": 261,
+					"type": "F_Bool",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
 					"textLanguageMode": null,
 					"symmetricalRef": false,
 					"autoChainRef": true,
@@ -2611,13 +2870,16 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 47,
-							"px": [0,0],
-							"fieldInstances": [{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/01.GroundTheme.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["Assets/Audio/Soundtracks/01.GroundTheme.wav"]
-							}] }],
-							"__worldX": 1712,
-							"__worldY": 320
+							"px": [16,16],
+							"fieldInstances": [
+								{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/01.GroundTheme.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Assets/Audio/Soundtracks/01.GroundTheme.wav"]
+								}] },
+								{ "__identifier": "is_trigger", "__type": "Bool", "__value": false, "__tile": null, "defUid": 260, "realEditorValues": [] }
+							],
+							"__worldX": 1728,
+							"__worldY": 336
 						},
 						{
 							"__identifier": "Pipe",
@@ -2645,25 +2907,6 @@
 								}] }
 							],
 							"__worldX": 2624,
-							"__worldY": 448
-						},
-						{
-							"__identifier": "NextLevel",
-							"__grid": [0,8],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#BE4A2F",
-							"iid": "1c7f1420-21a0-11f1-bbf0-6d783630dc42",
-							"width": 32,
-							"height": 80,
-							"defUid": 41,
-							"px": [0,128],
-							"fieldInstances": [
-								{ "__identifier": "level_to_load", "__type": "Int", "__value": 1, "__tile": null, "defUid": 227, "realEditorValues": [{ "id": "V_Int", "params": [1] }] },
-								{ "__identifier": "load_delay", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 226, "realEditorValues": [{ "id": "V_Float", "params": [0.5] }] }
-							],
-							"__worldX": 1712,
 							"__worldY": 448
 						},
 						{
@@ -2730,60 +2973,94 @@
 							"__worldY": 496
 						},
 						{
-							"__identifier": "Pipe",
+							"__identifier": "BackgroundMusic",
+							"__grid": [9,5],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 49, "x": 240, "y": 48, "w": 16, "h": 16 },
+							"__smartColor": "#A200FF",
+							"iid": "99f3f830-21a0-11f1-839c-4d8da2fdf6a6",
+							"width": 96,
+							"height": 128,
+							"defUid": 47,
+							"px": [144,80],
+							"fieldInstances": [
+								{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/04.CastleTheme.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Assets/Audio/Soundtracks/04.CastleTheme.wav"]
+								}] },
+								{ "__identifier": "is_trigger", "__type": "Bool", "__value": true, "__tile": null, "defUid": 260, "realEditorValues": [{
+									"id": "V_Bool",
+									"params": [ true ]
+								}] }
+							],
+							"__worldX": 1856,
+							"__worldY": 400
+						},
+						{
+							"__identifier": "TeleportPipe",
 							"__grid": [28,10],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": null,
 							"__smartColor": "#00FF86",
-							"iid": "72e85f10-21a0-11f1-a2a6-a5deb806c347",
+							"iid": "65955ff0-21a0-11f1-839c-0971856ef468",
 							"width": 32,
 							"height": 16,
-							"defUid": 230,
+							"defUid": 248,
 							"px": [448,160],
 							"fieldInstances": [
-								{ "__identifier": "is_return_pipe", "__type": "Bool", "__value": false, "__tile": null, "defUid": 238, "realEditorValues": [] },
-								{ "__identifier": "level_to_load", "__type": "Int", "__value": 3, "__tile": null, "defUid": 239, "realEditorValues": [{ "id": "V_Int", "params": [3] }] },
-								{ "__identifier": "return_pipe_ref", "__type": "EntityRef", "__value": null, "__tile": null, "defUid": 243, "realEditorValues": [] },
-								{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 28, "cy": 12 }, "__tile": null, "defUid": 244, "realEditorValues": [{
+								{ "__identifier": "pipe_direction", "__type": "LocalEnum.Direction", "__value": "Down", "__tile": null, "defUid": 258, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Down"]
+								}] },
+								{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 28, "cy": 12 }, "__tile": null, "defUid": 255, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["28,12"]
 								}] },
-								{ "__identifier": "pipe_direction", "__type": "LocalEnum.Direction", "__value": "Down", "__tile": null, "defUid": 245, "realEditorValues": [{
+								{ "__identifier": "teleport_to", "__type": "EntityRef", "__value": {
+									"entityIid": "765c4420-21a0-11f1-839c-03281002edc1",
+									"layerIid": "3f854921-21a0-11f1-acf5-1b9d9a7d4658",
+									"levelIid": "3f854920-21a0-11f1-acf5-15c6ffda1522",
+									"worldIid": "542e7450-21a0-11f1-b547-61791d7195f6"
+								}, "__tile": null, "defUid": 259, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["Down"]
-								}] }
+									"params": ["765c4420-21a0-11f1-839c-03281002edc1"]
+								}] },
+								{ "__identifier": "is_return_pipe", "__type": "Bool", "__value": false, "__tile": null, "defUid": 261, "realEditorValues": [] }
 							],
 							"__worldX": 2160,
 							"__worldY": 480
 						},
 						{
-							"__identifier": "Pipe",
-							"__grid": [179,11],
+							"__identifier": "TeleportPipe",
+							"__grid": [46,9],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": null,
 							"__smartColor": "#00FF86",
-							"iid": "c1a31870-21a0-11f1-a2a6-7dd8defa2741",
+							"iid": "765c4420-21a0-11f1-839c-03281002edc1",
 							"width": 32,
-							"height": 32,
-							"defUid": 230,
-							"px": [2864,176],
+							"height": 64,
+							"defUid": 248,
+							"px": [736,144],
 							"fieldInstances": [
-								{ "__identifier": "is_return_pipe", "__type": "Bool", "__value": true, "__tile": null, "defUid": 238, "realEditorValues": [{
+								{ "__identifier": "pipe_direction", "__type": "LocalEnum.Direction", "__value": "Up", "__tile": null, "defUid": 258, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Up"]
+								}] },
+								{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 46, "cy": 7 }, "__tile": null, "defUid": 255, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["46,7"]
+								}] },
+								{ "__identifier": "teleport_to", "__type": "EntityRef", "__value": null, "__tile": null, "defUid": 259, "realEditorValues": [] },
+								{ "__identifier": "is_return_pipe", "__type": "Bool", "__value": true, "__tile": null, "defUid": 261, "realEditorValues": [{
 									"id": "V_Bool",
 									"params": [ true ]
-								}] },
-								{ "__identifier": "level_to_load", "__type": "Int", "__value": null, "__tile": null, "defUid": 239, "realEditorValues": [] },
-								{ "__identifier": "return_pipe_ref", "__type": "EntityRef", "__value": null, "__tile": null, "defUid": 243, "realEditorValues": [] },
-								{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 179, "cy": 9 }, "__tile": null, "defUid": 244, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["179,9"]
-								}] },
-								{ "__identifier": "pipe_direction", "__type": "LocalEnum.Direction", "__value": "Up", "__tile": null, "defUid": 245, "realEditorValues": [] }
+								}] }
 							],
-							"__worldX": 4576,
-							"__worldY": 496
+							"__worldX": 2448,
+							"__worldY": 464
 						}
 					]
 				},
@@ -3518,6 +3795,31 @@
 						{ "px": [3360,224], "src": [0,0], "f": 0, "t": 0, "d": [3164], "a": 1 }
 					],
 					"entityInstances": []
+				},
+				{
+					"__identifier": "AltBackground",
+					"__type": "Tiles",
+					"__cWid": 211,
+					"__cHei": 15,
+					"__gridSize": 16,
+					"__opacity": 1,
+					"__pxTotalOffsetX": 0,
+					"__pxTotalOffsetY": 0,
+					"__tilesetDefUid": 228,
+					"__tilesetRelPath": "Assets/Sprites/tileset_underground.png",
+					"iid": "21063440-21a0-11f1-839c-2b9eab8e4e0a",
+					"levelId": 57,
+					"layerDefUid": 246,
+					"pxOffsetX": 0,
+					"pxOffsetY": 0,
+					"visible": true,
+					"optionalRules": [],
+					"intGridCsv": [],
+					"autoLayerTiles": [],
+					"seed": 1901091,
+					"overrideTilesetUid": 228,
+					"gridTiles": [],
+					"entityInstances": []
 				}
 			],
 			"__neighbours": [ { "levelIid": "c7740180-21a0-11f1-acf5-292751c67a4a", "dir": "s" }, { "levelIid": "3c0a61e0-21a0-11f1-ab64-6f6899ff4dd5", "dir": "e" } ]
@@ -3902,10 +4204,13 @@
 							"height": 16,
 							"defUid": 47,
 							"px": [0,0],
-							"fieldInstances": [{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/02.UndergroundTheme.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["Assets/Audio/Soundtracks/02.UndergroundTheme.wav"]
-							}] }],
+							"fieldInstances": [
+								{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/02.UndergroundTheme.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Assets/Audio/Soundtracks/02.UndergroundTheme.wav"]
+								}] },
+								{ "__identifier": "is_trigger", "__type": "Bool", "__value": false, "__tile": null, "defUid": 260, "realEditorValues": [] }
+							],
 							"__worldX": 2480,
 							"__worldY": 560
 						},
@@ -4094,6 +4399,31 @@
 						{ "px": [224,224], "src": [0,0], "f": 0, "t": 0, "d": [238], "a": 1 },
 						{ "px": [240,224], "src": [0,0], "f": 0, "t": 0, "d": [239], "a": 1 }
 					],
+					"entityInstances": []
+				},
+				{
+					"__identifier": "AltBackground",
+					"__type": "Tiles",
+					"__cWid": 16,
+					"__cHei": 15,
+					"__gridSize": 16,
+					"__opacity": 1,
+					"__pxTotalOffsetX": 0,
+					"__pxTotalOffsetY": 0,
+					"__tilesetDefUid": null,
+					"__tilesetRelPath": null,
+					"iid": "21068260-21a0-11f1-839c-c7808803d7e8",
+					"levelId": 89,
+					"layerDefUid": 246,
+					"pxOffsetX": 0,
+					"pxOffsetY": 0,
+					"visible": true,
+					"optionalRules": [],
+					"intGridCsv": [],
+					"autoLayerTiles": [],
+					"seed": 3721512,
+					"overrideTilesetUid": null,
+					"gridTiles": [],
 					"entityInstances": []
 				}
 			],
@@ -4507,10 +4837,13 @@
 							"height": 16,
 							"defUid": 47,
 							"px": [0,80],
-							"fieldInstances": [{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/04.CastleTheme.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["Assets/Audio/Soundtracks/04.CastleTheme.wav"]
-							}] }],
+							"fieldInstances": [
+								{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/04.CastleTheme.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Assets/Audio/Soundtracks/04.CastleTheme.wav"]
+								}] },
+								{ "__identifier": "is_trigger", "__type": "Bool", "__value": false, "__tile": null, "defUid": 260, "realEditorValues": [] }
+							],
 							"__worldX": 5088,
 							"__worldY": 400
 						}
@@ -5667,6 +6000,31 @@
 						{ "px": [2544,224], "src": [0,48], "f": 0, "t": 27, "d": [2399], "a": 1 }
 					],
 					"entityInstances": []
+				},
+				{
+					"__identifier": "AltBackground",
+					"__type": "Tiles",
+					"__cWid": 160,
+					"__cHei": 15,
+					"__gridSize": 16,
+					"__opacity": 1,
+					"__pxTotalOffsetX": 0,
+					"__pxTotalOffsetY": 0,
+					"__tilesetDefUid": null,
+					"__tilesetRelPath": null,
+					"iid": "21068261-21a0-11f1-839c-3375700d2e5d",
+					"levelId": 182,
+					"layerDefUid": 246,
+					"pxOffsetX": 0,
+					"pxOffsetY": 0,
+					"visible": true,
+					"optionalRules": [],
+					"intGridCsv": [],
+					"autoLayerTiles": [],
+					"seed": 216849,
+					"overrideTilesetUid": null,
+					"gridTiles": [],
+					"entityInstances": []
 				}
 			],
 			"__neighbours": [{ "levelIid": "3f854920-21a0-11f1-acf5-15c6ffda1522", "dir": "w" }]
@@ -5731,10 +6089,13 @@
 							"height": 16,
 							"defUid": 47,
 							"px": [16,16],
-							"fieldInstances": [{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/03.UnderwaterTheme.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["Assets/Audio/Soundtracks/03.UnderwaterTheme.wav"]
-							}] }],
+							"fieldInstances": [
+								{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/03.UnderwaterTheme.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Assets/Audio/Soundtracks/03.UnderwaterTheme.wav"]
+								}] },
+								{ "__identifier": "is_trigger", "__type": "Bool", "__value": false, "__tile": null, "defUid": 260, "realEditorValues": [] }
+							],
 							"__worldX": 1776,
 							"__worldY": 624
 						},
@@ -5769,15 +6130,7 @@
 							"fieldInstances": [
 								{ "__identifier": "is_return_pipe", "__type": "Bool", "__value": false, "__tile": null, "defUid": 238, "realEditorValues": [] },
 								{ "__identifier": "level_to_load", "__type": "Int", "__value": 0, "__tile": null, "defUid": 239, "realEditorValues": [{ "id": "V_Int", "params": [0] }] },
-								{ "__identifier": "return_pipe_ref", "__type": "EntityRef", "__value": {
-									"entityIid": "c1a31870-21a0-11f1-a2a6-7dd8defa2741",
-									"layerIid": "3f854921-21a0-11f1-acf5-1b9d9a7d4658",
-									"levelIid": "3f854920-21a0-11f1-acf5-15c6ffda1522",
-									"worldIid": "542e7450-21a0-11f1-b547-61791d7195f6"
-								}, "__tile": null, "defUid": 243, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["c1a31870-21a0-11f1-a2a6-7dd8defa2741"]
-								}] },
+								{ "__identifier": "return_pipe_ref", "__type": "EntityRef", "__value": null, "__tile": null, "defUid": 243, "realEditorValues": [null] },
 								{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 39, "cy": 11 }, "__tile": null, "defUid": 244, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["39,11"]
@@ -5961,6 +6314,31 @@
 						{ "px": [608,224], "src": [0,32], "f": 0, "t": 18, "d": [598], "a": 1 },
 						{ "px": [624,224], "src": [0,32], "f": 0, "t": 18, "d": [599], "a": 1 }
 					],
+					"entityInstances": []
+				},
+				{
+					"__identifier": "AltBackground",
+					"__type": "Tiles",
+					"__cWid": 40,
+					"__cHei": 15,
+					"__gridSize": 16,
+					"__opacity": 1,
+					"__pxTotalOffsetX": 0,
+					"__pxTotalOffsetY": 0,
+					"__tilesetDefUid": null,
+					"__tilesetRelPath": null,
+					"iid": "0bb99550-21a0-11f1-b152-b34e406d8520",
+					"levelId": 246,
+					"layerDefUid": 246,
+					"pxOffsetX": 0,
+					"pxOffsetY": 0,
+					"visible": true,
+					"optionalRules": [],
+					"intGridCsv": [],
+					"autoLayerTiles": [],
+					"seed": 62121,
+					"overrideTilesetUid": null,
+					"gridTiles": [],
 					"entityInstances": []
 				}
 			],
