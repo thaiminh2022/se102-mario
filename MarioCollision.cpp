@@ -1,7 +1,6 @@
 #include "AssetIDs.h"
 #include "AudioManager.h"
 #include "Coin.h"
-#include "Debug.h"
 #include "FireballTrap.h"
 #include "FlagPole.h"
 #include "Flower.h"
@@ -277,6 +276,8 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 
 	score = GetFlagBonusScore(touchingHeight);
 
+
+	// DebugOutTitle(L"Score for flagpole: %f\n", score); //for debugging
 	StatManager::GetInstance()->AddScore(score);
 
 	AudioManager::GetInstance()->StopAll();
@@ -325,7 +326,7 @@ void Mario::OnCollisionWithFireballTrap(vector<GameObject*>& coObjects)
 
 void Mario::OnCollisionWith(CollisionEvent* e)
 {
-	//DebugOut(L"Normal %d, %d\n", e->normalizedDir.x, e->normalizedDir.y);
+	//DebugOut(L"NormalTransition %d, %d\n", e->normalizedDir.x, e->normalizedDir.y);
 
 	if (e->IsTileCollision())
 	{

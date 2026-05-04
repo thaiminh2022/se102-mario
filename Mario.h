@@ -128,11 +128,14 @@ class Mario : public GameObject
 	void MarioWalkingToCastle(float dt, vector<GameObject*>& coObjects, SceneContext* ctx);
 	void MarioEnteringPipe(float dt);
 	void MarioExitingPipe(float dt);
+	bool CheckMarioFalloffMap();
+	void ClampMarioXToCameraX();
 
 public:
 	Mario(int startX, int startY);
 
 	MarioPower GetPowerLevel() const { return power; }
+	void SetPowerLevel(const MarioPower newPower) { power = newPower; }
 	
 	void SetEnterPipe(const PipeData& pipe);
 	void SetExitPipe(const MarioPipeCtx& returnPipeData);

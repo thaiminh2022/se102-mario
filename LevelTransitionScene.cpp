@@ -6,12 +6,13 @@
 #include "Sprites.h"
 #include "Color.h"
 #include "FontManager.h"
+#include "Mario.h"
 #include "StatManager.h"
 
 LevelTransitionScene::LevelTransitionScene()
 {
 	targetLevelID = 0;
-	transitionDuration = 0.5f;
+	transitionDuration = 2.0f;
 }
 
 LevelTransitionScene::LevelTransitionScene(float transitionDuration)
@@ -20,9 +21,9 @@ LevelTransitionScene::LevelTransitionScene(float transitionDuration)
 	this->transitionDuration = transitionDuration;
 }
 
-void LevelTransitionScene::SetTargetLevelID(int targetLevelID)
+void LevelTransitionScene::SetTargetLevelID(int targetLevelId)
 {
-	this->targetLevelID = targetLevelID;
+	this->targetLevelID = targetLevelId;
 }
 
 void LevelTransitionScene::Update(float dt)
@@ -31,7 +32,10 @@ void LevelTransitionScene::Update(float dt)
 
 	if (transitionTimer.IsFinished())
 	{
-		Game::GetInstance()->IndicateSceneSwitch(targetLevelID, {});
+		const auto marioPowerValue = marioPower.hasValue ? marioPower.value : static_cast<MarioPower>(0);
+
+		Game::GetInstance()
+		->IndicateSceneSwitch(targetLevelID, SceneSwitchContext::NoTransition(marioPowerValue));
 	}
 }
 
@@ -82,4 +86,12 @@ void LevelTransitionScene::Load(const Optional<SceneSwitchContext>& ctx)
 	
 	transitionTimer = Timer(transitionDuration);
 	transitionTimer.Start();
+
+	if (ctx.hasValue)
+	{
+		marioPower = ctx.value.marioPower;
+	}else
+	{
+		marioPower = {};
+	}
 }

@@ -1,6 +1,4 @@
 ﻿#include "Mario.h"
-
-#include "Animation.h"
 #include "AssetIDs.h"
 #include "Collision.h"
 #include "Game.h"
@@ -116,6 +114,34 @@ void Mario::MarioExitingPipe(float dt)
 	}
 }
 
+bool Mario::CheckMarioFalloffMap()
+{
+	auto vpHeight = Game::GetInstance()->GetBackBufferHeight();
+
+	// Check Mario fall off map
+	constexpr float marioMaxHeightOffset = 32.0f;
+	if (position.y > vpHeight + marioMaxHeightOffset && state != MarioState::Dying)
+	{
+		isInvincible = false;
+		invincibleTimer.Stop();
+		state = MarioState::Dying;
+		OnMarioHit();
+		return true;
+	}
+	return false;
+}
+
+void Mario::ClampMarioXToCameraX()
+{
+	auto cam = Game::GetInstance()->GetCamera();
+	if (position.x < cam->GetX())
+	{
+		velocity.x = 0;
+		state = MarioState::Idle;
+		position.x = cam->GetX();
+	}
+}
+
 void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 
@@ -142,7 +168,13 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	case MarioState::Shrinking:
 		HandleShrinking(dt);
 		return;
-	default:
+	case MarioState::Idle:
+	case MarioState::Walking:
+	case MarioState::Running:
+	case MarioState::Skidding:
+	case MarioState::Jumping:
+	case MarioState::Ducking:
+	case MarioState::Firing:
 		break;
 	}
 
@@ -160,6 +192,13 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		}
 	}
 
+
+
+	if (CheckMarioFalloffMap())
+	{
+		return;
+	}
+
 	auto input = InputManager::GetInstance();
 	if (isGrounded)
 	{
@@ -170,15 +209,13 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		WhileOnAir(dt);
 	}
 
+
 	HandleJump(dt);
 	HandleShootFireball(dt, coObjects, ctx);
 	ApplyGravityAndClamp(dt);
-
-
-	// UPDATE STATE & FACING DIRECTION
-
-	// Update facing direction based on player input and only apply if grounded to prevent mid-air direction change
 	UpdateFacingDirection();
+	
+	ClampMarioXToCameraX();
 	RouteAnimationState();
 
 

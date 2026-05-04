@@ -115,9 +115,13 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	auto playerStart = config->entityData.playerStarts;
 	sceneContext->mario = new Mario(playerStart.x, playerStart.y);
 	objects.push_back(sceneContext->mario);
-	if (ctx.hasValue && ctx.value.marioCtx.hasValue)
+	if (ctx.hasValue)
 	{
-		sceneContext->mario->SetExitPipe(ctx.value.marioCtx.value);
+		sceneContext->mario->SetPowerLevel(ctx.value.marioPower);
+		if (ctx.value.marioCtx.hasValue)
+		{
+			sceneContext->mario->SetExitPipe(ctx.value.marioCtx.value);
+		}
 	}
 
 	c->SetTarget(sceneContext->mario);
@@ -129,7 +133,7 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(gb);
 	}
 
-	//koopa 
+	// koopa 
 	for (const auto& kPos : config->entityData.koopaStarts)
 	{
 		const auto kp = new Koopa(kPos.x, kPos.y);
