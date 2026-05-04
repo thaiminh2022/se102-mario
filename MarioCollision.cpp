@@ -23,18 +23,26 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 	{
 		if (goomba->GetState() == GoombaState::Dead)
 			return false;
-
+		auto sm = StatManager::GetInstance();
+		if ((power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig) && e->normalizedDir.y != -1)
+		{
+			// invincible, kill goomba by touch
+			goomba->SetState(GoombaState::Dead);
+			sm->AddEnemyKillScore(enemySequenceKilledCount);
+			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
+			return true;
+		}
 		if (e->normalizedDir.y == -1)
 		{
 			// jump on head
+			goomba->SetState(GoombaState::Dead);
+
+			enemySequenceKilledCount++;
+
+			sm->AddEnemyKillScore(enemySequenceKilledCount);
 
 			velocity.y = -240.0f;
 			state = MarioState::Jumping;
-
-			goomba->SetState(GoombaState::Dead);
-
-			goombaKilled++;
-			StatManager::GetInstance()->AddScore(100);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 			return true;
 		}
@@ -54,7 +62,31 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 	{
 		if (koopa->GetState() == KoopaState::Dead)
 			return false;
-
+		auto sm = StatManager::GetInstance();
+		if ((power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig) && e->normalizedDir.y != -1)
+		{
+			// invincible, kill koopa by touch
+			koopa->SetState(KoopaState::Dead);
+			sm->AddEnemyKillScore(enemySequenceKilledCount);
+			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
+			return true;
+		}
+		if (e->normalizedDir.x != 0 && koopa->GetForm() == KoopaForm::HiddingInShell && koopa->GetState() == KoopaState::NotMoving)
+		{
+			// hit from left or right when koopa is in shell and not moving, kick the shell
+			if (e->normalizedDir.x == 1)
+			{
+				koopa->SetMoveDir(true);
+				
+			}
+			else
+			{
+				koopa->SetMoveDir(false);
+			}
+			koopa->SetState(KoopaState::Moving);
+			AudioManager::GetInstance()->PlaySFX(SFX::GOOMBA_STOMP);
+			return true;
+		}
 		if (e->normalizedDir.y == -1)
 		{
 			// jump on head
@@ -63,26 +95,32 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 			if (koopa->GetForm() == KoopaForm::Winged)
 			{
 				koopa->SetForm(KoopaForm::Normal);
+				sm->AddEnemyKillScore(enemySequenceKilledCount);
+				enemySequenceKilledCount++;
 			}
 			else if (koopa->GetForm() == KoopaForm::Normal)
 			{
 				koopa->SetForm(KoopaForm::HiddingInShell);
 				koopa->SetState(KoopaState::NotMoving);
+				sm->AddEnemyKillScore(enemySequenceKilledCount);
+				enemySequenceKilledCount++;
 			}
 			else if (koopa->GetForm() == KoopaForm::HiddingInShell)
 			{
-				if (koopa->GetState() == KoopaState::NotMoving)
+				if (koopa->GetState() == KoopaState::NotMoving) {
 					koopa->SetState(KoopaState::Moving);
+					sm->AddEnemyKillScore(enemySequenceKilledCount);
+				}
 				else
 				{
-					koopa->SetState(KoopaState::Dead);
-					koopaKilled++;
+					koopa->SetState(KoopaState::NotMoving);
+					koopa->ResetKillCount();
+					sm->AddEnemyKillScore(enemySequenceKilledCount);
 				}
 			}
 			AudioManager::GetInstance()->PlaySFX(SFX::GOOMBA_STOMP);
 
 			return true;
-
 		}
 		OnMarioHit();
 		return true;
@@ -116,7 +154,7 @@ bool Mario::OnCollisionWithQuestionBlock(const CollisionEvent* e)
 		{
 			if (!questionBlock->HaveDrop())
 			{
-				if (power == MarioPower::Big || power == MarioPower::Fire)
+				if (power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig)
 				{
 					questionBlock->SetState(QuestionBlockState::Break);
 				}
@@ -138,7 +176,6 @@ bool Mario::OnCollisionWithCoin(const CollisionEvent* e)
 	if (coin != nullptr)
 	{
 		coin->SetState(CoinState::Collected);
-		coinCollected++;
 		StatManager::GetInstance()->AddCoin(1);
 		AudioManager::GetInstance()->PlaySFX(MARIO_COLLECT_COIN);
 		return true;
@@ -204,7 +241,14 @@ bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 
 
 		isInvincible = true;
-		invincibleTimer = Timer(15);
+		if (power == MarioPower::Normal)
+			power = MarioPower::StarmanSmall;
+		else if (power == MarioPower::Big || power == MarioPower::Fire) {
+			power = MarioPower::StarmanBig;
+			// add some pushback so player won't fall off the ground
+			position.y -= 17;
+		}
+		invincibleTimer = Timer(12);
 		invincibleTimer.Start();
 
 		audio->PauseMusic();
@@ -299,6 +343,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 			)
 		{
 			isGrounded = true;
+			enemySequenceKilledCount = 0; // reset enemy sequence kill count when touch the ground
 		}
 	}
 	else if (e->IsObjectCollision())
@@ -315,6 +360,11 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 	}
 }
 
+int Mario::GetEnemyKilledOnSequenceCount() const
+{
+	return enemySequenceKilledCount;
+}
+
 void Mario::OnNoCollision(float dt)
 {
 	position += velocity * dt;
@@ -324,7 +374,7 @@ void Mario::OnMarioHit()
 {
 	if (!isInvincible)
 	{
-		if (power != MarioPower::Normal)
+		if (power == MarioPower::Big || power == MarioPower::Fire)
 		{
 			state = MarioState::Shrinking;
 			AudioManager::GetInstance()->PlaySFX(PIPE_ENTER); // Original used pipe sound for power down
@@ -333,17 +383,18 @@ void Mario::OnMarioHit()
 			transformTimer.Start();
 			return;
 		}
-		// got kill by enemy, bad
-
-		state = MarioState::Dying;
-		isCollidable = false; // Turn off hitboxes
-		velocity.x = 0;
-		velocity.y = -240.0f;
-		//Mario will jump up a bit
-		transformTimer = Timer(5.0f); // Time until we reset the level
-		transformTimer.Start();
-		AudioManager::GetInstance()->StopAll();
-		AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
-		StatManager::GetInstance()->AddLife(-1);
+		else {
+			// got kill by enemy, bad
+			state = MarioState::Dying;
+			isCollidable = false; // Turn off hitboxes
+			velocity.x = 0;
+			velocity.y = -240.0f;
+			//Mario will jump up a bit
+			transformTimer = Timer(5.0f); // Time until we reset the level
+			transformTimer.Start();
+			AudioManager::GetInstance()->StopAll();
+			AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
+			StatManager::GetInstance()->AddLife(-1);
+		}
 	}
 }

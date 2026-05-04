@@ -4,286 +4,340 @@
 
 /// Naming convention:
 /// Each asset ID uses 5 digits in the format ETAS.
+/// E = Entity | T = Type/Texture | A = Action | S = Sprite
+/// Example: 12345 = Mario (1) / Texture (2) / Action (3) / Sprite (45)
 ///
-/// E = Entity
-/// T = Texture
-/// A = Animation
-/// S = Sprite
-///
-/// Example:
-/// 12345 = Mario / Texture 2 / Animation 3 / Sprite 45
-///
-/// This can be read as:
-/// 10000 + 2000 + 300 + 40 + 5
+/// STANDARD ACTION IDs (A):
+/// 1 = Idle    | 2 = Move   | 3 = Skid  | 4 = Jump | 5 = Duck 
+/// 6 = Attack  | 7 = Dead   | 8 = Flag  | 9 = Transform
 
 #include <cinttypes>
 
-
-
+// ==========================================
+// MARIO (E = 1)
+// ==========================================
 // ---------------------------------
 // SMALL MARIO (T = 1)
 // ---------------------------------
 constexpr int MARIO_TEX_ID = 10000;
-
-
-
 // Idle (A = 100)
 constexpr int MARIO_IDLE_ANIM_ID = 11100;
 constexpr int MARIO_IDLE_SPRITE_1 = 11101;
-
-// Running (A = 200)
+// Moving (A = 200)
 constexpr int MARIO_RUN_ANIM_ID = 11200;
 constexpr int MARIO_RUN_SPRITE_1 = 11201;
 constexpr int MARIO_RUN_SPRITE_2 = 11202;
 constexpr int MARIO_RUN_SPRITE_3 = 11203;
-
 // Skidding (A = 300)
 constexpr int MARIO_SKID_ANIM_ID = 11300;
 constexpr int MARIO_SKID_SPRITE_1 = 11301;
-
 // Jumping (A = 400)
 constexpr int MARIO_JUMP_ANIM_ID = 11400;
 constexpr int MARIO_JUMP_SPRITE_1 = 11401;
-
 // Dying (A = 700)
 constexpr int MARIO_DEATH_ANIM_ID = 11700;
 constexpr int MARIO_DEATH_SPRITE_1 = 11701;
-
-//Flag pulling (A = 800)
+// Flag pulling (A = 800)
 constexpr int MARIO_FLAG_PULL_ANIM_ID = 11800;
 constexpr int MARIO_FLAG_PULL_SPRITE_1 = 11801;
 constexpr int MARIO_FLAG_PULL_SPRITE_2 = 11802;
 
-// ==========================================
-// BIG MARIO 
-// ==========================================
-
+// ---------------------------------
+// BIG MARIO (T = 2)
+// ---------------------------------
 // Idle (A = 100)
 constexpr int MARIO_BIG_IDLE_ANIM_ID = 12100;
 constexpr int MARIO_BIG_IDLE_SPRITE_1 = 12101;
-
-// Running (A = 200)
+// Moving (A = 200)
 constexpr int MARIO_BIG_RUN_ANIM_ID = 12200;
 constexpr int MARIO_BIG_RUN_SPRITE_1 = 12201;
 constexpr int MARIO_BIG_RUN_SPRITE_2 = 12202;
 constexpr int MARIO_BIG_RUN_SPRITE_3 = 12203;
-
 // Skidding (A = 300)
 constexpr int MARIO_BIG_SKID_ANIM_ID = 12300;
 constexpr int MARIO_BIG_SKID_SPRITE_1 = 12301;
-
 // Jumping (A = 400)
 constexpr int MARIO_BIG_JUMP_ANIM_ID = 12400;
 constexpr int MARIO_BIG_JUMP_SPRITE_1 = 12401;
-
 // Ducking (A = 500)
 constexpr int MARIO_BIG_DUCK_ANIM_ID = 12500;
 constexpr int MARIO_BIG_DUCK_SPRITE_1 = 12501;
-
 // Flag pulling (A = 800)
 constexpr int MARIO_BIG_FLAG_PULL_ANIM_ID = 12800;
 constexpr int MARIO_BIG_FLAG_PULL_SPRITE_1 = 12801;
 constexpr int MARIO_BIG_FLAG_PULL_SPRITE_2 = 12802;
 
-// ==========================================
-// FIRE MARIO 
-// ==========================================
-
+// ---------------------------------
+// FIRE MARIO (T = 3)
+// ---------------------------------
 // Idle (A = 100)
 constexpr int MARIO_FIRE_IDLE_ANIM_ID = 13100;
 constexpr int MARIO_FIRE_IDLE_SPRITE_1 = 13101;
-
-// Running (A = 200)
+// Moving (A = 200)
 constexpr int MARIO_FIRE_RUN_ANIM_ID = 13200;
 constexpr int MARIO_FIRE_RUN_SPRITE_1 = 13201;
 constexpr int MARIO_FIRE_RUN_SPRITE_2 = 13202;
 constexpr int MARIO_FIRE_RUN_SPRITE_3 = 13203;
-
-/// Skidding (A = 300)
-
+// Skidding (A = 300)
 constexpr int MARIO_FIRE_SKID_ANIM_ID = 13300;
 constexpr int MARIO_FIRE_SKID_SPRITE_1 = 13301;
-
 // Jumping (A = 400)
 constexpr int MARIO_FIRE_JUMP_ANIM_ID = 13400;
 constexpr int MARIO_FIRE_JUMP_SPRITE_1 = 13401;
-
 // Ducking (A = 500)
 constexpr int MARIO_FIRE_DUCK_ANIM_ID = 13500;
 constexpr int MARIO_FIRE_DUCK_SPRITE_1 = 13501;
-
 // Firing (A = 600)
 constexpr int MARIO_FIRE_FIRE_ANIM_ID = 13600;
 constexpr int MARIO_FIRE_FIRE_SPRITE_1 = 13601;
-
 // Flag pulling (A = 800)
 constexpr int MARIO_FIRE_FLAG_PULL_ANIM_ID = 13800;
 constexpr int MARIO_FIRE_FLAG_PULL_SPRITE_1 = 13801;
 constexpr int MARIO_FIRE_FLAG_PULL_SPRITE_2 = 13802;
 
+// ---------------------------------
+// TRANSITION STATES (T = 4 and T = 5)
+// ---------------------------------
+// Growing (Small -> Big) (T = 4, A = 900)
+constexpr int MARIO_GROWBIG_ANIM_ID = 14900;
+constexpr int MARIO_GROWBIG_SPRITE_1 = 14901;
+constexpr int MARIO_GROWBIG_SPRITE_2 = 14902;
+constexpr int MARIO_GROWBIG_SPRITE_3 = 14903;
+// Shrinking (Big -> Small) (T = 5, A = 900)
+constexpr int MARIO_SHRINK_ANIM_ID = 15900;
+constexpr int MARIO_SHRINK_SPRITE_1 = 15901;
+constexpr int MARIO_SHRINK_SPRITE_2 = 15902;
+constexpr int MARIO_SHRINK_SPRITE_3 = 15903;
+
+// ---------------------------------
+// SMALL STARMAN (T = 6)
+// ---------------------------------
+// Idle (A = 100)
+constexpr int STARMAN_SMALL_IDLE_ANIM_ID = 16100;
+constexpr int STARMAN_SMALL_IDLE_SPRITE_1 = 16101;
+constexpr int STARMAN_SMALL_IDLE_SPRITE_2 = 16102;
+constexpr int STARMAN_SMALL_IDLE_SPRITE_3 = 16103;
+// Moving (A = 200)
+constexpr int STARMAN_SMALL_RUN_ANIM_ID = 16200;
+constexpr int STARMAN_SMALL_RUN_SPRITE_1 = 16201;
+constexpr int STARMAN_SMALL_RUN_SPRITE_2 = 16202;
+constexpr int STARMAN_SMALL_RUN_SPRITE_3 = 16203;
+constexpr int STARMAN_SMALL_RUN_SPRITE_4 = 16204;
+constexpr int STARMAN_SMALL_RUN_SPRITE_5 = 16205;
+constexpr int STARMAN_SMALL_RUN_SPRITE_6 = 16206;
+constexpr int STARMAN_SMALL_RUN_SPRITE_7 = 16207;
+constexpr int STARMAN_SMALL_RUN_SPRITE_8 = 16208;
+constexpr int STARMAN_SMALL_RUN_SPRITE_9 = 16209;
+// Skidding (A = 300)
+constexpr int STARMAN_SMALL_SKID_ANIM_ID = 16300;
+constexpr int STARMAN_SMALL_SKID_SPRITE_1 = 16301;
+constexpr int STARMAN_SMALL_SKID_SPRITE_2 = 16302;
+constexpr int STARMAN_SMALL_SKID_SPRITE_3 = 16303;
+// Jumping (A = 400)
+constexpr int STARMAN_SMALL_JUMP_ANIM_ID = 16400;
+constexpr int STARMAN_SMALL_JUMP_SPRITE_1 = 16401;
+constexpr int STARMAN_SMALL_JUMP_SPRITE_2 = 16402;
+constexpr int STARMAN_SMALL_JUMP_SPRITE_3 = 16403;
+// Flag pulling (A = 800)
+constexpr int STARMAN_SMALL_FLAG_PULL_ANIM_ID = 16800;
+constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_1 = 16801;
+constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_2 = 16802;
+constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_3 = 16803;
+constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_4 = 16804;
+constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_5 = 16805;
+constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_6 = 16806;
+// ---------------------------------
+// BIG STARMAN (T = 7)
+// ---------------------------------
+// Idle (A = 100)
+constexpr int STARMAN_BIG_IDLE_ANIM_ID = 17100;
+constexpr int STARMAN_BIG_IDLE_SPRITE_1 = 17101;
+constexpr int STARMAN_BIG_IDLE_SPRITE_2 = 17102;
+constexpr int STARMAN_BIG_IDLE_SPRITE_3 = 17103;
+// Moving (A = 200)
+constexpr int STARMAN_BIG_RUN_ANIM_ID = 17200;
+constexpr int STARMAN_BIG_RUN_SPRITE_1 = 17201;
+constexpr int STARMAN_BIG_RUN_SPRITE_2 = 17202;
+constexpr int STARMAN_BIG_RUN_SPRITE_3 = 17203;
+constexpr int STARMAN_BIG_RUN_SPRITE_4 = 17204;
+constexpr int STARMAN_BIG_RUN_SPRITE_5 = 17205;
+constexpr int STARMAN_BIG_RUN_SPRITE_6 = 17206;
+constexpr int STARMAN_BIG_RUN_SPRITE_7 = 17207;
+constexpr int STARMAN_BIG_RUN_SPRITE_8 = 17208;
+constexpr int STARMAN_BIG_RUN_SPRITE_9 = 17209;
+// Skidding (A = 300)
+constexpr int STARMAN_BIG_SKID_ANIM_ID = 17300;
+constexpr int STARMAN_BIG_SKID_SPRITE_1 = 17301;
+constexpr int STARMAN_BIG_SKID_SPRITE_2 = 17302;
+constexpr int STARMAN_BIG_SKID_SPRITE_3 = 17303;
+// Jumping (A = 400)
+constexpr int STARMAN_BIG_JUMP_ANIM_ID = 17400;
+constexpr int STARMAN_BIG_JUMP_SPRITE_1 = 17401;
+constexpr int STARMAN_BIG_JUMP_SPRITE_2 = 17402;
+constexpr int STARMAN_BIG_JUMP_SPRITE_3 = 17403;
+// Ducking (A = 500)
+constexpr int STARMAN_BIG_DUCK_ANIM_ID = 17500;
+constexpr int STARMAN_BIG_DUCK_SPRITE_1 = 17501;
+constexpr int STARMAN_BIG_DUCK_SPRITE_2 = 17502;
+constexpr int STARMAN_BIG_DUCK_SPRITE_3 = 17503;
+// Flag pulling (A = 800)
+constexpr int STARMAN_BIG_FLAG_PULL_ANIM_ID = 17800;
+constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_1 = 17801;
+constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_2 = 17802;
+constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_3 = 17803;
+constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_4 = 17804;
+constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_5 = 17805;
+constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_6 = 17806;
+
 // ==========================================
-// TRANSITION STATES 
+// GOOMBA (E = 2)
 // ==========================================
+constexpr int GOOMBA_TEX_ID = 20000;
 
-// Growing (Small -> Big) (T = 4, A = 100)
-constexpr int MARIO_GROWBIG_ANIM_ID = 14100;
-constexpr int MARIO_GROWBIG_SPRITE_1 = 14101;
-constexpr int MARIO_GROWBIG_SPRITE_2 = 14102;
-constexpr int MARIO_GROWBIG_SPRITE_3 = 14103;
+// Moving (A = 200)
+constexpr int GOOMBA_WALK_ANIM_ID = 21200;
+constexpr int GOOMBA_WALK_SPRITE_1 = 21201;
+constexpr int GOOMBA_WALK_SPRITE_2 = 21202;
 
-// Shrinking (Big -> Small) (T = 5, A = 100)
-constexpr int MARIO_SHRINK_ANIM_ID = 15100;
-constexpr int MARIO_SHRINK_SPRITE_1 = 15101;
-constexpr int MARIO_SHRINK_SPRITE_2 = 15102;
-constexpr int MARIO_SHRINK_SPRITE_3 = 15103;
+// Dead (A = 700)
+constexpr int GOOMBA_DEAD_ANIM_ID = 21700;
+constexpr int GOOMBA_DEAD_SPRITE_1 = 21701;
 
 
-/// ================================
-/// GOOMBA (E = 20000, T = 1)
-/// ================================
-constexpr int GOOMBA_TEX_ID = 21000;
+// ==========================================
+// BLOCKS (E = 3)
+// ==========================================
+constexpr int BLOCKS_OVERWORLD_TEX_ID = 30000;
 
-// Walking (A = 100)
-constexpr int GOOMBA_WALK_ANIM_ID = 21100;
-constexpr int GOOMBA_WALK_SPRITE_1 = 21101;
-constexpr int GOOMBA_WALK_SPRITE_2 = 21102;
-
-// Dead (A = 200)
-constexpr int GOOMBA_DEAD_ANIM_ID = 21200;
-constexpr int GOOMBA_DEAD_SPRITE_1 = 21201;
-
-
-/// ================================
-
-// Question blocks + brick (E = 3000, T = 1 (overworld))
-
-constexpr int BLOCKS_OVERWORLD_TEX_ID = 31000;
-
-// Question block Idle (flashing color) (A = 100)
-
+// ---------------------------------
+// QUESTION BLOCK (T = 1)
+// ---------------------------------
+// Idle (A = 100)
 constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_ANIM_ID = 31100;
 constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_1 = 31101;
 constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_2 = 31102;
 constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_3 = 31103;
 
-// Blocked (block is opened by player) (A = 200)
+// Blocked/Empty (A = 700)
+constexpr int BLOCK_OVERWORLD_BLOCKED_ANIM_ID = 31700;
+constexpr int BLOCK_OVERWORLD_BLOCKED_SPRITE_1 = 31701;
 
-constexpr int BLOCK_OVERWORLD_BLOCKED_ANIM_ID = 31200;
-constexpr int BLOCK_OVERWORLD_BLOCKED_SPRITE_1 = 31201;
+// ---------------------------------
+// BRICK (T = 2)
+// ---------------------------------
+// Idle (A = 100)
+constexpr int BRICK_OVERWORLD_IDLE_ANIM_ID = 32100;
+constexpr int BRICK_OVERWORLD_IDLE_SPRITE_1 = 32101;
 
-// Brick (A = 300)
-
-constexpr int BRICK_OVERWORLD_IDLE_ANIM_ID = 31300;
-constexpr int BRICK_OVERWORLD_IDLE_SPRITE_1 = 31301;
-
-// Brick Explode (A = 400) // animation index doesn't matter but use anyway lol
-
-constexpr int BRICK_EXPLODE_SPRITE_1 = 31401;
-constexpr int BRICK_EXPLODE_SPRITE_2 = 31402;
-constexpr int BRICK_EXPLODE_SPRITE_3 = 31403;
-constexpr int BRICK_EXPLODE_SPRITE_4 = 31404;
-
-/// ================================
-
-// Items (E=4000, T=1 (overworld))
-constexpr int OVERWORLD_ITEMS_TEX_ID = 41000;
-
-// coin anim (A = 1)
-constexpr int COIN_SPIN_ANIM_ID = 41100;
-constexpr int COIN_SPIN_SPRITE_1= 41101;
-constexpr int COIN_SPIN_SPRITE_2 = 41102;
-constexpr int COIN_SPIN_SPRITE_3 = 41103;
-constexpr int COIN_SPIN_SPRITE_4 = 41104;
-
-// mushroom anim (A = 2)
-constexpr int MUSHROOM_ANIM_ID = 41200;
-constexpr int MUSHROOM_SPRITE_1 = 41201;
-
-// flower anim id (A = 3)
-constexpr int FLOWER_IDLE_ANIM_ID = 41300;
-constexpr int FLOWER_IDLE_SPRITE_1 = 41301;
-constexpr int FLOWER_IDLE_SPRITE_2 = 41302;
-constexpr int FLOWER_IDLE_SPRITE_3 = 41303;
-constexpr int FLOWER_IDLE_SPRITE_4 = 41304;
-
-// star anim id (A = 4)
-constexpr int STAR_IDLE_ANIM_ID = 41400;
-constexpr int STAR_IDLE_SPRITE_1 = 41401;
-constexpr int STAR_IDLE_SPRITE_2 = 41402;
-constexpr int STAR_IDLE_SPRITE_3 = 41403;
-constexpr int STAR_IDLE_SPRITE_4 = 41404;
-
-// flag
-constexpr int FLAG_IDLE_ANIM_ID = 41500;
-constexpr int FLAG_IDLE_SPRITE_1 = 41501;
+// Explode (A = 700)
+constexpr int BRICK_EXPLODE_SPRITE_1 = 32701;
+constexpr int BRICK_EXPLODE_SPRITE_2 = 32702;
+constexpr int BRICK_EXPLODE_SPRITE_3 = 32703;
+constexpr int BRICK_EXPLODE_SPRITE_4 = 32704;
 
 
-/// ================================
-// FIREBALL (E = 60000, T = 1)
-/// ================================
-constexpr int FIREBALL_TEX_ID =	61000;
-// Bouncing (A = 100)
-constexpr int FIREBALL_BOUNCE_ANIM_ID = 61100;
-constexpr int FIREBALL_BOUNCE_SPRITE_1 = 61101;
-constexpr int FIREBALL_BOUNCE_SPRITE_2 = 61102;
-constexpr int FIREBALL_BOUNCE_SPRITE_3 = 61103;
-constexpr int FIREBALL_BOUNCE_SPRITE_4 = 61104;
+// ==========================================
+// ITEMS (E = 4)
+// ==========================================
+constexpr int OVERWORLD_ITEMS_TEX_ID = 40000;
 
-// Collision (A = 200)
-constexpr int FIREBALL_COLLIDE_ANIM_ID = 61200;
-constexpr int FIREBALL_COLLIDE_SPRITE_1 = 61201;
-constexpr int FIREBALL_COLLIDE_SPRITE_2 = 61202;
-constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61203;
+// Coin (T = 1) -> Moving/Spinning (A = 200)
+constexpr int COIN_SPIN_ANIM_ID = 41200;
+constexpr int COIN_SPIN_SPRITE_1 = 41201;
+constexpr int COIN_SPIN_SPRITE_2 = 41202;
+constexpr int COIN_SPIN_SPRITE_3 = 41203;
+constexpr int COIN_SPIN_SPRITE_4 = 41204;
 
-/// ================================
-// KOOPA (E = 70000)
-/// ================================
+// Mushroom (T = 2) -> Moving (A = 200)
+constexpr int MUSHROOM_ANIM_ID = 42200;
+constexpr int MUSHROOM_SPRITE_1 = 42201;
 
-/// ================================ 
-//  NORMAL KOOPA (T = 1)
-/// ================================
+// Flower (T = 3) -> Idle (A = 100)
+constexpr int FLOWER_IDLE_ANIM_ID = 43100;
+constexpr int FLOWER_IDLE_SPRITE_1 = 43101;
+constexpr int FLOWER_IDLE_SPRITE_2 = 43102;
+constexpr int FLOWER_IDLE_SPRITE_3 = 43103;
+constexpr int FLOWER_IDLE_SPRITE_4 = 43104;
+
+// Star (T = 4) -> Idle (A = 100)
+constexpr int STAR_IDLE_ANIM_ID = 44100;
+constexpr int STAR_IDLE_SPRITE_1 = 44101;
+constexpr int STAR_IDLE_SPRITE_2 = 44102;
+constexpr int STAR_IDLE_SPRITE_3 = 44103;
+constexpr int STAR_IDLE_SPRITE_4 = 44104;
+
+// Flag (T = 5) -> Idle (A = 100)
+constexpr int FLAG_IDLE_ANIM_ID = 45100;
+constexpr int FLAG_IDLE_SPRITE_1 = 45101;
+
+
+// ==========================================
+// FIREBALL (E = 6)
+// ==========================================
+constexpr int FIREBALL_TEX_ID = 60000;
+
+// Moving/Bouncing (A = 200)
+constexpr int FIREBALL_BOUNCE_ANIM_ID = 61200;
+constexpr int FIREBALL_BOUNCE_SPRITE_1 = 61201;
+constexpr int FIREBALL_BOUNCE_SPRITE_2 = 61202;
+constexpr int FIREBALL_BOUNCE_SPRITE_3 = 61203;
+constexpr int FIREBALL_BOUNCE_SPRITE_4 = 61204;
+
+// Collision/Explode (A = 700)
+constexpr int FIREBALL_COLLIDE_ANIM_ID = 61700;
+constexpr int FIREBALL_COLLIDE_SPRITE_1 = 61701;
+constexpr int FIREBALL_COLLIDE_SPRITE_2 = 61702;
+constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61703;
+
+
+// ==========================================
+// KOOPA (E = 7)
+// ==========================================
+
+// ---------------------------------
+// NORMAL KOOPA (T = 1)
+// ---------------------------------
 constexpr int KOOPA_TEX_ID = 71000;
 
-// Walking (A = 100)
-constexpr int KOOPA_WALK_ANIM_ID = 71100;
-constexpr int KOOPA_WALK_SPRITE_1 = 71101;
-constexpr int KOOPA_WALK_SPRITE_2 = 71102;
+// Moving (A = 200)
+constexpr int KOOPA_WALK_ANIM_ID = 71200;
+constexpr int KOOPA_WALK_SPRITE_1 = 71201;
+constexpr int KOOPA_WALK_SPRITE_2 = 71202;
 
-
-/// ===============================
+// ---------------------------------
 // WINGED KOOPA (T = 2)
-/// ===============================
+// ---------------------------------
 constexpr int WINGED_KOOPA_TEX_ID = 72000;
 
-// Winged (A = 100)
-constexpr int WINGED_KOOPA_FLY_ANIM_ID = 72100;
-constexpr int WINGED_KOOPA_FLY_SPRITE_1 = 72101;
-constexpr int WINGED_KOOPA_FLY_SPRITE_2 = 72102;
+// Moving/Flying (A = 200)
+constexpr int WINGED_KOOPA_FLY_ANIM_ID = 72200;
+constexpr int WINGED_KOOPA_FLY_SPRITE_1 = 72201;
+constexpr int WINGED_KOOPA_FLY_SPRITE_2 = 72202;
 
-/// ===============================
+// ---------------------------------
 // HIDING KOOPA (T = 3)
-/// ===============================
+// ---------------------------------
 constexpr int HIDING_KOOPA_TEX_ID = 73000;
 
-// Hiding (A = 100)
+// Idle/Hiding (A = 100)
 constexpr int HIDING_KOOPA_HIDE_ANIM_ID = 73100;
 constexpr int HIDING_KOOPA_HIDE_SPRITE = 73101;
 
-// Spinning (A = 200)
+// Moving/Spinning (A = 200)
 constexpr int HIDING_KOOPA_SPIN_ANIM_ID = 73200;
 constexpr int HIDING_KOOPA_SPIN_SPRITE_1 = 73201;
 constexpr int HIDING_KOOPA_SPIN_SPRITE_2 = 73202;
 
-// Died (A = 300)
-constexpr int KOOPA_DEAD_ANIM_ID = 73300;
-constexpr int KOOPA_DEAD_SPRITE = 73301;
+// Dead (A = 700)
+constexpr int KOOPA_DEAD_ANIM_ID = 73700;
+constexpr int KOOPA_DEAD_SPRITE = 73701;
 
 
-// SCENES THAT ARE NOT PLAYABLE SCENE
+// ==========================================
+// SCENES AND UI
+// ==========================================
 
-/// ================================
 // HUD ELEMENTS
-/// ================================
 constexpr int HUDCOIN_TEX_ID = 50000;
 constexpr int HUDCOIN_SPRITE_ID = 50001;
 constexpr int HUDMARIO_SPRITE_ID = 51000;
@@ -299,7 +353,7 @@ enum NonPlayableScene : std::int8_t
 /// MUSICS: Background music will be managed by negative values in ldtk
 
 // SFX
-enum SFX: std::uint8_t
+enum SFX : std::uint8_t
 {
 	MARIO_JUMP_SMALL = 1,
 	MARIO_JUMP_BIG,
@@ -318,7 +372,7 @@ enum SFX: std::uint8_t
 };
 
 /// FONT
-enum FONTS: std::uint8_t
+enum FONTS : std::uint8_t
 {
 	STATS_FONT = 1,
 	HUD_FONT = 2
