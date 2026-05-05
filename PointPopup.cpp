@@ -8,72 +8,71 @@
 #include "Textures.h"
 #include "Debug.h"
 
-void PointPopup::EnsureAssets()
+void PointPopup::EnsureAssets(int scoreValue)
 {
 	auto anims = Animations::GetInstance();
-	if (anims->Contains(POINT_100_ANIM_ID)
-		&& anims->Contains(POINT_200_ANIM_ID)
-		&& anims->Contains(POINT_400_ANIM_ID)
-		&& anims->Contains(POINT_500_ANIM_ID)
-		&& anims->Contains(POINT_800_ANIM_ID)
-		&& anims->Contains(POINT_1000_ANIM_ID))
-	{
+	int id = GetAnimIdForScore(scoreValue);
+
+	// 1. Efficiently exit if already loaded
+	if (anims->Contains(id))
 		return;
-	}
 
 	auto texture = Textures::GetInstance()->Get(POINTS_TEX_ID);
 	auto sprites = Sprites::GetInstance();
 
-	sprites->Add(POINT_100_SPRITE_1, 0, 0, 15, 7, texture);
-	sprites->Add(POINT_200_SPRITE_1, 0, 10, 15, 17, texture);
-	sprites->Add(POINT_400_SPRITE_1, 0, 20, 15, 27, texture);
-	sprites->Add(POINT_500_SPRITE_1, 0, 30, 15, 37, texture);
-	sprites->Add(POINT_800_SPRITE_1, 0, 40, 15, 47, texture);
-	sprites->Add(POINT_1000_SPRITE_1, 18, 0, 33, 7, texture);
-	sprites->Add(POINT_2000_SPRITE_1, 18, 10, 33, 17, texture);
-	sprites->Add(POINT_4000_SPRITE_1, 18, 20, 33, 27, texture);
-	sprites->Add(POINT_5000_SPRITE_1, 18, 30, 33, 37, texture);
-	sprites->Add(POINT_8000_SPRITE_1, 18, 40, 33, 47, texture);
+	// Create the animation ONLY when we are sure we need to add a new one
+	Animation* anim = new Animation(0);
 
-	auto anim100 = new Animation(0);
-	anim100->Add(POINT_100_SPRITE_1);
-	anims->Add(POINT_100_ANIM_ID, anim100);
+	switch (scoreValue)
+	{
+	case 100:
+		sprites->Add(POINT_100_SPRITE_1, 0, 0, 15, 7, texture);
+		anim->Add(POINT_100_SPRITE_1);
+		break;
+	case 200:
+		sprites->Add(POINT_200_SPRITE_1, 0, 10, 15, 17, texture);
+		anim->Add(POINT_200_SPRITE_1);
+		break;
+	case 400:
+		sprites->Add(POINT_400_SPRITE_1, 0, 20, 15, 27, texture);
+		anim->Add(POINT_400_SPRITE_1);
+		break;
+	case 500:
+		sprites->Add(POINT_500_SPRITE_1, 0, 30, 15, 37, texture);
+		anim->Add(POINT_500_SPRITE_1);
+		break;
+	case 800:
+		sprites->Add(POINT_800_SPRITE_1, 0, 40, 15, 47, texture);
+		anim->Add(POINT_800_SPRITE_1);
+		break;
+	case 1000:
+		sprites->Add(POINT_1000_SPRITE_1, 18, 0, 33, 7, texture);
+		anim->Add(POINT_1000_SPRITE_1);
+		break;
+	case 2000:
+		sprites->Add(POINT_2000_SPRITE_1, 18, 10, 33, 17, texture);
+		anim->Add(POINT_2000_SPRITE_1);
+		break;
+	case 4000:
+		sprites->Add(POINT_4000_SPRITE_1, 18, 20, 33, 27, texture);
+		anim->Add(POINT_4000_SPRITE_1);
+		break;
+	case 5000:
+		sprites->Add(POINT_5000_SPRITE_1, 18, 30, 33, 37, texture);
+		anim->Add(POINT_5000_SPRITE_1);
+		break;
+	case 8000:
+		sprites->Add(POINT_8000_SPRITE_1, 18, 40, 33, 47, texture);
+		anim->Add(POINT_8000_SPRITE_1);
+		break;
+	default:
+		// Cleanup the unused animation object to prevent memory leaks
+		delete anim;
+		return;
+	}
 
-	auto anim200 = new Animation(0);
-	anim200->Add(POINT_200_SPRITE_1);
-	anims->Add(POINT_200_ANIM_ID, anim200);
-
-	auto anim400 = new Animation(0);
-	anim400->Add(POINT_400_SPRITE_1);
-	anims->Add(POINT_400_ANIM_ID, anim400);
-
-	auto anim500 = new Animation(0);
-	anim500->Add(POINT_500_SPRITE_1);
-	anims->Add(POINT_500_ANIM_ID, anim500);
-
-	auto anim800 = new Animation(0);
-	anim800->Add(POINT_800_SPRITE_1);
-	anims->Add(POINT_800_ANIM_ID, anim800);
-
-	auto anim1000 = new Animation(0);
-	anim1000->Add(POINT_1000_SPRITE_1);
-	anims->Add(POINT_1000_ANIM_ID, anim1000);
-
-	auto anim2000 = new Animation(0);
-	anim2000->Add(POINT_2000_SPRITE_1);
-	anims->Add(POINT_2000_ANIM_ID, anim2000);
-
-	auto anim4000 = new Animation(0);
-	anim4000->Add(POINT_4000_SPRITE_1);
-	anims->Add(POINT_4000_ANIM_ID, anim4000);
-
-	auto anim5000 = new Animation(0);
-	anim5000->Add(POINT_5000_SPRITE_1);
-	anims->Add(POINT_5000_ANIM_ID, anim5000);
-
-	auto anim8000 = new Animation(0);
-	anim8000->Add(POINT_8000_SPRITE_1);
-	anims->Add(POINT_8000_ANIM_ID, anim8000);
+	// Add the completed animation to the manager[cite: 12]
+	anims->Add(id, anim);
 }
 
 int PointPopup::GetAnimIdForScore(const int scoreValue)
@@ -107,7 +106,7 @@ int PointPopup::GetAnimIdForScore(const int scoreValue)
 
 PointPopup::PointPopup(Vector2 pos, int scoreValue) : GameObject(pos)
 {
-	EnsureAssets();
+	EnsureAssets(scoreValue);
 	animId = GetAnimIdForScore(scoreValue);
 	lifeTimer = Timer(0.6f);
 	lifeTimer.Start();
