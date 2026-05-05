@@ -58,8 +58,6 @@ const string CLRSCR_COLOR_TRIGGER = "ClearScreenColorTrigger";
 
 
 
-
-
 /// Return the tilemap object for [level]. Value will be cached if new
 Tilemap* LevelLoader::GetTilemapForLevel(const int level)
 {
