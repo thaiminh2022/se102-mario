@@ -74,8 +74,6 @@ void PointPopup::EnsureAssets(int scoreValue)
 		delete anim;
 		return;
 	}
-
-	// Add the completed animation to the manager[cite: 12]
 	anims->Add(id, anim);
 }
 
@@ -106,14 +104,20 @@ int PointPopup::GetAnimIdForScore(const int scoreValue)
 	case 1:
 		return ONEUP_ANIM_ID;
 	default:
-		return POINT_100_ANIM_ID;
+		return -1; // Invalid ID to indicate an error
 	}
 }
 
 PointPopup::PointPopup(Vector2 pos, int scoreValue) : GameObject(pos)
 {
-	EnsureAssets(scoreValue);
 	animId = GetAnimIdForScore(scoreValue);
+	if (animId == -1)
+	{
+		DebugOut(L"[ERROR] Invalid score value %d for PointPopup\n", scoreValue);
+		this->isDeleted = true;
+		return;
+	}
+	EnsureAssets(scoreValue);
 	lifeTimer = Timer(0.6f);
 	lifeTimer.Start();
 	riseSpeed = 30.0f;
