@@ -12,10 +12,10 @@ using std::vector;
 
 struct SceneContext
 {
-	Mario* mario;
-	Tilemap* tilemap;
-	std::function<void(GameObject*)> addObject;
-	std::function<void(const Vector2&, int)> addPointPopup;
+	Mario* mario = nullptr;
+	Tilemap* tilemap = nullptr;
+	std::function<void(GameObject*)> addObject = [](GameObject*) {};
+	std::function<void(const Vector2&, int)> addPointPopup = [](const Vector2&, int) {};
 };
 
 //Abstract class showing the interface of a scene

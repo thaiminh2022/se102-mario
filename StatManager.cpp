@@ -22,8 +22,8 @@ void StatManager::Init() {
 	enemyKillScoreList[5] = 1000;
 	enemyKillScoreList[6] = 2000;
 	enemyKillScoreList[7] = 4000;
-	enemyKillScoreList[8] = 8000;
-	enemyKillScoreList[9] = 20000;
+	enemyKillScoreList[8] = 5000;
+	enemyKillScoreList[9] = 8000;
 
 	shellKillScoreList[0] = 500;
 	shellKillScoreList[1] = 800;
@@ -53,7 +53,7 @@ void StatManager::Reset()
 void StatManager::AddScore(int addingScore, Vector2 pos)
 {
 	score += addingScore;
-	PointPopup* popup = new PointPopup(pos, score);
+	PointPopup* popup = new PointPopup(pos, addingScore);
 	auto ctx = dynamic_cast<PlayableScene*>(Game::GetInstance()->GetCurrentScene());
 	if (ctx != nullptr) {
 		ctx->AddObject(popup); //currently, will think of a better way to add popup later
