@@ -11,7 +11,7 @@
 	"iid": "542e4d40-21a0-11f1-b547-3f7639dce03c",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 278,
+	"nextUid": 280,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "Free",
@@ -289,7 +289,45 @@
 			"limitBehavior": "MoveLastOne",
 			"pivotX": 0,
 			"pivotY": 0,
-			"fieldDefs": []
+			"fieldDefs": [
+				{
+					"identifier": "lowest_limit",
+					"doc": "The lowest point the squid can drop down to",
+					"__type": "Point",
+					"uid": 279,
+					"type": "F_Point",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "PointPath",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				}
+			]
 		},
 		{
 			"identifier": "FishStart",
@@ -6514,7 +6552,10 @@
 							"height": 32,
 							"defUid": 273,
 							"px": [352,416],
-							"fieldInstances": [],
+							"fieldInstances": [{ "__identifier": "lowest_limit", "__type": "Point", "__value": { "cx": 24, "cy": 25 }, "__tile": null, "defUid": 279, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["24,25"]
+							}] }],
 							"__worldX": 1920,
 							"__worldY": 976
 						},
@@ -6626,7 +6667,10 @@
 							"height": 32,
 							"defUid": 273,
 							"px": [736,384],
-							"fieldInstances": [],
+							"fieldInstances": [{ "__identifier": "lowest_limit", "__type": "Point", "__value": { "cx": 47, "cy": 25 }, "__tile": null, "defUid": 279, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["47,25"]
+							}] }],
 							"__worldX": 2304,
 							"__worldY": 944
 						},
@@ -6642,7 +6686,10 @@
 							"height": 32,
 							"defUid": 273,
 							"px": [880,400],
-							"fieldInstances": [],
+							"fieldInstances": [{ "__identifier": "lowest_limit", "__type": "Point", "__value": { "cx": 56, "cy": 25 }, "__tile": null, "defUid": 279, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["56,25"]
+							}] }],
 							"__worldX": 2448,
 							"__worldY": 960
 						},
@@ -6706,7 +6753,10 @@
 							"height": 32,
 							"defUid": 273,
 							"px": [1328,368],
-							"fieldInstances": [],
+							"fieldInstances": [{ "__identifier": "lowest_limit", "__type": "Point", "__value": { "cx": 84, "cy": 25 }, "__tile": null, "defUid": 279, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["84,25"]
+							}] }],
 							"__worldX": 2896,
 							"__worldY": 928
 						},
@@ -6738,7 +6788,10 @@
 							"height": 32,
 							"defUid": 273,
 							"px": [1520,288],
-							"fieldInstances": [],
+							"fieldInstances": [{ "__identifier": "lowest_limit", "__type": "Point", "__value": { "cx": 95, "cy": 25 }, "__tile": null, "defUid": 279, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["95,25"]
+							}] }],
 							"__worldX": 3088,
 							"__worldY": 848
 						},
@@ -6837,7 +6890,10 @@
 							"height": 32,
 							"defUid": 273,
 							"px": [1680,416],
-							"fieldInstances": [],
+							"fieldInstances": [{ "__identifier": "lowest_limit", "__type": "Point", "__value": { "cx": 106, "cy": 25 }, "__tile": null, "defUid": 279, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["106,25"]
+							}] }],
 							"__worldX": 3248,
 							"__worldY": 976
 						},

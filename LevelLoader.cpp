@@ -37,6 +37,7 @@ const string PLAYER_START = "PlayerStart";
 const string GOOMBA_START= "GoombaStart";
 const string KOOPA_START= "KoopaStart";
 const string CHEEP_CHEEPS_START = "FishStart";
+
 const string WINGED_KOOPA_START = "WingedKoopaStart";
 const string QUESTION_BLOCK= "QuestionBlock";
 const string BRICK_BLOCK= "EmptyBrickBlock";
