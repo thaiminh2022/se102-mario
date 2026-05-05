@@ -2628,6 +2628,25 @@
 							"__worldY": 448
 						},
 						{
+							"__worldY": 480
+						},
+						{
+							"__identifier": "PlayerStart",
+							"__grid": [3,11],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
+							"__smartColor": "#63C74D",
+							"iid": "1e4f9f40-21a0-11f1-8cda-f19e2cb6af0a",
+							"width": 16,
+							"height": 16,
+							"defUid": 31,
+							"px": [48,176],
+							"fieldInstances": [],
+							"__worldX": 1760,
+							"__worldY": 496
+						},
+						{
 							"__identifier": "Pipe",
 							"__grid": [163,11],
 							"__pivot": [0,0],

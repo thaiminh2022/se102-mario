@@ -162,7 +162,7 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 {
 	if (state == FireballState::Exploding) return;
 
-
+	auto sm = StatManager::GetInstance();
 	if (e->IsObjectCollision())
 	{
 		// resolve object collision
@@ -173,6 +173,7 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 				return;
 			this->isExploded = true;
 			goomba->SetState(GoombaState::Dead);
+			sm->AddScore(100);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 			Explode();
 			return;
@@ -185,7 +186,7 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 				return;
 			this->isExploded = true;
 			koopa->SetState(KoopaState::Dead);
-			StatManager::GetInstance()->AddScore(100);
+			sm->AddScore(200);
 			Explode();
 			return;
 		}
