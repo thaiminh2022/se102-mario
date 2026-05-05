@@ -52,11 +52,8 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			AudioManager::GetInstance()->PauseMusic();
 			AudioManager::GetInstance()->PlaySFX(PIPE_ENTER);
 		}
-
-		return;
 	}
-
-	if (pipeState == PipeState::Transition)
+	else if (pipeState == PipeState::Transition)
 	{
 		transitionTimer.ProcessTimer(dt);
 		if (!transitionTimer.IsFinished())
@@ -88,7 +85,15 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			}
 		}else
 		{
-			if (pipeData.returnPipeData.hasValue)
+			if (pipeData.teleportToPosition.hasValue)
+			{
+				Game::GetInstance()->GetCamera()->SetPosition(0, 0);
+				ctx->mario->SetPosition(pipeData.teleportToPosition.value);
+				ctx->mario->ResetRender();
+				ctx->mario->ResetState();
+				pipeState = PipeState::Blocked;
+			}
+			else if (pipeData.returnPipeData.hasValue)
 			{
 				auto returnData = pipeData.returnPipeData.value;
 				auto marioPipeCtx = MarioPipeCtx{

@@ -65,16 +65,20 @@ void Camera::Update()
 
 	auto pos = target->position;
 
-	// center camera on target
+	// update X separately
 	prevX = x;
-	
+
 	float futureX = pos.x - 0.5f * g->GetBackBufferWidth();
-	if (futureX < prevX)
-		return;
-	x = futureX;
-	
-	// for now, y is fixed
-	//y = targetY - 0.5f * g->GetBackBufferHeight();
+
+	// only move camera X forward, but do not stop Y from updating
+	if (futureX >= prevX)
+	{
+		x = futureX;
+	}
+
+	// update Y separately
+	constexpr int snapHeight = 240;
+	y = floor(pos.y / snapHeight) * snapHeight;
 
 	// clamp left/top
 	x = max(x, 0.0f);
@@ -87,11 +91,9 @@ void Camera::Update()
 	maxX = max(maxX, 0);
 	maxY = max(maxY, 0);
 
-	x = min(x, maxX);
-	y = min(y, maxY);
+	x = min(x, static_cast<float>(maxX));
+	y = min(y, static_cast<float>(maxY));
 }
-
-
 bool Camera::IsInView(float left, float top, float right, float bottom) const
 {
 	auto g = Game::GetInstance();

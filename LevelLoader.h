@@ -1,5 +1,4 @@
 #pragma once
-
 #include <string>
 #include <vector>
 
@@ -34,6 +33,7 @@ class LevelLoader
 	void ParsePlayerStart(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseGoombas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseKoopas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseCheepCheeps(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseWingedKoopas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 
 	void ParseBowsers(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
@@ -48,6 +48,9 @@ class LevelLoader
 	void ParseFlagPole(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParsePipe(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseTeleportPipe(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
+	void ParseInstantTeleportPipe(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
+	void ParseClearScreenColorTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
+
 
 	// helper
 	static vector<EntityInstance*> GetEntityDataWithIdentifier(vector<EntityInstance>& v, const std::string& iden);

@@ -279,7 +279,23 @@ constexpr int KOOPA_DEAD_ANIM_ID = 73300;
 constexpr int KOOPA_DEAD_SPRITE = 73301;
 
 
-// SCENES THAT ARE NOT PLAYABLE SCENE
+/// ===============================
+// CHEEP CHEEPS (E = 80000) 
+/// ===============================
+
+/// cheep cheeps,  t = 1;
+constexpr int CHEEPS_TEX_ID = 81000;
+
+// RED (A = 1)
+constexpr int RED_CHEEP_ANIM = 81100;
+constexpr int RED_CHEEP_SPRITE_1 = 81101;
+constexpr int RED_CHEEP_SPRITE_2 = 81102;
+
+// WATER (A=2)
+constexpr int WATER_CHEEP_ANIM = 81200;
+constexpr int WATER_CHEEP_SPRITE_1 = 81201;
+constexpr int WATER_CHEEP_SPRITE_2 = 81202;
+
 
 /// ================================
 // HUD ELEMENTS

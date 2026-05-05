@@ -4,6 +4,7 @@
 #include "Vector2.h"
 #include <vector>
 
+#include "Color.h"
 #include "OptionalType.h"
 #include "Rect.h"	
 
@@ -29,6 +30,17 @@ struct MusicTriggerData
 	Rect zone;
 };
 
+struct ClearScreenColorTriggerData
+{
+	Rect zone;
+	Color color;
+
+	ClearScreenColorTriggerData(const Rect zone, const Color color)
+	{
+		this->zone = zone;
+		this->color = color;
+	}
+};
 
 struct QuestionBlockData
 {
@@ -72,7 +84,25 @@ struct PipeData
 	bool isReturnPipe;
 	Vector2Int enterDirection;
 	Vector2Int moveTo;
+	Optional<Vector2Int> teleportToPosition;
 	bool isTeleportPipe;
+
+	PipeData() = default;
+
+	PipeData(const Rect& zone, const Optional<int>& nextLevelToLoad, const Optional<ReturnPipeData>& returnPipeData,
+		bool isReturnPipe, const Vector2Int& enterDirection, const Vector2Int& moveTo,
+		const Optional<Vector2Int>& teleportToPosition, bool isTeleportPipe)
+		: zone(zone),
+		  nextLevelToLoad(nextLevelToLoad),
+		  returnPipeData(returnPipeData),
+		  isReturnPipe(isReturnPipe),
+		  enterDirection(enterDirection),
+		  moveTo(moveTo),
+		  teleportToPosition(teleportToPosition),
+		  isTeleportPipe(isTeleportPipe)
+	{
+	}
+
 
 	static Vector2Int GetDirection(const std::string& dir)
 	{
@@ -97,7 +127,17 @@ struct PipeData
 	}
 };
 
+struct CheepCheepsData
+{
+	Vector2Int startPosition;
+	bool isRed;
 
+	CheepCheepsData(const Vector2Int& startPosition, bool isRed)
+		: startPosition(startPosition),
+		  isRed(isRed)
+	{
+	}
+};
 
 struct SceneEntityData
 {
@@ -108,13 +148,15 @@ struct SceneEntityData
 	
 	vector<PipeData> pipes;
 	Optional<FlagPoleData> flagPole;
+
+	vector<ClearScreenColorTriggerData> clearScreenColorTriggers;
 	
 	Optional<Vector2Int> bowserStart;
 	Optional<Vector2Int> toadStart;
 
-
 	vector<Vector2Int> goombaStarts;
 	vector<Vector2Int> koopaStarts;
+	vector<CheepCheepsData> cheepCheeps;
 	vector<Vector2Int> WingedKoopaStarts;
 	vector<QuestionBlockData> questionBlocks;
 	vector<BrickBlockData> brickBlocks;

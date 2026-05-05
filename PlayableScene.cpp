@@ -20,6 +20,8 @@
 #include <queue>
 
 #include "BgMusicTrigger.h"
+#include "CheepCheeps.h"
+#include "ClearScreenColorTrigger.h"
 
 
 using std::priority_queue;
@@ -142,7 +144,14 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(kp);
 	}
 
-	// Winged koopa
+	// cheep cheeps
+	for (const auto& ccData : config->entityData.cheepCheeps)
+	{
+		const auto cc = new CheepCheeps(ccData.startPosition, ccData.isRed);
+		objects.push_back(cc);
+	}
+
+	// winged koopa
 	for (const auto& fkPos : config->entityData.WingedKoopaStarts)
 	{
 		const auto fkp = new Koopa(fkPos.x, fkPos.y, KoopaForm::Winged);
@@ -213,8 +222,15 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	}
 	levelTimer = Timer(timeLeftForLevel);
 	levelTimer.Start();
+
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
+	// triggers;
+	for (const auto& colorTriggerData : config->entityData.clearScreenColorTriggers)
+	{
+		const auto colorTrigger = new ClearScreenColorTrigger(colorTriggerData.zone, colorTriggerData.color);
+		objects.push_back(colorTrigger);
+	}
 }
 
 void PlayableScene::UnLoad()

@@ -36,6 +36,7 @@ const string DYNAMIC_LAYER = "Dynamic";
 const string PLAYER_START = "PlayerStart";
 const string GOOMBA_START= "GoombaStart";
 const string KOOPA_START= "KoopaStart";
+const string CHEEP_CHEEPS_START = "FishStart";
 const string WINGED_KOOPA_START = "WingedKoopaStart";
 const string QUESTION_BLOCK= "QuestionBlock";
 const string BRICK_BLOCK= "EmptyBrickBlock";
@@ -49,6 +50,11 @@ const string BRIDGE = "Bridge";
 const string TOAD_START = "FlagPole";
 const string PIPE = "Pipe";
 const string TELEPORT_PIPE = "TeleportPipe";
+const string INSTANT_TELEPORT_PIPE = "InstantTeleportPipe";
+const string CLRSCR_COLOR_TRIGGER = "ClearScreenColorTrigger";
+
+
+
 
 
 
@@ -330,10 +336,25 @@ void LevelLoader::ParseKoopas(SceneEntityData& sceneEntities, vector<EntityInsta
 	}
 }
 
+void LevelLoader::ParseCheepCheeps(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities)
+{
+	const auto cheepCheeps = GetEntityDataWithIdentifier(entities, CHEEP_CHEEPS_START);
+	for (const auto& g : cheepCheeps)
+	{
+		const auto isRedJson = GetFieldValueWithIdentifier(g->fieldInstances, "is_red");
+		if (!isRedJson.hasValue)
+			continue;
+
+		sceneEntities.cheepCheeps.emplace_back(
+			Vector2Int(g->px[0], g->px[1]), 
+			isRedJson.value.get<bool>());
+	}
+}
+
 void LevelLoader::ParseWingedKoopas(SceneEntityData& sceneEntities, vector<EntityInstance> entities)
 {
-	const auto WingedKoopas = GetEntityDataWithIdentifier(entities, WINGED_KOOPA_START);
-	for (const auto& g : WingedKoopas)
+	const auto wingedKoopas = GetEntityDataWithIdentifier(entities, WINGED_KOOPA_START);
+	for (const auto& g : wingedKoopas)
 	{
 		sceneEntities.WingedKoopaStarts.emplace_back(g->px[0], g->px[1]);
 	}
@@ -634,14 +655,14 @@ void LevelLoader::ParsePipe(SceneEntityData& sceneEntities, std::vector<EntityIn
 			}
 		}
 
-		sceneEntities.pipes.push_back({ zone,
-			nextLevel,
-			returnPipeData,
-			isReturnPipe,
-			PipeData::GetDirection(pipeDir),
-			Vector2Int(moveTo.cx * 16, moveTo.cy * 16),
-			false,
-		});
+		sceneEntities.pipes.push_back(PipeData(zone, 
+			nextLevel, 
+			returnPipeData, 
+			isReturnPipe, 
+			PipeData::GetDirection(pipeDir), 
+			Vector2Int(moveTo.cx * 16, moveTo.cy * 16), 
+			{}, 
+			false));
 	}
 }
 
@@ -689,15 +710,62 @@ void LevelLoader::ParseTeleportPipe(SceneEntityData& sceneEntities,  vector<Enti
 				}
 			}
 		}
-		const Optional<int> nextLevel;
-		sceneEntities.pipes.push_back({ zone,
-			nextLevel,
+		sceneEntities.pipes.push_back(PipeData(zone,
+			{},
 			returnPipeData,
 			isReturnPipe,
 			PipeData::GetDirection(pipeDir),
 			Vector2Int(moveTo.cx * 16, moveTo.cy * 16),
-			true
-			});
+			{},
+			true));
+	}
+}
+
+void LevelLoader::ParseInstantTeleportPipe(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
+{
+	const auto pipes = GetEntityDataWithIdentifier(entities, INSTANT_TELEPORT_PIPE);
+	for (auto p : pipes)
+	{
+		auto pipeDirectionJson = GetFieldValueWithIdentifier(p->fieldInstances, "pipe_direction");
+		auto moveToJson = GetFieldValueWithIdentifier(p->fieldInstances, "move_to");
+		auto teleportToJson = GetFieldValueWithIdentifier(p->fieldInstances, "teleport_to");
+
+
+		if (!pipeDirectionJson.hasValue || !moveToJson.hasValue || !teleportToJson.hasValue)
+			continue;
+
+		auto zone = Rect::FromXYWH(p->px[0], p->px[1], p->width, p->height);
+		auto pipeDir = pipeDirectionJson.value.get<string>();
+		auto moveTo = moveToJson.value.get<LDTKPoint>();
+		auto teleportTo = teleportToJson.value.get<LDTKPoint>();
+
+		sceneEntities.pipes.push_back(PipeData(zone,
+			{},
+			{},
+			false,
+			PipeData::GetDirection(pipeDir),
+			Vector2Int(moveTo.cx * 16, moveTo.cy * 16),
+			Vector2Int(teleportTo.cx * 16, teleportTo.cy * 16),
+			true));
+	}
+}
+
+void LevelLoader::ParseClearScreenColorTrigger(SceneEntityData& sceneEntities,
+	vector<EntityInstance>& entities)
+{
+	const auto clrscrTriggers = GetEntityDataWithIdentifier(entities, CLRSCR_COLOR_TRIGGER);
+
+	for (const auto& clrscrTrigger : clrscrTriggers)
+	{
+		const auto& colorJson = GetFieldValueWithIdentifier(clrscrTrigger->fieldInstances, "color");
+		if (!colorJson.hasValue)
+			continue;
+	
+		const auto colorHex = colorJson.value.get<string>();
+		const auto zone = Rect::FromXYWH(clrscrTrigger->px[0], clrscrTrigger->px[1], clrscrTrigger->width, clrscrTrigger->height);
+		const auto color = Color(colorHex);
+
+		sceneEntities.clearScreenColorTriggers.emplace_back(zone, color);
 	}
 }
 
@@ -717,6 +785,7 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 	// NOTE: emplace_back is push_back but takes in a constructor, so no temp object creation is needed
 	ParseGoombas(sceneEntities, entities);
 	ParseKoopas(sceneEntities, entities);
+	ParseCheepCheeps(sceneEntities, entities);
 	ParseWingedKoopas(sceneEntities, entities);
 	ParseBowsers(sceneEntities, entities);
 	ParseToad(sceneEntities, entities);
@@ -730,6 +799,8 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 	ParseFlagPole(sceneEntities, entities);
 	ParsePipe(sceneEntities, entities);
 	ParseTeleportPipe(sceneEntities, entities);
+	ParseInstantTeleportPipe(sceneEntities, entities);
+	ParseClearScreenColorTrigger(sceneEntities, entities);
 
 
 	return sceneEntities;

@@ -288,7 +288,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 	{
 		if (e->otherTile->type == CollisionTileType::Death)
 		{
-			OnMarioHit();
+			OnMarioHit(true);
 			return;
 		}
 
@@ -320,9 +320,9 @@ void Mario::OnNoCollision(float dt)
 	position += velocity * dt;
 	isGrounded = false;
 }
-void Mario::OnMarioHit()
+void Mario::OnMarioHit(const bool force)
 {
-	if (!isInvincible)
+	if (!isInvincible || force)
 	{
 		if (power != MarioPower::Normal)
 		{
