@@ -13,6 +13,7 @@
 #include "Star.h"
 #include "StatManager.h"
 #include "CollisionEvent.h"
+#include "PointPopup.h"
 
 bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 {
@@ -28,7 +29,7 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 		{
 			// invincible, kill goomba by touch
 			goomba->SetState(GoombaState::Dead);
-			sm->AddEnemyKillScore(enemySequenceKilledCount);
+			sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 			return true;
 		}
@@ -39,7 +40,7 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 
 			enemySequenceKilledCount++;
 
-			sm->AddEnemyKillScore(enemySequenceKilledCount);
+			sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 
 			velocity.y = -240.0f;
 			state = MarioState::Jumping;
@@ -67,7 +68,7 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 		{
 			// invincible, kill koopa by touch
 			koopa->SetState(KoopaState::Dead);
-			sm->AddEnemyKillScore(enemySequenceKilledCount);
+			sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 			return true;
 		}
@@ -95,27 +96,27 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 			if (koopa->GetForm() == KoopaForm::Winged)
 			{
 				koopa->SetForm(KoopaForm::Normal);
-				sm->AddEnemyKillScore(enemySequenceKilledCount);
+				sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 				enemySequenceKilledCount++;
 			}
 			else if (koopa->GetForm() == KoopaForm::Normal)
 			{
 				koopa->SetForm(KoopaForm::HiddingInShell);
 				koopa->SetState(KoopaState::NotMoving);
-				sm->AddEnemyKillScore(enemySequenceKilledCount);
+				sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 				enemySequenceKilledCount++;
 			}
 			else if (koopa->GetForm() == KoopaForm::HiddingInShell)
 			{
 				if (koopa->GetState() == KoopaState::NotMoving) {
 					koopa->SetState(KoopaState::Moving);
-					sm->AddEnemyKillScore(enemySequenceKilledCount);
+					sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 				}
 				else
 				{
 					koopa->SetState(KoopaState::NotMoving);
 					koopa->ResetKillCount();
-					sm->AddEnemyKillScore(enemySequenceKilledCount);
+					sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 				}
 			}
 			AudioManager::GetInstance()->PlaySFX(SFX::GOOMBA_STOMP);
@@ -195,7 +196,7 @@ bool Mario::OnCollisionWithMushroom(const CollisionEvent* e)
 		{
 			state = MarioState::Growing;
 			transformTimer = Timer(MARIO_GROW_TIME);
-			StatManager::GetInstance()->AddScore(1000);
+			StatManager::GetInstance()->AddScore(1000, this->position);
 			transformTimer.Start();
 			// add some pushback so player won't fall off the ground
 			position.y -= 17;
@@ -224,7 +225,7 @@ bool Mario::OnCollisionWithFlower(CollisionEvent* e)
 		}
 
 		flower->SetState(CollectableItemState::Collected);
-		StatManager::GetInstance()->AddScore(1000);
+		StatManager::GetInstance()->AddScore(1000, this->position);
 		AudioManager::GetInstance()->PlaySFX(MARIO_POWERUP);
 		return true;
 	}
@@ -278,7 +279,7 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 
 
 	// DebugOutTitle(L"Score for flagpole: %f\n", score); //for debugging
-	StatManager::GetInstance()->AddScore(score);
+	StatManager::GetInstance()->AddScore(score, this->position);
 
 	AudioManager::GetInstance()->StopAll();
 	AudioManager::GetInstance()->PlaySFX(FLAG_PULL);
@@ -394,7 +395,7 @@ void Mario::OnMarioHit()
 			transformTimer.Start();
 			AudioManager::GetInstance()->StopAll();
 			AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
-			StatManager::GetInstance()->AddLife(-1);
+			StatManager::GetInstance()->AddLife(-1, this->position);
 		}
 	}
 }

@@ -200,6 +200,8 @@ static void LoadResource()
 	t->Add(KOOPA_TEX_ID, L"Assets/Sprites/koopa_sprites.png");
 	
 	t->Add(HUDCOIN_TEX_ID, L"Assets/Sprites/HUDCoin.png");
+	t->Add(POINTS_TEX_ID, L"Assets/Sprites/point.png");
+
 
 
 	// Audios
