@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 
+#include "CollisionMatrix.h"
 #include "Rect.h"
 
 using std::vector;
@@ -55,6 +56,11 @@ struct CollisionTile
 	{
 		return type == CollisionTileType::Ground || type == CollisionTileType::OneWay;
 	}
+	CollisionMatrixLayer GetCollisionLayer()
+	{
+		return CollisionMatrixLayer::Ground;
+	}
+
 };
 
 struct CollisionLayer

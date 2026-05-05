@@ -97,6 +97,7 @@ class Mario : public GameObject
 
 	// on collision with
 	bool OnCollisionWithGoomba(const CollisionEvent* e);
+	bool OnCollisionWithCheepCheeps(const CollisionEvent* e);
 	bool OnCollisionWithKoopa(const CollisionEvent* e);
 	static bool OnCollisionWithPortal(const CollisionEvent* e);
 	bool OnCollisionWithQuestionBlock(const CollisionEvent* e);

@@ -43,7 +43,6 @@ void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*&
 			maxX,
 			maxY);
 
-		//Game::GetInstance()->DrawDebugRectWithCamera(r, Colors::YELLOW);
 		tilemap->GetPotentialCollidableCells(r, collisionTiles);
 
 		if (collisionTiles.empty())
@@ -51,6 +50,10 @@ void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*&
 
 		for (const auto& c : collisionTiles)
 		{
+			// Check if the game object can collide with the tile
+			if (!CollisionMatrix::IsLayerCollide(c->GetCollisionLayer(), go->GetCollisionLayer()))
+				continue;
+
 			auto r = SweptAABB(go, c, dt);
 			auto e = CollisionEvent::CreateTileCollisionEvent(go, c, r);
 			events.push_back(e);
@@ -222,6 +225,9 @@ void Collision::GetObjectEvents(vector<CollisionEvent>& events, GameObject* go, 
 	for (const auto& obj : coObjects)
 	{
 		if (obj == go || !obj->IsCollidable() || GameObject::IsDeleted(obj))
+			continue;
+
+		if (!CollisionMatrix::IsLayerCollide(obj->GetCollisionLayer(), go->GetCollisionLayer()))
 			continue;
 
 		auto r = SweptAABB(go, obj, dt);

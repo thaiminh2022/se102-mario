@@ -41,8 +41,7 @@ CheepCheeps::CheepCheeps(const Vector2Int startPos, bool isRed) : GameObject(sta
 
 void CheepCheeps::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
-	constexpr float moveSpeed = 50.0f;
-	velocity.x = -50.0f;
+	velocity.x = isRed ? -75.0f : -50.0f;
 
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }
