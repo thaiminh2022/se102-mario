@@ -65,6 +65,10 @@ void PointPopup::EnsureAssets(int scoreValue)
 		sprites->Add(POINT_8000_SPRITE_1, 18, 40, 33, 47, texture);
 		anim->Add(POINT_8000_SPRITE_1);
 		break;
+	case 1:
+		sprites->Add(ONEUP_SPRITE_1, 18, 50, 33, 56, texture);
+		anim->Add(ONEUP_SPRITE_1);
+		break;
 	default:
 		// Cleanup the unused animation object to prevent memory leaks
 		delete anim;
@@ -99,6 +103,8 @@ int PointPopup::GetAnimIdForScore(const int scoreValue)
 		return POINT_5000_ANIM_ID;
 	case 8000:
 		return POINT_8000_ANIM_ID;
+	case 1:
+		return ONEUP_ANIM_ID;
 	default:
 		return POINT_100_ANIM_ID;
 	}

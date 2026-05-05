@@ -68,6 +68,11 @@ void StatManager::AddCoin(int addingCoin)
 void StatManager::AddLife(int addingLife, Vector2 pos)
 {
 	lifeCount += addingLife;
+	PointPopup* popup = new PointPopup(pos, addingLife); // 1up popup
+	auto ctx = dynamic_cast<PlayableScene*>(Game::GetInstance()->GetCurrentScene());
+	if (ctx != nullptr) {
+		ctx->AddObject(popup);
+	}
 }
 
 void StatManager::SetLevel(int newLevel)
