@@ -8,7 +8,7 @@ class PointPopup : public GameObject
 	Timer lifeTimer;
 	float riseSpeed;
 
-	static void EnsureAssets();
+	static void EnsureAssets(int scoreValue);
 	static int GetAnimIdForScore(int scoreValue);
 
 public:

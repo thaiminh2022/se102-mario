@@ -270,6 +270,9 @@ constexpr int POINT_5000_SPRITE_1 = 95001;
 constexpr int POINT_8000_ANIM_ID = 98000;
 constexpr int POINT_8000_SPRITE_1 = 98001;
 
+constexpr int ONEUP_ANIM_ID = 99000;
+constexpr int ONEUP_SPRITE_1 = 99001;
+
 
 // ==========================================
 // ITEMS (E = 4)
