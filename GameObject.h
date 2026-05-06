@@ -61,6 +61,7 @@ public:
 	virtual bool IsBlocking() { return isBlocking; }
 	virtual bool IsActive() { return isActive; }
 	virtual void SetActive(bool newActive) { isActive = newActive; }
+	virtual bool IsFacingRight() const { return isFacingRight; }
 
 	virtual void OnNoCollision(float dt) {} // Call every collision check but returns no collision
 	virtual void OnCollisionWith(CollisionEvent* event) {} // Call every collision check with collision data

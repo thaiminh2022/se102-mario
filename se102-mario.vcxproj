@@ -131,6 +131,9 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="Bowser.cpp" />
+    <ClCompile Include="BowserFireBullet.cpp" />
+    <ClCompile Include="BowserHammer.cpp" />
     <ClCompile Include="BrickExplode.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Coin.cpp" />
@@ -177,6 +180,9 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="Bowser.h" />
+    <ClInclude Include="BowserFireBullet.h" />
+    <ClInclude Include="BowserHammer.h" />
     <ClInclude Include="BrickExplode.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Coin.h" />

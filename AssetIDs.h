@@ -370,6 +370,67 @@ constexpr int HIDING_KOOPA_SPIN_SPRITE_2 = 73202;
 constexpr int KOOPA_DEAD_ANIM_ID = 73700;
 constexpr int KOOPA_DEAD_SPRITE = 73701;
 
+/// ===============================
+// BOWSER (E = 80000, T = 1)
+/// ===============================
+constexpr int BOWSER_TEX_ID = 81000;
+
+// WALKING (A = 100)
+constexpr int BOWSER_WALK_ANIM_ID = 81100;
+constexpr int BOWSER_WALK_SPRITE_1 = 81101;
+constexpr int BOWSER_WALK_SPRITE_2 = 81102;
+
+// JUMPING (A = 200)
+constexpr int BOWSER_JUMP_ANIM_ID = 81200;
+constexpr int BOWSER_JUMP_SPRITE_1 = 81201;
+
+// FIRE BREATHING (A = 300)
+constexpr int BOWSER_FIRE_BREATH_ANIM_ID = 81300;
+constexpr int BOWSER_FIRE_BREATH_SPRITE_1 = 81301;
+constexpr int BOWSER_FIRE_BREATH_SPRITE_2 = 81302;
+
+// HAMMER THROWING (A = 400)
+constexpr int BOWSER_HAMMER_THROW_LEFT_ANIM_ID = 81410;
+constexpr int BOWSER_HAMMER_THROW_LEFT_SPRITE = 81411;
+
+constexpr int BOWSER_HAMMER_THROW_RIGHT_ANIM_ID = 81420;
+constexpr int BOWSER_HAMMER_THROW_RIGHT_SPRITE = 81421;
+
+//DYING (A = 500)
+constexpr int BOWSER_DEATH_ANIM_ID = 81500;
+constexpr int BOWSER_DEATH_SPRITE_1 = 81501;
+
+// FALLING (A = 600)
+constexpr int BOWSER_FALL_ANIM_ID = 81600;
+constexpr int BOWSER_FALL_SPRITE_1 = 81601;
+constexpr int BOWSER_FALL_SPRITE_2 = 81602;
+constexpr int BOWSER_FALL_SPRITE_3 = 81603;
+
+//FIRE BREATHING AND HAMMER THROWING (A = 700)
+constexpr int BOWSER_BOTH_ATTACK_LEFT_ANIM_ID = 81700;
+constexpr int BOWSER_BOTH_ATTACK_LEFT_SPRITE_1 = 81701;
+constexpr int BOWSER_BOTH_ATTACK_LEFT_SPRITE_2 = 81702;
+
+constexpr int BOWSER_BOTH_ATTACK_RIGHT_ANIM_ID = 81710;
+constexpr int BOWSER_BOTH_ATTACK_RIGHT_SPRITE_1 = 81711;
+constexpr int BOWSER_BOTH_ATTACK_RIGHT_SPRITE_2 = 81712;
+
+/// ================================
+// BOWSER ITEM BULLET (E = 90000)
+///=================================
+constexpr int BOWSER_ITEM_BULLET_TEX_ID = 90000;
+
+// Fire breath (T = 1000)
+constexpr int BOWSER_ITEM_BULLET_FIRE_ANIM_ID = 91000;
+constexpr int BOWSER_ITEM_BULLET_FIRE_SPRITE_1 = 91001;
+constexpr int BOWSER_ITEM_BULLET_FIRE_SPRITE_2 = 91002;
+
+// Hammer (T = 2000)
+constexpr int BOWSER_ITEM_BULLET_HAMMER_ANIM_ID = 92000;
+constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_1 = 92001;
+constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_2 = 92002;
+constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_3 = 92003;
+constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_4 = 92004;
 
 // ==========================================
 // SCENES AND UI
@@ -379,6 +440,7 @@ constexpr int KOOPA_DEAD_SPRITE = 73701;
 constexpr int HUDCOIN_TEX_ID = 50000;
 constexpr int HUDCOIN_SPRITE_ID = 50001;
 constexpr int HUDMARIO_SPRITE_ID = 51000;
+
 
 // PLAYABLE SCENES IS MANAGE BY LEVEL LOADER (INIT FUNCTION)
 // NEGATIVE VALUE (AND 0) IS FOR PLAYABLE SCENE ONLY
