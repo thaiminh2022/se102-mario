@@ -14,6 +14,7 @@
 #include "Goomba.h"
 #include "Koopa.h"
 #include "NextLevelPortal.h"
+#include "PointPopup.h"
 #include "Pipe.h"
 #include "QuestionBlock.h"
 #include "Bowser.h"

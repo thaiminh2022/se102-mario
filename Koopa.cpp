@@ -195,7 +195,7 @@ void Koopa::OnCollisionWith(CollisionEvent* event)
 			if (goomba != nullptr)
 			{
 				goomba->SetState(GoombaState::Dead);
-				sm->AddShellKillScore(enemyKilledByShellCount);
+				sm->AddShellKillScore(enemyKilledByShellCount, this->position);
 				enemyKilledByShellCount++;
 			}
 
@@ -211,7 +211,7 @@ void Koopa::OnCollisionWith(CollisionEvent* event)
 					else {
 						// if the other koopa is not in moving shell state, rip bro
 						koopa->SetState(KoopaState::Dead);
-						sm->AddShellKillScore(enemyKilledByShellCount);
+						sm->AddShellKillScore(enemyKilledByShellCount, this->position);
 						enemyKilledByShellCount++;
 					}
 			}
