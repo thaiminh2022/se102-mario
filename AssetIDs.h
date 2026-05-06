@@ -368,6 +368,15 @@ constexpr int BOWSER_FALL_SPRITE_1 = 81601;
 constexpr int BOWSER_FALL_SPRITE_2 = 81602;
 constexpr int BOWSER_FALL_SPRITE_3 = 81603;
 
+//FIRE BREATHING AND HAMMER THROWING (A = 700)
+constexpr int BOWSER_BOTH_ATTACK_LEFT_ANIM_ID = 81700;
+constexpr int BOWSER_BOTH_ATTACK_LEFT_SPRITE_1 = 81701;
+constexpr int BOWSER_BOTH_ATTACK_LEFT_SPRITE_2 = 81702;
+
+constexpr int BOWSER_BOTH_ATTACK_RIGHT_ANIM_ID = 81710;
+constexpr int BOWSER_BOTH_ATTACK_RIGHT_SPRITE_1 = 81711;
+constexpr int BOWSER_BOTH_ATTACK_RIGHT_SPRITE_2 = 81712;
+
 /// ================================
 // BOWSER ITEM BULLET (E = 90000)
 ///=================================

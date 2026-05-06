@@ -22,6 +22,12 @@ Bowser::Bowser(int startX, int startY,Mario *mario) : GameObject(startX, startY)
 	sp->Add(BOWSER_FALL_SPRITE_1, 0, 9, 31, 40, t);
 	sp->Add(BOWSER_FALL_SPRITE_2, 34, 9, 65, 40, t);
 
+	sp->Add(BOWSER_BOTH_ATTACK_LEFT_SPRITE_1, 68, 0, 99, 40, t);
+	sp->Add(BOWSER_BOTH_ATTACK_LEFT_SPRITE_2, 205, 0, 236, 40, t);
+
+	sp->Add(BOWSER_BOTH_ATTACK_RIGHT_SPRITE_1, 239, 0, 270, 40, t);
+	sp->Add(BOWSER_BOTH_ATTACK_RIGHT_SPRITE_2, 170, 0, 201, 40, t);
+
 	if (!anims->Contains(BOWSER_WALK_ANIM_ID))
 	{
 		auto walkAnim = new Animation(100);
@@ -39,7 +45,7 @@ Bowser::Bowser(int startX, int startY,Mario *mario) : GameObject(startX, startY)
 
 	if (!anims->Contains(BOWSER_FIRE_BREATH_ANIM_ID))
 	{
-		auto fireBreathAnim = new Animation(100);
+		auto fireBreathAnim = new Animation(50);
 		fireBreathAnim->Add(BOWSER_FIRE_BREATH_SPRITE_1);
 		fireBreathAnim->Add(BOWSER_FIRE_BREATH_SPRITE_2);
 		anims->Add(BOWSER_FIRE_BREATH_ANIM_ID, fireBreathAnim);
@@ -74,23 +80,35 @@ Bowser::Bowser(int startX, int startY,Mario *mario) : GameObject(startX, startY)
 		anims->Add(BOWSER_FALL_ANIM_ID, fallAnim);
 	}
 
-	nextFireBreathingTimer = Timer(2.0f);
-	nextHammerThrowingTimer = Timer(3.0f);
+	if (!anims->Contains(BOWSER_BOTH_ATTACK_LEFT_ANIM_ID))
+	{
+		auto bothAttackLeftAnim = new Animation(50);
+		bothAttackLeftAnim->Add(BOWSER_BOTH_ATTACK_LEFT_SPRITE_1);
+		bothAttackLeftAnim->Add(BOWSER_BOTH_ATTACK_LEFT_SPRITE_2);
+		anims->Add(BOWSER_BOTH_ATTACK_LEFT_ANIM_ID, bothAttackLeftAnim);
+	}
+
+	if (!anims->Contains(BOWSER_BOTH_ATTACK_RIGHT_ANIM_ID))
+	{
+		auto bothAttackRightAnim = new Animation(50);
+		bothAttackRightAnim->Add(BOWSER_BOTH_ATTACK_RIGHT_SPRITE_1);
+		bothAttackRightAnim->Add(BOWSER_BOTH_ATTACK_RIGHT_SPRITE_2);
+		anims->Add(BOWSER_BOTH_ATTACK_RIGHT_ANIM_ID, bothAttackRightAnim);
+	}
+
+    nextFireBreathingTimer = Timer(2.0f);
 	nextJumpTimer = Timer(3.0f);
 	fallingTimer = Timer(1.0f);
-	
-	nextFireBreathingTimer.Start();
-	nextHammerThrowingTimer.Start();
-	nextJumpTimer.Start();
-	fireBreathAnimTimer = Timer(0.5f);
-	hammerThrowAnimTimer = Timer(1.0f);
 
+	nextFireBreathingTimer.Start();
+	nextJumpTimer.Start();
+	fireBreathAnimTimer = Timer(1.0f);
+	health = 5;
 	moveLeft = true;
 	state = BowserState::Walking;
 	target = mario;
 
 	isFireBreathing = false;
-	isHammerThrowing = false;
 }
 
 void Bowser::SetState(BowserState newState)
@@ -100,19 +118,16 @@ void Bowser::SetState(BowserState newState)
 	{
 	case BowserState::Stop:
 		velocity.x = 0;
+		velocity.y = 0;
 		break;
 	case BowserState::Walking:
 		velocity.x = moveLeft ? -BOWSER_WALKING_SPEED : BOWSER_WALKING_SPEED;
 		break;
 	case BowserState::Jumping:
 		velocity.y = -BOWSER_JUMPING_SPEED;
+		velocity.x = moveLeft ? BOWSER_WALKING_SPEED : -BOWSER_WALKING_SPEED;
 		break;
 	case BowserState::Dead:
-		velocity.x = 0;
-		velocity.y = 0;
-		isCollidable = false;
-		isDeleted = true;
-		break;
 	case BowserState::Falling:
 		velocity.x = 0;
 		velocity.y = 0;
@@ -136,6 +151,15 @@ void Bowser::UpdateDirection()
 	}
 }
 
+void Bowser::HandleHeathDecrease()
+{
+	health--;
+	if (health <= 0)
+	{
+		SetState(BowserState::Dead);
+	}
+}
+
 void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) 
 {
 	UpdateDirection();
@@ -144,9 +168,6 @@ void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	case BowserState::Walking:
 		velocity.x = moveLeft ? -BOWSER_WALKING_SPEED : BOWSER_WALKING_SPEED;
 		break;
-	case BowserState::Jumping:
-		velocity.y -= BOWSER_JUMPING_SPEED * dt;
-		break;
 	case BowserState::Falling:
 		fallingTimer.Start();
 		fallingTimer.ProcessTimer(dt);
@@ -154,8 +175,6 @@ void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		{
 			SetState(BowserState::Dead);
 		}
-	case BowserState::Dead:
-		velocity.y += 500.0f * dt;
 		break;
 	}
 	velocity.y += 500.0f * dt;
@@ -166,40 +185,63 @@ void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		SetState(BowserState::Stop);
 		return;
 	}
-	TimerHandler(dt, coObjects, ctx);
+	TimerHandler(dt,ctx);
 }
 
 void Bowser::Render()
 {
-	float renderX, renderY;
-	Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
+		float renderX, renderY;
+		Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
 
-	if (state == BowserState::Falling)
-	{
-		Animations::GetInstance()->Get(BOWSER_FALL_ANIM_ID)
-			->Render(round(renderX), round(renderY), isFacingRight, 0);
-	}
-	else if (isFireBreathing)
-	{
-		Animations::GetInstance()->Get(BOWSER_FIRE_BREATH_ANIM_ID)
-			->Render(round(renderX), round(renderY), isFacingRight, 0);
-	}
-	else if(isHammerThrowing)
-	{
-		Animations::GetInstance()
-			->Get(isFacingRight ? BOWSER_HAMMER_THROW_RIGHT_ANIM_ID : BOWSER_HAMMER_THROW_LEFT_ANIM_ID)
-			->Render(round(renderX), round(renderY) ,0, 0);
-	}
-	else
-	{
-		Animations::GetInstance()
-			->Get(state == BowserState::Dead ? BOWSER_DEATH_ANIM_ID :
-				(state == BowserState::Jumping ? BOWSER_JUMP_ANIM_ID: BOWSER_WALK_ANIM_ID))
-			->Render(round(renderX), round(renderY), isFacingRight, state == BowserState::Dead ? 1 : 0);
-	}
+		int animId = -1;
+		float yOffset = 0; 
+
+		if (state == BowserState::Falling) {
+			animId = BOWSER_FALL_ANIM_ID;
+		}
+		else if (state == BowserState::Dead) {
+			animId = BOWSER_DEATH_ANIM_ID;
+		}
+		else if (isFireBreathing)
+		{
+			if (state == BowserState::Jumping)
+			{
+				animId = isFacingRight ? BOWSER_BOTH_ATTACK_RIGHT_ANIM_ID : BOWSER_BOTH_ATTACK_LEFT_ANIM_ID;
+				yOffset = 9.0f; 
+			}
+			else
+			{
+				animId = BOWSER_FIRE_BREATH_ANIM_ID;
+				yOffset = 0.0f;
+			}
+		}
+
+		else if (state == BowserState::Jumping)
+		{
+			animId = isFacingRight ? BOWSER_HAMMER_THROW_RIGHT_ANIM_ID : BOWSER_HAMMER_THROW_LEFT_ANIM_ID;
+			yOffset = 9.0f;
+		}
+		else
+		{
+			animId = BOWSER_WALK_ANIM_ID;
+			yOffset = 0.0f;
+		}
+		Animation *ani = Animations::GetInstance()->Get(animId);
+
+		if (ani != nullptr)
+		{
+			int flipY = (state == BowserState::Dead) ? 1 : 0;
+
+			ani->Render(
+				round(renderX),
+				round(renderY - yOffset),
+				isFacingRight,
+				flipY
+			);
+		}
 }
 
-void Bowser::TimerHandler(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
+void Bowser::TimerHandler(float dt, SceneContext* ctx)
 {
 	if (state == BowserState::Dead || state == BowserState::Falling)
 		return;
@@ -211,20 +253,11 @@ void Bowser::TimerHandler(float dt, vector<GameObject*>& coObjects, SceneContext
 		fireBreathAnimTimer.Start();
 	}
 
-	nextHammerThrowingTimer.ProcessTimer(dt);
-	if (nextHammerThrowingTimer.IsFinished())
-	{
-		isHammerThrowing = true;
-		for (int i = 0; i < 5; i++)
-			HammerThrowAttack(i, coObjects, ctx);
-		nextHammerThrowingTimer.Start();
-		hammerThrowAnimTimer.Start();
-	}
-
 	nextJumpTimer.ProcessTimer(dt);
 	if (nextJumpTimer.IsFinished())
 	{
 		SetState(BowserState::Jumping);
+		HammerThrowAttack(ctx);
 		nextJumpTimer.Start();
 	}
 
@@ -234,23 +267,13 @@ void Bowser::TimerHandler(float dt, vector<GameObject*>& coObjects, SceneContext
 		if (fireBreathAnimTimer.IsFinished())
 		{
 			isFireBreathing = false;
-			FireBreathAttack(coObjects, ctx);
+			FireBreathAttack(ctx);
 			fireBreathAnimTimer.SetIdle();
-		}
-	}
-
-	if (isHammerThrowing)
-	{
-		hammerThrowAnimTimer.ProcessTimer(dt);
-		if (hammerThrowAnimTimer.IsFinished())
-		{
-			isHammerThrowing = false;
-			hammerThrowAnimTimer.SetIdle();
 		}
 	}
 }
 
-void Bowser::FireBreathAttack(vector<GameObject*>& coObjects, SceneContext* ctx)
+void Bowser::FireBreathAttack(SceneContext* ctx)
 {
 	if (state == BowserState::Dead || state == BowserState::Falling)
 		return;
@@ -258,21 +281,37 @@ void Bowser::FireBreathAttack(vector<GameObject*>& coObjects, SceneContext* ctx)
 	ctx->addObject(f);
 }
 
-// changed: accept an index to stagger and offset spawn
-void Bowser::HammerThrowAttack(int index, vector<GameObject*>& coObjects, SceneContext* ctx)
+void Bowser::HammerThrowAttack( SceneContext* ctx)
 {
 	if (state == BowserState::Dead || state == BowserState::Falling)
 		return;
+	float wait = 0;
+	float offsetY = 0;
+	for (int index = 0; index < 5; index++)
+	{
+		float dir = isFacingRight ? 1.0f : -1.0f;
+		offsetY += -5.0f * index;
+		wait += index * 0.03f;
 
-	float dir = isFacingRight ? 1.0f : -1.0f;
-	float offsetY = -10.0f - index ;
-	float wait = index * 0.16f;
+		int spawnX = static_cast<int>(position.x);
+		int spawnY = static_cast<int>(position.y + offsetY);
+		auto h = new BowserHammer(spawnX, spawnY, isFacingRight, wait);
+		ctx->addObject(h);
+	}
+	
+	wait += 0.2f;
+	offsetY = -20.0f;
+	for (int index = 0; index < 2; index++)
+	{
+		float dir = isFacingRight ? 1.0f : -1.0f;
+		offsetY += -5.0f * index;
+		wait += index * 0.03f;
 
-	int spawnX = static_cast<int>(position.x );
-	int spawnY = static_cast<int>(position.y + offsetY);
-
-	auto h = new BowserHammer(spawnX, spawnY, isFacingRight, wait);
-	ctx->addObject(h);
+		int spawnX = static_cast<int>(position.x);
+		int spawnY = static_cast<int>(position.y + offsetY);
+		auto h = new BowserHammer(spawnX, spawnY, isFacingRight, wait);
+		ctx->addObject(h);
+	}
 }
 
 void Bowser::OnNoCollision(float dt)
@@ -295,7 +334,7 @@ void Bowser::OnCollisionWith(CollisionEvent* event)
 		{
 			moveLeft = !moveLeft;
 		}
-		if (event->normalizedDir.y < 0 && event->otherTile->IsBlocking())
+		if (event->normalizedDir.y < 0 && event->otherTile->IsBlocking() && velocity.y >= 0.0f)
 		{
 			position.y = event->otherTile->worldY - GetBoundingBox().GetHeight();
 			SetState(BowserState::Walking);
