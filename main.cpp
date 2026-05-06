@@ -198,7 +198,8 @@ static void LoadResource()
 	t->Add(BLOCKS_OVERWORLD_TEX_ID, L"Assets/Sprites/overworld_blocks.png");
 	t->Add(OVERWORLD_ITEMS_TEX_ID, L"Assets/Sprites/overworld_items.png");
 	t->Add(KOOPA_TEX_ID, L"Assets/Sprites/koopa_sprites.png");
-	
+	t->Add(BOWSER_TEX_ID, L"Assets/Sprites/bowser_sprites.png");
+	t->Add(BOWSER_ITEM_BULLET_TEX_ID, L"Assets/Sprites/bowser_item_sprites.png");
 	t->Add(HUDCOIN_TEX_ID, L"Assets/Sprites/HUDCoin.png");
 	t->Add(POINTS_TEX_ID, L"Assets/Sprites/point.png");
 

@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Rect.h"
 #include "Scene.h"
+#include "Bowser.h"
 #include <vector>
 #include "Timer.h"
 
@@ -99,6 +100,7 @@ class Mario : public GameObject
 	// on collision with
 	bool OnCollisionWithGoomba(const CollisionEvent* e);
 	bool OnCollisionWithKoopa(const CollisionEvent* e);
+	bool OnCollisionWithBowser(const CollisionEvent* e);
 	static bool OnCollisionWithPortal(const CollisionEvent* e);
 	bool OnCollisionWithQuestionBlock(const CollisionEvent* e);
 	bool OnCollisionWithCoin(const CollisionEvent* e);
