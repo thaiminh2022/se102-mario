@@ -17,7 +17,6 @@
 #include "PointPopup.h"
 #include "Pipe.h"
 #include "QuestionBlock.h"
-#include "Bowser.h"
 #include "HUD.h"
 #include <queue>
 
@@ -149,15 +148,8 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(fkp);
 	}
 
-	// Bowser
-	if (config->entityData.bowserStart.hasValue)
-	{
-		auto pos = config->entityData.bowserStart.value;
-		const auto bowser = new Bowser(pos.x, pos.y, sceneContext->mario);
-		objects.push_back(bowser);
-	}
-
 	// question
+
 	for (const auto& qbData : config->entityData.questionBlocks)
 	{
 		const auto qb = new QuestionBlock(qbData.position, qbData.dropType);

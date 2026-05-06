@@ -197,16 +197,6 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 			Explode();
 			return;
 		}
-
-		const auto bowser = dynamic_cast<Bowser*>(e->otherObject);
-		if (bowser != nullptr)
-		{
-			bowser->HandleHeathDecrease();
-			this->isExploded = true;
-			sm->AddScore(2000);
-			Explode();
-			return;
-		}
 	}
 
 	if (e->IsBlocking()) {
