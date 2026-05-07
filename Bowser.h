@@ -24,7 +24,10 @@
 #include "Debug.h"
 
 constexpr float BOWSER_WALKING_SPEED = 15.0f;
-constexpr float BOWSER_JUMPING_SPEED = 250.0f;
+constexpr float BOWSER_JUMPING_SPEED = 240.0f;
+constexpr float BOWSER_JUMP_INTERVAL = 1.5f;
+constexpr float BOWSER_FIRE_BREATH_INTERVAL = 3.0f;
+constexpr float BOWSER_HAMMERTHROW_INTERVAL = 4.0f;
 
 enum class BowserState : std::uint8_t
 {
@@ -38,20 +41,23 @@ enum class BowserState : std::uint8_t
 class Bowser :public GameObject
 {
 	bool moveLeft;
+	bool isGrounded;
+	bool isDead;
 	Mario* target;
 	int health;
 	Timer nextFireBreathingTimer;
 	Timer nextJumpTimer;
+	Timer nextHammerThrowTimer;
 	Timer fallingTimer;
 	BowserState state;
-	bool isFireBreathing;
 	Timer fireBreathAnimTimer;
+	Timer hammerThrowAnimTimer;
 public:
 	Bowser(int startX, int startY, Mario* mario);
 	void SetState(BowserState newState);
 	BowserState GetState() const { return state;}
 	int GetHealth() const { return health; }
-	void HandleHeathDecrease();
+	void HandleHeathDecrease(int amount);
 	Timer GetNextFireBreathingTimer() const { return nextFireBreathingTimer; }
 	void UpdateDirection();
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
@@ -66,5 +72,6 @@ public:
 	{
 		return Rect::FromXYWH(static_cast<int>(position.x), static_cast<int>(position.y), 32, 32);
 	}
+	bool IsActive() override { return state != BowserState::Dead; }
 };
 

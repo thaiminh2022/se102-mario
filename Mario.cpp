@@ -37,7 +37,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	slidingToYWinning = 0;
 	flagPoleFlipWaitTimer = Timer(1);
 	isGrounded = false;
-	isInvincible = false;
+	isInvincible = true;
 	isCollidable = true;
 	isFacingRight = true;
 	velocity.x = 0.0f;

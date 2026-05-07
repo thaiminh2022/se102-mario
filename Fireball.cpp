@@ -201,14 +201,13 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 		const auto bowser = dynamic_cast<Bowser*>(e->otherObject);
 		if (bowser != nullptr)
 		{
-			bowser->HandleHeathDecrease();
+			bowser->HandleHeathDecrease(1);
 			this->isExploded = true;
-			sm->AddScore(2000, this->position);
 			Explode();
 			return;
 		}
 	}
-
+	//will add collision with firebreath and hammer later, for now only tile collision
 	if (e->IsBlocking()) {
 		if (e->normalizedDir.y == -1)
 			velocity.y = FIREBALL_BOUNCE_SPEED; // bounce up if hit the ground

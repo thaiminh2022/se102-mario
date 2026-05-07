@@ -125,7 +125,7 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	objects.push_back(sceneContext->mario);
 	if (ctx.hasValue)
 	{
-		sceneContext->mario->SetPowerLevel(ctx.value.marioPower);
+		/*sceneContext->mario->SetPowerLevel(ctx.value.marioPower);*/
 		if (ctx.value.marioCtx.hasValue)
 		{
 			sceneContext->mario->SetExitPipe(ctx.value.marioCtx.value);
