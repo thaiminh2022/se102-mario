@@ -137,7 +137,7 @@ public:
 	
 	void SetEnterPipe(const PipeData& pipe);
 	void SetExitPipe(const MarioPipeCtx& returnPipeData);
-	void SetIsInWater(bool newIsInWater) {isInWater = newIsInWater;}
+	void SetIsInWater(bool newIsInWater);
 	void SetPosition(const Vector2 newPosition) {
 		position = newPosition;
 	}

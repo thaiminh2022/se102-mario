@@ -36,7 +36,7 @@ int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 
 {
-	isInWater = true;
+	isInWater = false;
 	isRendering = true;
 	slidingToYWinning = 0;
 	flagPoleFlipWaitTimer = Timer(1);
@@ -85,6 +85,24 @@ void Mario::SetExitPipe(const MarioPipeCtx& returnPipeData)
 
 	Game::GetInstance()->GetCamera()->SetPosition(position.x - 64, 0);
 
+}
+
+void Mario::SetIsInWater(const bool newIsInWater)
+{
+	if (isInWater == newIsInWater)
+		return;
+
+	isInWater = newIsInWater;
+
+	if (isInWater)
+	{
+		fallAcc = 180.0f;
+		velocity.y = min(velocity.y, 190.0f);
+	}
+	else
+	{
+		fallAcc = STOP_FALL;
+	}
 }
 
 

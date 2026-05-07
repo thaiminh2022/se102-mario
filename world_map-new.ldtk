@@ -6562,7 +6562,7 @@
 						},
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [2,9],
+							"__grid": [2,10],
 							"__pivot": [0,0],
 							"__tags": ["entity"],
 							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
@@ -6571,10 +6571,10 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 31,
-							"px": [32,144],
+							"px": [32,160],
 							"fieldInstances": [],
 							"__worldX": 1600,
-							"__worldY": 704
+							"__worldY": 720
 						},
 						{
 							"__identifier": "InstantTeleportPipe",
@@ -7636,19 +7636,19 @@
 						},
 						{
 							"__identifier": "WaterTrigger",
-							"__grid": [10,6],
+							"__grid": [0,19],
 							"__pivot": [0,0],
 							"__tags": ["trigger"],
 							"__tile": null,
 							"__smartColor": "#5B85FF",
 							"iid": "ae4e8ba0-48b0-11f1-9fe6-114edd4e48ce",
-							"width": 80,
-							"height": 80,
+							"width": 176,
+							"height": 144,
 							"defUid": 281,
-							"px": [160,96],
+							"px": [0,304],
 							"fieldInstances": [{ "__identifier": "in_water", "__type": "Bool", "__value": true, "__tile": null, "defUid": 283, "realEditorValues": [] }],
-							"__worldX": 1728,
-							"__worldY": 656
+							"__worldX": 1568,
+							"__worldY": 864
 						},
 						{
 							"__identifier": "WaterTrigger",
@@ -7658,7 +7658,7 @@
 							"__tile": null,
 							"__smartColor": "#5B85FF",
 							"iid": "c0aadce0-48b0-11f1-9fe6-81062e8c2bec",
-							"width": 80,
+							"width": 96,
 							"height": 112,
 							"defUid": 281,
 							"px": [2432,96],

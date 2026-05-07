@@ -74,6 +74,29 @@ struct ReturnPipeData
 	Rect returnRect;
 	Vector2Int moveTo;
 };
+struct BloopersStartData
+{
+	Vector2Int lowestLimit;
+	Vector2Int highestLimit;
+
+	BloopersStartData(const Vector2Int& lowestLimit, const Vector2Int& highestLimit)
+		: lowestLimit(lowestLimit),
+		  highestLimit(highestLimit)
+	{
+	}
+};
+
+struct InWaterTriggerData
+{
+	Rect zone;
+	bool inWater;
+
+	explicit InWaterTriggerData(const Rect zone, const bool inWater)
+		:zone(zone), inWater(inWater)
+	{
+	}
+};
+
 struct PipeData
 {
 	Rect zone;
@@ -157,6 +180,8 @@ struct SceneEntityData
 	vector<Vector2Int> goombaStarts;
 	vector<Vector2Int> koopaStarts;
 	vector<CheepCheepsData> cheepCheeps;
+	vector<BloopersStartData> bloopers;
+	vector<InWaterTriggerData> waterTriggers;
 	vector<Vector2Int> WingedKoopaStarts;
 	vector<QuestionBlockData> questionBlocks;
 	vector<BrickBlockData> brickBlocks;

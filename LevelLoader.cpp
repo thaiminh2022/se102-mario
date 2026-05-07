@@ -37,6 +37,7 @@ const string PLAYER_START = "PlayerStart";
 const string GOOMBA_START= "GoombaStart";
 const string KOOPA_START= "KoopaStart";
 const string CHEEP_CHEEPS_START = "FishStart";
+const string BLOOPER_START = "SquidStart";
 
 const string WINGED_KOOPA_START = "WingedKoopaStart";
 const string QUESTION_BLOCK= "QuestionBlock";
@@ -53,6 +54,8 @@ const string PIPE = "Pipe";
 const string TELEPORT_PIPE = "TeleportPipe";
 const string INSTANT_TELEPORT_PIPE = "InstantTeleportPipe";
 const string CLRSCR_COLOR_TRIGGER = "ClearScreenColorTrigger";
+const string IN_WATER_TRIGGER = "WaterTrigger";
+
 
 
 
@@ -348,6 +351,27 @@ void LevelLoader::ParseCheepCheeps(SceneEntityData& sceneEntities, std::vector<E
 		sceneEntities.cheepCheeps.emplace_back(
 			Vector2Int(g->px[0], g->px[1]), 
 			isRedJson.value.get<bool>());
+	}
+}
+
+void LevelLoader::ParseBloopers(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities)
+{
+	const auto bloopers = GetEntityDataWithIdentifier(entities, BLOOPER_START);
+	for (const auto& g : bloopers)
+	{
+		const auto lowestLimitJson = GetFieldValueWithIdentifier(g->fieldInstances, "lowest_limit");
+		const auto highestLimitJson = GetFieldValueWithIdentifier(g->fieldInstances, "highest_limit");
+
+
+		if (!lowestLimitJson.hasValue || !highestLimitJson.hasValue)
+			continue;
+
+		const auto lowestLimit = lowestLimitJson.value.get<LDTKPoint>();
+		const auto highestLimit = highestLimitJson.value.get<LDTKPoint>();
+
+		sceneEntities.bloopers.emplace_back(
+			Vector2Int(lowestLimit.cx * 16, lowestLimit.cy * 16), 
+			Vector2Int(highestLimit.cx * 16, highestLimit.cy * 16));
 	}
 }
 
@@ -769,6 +793,22 @@ void LevelLoader::ParseClearScreenColorTrigger(SceneEntityData& sceneEntities,
 	}
 }
 
+void LevelLoader::ParseInWaterTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
+{
+	const auto waterTriggers = GetEntityDataWithIdentifier(entities, IN_WATER_TRIGGER);
+
+	for (const auto& waterTrigger : waterTriggers)
+	{
+		const auto& inWaterJson = GetFieldValueWithIdentifier(waterTrigger->fieldInstances, "in_water");
+		if (!inWaterJson.hasValue)
+			continue;
+
+		const auto inWater = inWaterJson.value.get<bool>();
+		const auto zone = Rect::FromXYWH(waterTrigger->px[0], waterTrigger->px[1], waterTrigger->width, waterTrigger->height);
+		sceneEntities.waterTriggers.emplace_back(zone, inWater);
+	}
+}
+  
 void LevelLoader::RebuildCacheForLevel(vector<EntityInstance>& entities)
 {
 	levelEntitiesCache.clear();
@@ -792,24 +832,34 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParsePlayerStart(sceneEntities, entities);
 
 	// NOTE: emplace_back is push_back but takes in a constructor, so no temp object creation is needed
+	
+	// Entities
 	ParseGoombas(sceneEntities, entities);
 	ParseKoopas(sceneEntities, entities);
 	ParseCheepCheeps(sceneEntities, entities);
+	ParseBloopers(sceneEntities, entities);
 	ParseWingedKoopas(sceneEntities, entities);
 	ParseBowsers(sceneEntities, entities);
 	ParseToad(sceneEntities, entities);
-	ParseBridge(sceneEntities, entities);
+	ParseFireballTrap(sceneEntities, entities);
+	
+	// collectables
 	ParseQuestionBlock(sceneEntities, entities);
 	ParseBrickBlock(sceneEntities, entities);
 	ParseCoin(sceneEntities, entities);
-	ParseNextLevelZone(sceneEntities, entities);
-	ParseBackgroundMusic(level, sceneEntities, entities);
-	ParseFireballTrap(sceneEntities, entities);
+	
+	// gameplay
+	ParseBridge(sceneEntities, entities);
 	ParseFlagPole(sceneEntities, entities);
 	ParsePipe(sceneEntities, entities);
 	ParseTeleportPipe(sceneEntities, entities);
 	ParseInstantTeleportPipe(sceneEntities, entities);
+
+	// triggers
+	ParseNextLevelZone(sceneEntities, entities);
+	ParseBackgroundMusic(level, sceneEntities, entities);
 	ParseClearScreenColorTrigger(sceneEntities, entities);
+	ParseInWaterTrigger(sceneEntities, entities);
 
 
 	return sceneEntities;

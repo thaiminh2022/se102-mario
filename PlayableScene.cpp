@@ -22,6 +22,7 @@
 #include "BgMusicTrigger.h"
 #include "CheepCheeps.h"
 #include "ClearScreenColorTrigger.h"
+#include "InWaterTrigger.h"
 
 
 using std::priority_queue;
@@ -213,6 +214,13 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		const auto musicTrigger = new BgMusicTrigger(musicTriggerData.id, musicTriggerData.zone);
 		objects.push_back(musicTrigger);
+	}
+
+	// mario in water trigger
+	for (const auto& waterTrigger : config->entityData.waterTriggers)
+	{
+		const auto trigger = new InWaterTrigger(waterTrigger.zone, waterTrigger.inWater);
+		objects.push_back(trigger);
 	}
 
 	// background music

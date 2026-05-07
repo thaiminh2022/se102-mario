@@ -96,7 +96,6 @@ void Mario::HandleSwim(float dt)
 
 	const auto input = InputManager::GetInstance();
 
-	isGrounded = false;
 	fallAcc = WATER_GRAVITY;
 
 	if (input->IsKeyDownThisFrame('W'))
@@ -108,9 +107,6 @@ void Mario::HandleSwim(float dt)
 
 void Mario::HandleJump(float dt)
 {
-	if (isInWater)
-		return;
-
 	const auto input = InputManager::GetInstance();
 
 	// INITIATE JUMP

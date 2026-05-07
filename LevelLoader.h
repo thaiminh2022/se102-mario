@@ -36,6 +36,7 @@ class LevelLoader
 	void ParseGoombas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseKoopas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseCheepCheeps(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseBloopers(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseWingedKoopas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 
 	void ParseBowsers(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
@@ -52,7 +53,7 @@ class LevelLoader
 	void ParseTeleportPipe(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseInstantTeleportPipe(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseClearScreenColorTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
-
+	void ParseInWaterTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 
 	// helper
 	void RebuildCacheForLevel(vector<EntityInstance>& entities);
