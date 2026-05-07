@@ -1,5 +1,7 @@
 #include "AssetIDs.h"
 #include "AudioManager.h"
+#include "Bloopers.h"
+#include "CheepCheeps.h"
 #include "Coin.h"
 #include "FireballTrap.h"
 #include "FlagPole.h"
@@ -56,6 +58,28 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 	return false;
 }
 
+bool Mario::OnCollisionWithCheepCheeps(const CollisionEvent* e)
+{
+	const auto cc = dynamic_cast<CheepCheeps*>(e->otherObject);
+	if (cc != nullptr)
+	{
+		OnMarioHit();
+		return true;
+	}
+	return false;
+}
+
+bool Mario::OnCollisionWithBloopers(const CollisionEvent* e)
+{
+	const auto blooper = dynamic_cast<Bloopers*>(e->otherObject);
+	if (blooper != nullptr)
+	{
+		OnMarioHit();
+		return true;
+	}
+	return false;
+}
+
 bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 {
 	const auto koopa = dynamic_cast<Koopa*>(e->otherObject);
@@ -85,7 +109,7 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 				koopa->SetMoveDir(false);
 			}
 			koopa->SetState(KoopaState::Moving);
-			AudioManager::GetInstance()->PlaySFX(SFX::GOOMBA_STOMP);
+			AudioManager::GetInstance()->PlaySFX(AUDIOS::GOOMBA_STOMP);
 			return true;
 		}
 		if (e->normalizedDir.y == -1)
@@ -119,7 +143,7 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 					sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 				}
 			}
-			AudioManager::GetInstance()->PlaySFX(SFX::GOOMBA_STOMP);
+			AudioManager::GetInstance()->PlaySFX(AUDIOS::GOOMBA_STOMP);
 
 			return true;
 		}
@@ -333,7 +357,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 	{
 		if (e->otherTile->type == CollisionTileType::Death)
 		{
-			OnMarioHit();
+			OnMarioHit(true);
 			return;
 		}
 
@@ -350,6 +374,8 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 	else if (e->IsObjectCollision())
 	{
 		if (OnCollisionWithGoomba(e)) return;
+		if (OnCollisionWithCheepCheeps(e)) return;
+		if (OnCollisionWithBloopers(e)) return;
 		if (OnCollisionWithKoopa(e)) return;
 		if (OnCollisionWithPortal(e)) return;
 		if (OnCollisionWithQuestionBlock(e)) return;
@@ -371,9 +397,9 @@ void Mario::OnNoCollision(float dt)
 	position += velocity * dt;
 	isGrounded = false;
 }
-void Mario::OnMarioHit()
+void Mario::OnMarioHit(const bool force)
 {
-	if (!isInvincible)
+	if (!isInvincible || force)
 	{
 		if (power == MarioPower::Big || power == MarioPower::Fire)
 		{

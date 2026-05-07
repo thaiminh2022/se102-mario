@@ -371,10 +371,39 @@ constexpr int KOOPA_DEAD_ANIM_ID = 73700;
 constexpr int KOOPA_DEAD_SPRITE = 73701;
 
 
-// ==========================================
-// SCENES AND UI
-// ==========================================
+/// ===============================
+// CHEEP CHEEPS (E = 80000) 
+/// ===============================
 
+/// cheep cheeps,  t = 1;
+constexpr int CHEEPS_TEX_ID = 81000;
+
+// RED (A = 1)
+constexpr int RED_CHEEP_ANIM = 81100;
+constexpr int RED_CHEEP_SPRITE_1 = 81101;
+constexpr int RED_CHEEP_SPRITE_2 = 81102;
+
+// WATER (A=2)
+constexpr int WATER_CHEEP_ANIM = 81200;
+constexpr int WATER_CHEEP_SPRITE_1 = 81201;
+constexpr int WATER_CHEEP_SPRITE_2 = 81202;
+
+/// ===============================
+// BLOOPERS (E = 90000) 
+/// ===============================
+constexpr int BLOOPERS_TEX_ID = 91000;
+
+// WATER SWIM (A = 1)
+constexpr int WATER_BLOOPER_SWIM_ANIM = 91100;
+constexpr int WATER_BLOOPER_SWIM_SPRITE_1 = 91101;
+
+// WATER IDLE (A = 2)
+
+constexpr int WATER_BLOOPER_IDLE_ANIM = 91200;
+constexpr int WATER_BLOOPER_IDLE_SPRITE_1 = 91201;
+
+
+/// ================================
 // HUD ELEMENTS
 constexpr int HUDCOIN_TEX_ID = 50000;
 constexpr int HUDCOIN_SPRITE_ID = 50001;
@@ -388,25 +417,30 @@ enum NonPlayableScene : std::int8_t
 	LEVEL_TRANSITION = 99,
 };
 
-/// MUSICS: Background music will be managed by negative values in ldtk
-
-// SFX
-enum SFX : std::uint8_t
+// ALL BACKGROUND MUSIC WILL BE MANAGED BY NEGATIVE VALUE AND 0
+enum AUDIOS : std::int8_t
 {
+	GROUND_THEME = -3,
+	UNDERGROUND_THEME = -2,
+	CASTLE_THEME = -1,
+	UNDERWATER_THEME = 0,
+
+	// SFX 
+
 	MARIO_JUMP_SMALL = 1,
-	MARIO_JUMP_BIG,
-	GOOMBA_STOMP,
-	MARIO_DIE,
-	FIREBALL,
-	MARIO_COLLECT_COIN,
-	MARIO_BUMP,
-	MARIO_POWERUP,
-	POWERUP_APPEARS,
-	BREAK_BLOCK,
-	PIPE_ENTER,
-	INVINCIBILITY_THEME,
-	FLAG_PULL,
-	STAGE_CLEAR,
+	MARIO_JUMP_BIG = 2,
+	GOOMBA_STOMP = 3,
+	MARIO_DIE = 4,
+	FIREBALL = 5,
+	MARIO_COLLECT_COIN = 6,
+	MARIO_BUMP = 7,
+	MARIO_POWERUP = 8,
+	POWERUP_APPEARS = 9,
+	BREAK_BLOCK = 10,
+	PIPE_ENTER = 11,
+	INVINCIBILITY_THEME = 12,
+	FLAG_PULL = 13,
+	STAGE_CLEAR = 14,
 };
 
 /// FONT

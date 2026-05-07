@@ -65,11 +65,10 @@ const int MAX_FIREBALL_COUNT = 2;
 
 class Mario : public GameObject
 {
-
-
 	bool isGrounded;
 	bool isInvincible;
 	bool isRendering;
+	bool isInWater;
 	int enemySequenceKilledCount; //used for scoring mechanic of killing multiple enemies in a row without touching the ground
 
 	float fallAcc = 562.5f;
@@ -92,12 +91,14 @@ class Mario : public GameObject
 	MarioPipeCtx pipeExitingData;
 
 
-	void OnMarioHit();
+	void OnMarioHit(bool force = false);
 	int GetMarioAnimId() const;
 	void LoadSpriteAndAnimation();
 
 	// on collision with
 	bool OnCollisionWithGoomba(const CollisionEvent* e);
+	bool OnCollisionWithCheepCheeps(const CollisionEvent* e);
+	bool OnCollisionWithBloopers(const CollisionEvent* e);
 	bool OnCollisionWithKoopa(const CollisionEvent* e);
 	static bool OnCollisionWithPortal(const CollisionEvent* e);
 	bool OnCollisionWithQuestionBlock(const CollisionEvent* e);
@@ -128,8 +129,9 @@ class Mario : public GameObject
 	void MarioWalkingToCastle(float dt, vector<GameObject*>& coObjects, SceneContext* ctx);
 	void MarioEnteringPipe(float dt);
 	void MarioExitingPipe(float dt);
-	bool CheckMarioFalloffMap();
-	void ClampMarioXToCameraX();
+	void ClampMario();
+	void HandleSwim(float dt);
+
 
 public:
 	Mario(int startX, int startY);
@@ -139,7 +141,12 @@ public:
 	
 	void SetEnterPipe(const PipeData& pipe);
 	void SetExitPipe(const MarioPipeCtx& returnPipeData);
-	
+	void SetIsInWater(bool newIsInWater);
+	void SetPosition(const Vector2 newPosition) {
+		position = newPosition;
+	}
+	void ResetRender() { renderIndex = 0; isRendering = true; }
+	void ResetState() { state = MarioState::Idle; isCollidable = true; velocity = Vector2::Zero(); }
 
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;

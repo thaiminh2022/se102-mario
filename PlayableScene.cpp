@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "AudioManager.h"
+#include "Bloopers.h"
 #include "Coin.h"
 #include "FireballTrap.h"
 #include "FlagPole.h"
@@ -19,6 +20,11 @@
 #include "QuestionBlock.h"
 #include "HUD.h"
 #include <queue>
+
+#include "BgMusicTrigger.h"
+#include "CheepCheeps.h"
+#include "ClearScreenColorTrigger.h"
+#include "InWaterTrigger.h"
 
 
 using std::priority_queue;
@@ -141,7 +147,21 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(kp);
 	}
 
-	// Winged koopa
+	// cheep cheeps
+	for (const auto& ccData : config->entityData.cheepCheeps)
+	{
+		const auto cc = new CheepCheeps(ccData.startPosition, ccData.isRed);
+		objects.push_back(cc);
+	}
+
+	// bloopers
+	for (const auto& blooperData : config->entityData.bloopers)
+	{
+		const auto blooper = new Bloopers(blooperData.lowestLimit, blooperData.highestLimit);
+		objects.push_back(blooper);
+	}
+
+	// winged koopa
 	for (const auto& fkPos : config->entityData.WingedKoopaStarts)
 	{
 		const auto fkp = new Koopa(fkPos.x, fkPos.y, KoopaForm::Winged);
@@ -192,12 +212,24 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(new FlagPole(flag.zone, flag.moveToPosition));
 	}
 
-
 	// pipes
 	for (const auto& pipeData : config->entityData.pipes)
 	{
 		const auto pipe = new Pipe(pipeData);
 		objects.push_back(pipe);
+	}
+	// music triggers
+	for (const auto& musicTriggerData : config->entityData.musicTriggers)
+	{
+		const auto musicTrigger = new BgMusicTrigger(musicTriggerData.id, musicTriggerData.zone);
+		objects.push_back(musicTrigger);
+	}
+
+	// mario in water trigger
+	for (const auto& waterTrigger : config->entityData.waterTriggers)
+	{
+		const auto trigger = new InWaterTrigger(waterTrigger.zone, waterTrigger.inWater);
+		objects.push_back(trigger);
 	}
 
 	// background music
@@ -207,8 +239,15 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	}
 	levelTimer = Timer(timeLeftForLevel);
 	levelTimer.Start();
+
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
+	// triggers;
+	for (const auto& colorTriggerData : config->entityData.clearScreenColorTriggers)
+	{
+		const auto colorTrigger = new ClearScreenColorTrigger(colorTriggerData.zone, colorTriggerData.color);
+		objects.push_back(colorTrigger);
+	}
 }
 
 void PlayableScene::UnLoad()
@@ -221,6 +260,15 @@ void PlayableScene::UnLoad()
 		ob = nullptr;
 	}
 	objects.clear();
+
+	while (!addPendingGos.empty())
+	{
+		delete addPendingGos.front();
+		addPendingGos.pop();
+	}
+
+	delete sceneContext;
+	sceneContext = nullptr;
 }
 
 void PlayableScene::Render()
