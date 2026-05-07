@@ -120,16 +120,16 @@ Tilemap *LevelLoader::ParseLevel(int level)
 		Init();
 	}
 
-	const auto& map = worldMap.value;
+	auto& map = worldMap.value;
 	if (level >= map.levels.size())
 		return nullptr;
 	
-	const auto& levelData = map.levels[level];
+	auto& levelData = map.levels[level];
 	if (!levelData.layerInstances.hasValue)
 	{
 		return nullptr;
 	}
-	const auto& layersValue = levelData.layerInstances.value;
+	auto& layersValue = levelData.layerInstances.value;
 	/// -----
 	vector<RenderLayer> renderLayers;
 	const auto col = ParseCollisionLayer(layersValue);
@@ -183,11 +183,12 @@ Tilemap *LevelLoader::ParseLevel(int level)
 	const auto tilemap = new Tilemap(config);
 	return tilemap;
 }
-const LayerInstance* LevelLoader::GetLayerWithIdentifier(
-	const vector<LayerInstance>& v,
+
+LayerInstance* LevelLoader::GetLayerWithIdentifier(
+	vector<LayerInstance>& v,
 	const string& identifier)
 {
-	for (const auto& layer : v)
+	for (auto& layer : v)
 	{
 		if (layer.identifier == identifier)
 		{
@@ -197,7 +198,7 @@ const LayerInstance* LevelLoader::GetLayerWithIdentifier(
 	return nullptr;
 }
 
-CollisionLayer LevelLoader::ParseCollisionLayer(const vector<LayerInstance>& v)
+CollisionLayer LevelLoader::ParseCollisionLayer(vector<LayerInstance>& v)
 {
 	// collision layer is store as an int grid
 	CollisionLayer col;
@@ -229,7 +230,7 @@ CollisionLayer LevelLoader::ParseCollisionLayer(const vector<LayerInstance>& v)
 
 
 
-RenderLayer LevelLoader::ParseBackgroundLayer(const vector<LayerInstance>& v)
+RenderLayer LevelLoader::ParseBackgroundLayer(vector<LayerInstance>& v)
 {
 	auto layerData = GetLayerWithIdentifier(v, BACKGROUND_LAYER);
 	auto renderLayer = RenderLayer();
@@ -265,7 +266,7 @@ RenderLayer LevelLoader::ParseBackgroundLayer(const vector<LayerInstance>& v)
 	return renderLayer;
 }
 
-Optional<RenderLayer> LevelLoader::ParseAltLayer(const vector<LayerInstance>& v)
+Optional<RenderLayer> LevelLoader::ParseAltLayer(vector<LayerInstance>& v)
 {
 	auto layerData = GetLayerWithIdentifier(v, ALT_LAYER);
 	auto renderLayer = RenderLayer();
@@ -768,16 +769,25 @@ void LevelLoader::ParseClearScreenColorTrigger(SceneEntityData& sceneEntities,
 	}
 }
 
-SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<LayerInstance>& v)
+void LevelLoader::RebuildCacheForLevel(vector<EntityInstance>& entities)
+{
+	levelEntitiesCache.clear();
+	for (auto& e: entities)
+	{
+		levelEntitiesCache[e.identifier].push_back(&e);
+	}
+}
+
+SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInstance>& v)
 {
 	SceneEntityData sceneEntities{};
-	
-	auto layer = GetLayerWithIdentifier(v, DYNAMIC_LAYER);
-	auto entities = layer->entityInstances;
+	const auto layer = GetLayerWithIdentifier(v, DYNAMIC_LAYER);
+	auto& entities = layer->entityInstances;
 
 	if (entities.empty())
 		return sceneEntities;
 
+	RebuildCacheForLevel(entities);
 	
 	ParsePlayerStart(sceneEntities, entities);
 
@@ -807,6 +817,11 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, const vector<Laye
 
 vector<EntityInstance*> LevelLoader::GetEntityDataWithIdentifier(vector<EntityInstance>& v, const string& iden)
 {
+	if (!levelEntitiesCache.empty())
+	{
+		return levelEntitiesCache[iden];
+	}
+
 	vector<EntityInstance*> instances;
 	for (auto& e : v)
 	{

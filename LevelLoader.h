@@ -13,21 +13,23 @@ using std::vector;
 using std::wstring;
 using std::ifstream;
 using std::unordered_map;
+using std::string;
 
 
 class LevelLoader
 {
 	static LevelLoader* _instance;
 	unordered_map<int, Tilemap*> tilemaps;
+	unordered_map<string, vector<EntityInstance*>> levelEntitiesCache;
 	Optional<WorldMap> worldMap;
 
 	Tilemap* ParseLevel(int level);
-	static const LayerInstance* GetLayerWithIdentifier(const vector<LayerInstance>& v, const std::string& identifier);
-	static CollisionLayer ParseCollisionLayer(const vector<LayerInstance>& v);
-	static RenderLayer ParseBackgroundLayer(const vector<LayerInstance>& v);
-	static Optional<RenderLayer> ParseAltLayer(const vector<LayerInstance>& v);
+	static LayerInstance* GetLayerWithIdentifier(vector<LayerInstance>& v, const string& identifier);
+	static CollisionLayer ParseCollisionLayer(vector<LayerInstance>& v);
+	static RenderLayer ParseBackgroundLayer(vector<LayerInstance>& v);
+	static Optional<RenderLayer> ParseAltLayer(vector<LayerInstance>& v);
 
-	SceneEntityData ParseEntityLayer(int level, const vector<LayerInstance>& v);
+	SceneEntityData ParseEntityLayer(int level, vector<LayerInstance>& v);
 
 	// parsing function
 	void ParsePlayerStart(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
@@ -53,7 +55,8 @@ class LevelLoader
 
 
 	// helper
-	static vector<EntityInstance*> GetEntityDataWithIdentifier(vector<EntityInstance>& v, const std::string& iden);
+	void RebuildCacheForLevel(vector<EntityInstance>& entities);
+	vector<EntityInstance*> GetEntityDataWithIdentifier(vector<EntityInstance>& v, const std::string& iden);
 	static Optional<json> GetFieldValueWithIdentifier(const vector<FieldInstance>& v, const std::string& iden);
 	Optional<EntityInstance> ParseEntityRef(const LDTKEntityRef& entityRef) const;
 
