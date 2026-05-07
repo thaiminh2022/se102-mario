@@ -203,6 +203,8 @@ static void LoadResource()
 
 	
 	t->Add(HUDCOIN_TEX_ID, L"Assets/Sprites/HUDCoin.png");
+	t->Add(POINTS_TEX_ID, L"Assets/Sprites/point.png");
+
 
 
 	// Audios

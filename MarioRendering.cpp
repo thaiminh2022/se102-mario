@@ -112,6 +112,48 @@ int Mario::GetMarioAnimId() const
 			DebugOut(L"[Error] No handling for state: %d\n", state);
 		}
 	}
+	else if (power == MarioPower::StarmanBig) {
+		switch (state)
+		{
+		case MarioState::Walking:
+		case MarioState::Running:
+		case MarioState::WalkingToCastle:
+		case MarioState::EnteringPipe:
+			return STARMAN_BIG_RUN_ANIM_ID;
+		case MarioState::Skidding:
+			return STARMAN_BIG_SKID_ANIM_ID;
+		case MarioState::Idle:
+			return STARMAN_BIG_IDLE_ANIM_ID;
+		case MarioState::Jumping:
+			return STARMAN_BIG_JUMP_ANIM_ID;
+		case MarioState::Ducking:
+			return STARMAN_BIG_DUCK_ANIM_ID;
+		case MarioState::PullingFlag:
+			return STARMAN_BIG_FLAG_PULL_ANIM_ID;
+		default:
+			DebugOut(L"[Error] No handling for state: %d\n", state);
+		}
+	}
+	else if (power == MarioPower::StarmanSmall) {
+		switch (state)
+		{
+		case MarioState::Walking:
+		case MarioState::Running:
+		case MarioState::WalkingToCastle:
+		case MarioState::EnteringPipe:
+			return STARMAN_SMALL_RUN_ANIM_ID;
+		case MarioState::Skidding:
+			return STARMAN_SMALL_SKID_ANIM_ID;
+		case MarioState::Idle:
+			return STARMAN_SMALL_IDLE_ANIM_ID;
+		case MarioState::Jumping:
+			return STARMAN_SMALL_JUMP_ANIM_ID;
+		case MarioState::PullingFlag:
+			return STARMAN_SMALL_FLAG_PULL_ANIM_ID;
+		default:
+			DebugOut(L"[Error] No handling for state: %d\n", state);
+		}
+	}
 	return MARIO_IDLE_ANIM_ID;
 }
 

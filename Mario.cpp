@@ -12,10 +12,6 @@
 #include "FontManager.h"
 #include "Fireball.h"
 
-int Mario::goombaKilled = 0;
-int Mario::koopaKilled = 0;
-int Mario::coinCollected = 0;
-
 int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
 {
 	int count = 0;
@@ -51,6 +47,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
 	fireCooldownTimer.Start();
 	transformTimer = Timer(MARIO_GROW_TIME);
+	enemySequenceKilledCount = 0;
 	LoadSpriteAndAnimation();
 }
 
@@ -210,7 +207,10 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		{
 			isInvincible = false;
 			invincibleTimer.SetIdle();
-		}
+			if (power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig) {
+				power = MarioPower::Normal;//currently reset to normal. Will change later
+			}
+}
 	}
 
 	auto input = InputManager::GetInstance();
@@ -268,19 +268,25 @@ int Mario::GetFlagBonusScore(float touchingHeight)
 	return score;
 }
 
-
+void Mario::OnHittingGround() {
+	if (!isGrounded)
+	{
+		isGrounded = true;
+		enemySequenceKilledCount = 0;
+	}
+}
 
 Rect Mario::GetBoundingBox()
 {
 	RectF r;
-	if (power == MarioPower::Normal)
+	if (power == MarioPower::Normal || power == MarioPower::StarmanSmall)
 	{
 		r.top = position.y;
 		r.left = position.x + 1;
 		r.bottom = position.y + 16;
 		r.right = position.x + 14;
 	}
-	else if (power == MarioPower::Big || power == MarioPower::Fire)
+	else if (power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanBig)
 	{
 		r.top = position.y;
 		r.left = position.x + 2;

@@ -16,6 +16,7 @@
 #include <cmath>
 
 #include "Debug.h"
+#include "StatManager.h"
 
 Koopa::Koopa(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 {
@@ -73,6 +74,7 @@ Koopa::Koopa(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	state = KoopaState::Moving;
 	form = KoopaForm::Normal;
 	deadTimer = Timer(1.0f);
+	enemyKilledByShellCount = 0;
 }
 
 Koopa::Koopa(int startX, int startY, KoopaForm form) : Koopa(startX, startY)
@@ -90,7 +92,7 @@ void Koopa::SetState(KoopaState newState)
 		deadTimer.Start();
 		velocity.x = 0;
 	}
-	
+
 
 	if (state == KoopaState::NotMoving)
 	{
@@ -108,7 +110,7 @@ void Koopa::SetForm(KoopaForm newForm)
 	form = newForm;
 	if (form == KoopaForm::HiddingInShell)
 	{
-		position.y -= 8; 
+		position.y -= 8;
 		SetState(KoopaState::NotMoving);
 	}
 
@@ -117,7 +119,7 @@ void Koopa::SetForm(KoopaForm newForm)
 void Koopa::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 	switch (form)
-	{ 	
+	{
 	case KoopaForm::Normal:
 	case KoopaForm::Winged:
 		velocity.x = moveLeft ? -50.0f : 50.0f;
@@ -133,7 +135,7 @@ void Koopa::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		}
 		break;
 	}
-	velocity.y += 500.0f * dt; 
+	velocity.y += 500.0f * dt;
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }
 
@@ -145,9 +147,9 @@ void Koopa::Render()
 	Animations::GetInstance()
 		->Get(state == KoopaState::Dead || state == KoopaState::DeadUpsideDown ? KOOPA_DEAD_ANIM_ID :
 			(form == KoopaForm::Normal ? KOOPA_WALK_ANIM_ID :
-				(form == KoopaForm::Winged ? WINGED_KOOPA_FLY_ANIM_ID : 
+				(form == KoopaForm::Winged ? WINGED_KOOPA_FLY_ANIM_ID :
 					(state == KoopaState::Moving ? HIDING_KOOPA_SPIN_ANIM_ID : HIDING_KOOPA_HIDE_ANIM_ID))))
-		->Render(round(renderX), round(renderY),!moveLeft,state == KoopaState::DeadUpsideDown || state == KoopaState::Dead);
+		->Render(round(renderX), round(renderY), !moveLeft, state == KoopaState::DeadUpsideDown || state == KoopaState::Dead);
 }
 
 void Koopa::OnNoCollision(float dt)
@@ -181,17 +183,20 @@ void Koopa::OnCollisionWith(CollisionEvent* event)
 				position.y = event->otherTile->worldY + event->otherTile->tileHeight;
 			}
 		}
-		
+
 	}
 	else if (event->IsObjectCollision())
 	{
-		if (this->form == KoopaForm::HiddingInShell  && this->state == KoopaState::Moving)
+		if (this->form == KoopaForm::HiddingInShell && this->state == KoopaState::Moving)
 		{
+			auto sm = StatManager::GetInstance();
 			// Goomba
 			auto goomba = dynamic_cast<Goomba*>(event->otherObject);
 			if (goomba != nullptr)
 			{
 				goomba->SetState(GoombaState::Dead);
+				sm->AddShellKillScore(enemyKilledByShellCount, this->position);
+				enemyKilledByShellCount++;
 			}
 
 			// Other Koopa
@@ -201,10 +206,14 @@ void Koopa::OnCollisionWith(CollisionEvent* event)
 				if (koopa->GetState() != KoopaState::Dead && koopa->GetState() != KoopaState::DeadUpsideDown)
 					if (koopa->GetForm() == KoopaForm::HiddingInShell && koopa->GetState() == KoopaState::Moving)
 					{
-						moveLeft = !moveLeft;
+						moveLeft = !moveLeft;// if both are moving shell, they will just bounce back without killing each other
 					}
-					else
+					else {
+						// if the other koopa is not in moving shell state, rip bro
 						koopa->SetState(KoopaState::Dead);
+						sm->AddShellKillScore(enemyKilledByShellCount, this->position);
+						enemyKilledByShellCount++;
+					}
 			}
 		}
 
@@ -212,6 +221,11 @@ void Koopa::OnCollisionWith(CollisionEvent* event)
 		{
 			moveLeft = !moveLeft;
 		}
-	
+
 	}
+}
+
+void Koopa::SetMoveDir(bool moveLeft)
+{
+	this->moveLeft = moveLeft;
 }

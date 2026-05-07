@@ -5,6 +5,8 @@
 #include "AssetIDs.h"
 #include "MainMenu.h"
 #include "LevelTransitionScene.h"
+#include "Mario.h"
+
 Game* Game::_instance = nullptr;
 
 void Game::Init(HWND hWnd)

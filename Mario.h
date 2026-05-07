@@ -28,7 +28,9 @@ enum class MarioPower
 {
 	Normal,
 	Big,
-	Fire
+	Fire,
+	StarmanSmall,
+	StarmanBig
 };
 
 const float MARIO_TIME_BTW_FIRE = 0.15f;
@@ -67,14 +69,12 @@ class Mario : public GameObject
 	bool isInvincible;
 	bool isRendering;
 	bool isInWater;
-	static int goombaKilled;
-	static int koopaKilled;
-	static int coinCollected;
+	int enemySequenceKilledCount; //used for scoring mechanic of killing multiple enemies in a row without touching the ground
 
 	float fallAcc = 562.5f;
 	int GetFireBallCount(const vector<GameObject*>& coObjects) const;
 	Timer fireCooldownTimer;
-	Timer invincibleTimer;
+	Timer invincibleTimer; //used for star power and invincibility after getting hit
 
 	Timer transformTimer; //used for growing and shrinking
 
@@ -102,7 +102,7 @@ class Mario : public GameObject
 	bool OnCollisionWithKoopa(const CollisionEvent* e);
 	static bool OnCollisionWithPortal(const CollisionEvent* e);
 	bool OnCollisionWithQuestionBlock(const CollisionEvent* e);
-	static bool OnCollisionWithCoin(const CollisionEvent* e);
+	bool OnCollisionWithCoin(const CollisionEvent* e);
 	bool OnCollisionWithMushroom(const CollisionEvent* e);
 	bool OnCollisionWithFlower(CollisionEvent* e);
 	bool OnCollisionWithStar(const CollisionEvent* e);
@@ -120,6 +120,7 @@ class Mario : public GameObject
 	void UpdateFacingDirection();
 	void RouteAnimationState();
 	void OnCollisionWithFireballTrap(vector<GameObject*>& coObjects);
+	void OnHittingGround();
 	static int GetFlagBonusScore(float touchingHeight);
 
 	// special states
@@ -154,5 +155,6 @@ public:
 	bool IsBlocking() override { return true; }
 	bool IsActive() override { return true; }
 	MarioState GetState() const { return state; }
+	int GetEnemyKilledOnSequenceCount() const;
 };
 

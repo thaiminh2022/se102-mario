@@ -29,7 +29,7 @@ public:
 	bool HaveDrop() const { return drop != BlockDropType::None; }
 
 	void Render() override;
-	void CheckHitBounce(vector<GameObject*>& coObjects) const;
+	void CheckHitBounce(vector<GameObject*>& coObjects, SceneContext* ctx) const;
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;	
 	QuestionBlock(Vector2Int startPos, BlockDropType drop, bool isBrick = false, bool isHidden = false);
 	Rect GetBoundingBox() override;

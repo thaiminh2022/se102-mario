@@ -24,6 +24,7 @@
 #include "FontManager.h"
 #include "StatManager.h"
 
+constexpr int GOOMBA_FIREBALL_SCORE = 100;
 
 constexpr float FIREBALL_SPEED = 200.0f;
 constexpr float FIREBALL_GRAVITY = 900.0f;
@@ -77,10 +78,12 @@ Fireball::Fireball(float x, float y, bool isFacingRight)
 	state = FireballState::Bouncing;
 	this->isFacingRight = isFacingRight;
 	velocity.x = this->isFacingRight ? FIREBALL_SPEED : -FIREBALL_SPEED;
+	currentContext = nullptr;
 }
 
 void Fireball::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
+	currentContext = ctx;
 	lifeTimeTimer.ProcessTimer(dt);
 	if (lifeTimeTimer.IsFinished()) {
 		isExploded = true;
@@ -162,17 +165,22 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 {
 	if (state == FireballState::Exploding) return;
 
-
+	auto sm = StatManager::GetInstance();
 	if (e->IsObjectCollision())
 	{
 		// resolve object collision
 		const auto goomba = dynamic_cast<Goomba*>(e->otherObject);
 		if (goomba != nullptr)
 		{
-			if (goomba->GetState() == GoombaState::Dead)
+			if (goomba->GetState() != GoombaState::Moving)
 				return;
 			this->isExploded = true;
 			goomba->SetState(GoombaState::Dead);
+			sm->AddScore(GOOMBA_FIREBALL_SCORE, this->position);
+			if (currentContext != nullptr && currentContext->addPointPopup != nullptr)
+			{
+				currentContext->addPointPopup(goomba->position, GOOMBA_FIREBALL_SCORE);
+			}
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 			Explode();
 			return;
@@ -185,7 +193,7 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 				return;
 			this->isExploded = true;
 			koopa->SetState(KoopaState::Dead);
-			StatManager::GetInstance()->AddScore(100);
+			sm->AddScore(200, this->position);
 			Explode();
 			return;
 		}
