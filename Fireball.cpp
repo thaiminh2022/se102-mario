@@ -203,7 +203,7 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 		{
 			bowser->HandleHeathDecrease();
 			this->isExploded = true;
-			sm->AddScore(2000);
+			sm->AddScore(2000, this->position);
 			Explode();
 			return;
 		}
