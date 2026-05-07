@@ -199,6 +199,7 @@ static void LoadResource()
 	t->Add(OVERWORLD_ITEMS_TEX_ID, L"Assets/Sprites/overworld_items.png");
 	t->Add(KOOPA_TEX_ID, L"Assets/Sprites/koopa_sprites.png");
 	t->Add(CHEEPS_TEX_ID, L"Assets/Sprites/cheepcheeps.png");
+	t->Add(BLOOPERS_TEX_ID, L"Assets/Sprites/bloopers.png");
 
 	
 	t->Add(HUDCOIN_TEX_ID, L"Assets/Sprites/HUDCoin.png");

@@ -296,6 +296,20 @@ constexpr int WATER_CHEEP_ANIM = 81200;
 constexpr int WATER_CHEEP_SPRITE_1 = 81201;
 constexpr int WATER_CHEEP_SPRITE_2 = 81202;
 
+/// ===============================
+// BLOOPERS (E = 90000) 
+/// ===============================
+constexpr int BLOOPERS_TEX_ID = 91000;
+
+// WATER SWIM (A = 1)
+constexpr int WATER_BLOOPER_SWIM_ANIM = 91100;
+constexpr int WATER_BLOOPER_SWIM_SPRITE_1 = 91101;
+
+// WATER IDLE (A = 2)
+
+constexpr int WATER_BLOOPER_IDLE_ANIM = 91200;
+constexpr int WATER_BLOOPER_IDLE_SPRITE_1 = 91201;
+
 
 /// ================================
 // HUD ELEMENTS

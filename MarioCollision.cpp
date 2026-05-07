@@ -1,5 +1,6 @@
 #include "AssetIDs.h"
 #include "AudioManager.h"
+#include "Bloopers.h"
 #include "CheepCheeps.h"
 #include "Coin.h"
 #include "FireballTrap.h"
@@ -52,6 +53,17 @@ bool Mario::OnCollisionWithCheepCheeps(const CollisionEvent* e)
 {
 	const auto cc = dynamic_cast<CheepCheeps*>(e->otherObject);
 	if (cc != nullptr)
+	{
+		OnMarioHit();
+		return true;
+	}
+	return false;
+}
+
+bool Mario::OnCollisionWithBloopers(const CollisionEvent* e)
+{
+	const auto blooper = dynamic_cast<Bloopers*>(e->otherObject);
+	if (blooper != nullptr)
 	{
 		OnMarioHit();
 		return true;
@@ -317,6 +329,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 	{
 		if (OnCollisionWithGoomba(e)) return;
 		if (OnCollisionWithCheepCheeps(e)) return;
+		if (OnCollisionWithBloopers(e)) return;
 		if (OnCollisionWithKoopa(e)) return;
 		if (OnCollisionWithPortal(e)) return;
 		if (OnCollisionWithQuestionBlock(e)) return;

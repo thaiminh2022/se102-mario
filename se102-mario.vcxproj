@@ -132,6 +132,7 @@
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="BgMusicTrigger.cpp" />
+    <ClCompile Include="Bloopers.cpp" />
     <ClCompile Include="BrickExplode.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheepCheeps.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="BgMusicTrigger.h" />
+    <ClInclude Include="Bloopers.h" />
     <ClInclude Include="BrickExplode.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheepCheeps.h" />

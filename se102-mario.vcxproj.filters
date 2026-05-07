@@ -147,6 +147,9 @@
     <ClCompile Include="BgMusicTrigger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Bloopers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ClearScreenColorTrigger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -315,6 +318,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BgMusicTrigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bloopers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ClearScreenColorTrigger.h">

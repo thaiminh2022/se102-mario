@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "AudioManager.h"
+#include "Bloopers.h"
 #include "Coin.h"
 #include "FireballTrap.h"
 #include "FlagPole.h"
@@ -150,6 +151,13 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		const auto cc = new CheepCheeps(ccData.startPosition, ccData.isRed);
 		objects.push_back(cc);
+	}
+
+	// bloopers
+	for (const auto& blooperData : config->entityData.bloopers)
+	{
+		const auto blooper = new Bloopers(blooperData.lowestLimit, blooperData.highestLimit);
+		objects.push_back(blooper);
 	}
 
 	// winged koopa

@@ -52,7 +52,7 @@ void CheepCheeps::Render()
 
 	float renderX, renderY;
 	Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
-	Animations::GetInstance()->Get(chosenAnimId)->Render(renderX, renderY, false, false);
+	Animations::GetInstance()->Get(chosenAnimId)->Render(round(renderX), round(renderY), false, false);
 }
 
 void CheepCheeps::OnNoCollision(float dt)
