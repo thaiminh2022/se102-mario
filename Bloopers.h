@@ -1,11 +1,23 @@
 #pragma once
 #include "GameObject.h"
 
+enum class BlooperMoveState : std::uint8_t
+{
+	SwimmingUp,
+	Falling,
+};
+
 class Bloopers : public GameObject
 {
 	Vector2 highestLimit;
 	Vector2 lowestLimit;
-	bool movingUp;
+	BlooperMoveState moveState;
+	float stateTimer;
+	float stateStartY;
+	bool hasChosenInitialState;
+
+	void StartSwimmingUp();
+	void StartFalling();
 
 public:
 	Bloopers(Vector2Int lowestLimit, Vector2Int highestLimit);
