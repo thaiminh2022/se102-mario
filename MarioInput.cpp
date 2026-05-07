@@ -5,10 +5,10 @@
 #include "InputManager.h"
 #include "Mario.h"
 
-const float SWIM_UP_SPEED = -150.0f;
-const float WATER_GRAVITY = 180.0f;
-const float WATER_MAX_FALL = 190.0f;
-const float MAX_SWIM = 1075.0f;
+const float SWIM_UP_SPEED = -150.0f;   // Upward impulse/speed when pressing swim
+const float WATER_GRAVITY = 180.0f;    // Slow underwater downward acceleration
+const float WATER_MAX_FALL = 90.0f;    // Slow sinking cap
+const float MAX_SWIM = 100.0f;         // horizontal cap
 
 void Mario::WhileGrounded(float dt)
 {
@@ -100,7 +100,10 @@ void Mario::HandleSwim(float dt)
 
 	if (input->IsKeyDownThisFrame('W'))
 	{
-		AudioManager::GetInstance()->PlaySFX(MARIO_JUMP_SMALL);
+		if (!isGrounded)
+		{
+			AudioManager::GetInstance()->PlaySFX(MARIO_JUMP_SMALL);
+		}
 		velocity.y = SWIM_UP_SPEED;
 	}
 }

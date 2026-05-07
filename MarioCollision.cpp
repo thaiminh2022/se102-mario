@@ -109,7 +109,7 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 				koopa->SetMoveDir(false);
 			}
 			koopa->SetState(KoopaState::Moving);
-			AudioManager::GetInstance()->PlaySFX(SFX::GOOMBA_STOMP);
+			AudioManager::GetInstance()->PlaySFX(AUDIOS::GOOMBA_STOMP);
 			return true;
 		}
 		if (e->normalizedDir.y == -1)

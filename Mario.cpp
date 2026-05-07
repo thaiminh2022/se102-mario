@@ -223,9 +223,9 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		WhileOnAir(dt);
 	}
 
-
-	HandleJump(dt);
+	// orders matters
 	HandleSwim(dt);
+	HandleJump(dt);
 	HandleShootFireball(dt, coObjects, ctx);
 	ApplyGravityAndClamp(dt);
 	UpdateFacingDirection();

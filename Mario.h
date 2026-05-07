@@ -130,6 +130,8 @@ class Mario : public GameObject
 	void MarioEnteringPipe(float dt);
 	void MarioExitingPipe(float dt);
 	void ClampMario();
+	void HandleSwim(float dt);
+
 
 public:
 	Mario(int startX, int startY);
@@ -146,7 +148,6 @@ public:
 	void ResetRender() { renderIndex = 0; isRendering = true; }
 	void ResetState() { state = MarioState::Idle; isCollidable = true; velocity = Vector2::Zero(); }
 
-	void HandleSwim(float dt);
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
 	Rect GetBoundingBox() override;
