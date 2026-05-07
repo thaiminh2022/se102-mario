@@ -259,6 +259,15 @@ void PlayableScene::UnLoad()
 		ob = nullptr;
 	}
 	objects.clear();
+
+	while (!addPendingGos.empty())
+	{
+		delete addPendingGos.front();
+		addPendingGos.pop();
+	}
+
+	delete sceneContext;
+	sceneContext = nullptr;
 }
 
 void PlayableScene::Render()

@@ -74,13 +74,18 @@ void Mario::SetExitPipe(const MarioPipeCtx& returnPipeData)
 	}
 	if (pipeExitingData.dir == Vector2Int::Down())
 	{
+		position.x = pipeRect.left + 8;
+		position.y = pipeRect.top - GetBoundingBox().GetHeight();
 	}
 	if (pipeExitingData.dir == Vector2Int::Left())
 	{
-
+		position.x = pipeRect.right;
+		position.y = pipeRect.bottom - GetBoundingBox().GetHeight();
 	}
 	if (pipeExitingData.dir == Vector2Int::Right())
 	{
+		position.x = pipeRect.left - GetBoundingBox().GetWidth();
+		position.y = pipeRect.bottom - GetBoundingBox().GetHeight();
 	}
 
 	Game::GetInstance()->GetCamera()->SetPosition(position.x - 64, 0);
@@ -111,28 +116,32 @@ void Mario::MarioExitingPipe(float dt)
 	isCollidable = false;
 	renderIndex = -2;
 	isRendering = true;
-		
-	const auto& pipeRect = pipeExitingData.returnZone;
 
 	position += Vector2(pipeExitingData.dir) * 50.0f * dt;
 
+	bool finished = false;
 	if (pipeExitingData.dir == Vector2Int::Up())
 	{
-		if (position.y < pipeExitingData.moveTo.y)
-		{
-			ResetRender();
-			ResetState();
-		}
+		finished = position.y < pipeExitingData.moveTo.y;
 	}
 	if (pipeExitingData.dir == Vector2Int::Down())
 	{
+		finished = position.y > pipeExitingData.moveTo.y;
 	}
 	if (pipeExitingData.dir == Vector2Int::Left())
 	{
-
+		finished = position.x < pipeExitingData.moveTo.x;
 	}
 	if (pipeExitingData.dir == Vector2Int::Right())
 	{
+		finished = position.x > pipeExitingData.moveTo.x;
+	}
+
+	if (finished)
+	{
+		position = Vector2(pipeExitingData.moveTo);
+		ResetRender();
+		ResetState();
 	}
 }
 
