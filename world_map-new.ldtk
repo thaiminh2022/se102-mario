@@ -6562,7 +6562,7 @@
 						},
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [2,10],
+							"__grid": [2,9],
 							"__pivot": [0,0],
 							"__tags": ["entity"],
 							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
@@ -6571,10 +6571,10 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 31,
-							"px": [32,160],
+							"px": [32,144],
 							"fieldInstances": [],
 							"__worldX": 1600,
-							"__worldY": 720
+							"__worldY": 704
 						},
 						{
 							"__identifier": "InstantTeleportPipe",
