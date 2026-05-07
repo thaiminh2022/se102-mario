@@ -36,7 +36,7 @@ int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 
 {
-	isInWater = true;
+	isInWater = false;
 	isRendering = true;
 	slidingToYWinning = 0;
 	flagPoleFlipWaitTimer = Timer(1);
@@ -63,6 +63,7 @@ void Mario::SetEnterPipe(const PipeData& pipe)
 void Mario::SetExitPipe(const MarioPipeCtx& returnPipeData)
 {
 	state = MarioState::ExitingPipe;
+	AudioManager::GetInstance()->ResumeMusic();
 	AudioManager::GetInstance()->PlaySFX(PIPE_ENTER);
 	pipeExitingData = returnPipeData;
 	const auto& pipeRect = pipeExitingData.returnZone;
@@ -73,70 +74,80 @@ void Mario::SetExitPipe(const MarioPipeCtx& returnPipeData)
 	}
 	if (pipeExitingData.dir == Vector2Int::Down())
 	{
+		position.x = pipeRect.left + 8;
+		position.y = pipeRect.top - GetBoundingBox().GetHeight();
 	}
 	if (pipeExitingData.dir == Vector2Int::Left())
 	{
-
+		position.x = pipeRect.right;
+		position.y = pipeRect.bottom - GetBoundingBox().GetHeight();
 	}
 	if (pipeExitingData.dir == Vector2Int::Right())
 	{
+		position.x = pipeRect.left - GetBoundingBox().GetWidth();
+		position.y = pipeRect.bottom - GetBoundingBox().GetHeight();
 	}
 
-	Game::GetInstance()->GetCamera()->SetPosition(position.x, position.y);
+	Game::GetInstance()->GetCamera()->SetPosition(position.x - 64, 0);
 
+}
+
+void Mario::SetIsInWater(const bool newIsInWater)
+{
+	if (isInWater == newIsInWater)
+		return;
+
+	isInWater = newIsInWater;
+
+	if (isInWater)
+	{
+		fallAcc = 180.0f;
+		velocity.y = min(velocity.y, 190.0f);
+	}
+	else
+	{
+		fallAcc = STOP_FALL;
+	}
 }
 
 
 void Mario::MarioExitingPipe(float dt)
 {
 	isCollidable = false;
-	//isRendering = false;
 	renderIndex = -2;
-		
-	const auto& pipeRect = pipeExitingData.returnZone;
+	isRendering = true;
 
 	position += Vector2(pipeExitingData.dir) * 50.0f * dt;
 
+	bool finished = false;
 	if (pipeExitingData.dir == Vector2Int::Up())
 	{
-		if (position.y < pipeExitingData.moveTo.y)
-		{
-			state = MarioState::Idle;
-			renderIndex = 0;
-			isRendering = true;
-			isCollidable = true;
-		}
+		finished = position.y < pipeExitingData.moveTo.y;
 	}
 	if (pipeExitingData.dir == Vector2Int::Down())
 	{
+		finished = position.y > pipeExitingData.moveTo.y;
 	}
 	if (pipeExitingData.dir == Vector2Int::Left())
 	{
-
+		finished = position.x < pipeExitingData.moveTo.x;
 	}
 	if (pipeExitingData.dir == Vector2Int::Right())
 	{
+		finished = position.x > pipeExitingData.moveTo.x;
 	}
-}
 
-bool Mario::CheckMarioFalloffMap()
-{
-	auto vpHeight = Game::GetInstance()->GetBackBufferHeight();
-
-	// Check Mario fall off map
-	constexpr float marioMaxHeightOffset = 32.0f;
-	if (position.y > vpHeight + marioMaxHeightOffset && state != MarioState::Dying)
+	if (finished)
 	{
-		isInvincible = false;
-		invincibleTimer.Stop();
-		state = MarioState::Dying;
-		OnMarioHit();
-		return true;
+		position = Vector2(pipeExitingData.moveTo);
+		ResetRender();
+		ResetState();
 	}
-	return false;
 }
 
-void Mario::ClampMarioXToCameraX()
+
+
+void Mario::ClampMario()
 {
 	auto cam = Game::GetInstance()->GetCamera();
 	if (position.x < cam->GetX())
@@ -144,6 +155,12 @@ void Mario::ClampMarioXToCameraX()
 		velocity.x = 0;
 		state = MarioState::Idle;
 		position.x = cam->GetX();
+	}
+	if (position.y < cam->GetY())
+	{
+		velocity.y = 0;
+		state = MarioState::Idle;
+		position.y = cam->GetY();
 	}
 }
 
@@ -196,13 +213,6 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		}
 	}
 
-
-
-	if (CheckMarioFalloffMap())
-	{
-		return;
-	}
-
 	auto input = InputManager::GetInstance();
 	if (isGrounded)
 	{
@@ -220,7 +230,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	ApplyGravityAndClamp(dt);
 	UpdateFacingDirection();
 	
-	ClampMarioXToCameraX();
+	ClampMario();
 	RouteAnimationState();
 
 

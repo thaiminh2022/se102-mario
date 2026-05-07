@@ -1,23 +1,13 @@
 #pragma once
 #include "GameObject.h"
-#include "Timer.h"
 
-
-enum class PipeState
+class ClearScreenColorTrigger : public GameObject
 {
-	Idle,
-	Transition,
-	Blocked,
-};
-
-class Pipe : public GameObject
-{
-	PipeData pipeData;
-	PipeState pipeState;
-	Timer transitionTimer;
+	Rect zone;
+	Color color;
+	bool triggered;
 public:
-	Pipe(const PipeData& pData);
-
+	ClearScreenColorTrigger(Rect z, Color c);
 	Rect GetBoundingBox() override;
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	bool IsCollidable() override { return false; }

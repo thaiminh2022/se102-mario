@@ -8,7 +8,7 @@
 const float SWIM_UP_SPEED = -150.0f;
 const float WATER_GRAVITY = 180.0f;
 const float WATER_MAX_FALL = 190.0f;
-const float MAX_SWIM = 75.0f;
+const float MAX_SWIM = 1075.0f;
 
 void Mario::WhileGrounded(float dt)
 {
@@ -96,7 +96,6 @@ void Mario::HandleSwim(float dt)
 
 	const auto input = InputManager::GetInstance();
 
-	isGrounded = false;
 	fallAcc = WATER_GRAVITY;
 
 	if (input->IsKeyDownThisFrame('W'))
@@ -108,9 +107,6 @@ void Mario::HandleSwim(float dt)
 
 void Mario::HandleJump(float dt)
 {
-	if (isInWater)
-		return;
-
 	const auto input = InputManager::GetInstance();
 
 	// INITIATE JUMP
@@ -194,25 +190,19 @@ void Mario::ApplyGravityAndClamp(float dt)
 
 	velocity.y += fallAcc * dt;
 
-	if (isInWater)
-	{
-		velocity.y = min(velocity.y, WATER_MAX_FALL);
-		velocity.y = max(velocity.y, SWIM_UP_SPEED);
-	}
-	else
-	{
-		velocity.y = min(velocity.y, MAX_FALL);
-		velocity.y = max(velocity.y, -MAX_FALL);
-	}
 	
 	if (isInWater)
 	{
 		velocity.x = min(velocity.x, MAX_SWIM);
 		velocity.x = max(velocity.x, -MAX_SWIM);
+		velocity.y = min(velocity.y, WATER_MAX_FALL);
+		velocity.y = max(velocity.y, SWIM_UP_SPEED);
 	}else
 	{
 		velocity.x = min(velocity.x, MAX_RUN);
 		velocity.x = max(velocity.x, -MAX_RUN);
+		velocity.y = min(velocity.y, MAX_FALL);
+		velocity.y = max(velocity.y, -MAX_FALL);
 	}
 
 
