@@ -5,9 +5,10 @@
 #include "InputManager.h"
 #include "Mario.h"
 
-
-
-
+const float SWIM_UP_SPEED = -150.0f;   // Upward impulse/speed when pressing swim
+const float WATER_GRAVITY = 180.0f;    // Slow underwater downward acceleration
+const float WATER_MAX_FALL = 90.0f;    // Slow sinking cap
+const float MAX_SWIM = 100.0f;         // horizontal cap
 
 void Mario::WhileGrounded(float dt)
 {
@@ -84,12 +85,32 @@ void Mario::WhileOnAir(float dt)
 	{
 		velocity.x += (abs(velocity.x) > MAX_WALK ? ACC_RUN : ACC_WALK) * dt;
 	}
+	
+
+}
+
+void Mario::HandleSwim(float dt)
+{
+	if (!isInWater)
+		return;
+
+	const auto input = InputManager::GetInstance();
+
+	fallAcc = WATER_GRAVITY;
+
+	if (input->IsKeyDownThisFrame('W'))
+	{
+		if (!isGrounded)
+		{
+			AudioManager::GetInstance()->PlaySFX(MARIO_JUMP_SMALL);
+		}
+		velocity.y = SWIM_UP_SPEED;
+	}
 }
 
 void Mario::HandleJump(float dt)
 {
 	const auto input = InputManager::GetInstance();
-
 
 	// INITIATE JUMP
 	if (input->IsKeyPressed('W') && isGrounded && state != MarioState::Ducking)
@@ -157,11 +178,11 @@ void Mario::HandleShootFireball(const float dt, const vector<GameObject*>& coObj
 void Mario::UpdateFacingDirection()
 {
 	const auto input = InputManager::GetInstance();
-	if (input->IsKeyDown('A') && !input->IsKeyDown('D') && isGrounded && state != MarioState::Ducking)
+	if (input->IsKeyDown('A') && !input->IsKeyDown('D') && (isGrounded || isInWater) && state != MarioState::Ducking)
 	{
 		isFacingRight = false;
 	}
-	else if (input->IsKeyDown('D') && !input->IsKeyDown('A') && isGrounded && state != MarioState::Ducking)
+	else if (input->IsKeyDown('D') && !input->IsKeyDown('A') && (isGrounded || isInWater) && state != MarioState::Ducking)
 	{
 		isFacingRight = true;
 	}
@@ -170,19 +191,24 @@ void Mario::ApplyGravityAndClamp(float dt)
 {
 	const auto input = InputManager::GetInstance();
 
-
-	// APPLY GRAVITY
 	velocity.y += fallAcc * dt;
 
-	// Y-axis clamping
-	velocity.y = min(velocity.y, MAX_FALL);
-	velocity.y = max(velocity.y, -MAX_FALL);
+	
+	if (isInWater)
+	{
+		velocity.x = min(velocity.x, MAX_SWIM);
+		velocity.x = max(velocity.x, -MAX_SWIM);
+		velocity.y = min(velocity.y, WATER_MAX_FALL);
+		velocity.y = max(velocity.y, SWIM_UP_SPEED);
+	}else
+	{
+		velocity.x = min(velocity.x, MAX_RUN);
+		velocity.x = max(velocity.x, -MAX_RUN);
+		velocity.y = min(velocity.y, MAX_FALL);
+		velocity.y = max(velocity.y, -MAX_FALL);
+	}
 
-	// Absolute X-axis clamping
-	velocity.x = min(velocity.x, MAX_RUN);
-	velocity.x = max(velocity.x, -MAX_RUN);
 
-	// Clamp back to Walk speed if Shift is released
 	if (isGrounded)
 	{
 		if (velocity.x > MAX_WALK && !input->IsKeyDown(VK_SHIFT)) velocity.x = MAX_WALK;
