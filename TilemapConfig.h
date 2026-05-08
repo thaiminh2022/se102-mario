@@ -2,15 +2,17 @@
 #include "SceneEntityData.h"
 #include "Tile.h"
 #include <vector>
-#include <cinttypes>
 #include "Color.h"
 
 enum class BiomeType : std::uint8_t
 {
 	Overworld,
 	Underground,
-	Castle
+	Castle,
+	UnderWater
 };
+
+
 
 struct TilemapConfig
 {
