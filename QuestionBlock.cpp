@@ -40,10 +40,10 @@ void QuestionBlock::Render()
 	if (isHidden)
 		return;
 
-	int animID = BLOCK_OVERWORLD_BLOCKED_ANIM_ID;
+	int animID = BLOCK_EMPTY_ANIM_ID;
 	if (state != QuestionBlockState::Blocked)
 	{
-		animID = isBrick ? BRICK_OVERWORLD_IDLE_ANIM_ID : QUESTION_BLOCK_OVERWORLD_IDLE_ANIM_ID;
+		animID = isBrick ? BRICK_IDLE_ANIM_ID : QUESTION_BLOCK_IDLE_ANIM_ID;
 	}
 
 
@@ -188,37 +188,37 @@ QuestionBlock::QuestionBlock(Vector2Int startPos, BlockDropType drop, BiomeType 
 
 
 	// question block
-	if (!isBrick && !anims->Contains(QUESTION_BLOCK_OVERWORLD_IDLE_ANIM_ID))
+	if (!isBrick && !anims->Contains(QUESTION_BLOCK_IDLE_ANIM_ID))
 	{
-		sp->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_1, 0, 0, 15, 15, t);
-		sp->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_2, 16, 0, 31, 15, t);
-		sp->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_3, 32, 0, 47, 15, t);
+		sp->Add(QUESTION_BLOCK_IDLE_SPRITE_1, 0, 0, 15, 15, t);
+		sp->Add(QUESTION_BLOCK_IDLE_SPRITE_2, 16, 0, 31, 15, t);
+		sp->Add(QUESTION_BLOCK_IDLE_SPRITE_3, 32, 0, 47, 15, t);
 
 		// idle
 		auto anim = new Animation(200);
-		anim->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_1);
-		anim->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_2);
-		anim->Add(QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_3);
-		anims->Add(QUESTION_BLOCK_OVERWORLD_IDLE_ANIM_ID, anim);
+		anim->Add(QUESTION_BLOCK_IDLE_SPRITE_1);
+		anim->Add(QUESTION_BLOCK_IDLE_SPRITE_2);
+		anim->Add(QUESTION_BLOCK_IDLE_SPRITE_3);
+		anims->Add(QUESTION_BLOCK_IDLE_ANIM_ID, anim);
 	}
 
-	if (isBrick && !anims->Contains(BRICK_OVERWORLD_IDLE_ANIM_ID))
+	if (isBrick && !anims->Contains(BRICK_IDLE_ANIM_ID))
 	{
 		// brick
-		sp->Add(BRICK_OVERWORLD_IDLE_SPRITE_1, 0, 16, 15, 31, t);
+		sp->Add(BRICK_IDLE_SPRITE_1, 0, 16, 15, 31, t);
 
 		auto anim = new Animation(0);
-		anim->Add(BRICK_OVERWORLD_IDLE_SPRITE_1);
-		anims->Add(BRICK_OVERWORLD_IDLE_ANIM_ID, anim);
+		anim->Add(BRICK_IDLE_SPRITE_1);
+		anims->Add(BRICK_IDLE_ANIM_ID, anim);
 	}
 
-	if (!anims->Contains(BLOCK_OVERWORLD_BLOCKED_ANIM_ID))
+	if (!anims->Contains(BLOCK_EMPTY_ANIM_ID))
 	{
 		// blocked
-		sp->Add(BLOCK_OVERWORLD_BLOCKED_SPRITE_1, 48, 0, 63, 15, t);
+		sp->Add(BLOCK_EMPTY_SPRITE_1, 48, 0, 63, 15, t);
 		auto anim = new Animation(0);
-		anim->Add(BLOCK_OVERWORLD_BLOCKED_SPRITE_1);
-		anims->Add(BLOCK_OVERWORLD_BLOCKED_ANIM_ID, anim);
+		anim->Add(BLOCK_EMPTY_SPRITE_1);
+		anims->Add(BLOCK_EMPTY_ANIM_ID, anim);
 	}
 
 	spawnInternalItem = false;

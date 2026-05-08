@@ -32,7 +32,6 @@ inline int ChooseItemsId(const BiomeType biome)
 }
 inline int ChooseEnemyId(const BiomeType biome)
 {
-	// do it this way for now
-	return OVERWORLD_ENEMY_TEX_ID;
+	return ChooseIdBaseOnBiome(biome, OVERWORLD_ENEMY_TEX_ID, UNDERGROUND_ENEMY_TEX_ID, CASTLE_ENEMY_TEX_ID, UNDERWATER_ENEMY_TEX_ID);
 }
 

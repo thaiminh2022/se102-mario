@@ -1,11 +1,12 @@
 ﻿#pragma once
 
-// [NOTE]: NEGATIVE VALUES IS RESERVE FOR SCENE BACKGROUND
+// [NOTE]: Negative values are reserved for playable scenes and scene backgrounds.
 
 /// Naming convention:
-/// Each asset ID uses 5 digits in the format ETAS.
-/// E = Entity | T = Type/Texture | A = Action | S = Sprite
+/// Most asset IDs use 5 digits in the format ETAS.
+/// E = Entity | T = Type/Variant | A = Action | S = Sprite/Frame
 /// Example: 12345 = Mario (1) / Texture (2) / Action (3) / Sprite (45)
+/// Entities above 9 use the same idea with one extra leading digit.
 ///
 /// STANDARD ACTION IDs (A):
 /// 1 = Idle    | 2 = Move   | 3 = Skid  | 4 = Jump | 5 = Duck 
@@ -191,10 +192,16 @@ constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_5 = 17805;
 constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_6 = 17806;
 
 // ==========================================
-// GOOMBA (E = 2)
+// ENEMIES (E = 2)
 // ==========================================
 constexpr int OVERWORLD_ENEMY_TEX_ID = 20000;
+constexpr int UNDERGROUND_ENEMY_TEX_ID = 20001;
+constexpr int CASTLE_ENEMY_TEX_ID = 20002;
+constexpr int UNDERWATER_ENEMY_TEX_ID = 20003;
 
+// ---------------------------------
+// GOOMBA (T = 1)
+// ---------------------------------
 // Moving (A = 200)
 constexpr int GOOMBA_WALK_ANIM_ID = 21200;
 constexpr int GOOMBA_WALK_SPRITE_1 = 21201;
@@ -204,14 +211,70 @@ constexpr int GOOMBA_WALK_SPRITE_2 = 21202;
 constexpr int GOOMBA_DEAD_ANIM_ID = 21700;
 constexpr int GOOMBA_DEAD_SPRITE_1 = 21701;
 
+// ---------------------------------
+// KOOPA (T = 2)
+// ---------------------------------
+// Moving (A = 200)
+constexpr int KOOPA_WALK_ANIM_ID = 22200;
+constexpr int KOOPA_WALK_SPRITE_1 = 22201;
+constexpr int KOOPA_WALK_SPRITE_2 = 22202;
+
+// ---------------------------------
+// WINGED KOOPA (T = 3)
+// ---------------------------------
+// Moving/Flying (A = 200)
+constexpr int WINGED_KOOPA_FLY_ANIM_ID = 23200;
+constexpr int WINGED_KOOPA_FLY_SPRITE_1 = 23201;
+constexpr int WINGED_KOOPA_FLY_SPRITE_2 = 23202;
+
+// ---------------------------------
+// HIDING KOOPA (T = 4)
+// ---------------------------------
+// Idle/Hiding (A = 100)
+constexpr int HIDING_KOOPA_HIDE_ANIM_ID = 24100;
+constexpr int HIDING_KOOPA_HIDE_SPRITE = 24101;
+
+// Moving/Spinning (A = 200)
+constexpr int HIDING_KOOPA_SPIN_ANIM_ID = 24200;
+constexpr int HIDING_KOOPA_SPIN_SPRITE_1 = 24201;
+constexpr int HIDING_KOOPA_SPIN_SPRITE_2 = 24202;
+
+// Dead (A = 700)
+constexpr int KOOPA_DEAD_ANIM_ID = 24700;
+constexpr int KOOPA_DEAD_SPRITE = 24701;
+
+// ---------------------------------
+// CHEEP CHEEPS (T = 5)
+// ---------------------------------
+// Red (A = 100)
+constexpr int RED_CHEEP_ANIM = 25100;
+constexpr int RED_CHEEP_SPRITE_1 = 25101;
+constexpr int RED_CHEEP_SPRITE_2 = 25102;
+
+// Water (A = 200)
+constexpr int WATER_CHEEP_ANIM = 25200;
+constexpr int WATER_CHEEP_SPRITE_1 = 25201;
+constexpr int WATER_CHEEP_SPRITE_2 = 25202;
+
+// ---------------------------------
+// BLOOPERS (T = 6)
+// ---------------------------------
+// Swim (A = 100)
+constexpr int WATER_BLOOPER_SWIM_ANIM = 26100;
+constexpr int WATER_BLOOPER_SWIM_SPRITE_1 = 26101;
+
+// Idle (A = 200)
+constexpr int WATER_BLOOPER_IDLE_ANIM = 26200;
+constexpr int WATER_BLOOPER_IDLE_SPRITE_1 = 26201;
+
 
 // ==========================================
 // BLOCKS (E = 3)
 // ==========================================
-constexpr int BLOCKS_OVERWORLD_TEX_ID = 31000;
-constexpr int BLOCKS_UNDERGROUND_TEX_ID = 33000;
-constexpr int BLOCKS_CASTLE_TEX_ID = 34000;
-constexpr int BLOCKS_UNDERWATER_TEX_ID = 35000;
+constexpr int BLOCKS_OVERWORLD_TEX_ID = 30000;
+constexpr int BLOCKS_UNDERGROUND_TEX_ID = 30001;
+constexpr int BLOCKS_CASTLE_TEX_ID = 30002;
+constexpr int BLOCKS_UNDERWATER_TEX_ID = 30003;
 
 
 
@@ -220,21 +283,21 @@ constexpr int BLOCKS_UNDERWATER_TEX_ID = 35000;
 // QUESTION BLOCK (T = 1)
 // ---------------------------------
 // Idle (A = 100)
-constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_ANIM_ID = 31100;
-constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_1 = 31101;
-constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_2 = 31102;
-constexpr int QUESTION_BLOCK_OVERWORLD_IDLE_SPRITE_3 = 31103;
+constexpr int QUESTION_BLOCK_IDLE_ANIM_ID = 31100;
+constexpr int QUESTION_BLOCK_IDLE_SPRITE_1 = 31101;
+constexpr int QUESTION_BLOCK_IDLE_SPRITE_2 = 31102;
+constexpr int QUESTION_BLOCK_IDLE_SPRITE_3 = 31103;
 
 // Blocked/Empty (A = 700)
-constexpr int BLOCK_OVERWORLD_BLOCKED_ANIM_ID = 31700;
-constexpr int BLOCK_OVERWORLD_BLOCKED_SPRITE_1 = 31701;
+constexpr int BLOCK_EMPTY_ANIM_ID = 31700;
+constexpr int BLOCK_EMPTY_SPRITE_1 = 31701;
 
 // ---------------------------------
 // BRICK (T = 2)
 // ---------------------------------
 // Idle (A = 100)
-constexpr int BRICK_OVERWORLD_IDLE_ANIM_ID = 32100;
-constexpr int BRICK_OVERWORLD_IDLE_SPRITE_1 = 32101;
+constexpr int BRICK_IDLE_ANIM_ID = 32100;
+constexpr int BRICK_IDLE_SPRITE_1 = 32101;
 
 // Explode (A = 700)
 constexpr int BRICK_EXPLODE_SPRITE_1 = 32701;
@@ -243,51 +306,12 @@ constexpr int BRICK_EXPLODE_SPRITE_3 = 32703;
 constexpr int BRICK_EXPLODE_SPRITE_4 = 32704;
 
 // ==========================================
-// POINT POPUPS (E = 9) - MOVED TO 90000 RANGE
-// ==========================================
-constexpr int POINTS_TEX_ID = 990000;
-
-constexpr int POINT_100_ANIM_ID = 990100;
-constexpr int POINT_100_SPRITE_1 = 990101;
-
-constexpr int POINT_200_ANIM_ID = 990200;
-constexpr int POINT_200_SPRITE_1 = 990201;
-
-constexpr int POINT_400_ANIM_ID = 990400;
-constexpr int POINT_400_SPRITE_1 = 990401;
-
-constexpr int POINT_500_ANIM_ID = 990500;
-constexpr int POINT_500_SPRITE_1 = 990501;
-
-constexpr int POINT_800_ANIM_ID = 990800;
-constexpr int POINT_800_SPRITE_1 = 990801;
-
-constexpr int POINT_1000_ANIM_ID = 991000;
-constexpr int POINT_1000_SPRITE_1 = 991001;
-
-constexpr int POINT_2000_ANIM_ID = 992000;
-constexpr int POINT_2000_SPRITE_1 = 992001;
-
-constexpr int POINT_4000_ANIM_ID = 994000;
-constexpr int POINT_4000_SPRITE_1 = 994001;
-
-constexpr int POINT_5000_ANIM_ID = 995000;
-constexpr int POINT_5000_SPRITE_1 = 995001;
-
-constexpr int POINT_8000_ANIM_ID = 998000;
-constexpr int POINT_8000_SPRITE_1 = 998001;
-
-constexpr int ONEUP_ANIM_ID = 999000;
-constexpr int ONEUP_SPRITE_1 = 999001;
-
-
-// ==========================================
 // ITEMS (E = 4)
 // ==========================================
 constexpr int OVERWORLD_ITEMS_TEX_ID = 40000;
-constexpr int UNDERGROUND_ITEMS_TEX_ID = 46000;
-constexpr int CASTLE_ITEMS_TEX_ID = 47000;
-constexpr int UNDERWATER_ITEMS_TEX_ID = 48000;
+constexpr int UNDERGROUND_ITEMS_TEX_ID = 40001;
+constexpr int CASTLE_ITEMS_TEX_ID = 40002;
+constexpr int UNDERWATER_ITEMS_TEX_ID = 40003;
 
 
 
@@ -321,6 +345,13 @@ constexpr int STAR_IDLE_SPRITE_4 = 44104;
 constexpr int FLAG_IDLE_ANIM_ID = 45100;
 constexpr int FLAG_IDLE_SPRITE_1 = 45101;
 
+// ==========================================
+// HUD ELEMENTS (E = 5)
+// ==========================================
+constexpr int HUDCOIN_TEX_ID = 50000;
+constexpr int HUDCOIN_SPRITE_ID = 51101;
+constexpr int HUDMARIO_SPRITE_ID = 52101;
+
 
 // ==========================================
 // FIREBALL (E = 6)
@@ -340,86 +371,46 @@ constexpr int FIREBALL_COLLIDE_SPRITE_1 = 61701;
 constexpr int FIREBALL_COLLIDE_SPRITE_2 = 61702;
 constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61703;
 
-
 // ==========================================
-// KOOPA (E = 7)
+// POINT POPUPS (E = 10)
 // ==========================================
+constexpr int POINTS_TEX_ID = 100000;
 
-// ---------------------------------
-// NORMAL KOOPA (T = 1)
-// ---------------------------------
+constexpr int POINT_100_ANIM_ID = 101100;
+constexpr int POINT_100_SPRITE_1 = 101101;
 
-// Moving (A = 200)
-constexpr int KOOPA_WALK_ANIM_ID = 71200;
-constexpr int KOOPA_WALK_SPRITE_1 = 71201;
-constexpr int KOOPA_WALK_SPRITE_2 = 71202;
+constexpr int POINT_200_ANIM_ID = 102100;
+constexpr int POINT_200_SPRITE_1 = 102101;
 
-// ---------------------------------
-// WINGED KOOPA (T = 2)
-// ---------------------------------
-constexpr int WINGED_KOOPA_TEX_ID = 72000;
+constexpr int POINT_400_ANIM_ID = 103100;
+constexpr int POINT_400_SPRITE_1 = 103101;
 
-// Moving/Flying (A = 200)
-constexpr int WINGED_KOOPA_FLY_ANIM_ID = 72200;
-constexpr int WINGED_KOOPA_FLY_SPRITE_1 = 72201;
-constexpr int WINGED_KOOPA_FLY_SPRITE_2 = 72202;
+constexpr int POINT_500_ANIM_ID = 104100;
+constexpr int POINT_500_SPRITE_1 = 104101;
 
-// ---------------------------------
-// HIDING KOOPA (T = 3)
-// ---------------------------------
-constexpr int HIDING_KOOPA_TEX_ID = 73000;
+constexpr int POINT_800_ANIM_ID = 105100;
+constexpr int POINT_800_SPRITE_1 = 105101;
 
-// Idle/Hiding (A = 100)
-constexpr int HIDING_KOOPA_HIDE_ANIM_ID = 73100;
-constexpr int HIDING_KOOPA_HIDE_SPRITE = 73101;
+constexpr int POINT_1000_ANIM_ID = 106100;
+constexpr int POINT_1000_SPRITE_1 = 106101;
 
-// Moving/Spinning (A = 200)
-constexpr int HIDING_KOOPA_SPIN_ANIM_ID = 73200;
-constexpr int HIDING_KOOPA_SPIN_SPRITE_1 = 73201;
-constexpr int HIDING_KOOPA_SPIN_SPRITE_2 = 73202;
+constexpr int POINT_2000_ANIM_ID = 107100;
+constexpr int POINT_2000_SPRITE_1 = 107101;
 
-// Dead (A = 700)
-constexpr int KOOPA_DEAD_ANIM_ID = 73700;
-constexpr int KOOPA_DEAD_SPRITE = 73701;
+constexpr int POINT_4000_ANIM_ID = 108100;
+constexpr int POINT_4000_SPRITE_1 = 108101;
 
+constexpr int POINT_5000_ANIM_ID = 109100;
+constexpr int POINT_5000_SPRITE_1 = 109101;
 
-/// ===============================
-// CHEEP CHEEPS (E = 80000) 
-/// ===============================
+constexpr int POINT_8000_ANIM_ID = 110100;
+constexpr int POINT_8000_SPRITE_1 = 110101;
 
-/// cheep cheeps,  t = 1;
-
-// RED (A = 1)
-constexpr int RED_CHEEP_ANIM = 81100;
-constexpr int RED_CHEEP_SPRITE_1 = 81101;
-constexpr int RED_CHEEP_SPRITE_2 = 81102;
-
-// WATER (A=2)
-constexpr int WATER_CHEEP_ANIM = 81200;
-constexpr int WATER_CHEEP_SPRITE_1 = 81201;
-constexpr int WATER_CHEEP_SPRITE_2 = 81202;
-
-/// ===============================
-// BLOOPERS (E = 90000) 
-/// ===============================
-constexpr int BLOOPERS_TEX_ID = 91000;
-
-// WATER SWIM (A = 1)
-constexpr int WATER_BLOOPER_SWIM_ANIM = 91100;
-constexpr int WATER_BLOOPER_SWIM_SPRITE_1 = 91101;
-
-// WATER IDLE (A = 2)
-
-constexpr int WATER_BLOOPER_IDLE_ANIM = 91200;
-constexpr int WATER_BLOOPER_IDLE_SPRITE_1 = 91201;
+constexpr int ONEUP_ANIM_ID = 111100;
+constexpr int ONEUP_SPRITE_1 = 111101;
 
 
 /// ================================
-// HUD ELEMENTS
-constexpr int HUDCOIN_TEX_ID = 50000;
-constexpr int HUDCOIN_SPRITE_ID = 50001;
-constexpr int HUDMARIO_SPRITE_ID = 51000;
-
 // PLAYABLE SCENES IS MANAGE BY LEVEL LOADER (INIT FUNCTION)
 // NEGATIVE VALUE (AND 0) IS FOR PLAYABLE SCENE ONLY
 enum NonPlayableScene : std::int8_t
