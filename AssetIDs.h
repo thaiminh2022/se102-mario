@@ -13,6 +13,7 @@
 
 #include <cinttypes>
 
+
 // ==========================================
 // MARIO (E = 1)
 // ==========================================
@@ -207,7 +208,13 @@ constexpr int GOOMBA_DEAD_SPRITE_1 = 21701;
 // ==========================================
 // BLOCKS (E = 3)
 // ==========================================
-constexpr int BLOCKS_OVERWORLD_TEX_ID = 30000;
+constexpr int BLOCKS_OVERWORLD_TEX_ID = 31000;
+constexpr int BLOCKS_UNDERGROUND_TEX_ID = 33000;
+constexpr int BLOCKS_CASTLE_TEX_ID = 34000;
+constexpr int BLOCKS_UNDERWATER_TEX_ID = 35000;
+
+
+
 
 // ---------------------------------
 // QUESTION BLOCK (T = 1)
@@ -278,6 +285,12 @@ constexpr int ONEUP_SPRITE_1 = 99001;
 // ITEMS (E = 4)
 // ==========================================
 constexpr int OVERWORLD_ITEMS_TEX_ID = 40000;
+constexpr int UNDERGROUND_ITEMS_TEX_ID = 46000;
+constexpr int CASTLE_ITEMS_TEX_ID = 47000;
+constexpr int UNDERWATER_ITEMS_TEX_ID = 48000;
+
+
+
 
 // Coin (T = 1) -> Moving/Spinning (A = 200)
 constexpr int COIN_SPIN_ANIM_ID = 41200;

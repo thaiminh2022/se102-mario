@@ -3,12 +3,13 @@
 #include "AssetIDs.h"
 #include "AudioManager.h"
 #include "Game.h"
+#include "Helper.h"
 #include "Sprites.h"
 #include "Textures.h"
 
-BrickExplode::BrickExplode(Vector2 startPosition) : GameObject(startPosition)
+BrickExplode::BrickExplode(Vector2 startPosition, BiomeType biome) : GameObject(startPosition)
 {
-	auto t = Textures::GetInstance()->Get(BLOCKS_OVERWORLD_TEX_ID);
+	auto t = Textures::GetInstance()->Get(ChooseBlocksId(biome));
 	auto sp = Sprites::GetInstance();
 
 	sp->Add(BRICK_EXPLODE_SPRITE_1, 32, 16, 39, 22, t);

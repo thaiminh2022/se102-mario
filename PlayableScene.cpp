@@ -15,7 +15,6 @@
 #include "Goomba.h"
 #include "Koopa.h"
 #include "NextLevelPortal.h"
-#include "PointPopup.h"
 #include "Pipe.h"
 #include "QuestionBlock.h"
 #include "HUD.h"
@@ -172,14 +171,14 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 
 	for (const auto& qbData : config->entityData.questionBlocks)
 	{
-		const auto qb = new QuestionBlock(qbData.position, qbData.dropType);
+		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, config->biome, false);
 		objects.push_back(qb);
 	}
 
 	//bricks
 	for (const auto& qbData : config->entityData.brickBlocks)
 	{
-		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, true, qbData.isHidden);
+		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, config->biome, true, qbData.isHidden);
 		objects.push_back(qb);
 	}
 
@@ -187,7 +186,7 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	// coins
 	for (const auto& cPos : config->entityData.coins)
 	{
-		const auto coin = new Coin(cPos);
+		const auto coin = new Coin(cPos, config->biome);
 		objects.push_back(coin);
 	}
 
