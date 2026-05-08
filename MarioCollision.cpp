@@ -420,6 +420,22 @@ int Mario::GetEnemyKilledOnSequenceCount() const
 	return enemySequenceKilledCount;
 }
 
+void Mario::Die()
+{
+	state = MarioState::Dying;
+	isCollidable = false; // Turn off hitboxes
+	velocity.x = 0;
+	velocity.y = -240.0f;
+	//Mario will jump up a bit
+	transformTimer = Timer(5.0f); // Time until we reset the level
+	transformTimer.Start();
+	AudioManager::GetInstance()->StopAll();
+	AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
+	StatManager::GetInstance()->AddLife(-1, this->position);
+	PlayableScene* scene = dynamic_cast<PlayableScene*>(Game::GetInstance()->GetCurrentScene());
+	scene->GetLevelTimer()->Pause();
+}
+
 void Mario::OnNoCollision(float dt)
 {
 	position += velocity * dt;
@@ -440,18 +456,7 @@ void Mario::OnMarioHit(const bool force)
 		}
 		else {
 			// got kill by enemy, bad
-			state = MarioState::Dying;
-			isCollidable = false; // Turn off hitboxes
-			velocity.x = 0;
-			velocity.y = -240.0f;
-			//Mario will jump up a bit
-			transformTimer = Timer(5.0f); // Time until we reset the level
-			transformTimer.Start();
-			AudioManager::GetInstance()->StopAll();
-			AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
-			StatManager::GetInstance()->AddLife(-1, this->position);
-			PlayableScene* scene = dynamic_cast<PlayableScene*>(Game::GetInstance()->GetCurrentScene());
-			scene->GetLevelTimer()->Pause();
+			Die();
 		}
 	}
 }

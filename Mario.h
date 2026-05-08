@@ -162,5 +162,6 @@ public:
 	bool IsActive() override { return true; }
 	MarioState GetState() const { return state; }
 	int GetEnemyKilledOnSequenceCount() const;
+	void Die();
 };
 

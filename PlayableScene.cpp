@@ -96,7 +96,10 @@ void PlayableScene::Update(float dt)
 	if (levelTimer->IsFinished())
 	{
 		// Time's up, kill Mario
-
+		auto mario = sceneContext->mario;
+		if (mario != nullptr) {
+			mario->Die();
+		}
 	}
 }
 
