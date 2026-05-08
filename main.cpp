@@ -194,6 +194,10 @@ static void LoadResource()
 	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_sprites.png");
 
 	t->Add(OVERWORLD_ENEMY_TEX_ID, L"Assets/Sprites/overworld_enemies.png");
+	t->Add(CASTLE_ENEMY_TEX_ID, L"Assets/Sprites/castle_enemies.png");
+	t->Add(UNDERGROUND_ENEMY_TEX_ID, L"Assets/Sprites/underground_enemies.png");
+	t->Add(UNDERWATER_ENEMY_TEX_ID, L"Assets/Sprites/underwater_enemies.png");
+
 	t->Add(FIREBALL_TEX_ID, L"Assets/Sprites/fireball.png");
 
 	t->Add(BLOCKS_OVERWORLD_TEX_ID, L"Assets/Sprites/overworld_blocks.png");
@@ -206,8 +210,6 @@ static void LoadResource()
 	t->Add(UNDERGROUND_ITEMS_TEX_ID, L"Assets/Sprites/underground_items.png");
 	t->Add(CASTLE_ITEMS_TEX_ID, L"Assets/Sprites/castle_items.png");
 	t->Add(UNDERWATER_ITEMS_TEX_ID, L"Assets/Sprites/underwater_items.png");
-
-
 
 	
 	t->Add(HUDCOIN_TEX_ID, L"Assets/Sprites/HUDCoin.png");
