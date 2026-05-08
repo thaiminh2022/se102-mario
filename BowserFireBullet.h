@@ -30,22 +30,14 @@ enum class BowserFireBulletState : std::uint8_t
 	Discarded
 };
 
-// The height of the bullet determines the y offset from Bowser's position when the bullet is spawned. This is used to create a more dynamic attack pattern for Bowser.
-enum class BowserBulletHeight : std::uint8_t
-{
-	Low,
-	Average,
-	High
-};
-
 class BowserFireBullet :public GameObject
 {
-	BowserBulletHeight heightLevel;
-	float height;
+	float height; // the y position of Mario when the FireBullet is shot
+	bool heightReached;
+	bool isAlwaysActive; // even when off screen, the fire bullet will still update its position until it reaches the target height, after which it will only update when on screen
 	BowserFireBulletState state;
-	Timer appearTimer;
 public:
-	BowserFireBullet(int startX, int startY, bool isFacingRight);
+	BowserFireBullet(int startX, int startY, bool isFacingRight, float targetHeight, bool heightReached, bool isAlwaysActive = false);
 	void SetRandomHeight();
 	void SetState(BowserFireBulletState newState);
 	BowserFireBulletState GetState() const { return state; }
@@ -59,5 +51,7 @@ public:
 	{
 		return Rect::FromXYWH(static_cast<int>(position.x), static_cast<int>(position.y), 24, 8);
 	}
+	CollisionMatrixLayer GetCollisionLayer() override { return CollisionMatrixLayer::EnemyProjectile; }
+	bool IsActive() override { return true; }
 };
 

@@ -17,6 +17,7 @@
 #include "StatManager.h"
 #include "CollisionEvent.h"
 #include "PointPopup.h"
+#include "Game.h"
 
 bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 {
@@ -30,7 +31,7 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 		auto sm = StatManager::GetInstance();
 		if ((power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig) && e->normalizedDir.y != -1)
 		{
-			// invincible, kill goomba by touch
+			// kill goomba by touch
 			goomba->SetState(GoombaState::Dead);
 			sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
@@ -91,7 +92,7 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 		auto sm = StatManager::GetInstance();
 		if ((power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig) && e->normalizedDir.y != -1)
 		{
-			// invincible, kill koopa by touch
+			//kill koopa by touch
 			koopa->SetState(KoopaState::Dead);
 			sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
@@ -291,9 +292,7 @@ bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 	{
 		star->SetState(CollectableItemState::Collected);
 		auto audio = AudioManager::GetInstance();
-
-
-		isInvincible = true;
+		lastPower = power;
 		if (power == MarioPower::Normal)
 			power = MarioPower::StarmanSmall;
 		else if (power == MarioPower::Big || power == MarioPower::Fire) {
@@ -301,8 +300,8 @@ bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 			// add some pushback so player won't fall off the ground
 			position.y -= 17;
 		}
-		invincibleTimer = Timer(12);
-		invincibleTimer.Start();
+		starmanTimer = Timer(STARMAN_INVINCIBLE_TIME);
+		starmanTimer.Start();
 
 		audio->PauseMusic();
 		audio->PlaySFX(MARIO_POWERUP);
@@ -451,6 +450,8 @@ void Mario::OnMarioHit(const bool force)
 			AudioManager::GetInstance()->StopAll();
 			AudioManager::GetInstance()->PlaySFX(MARIO_DIE);
 			StatManager::GetInstance()->AddLife(-1, this->position);
+			PlayableScene* scene = dynamic_cast<PlayableScene*>(Game::GetInstance()->GetCurrentScene());
+			scene->GetLevelTimer()->Pause();
 		}
 	}
 }

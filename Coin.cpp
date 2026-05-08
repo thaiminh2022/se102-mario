@@ -21,11 +21,11 @@ void Coin::Render()
 	float renderX, renderY;
 
 	Game::GetInstance()
-	->GetCamera()
-	->WorldToScreen(position.x, position.y, renderX, renderY);
+		->GetCamera()
+		->WorldToScreen(position.x, position.y, renderX, renderY);
 
 	Animations::GetInstance()->Get(COIN_SPIN_ANIM_ID)
-	->Render(round(renderX), round(renderY), false, false);
+		->Render(round(renderX), round(renderY), false, false);
 }
 
 void Coin::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
@@ -37,7 +37,8 @@ void Coin::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	if (!moveUpTimer.IsFinished())
 	{
 		position.y -= 200 * dt;
-	}else
+	}
+	else
 	{
 		moveUpTimer.SetIdle();
 		isDeleted = true;
@@ -51,7 +52,7 @@ Coin::Coin(Vector2Int startPos, const CoinState state) : GameObject(startPos)
 	this->state = state;
 	isCollidable = true;
 
-	if (state== CoinState::CollectedFromQuestionBox)
+	if (state == CoinState::CollectedFromQuestionBox)
 	{
 		moveUpTimer.Start();
 		AudioManager::GetInstance()->PlaySFX(MARIO_COLLECT_COIN);

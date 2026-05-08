@@ -1,12 +1,13 @@
 #include "BowserFireBullet.h"
+#include "Fireball.h"
 
-BowserFireBullet::BowserFireBullet(int startX, int startY, bool isFacingRight) : GameObject(startX, startY)
+BowserFireBullet::BowserFireBullet(int startX, int startY, bool isFacingRight, float targetHeight, bool heightReached, bool isAlwaysActive) : GameObject(startX, startY)
 {
 	auto t = Textures::GetInstance()->Get(BOWSER_ITEM_BULLET_TEX_ID);
 	auto sp = Sprites::GetInstance();
 	auto anims = Animations::GetInstance();
 	sp->Add(BOWSER_ITEM_BULLET_FIRE_SPRITE_1, 0, 0, 23, 7, t);
-	sp->Add(BOWSER_ITEM_BULLET_FIRE_SPRITE_2, 0, 9, 23, 16, t);
+	sp->Add(BOWSER_ITEM_BULLET_FIRE_SPRITE_2, 0, 8, 23, 15, t);
 
 	if (!anims->Contains(BOWSER_ITEM_BULLET_FIRE_ANIM_ID))
 	{
@@ -16,53 +17,34 @@ BowserFireBullet::BowserFireBullet(int startX, int startY, bool isFacingRight) :
 		anims->Add(BOWSER_ITEM_BULLET_FIRE_ANIM_ID, fireBreathAnim);
 	}
 	this->isFacingRight = isFacingRight;
-	SetRandomHeight();
+	this->isAlwaysActive = isAlwaysActive;
+	height = targetHeight;
+	this->heightReached = heightReached;
 	SetState(BowserFireBulletState::Flying);
-	appearTimer = Timer(2.0f);
-	appearTimer.Start();
-
 }
-
-void BowserFireBullet::SetRandomHeight()
-{
-	int random = rand() % 3;
-	switch (random)
-	{
-	case 0:
-		heightLevel = BowserBulletHeight::Low;
-		height = 144.0f;
-		break;
-	case 1:
-		heightLevel = BowserBulletHeight::Average;
-		height = 128.0f;
-		break;
-	case 2:
-		heightLevel = BowserBulletHeight::High;
-		height = 112.0f;
-		break;
-	}
-}
-
 void BowserFireBullet::AnimTransition()
 {
 	if (position.y == height)
 	{
-		return ;
+		heightReached = true;
+		return;
 	}
-	else if (position.y < height)
-	{
-		position.y += 2.5f;
-		if (position.y > height)
-		{
-			position.y = height;
-		}
-	}
-	else
-	{
-		position.y -= 2.5f;
+	if (!heightReached) {
 		if (position.y < height)
 		{
-			position.y = height;
+			position.y += 2.5f;
+			if (position.y > height)
+			{
+				position.y = height;
+			}
+		}
+		else
+		{
+			position.y -= 2.5f;
+			if (position.y < height)
+			{
+				position.y = height;
+			}
 		}
 	}
 }
@@ -74,7 +56,6 @@ void BowserFireBullet::SetState(BowserFireBulletState newState)
 	{
 	case BowserFireBulletState::Flying:
 		velocity.x = isFacingRight ? BOWSER_ITEM_FIRE_BULLET_SPEED : -BOWSER_ITEM_FIRE_BULLET_SPEED;
-		appearTimer.Start();
 		isCollidable = true;
 		isDeleted = false;
 		break;
@@ -92,17 +73,15 @@ void BowserFireBullet::Update(float dt, vector<GameObject*>& coObjects, SceneCon
 	{
 		return;
 	}
-	appearTimer.ProcessTimer(dt);
-	if (appearTimer.IsFinished())
+	if (!heightReached)
+		AnimTransition();
+	if (!isAlwaysActive)
 	{
-		SetState(BowserFireBulletState::Discarded);
-		return;
-	}
-	AnimTransition();
-	auto r = GetBoundingBox();
-	if (!Game::GetInstance()->GetCamera()->IsInView(r.left, r.top, r.right, r.bottom)) {
-		SetState(BowserFireBulletState::Discarded);
-		return;
+		auto r = GetBoundingBox();
+		if (!Game::GetInstance()->GetCamera()->IsInView(r.left, r.top, r.right, r.bottom)) {
+			SetState(BowserFireBulletState::Discarded);
+			return;
+		}
 	}
 
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
@@ -116,7 +95,7 @@ void BowserFireBullet::Render()
 	}
 	float renderX, renderY;
 	Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
-	Animations::GetInstance()->Get(BOWSER_ITEM_BULLET_FIRE_ANIM_ID)->Render(round(renderX), round(renderY),!isFacingRight,0);
+	Animations::GetInstance()->Get(BOWSER_ITEM_BULLET_FIRE_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, 0);
 }
 
 void BowserFireBullet::OnNoCollision(float dt)
@@ -133,5 +112,11 @@ void BowserFireBullet::OnCollisionWith(CollisionEvent* event)
 	if (event->IsTileCollision())
 	{
 		SetState(BowserFireBulletState::Discarded);
+	}
+	auto e = event->otherObject;
+	if (dynamic_cast<Fireball*>(e) != nullptr)
+	{
+		SetState(BowserFireBulletState::Discarded);
+		isDeleted = true;
 	}
 }

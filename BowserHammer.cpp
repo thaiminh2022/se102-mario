@@ -1,14 +1,14 @@
 #include "BowserHammer.h"
-
+#include "Fireball.h"
 BowserHammer::BowserHammer(int startX, int startY, bool isFacingRight, float waitTime) : GameObject(startX, startY), waitTimer(waitTime)
 {
 	auto t = Textures::GetInstance()->Get(BOWSER_ITEM_BULLET_TEX_ID);
 	auto sp = Sprites::GetInstance();
 	auto anims = Animations::GetInstance();
-	sp->Add(BOWSER_ITEM_BULLET_HAMMER_SPRITE_1, 25, 0, 32, 15, t);
-	sp->Add(BOWSER_ITEM_BULLET_HAMMER_SPRITE_2, 40, 4, 53, 11, t);
-	sp->Add(BOWSER_ITEM_BULLET_HAMMER_SPRITE_3, 61, 0, 68, 15, t);
-	sp->Add(BOWSER_ITEM_BULLET_HAMMER_SPRITE_4, 76, 4, 89, 11, t);
+	sp->Add(BOWSER_ITEM_BULLET_HAMMER_SPRITE_1, 24, 0, 47, 23, t);
+	sp->Add(BOWSER_ITEM_BULLET_HAMMER_SPRITE_2, 48, 0, 71, 23, t);
+	sp->Add(BOWSER_ITEM_BULLET_HAMMER_SPRITE_3, 72, 0, 95, 23, t);
+	sp->Add(BOWSER_ITEM_BULLET_HAMMER_SPRITE_4, 96, 0, 119, 23, t);
 
 	if (!anims->Contains(BOWSER_ITEM_BULLET_HAMMER_ANIM_ID))
 	{
@@ -31,7 +31,8 @@ void BowserHammer::SetState(BowserHammerState newState)
 	switch (state)
 	{
 	case BowserHammerState::Flying:
-		SetRandomVelocity();
+		velocity.y = -200.0f;
+		velocity.x = isFacingRight ? BOWSER_ITEM_FIRE_HAMMER_SPEED : -BOWSER_ITEM_FIRE_HAMMER_SPEED;
 		isCollidable = true;
 		isDeleted = false;
 		break;
@@ -81,7 +82,6 @@ void BowserHammer::Render()
 	float renderX, renderY;
 	Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
 	Animations::GetInstance()->Get(BOWSER_ITEM_BULLET_HAMMER_ANIM_ID)->Render(round(renderX), round(renderY), !isFacingRight, 0);
-
 }
 
 void BowserHammer::OnNoCollision(float dt)
@@ -95,4 +95,10 @@ void BowserHammer::OnCollisionWith(CollisionEvent* event)
 {
 	if (state == BowserHammerState::Waiting || state == BowserHammerState::Discarded)
 		return;
+	auto e = event->otherObject;
+	if (dynamic_cast<Fireball*>(e) != nullptr)
+	{
+		SetState(BowserHammerState::Discarded);
+		isDeleted = true;
+	}
 }

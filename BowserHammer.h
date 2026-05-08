@@ -43,9 +43,11 @@ public:
 	void Render() override;
 	void OnNoCollision(float dt) override;
 	void OnCollisionWith(CollisionEvent* event) override;
+	
 	Rect GetBoundingBox() override
 	{
-		return Rect::FromXYWH(static_cast<int>(position.x), static_cast<int>(position.y), 16, 14);
+		return Rect::FromXYWH(static_cast<int>(position.x) + 8, static_cast<int>(position.y) + 8, 8, 8);
 	}
+	CollisionMatrixLayer GetCollisionLayer() override { return CollisionMatrixLayer::EnemyProjectile; }
 };
 

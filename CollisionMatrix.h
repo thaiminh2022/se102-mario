@@ -11,11 +11,14 @@ enum class CollisionMatrixLayer : matrixType
 	CheepCheeps,
 	Player,
 	Ground,
+	Enemies,
+	Shells,
+	MarioFireball
 };
 
 class CollisionMatrix
 {
-	bool matrix[5][5];
+	bool matrix[8][8];
 	static CollisionMatrix* _instance;
 
 	CollisionMatrix()
@@ -29,6 +32,13 @@ class CollisionMatrix
 		}
 
 		SetCollisionValue(CollisionMatrixLayer::CheepCheeps, CollisionMatrixLayer::Ground, false);
+		SetCollisionValue(CollisionMatrixLayer::Enemies, CollisionMatrixLayer::Enemies, false);
+		SetCollisionValue(CollisionMatrixLayer::Shells, CollisionMatrixLayer::Enemies, false);
+		SetCollisionValue(CollisionMatrixLayer::MarioFireball, CollisionMatrixLayer::MarioFireball, false);
+		SetCollisionValue(CollisionMatrixLayer::EnemyProjectile, CollisionMatrixLayer::EnemyProjectile, false);
+		SetCollisionValue(CollisionMatrixLayer::EnemyProjectile, CollisionMatrixLayer::Enemies, false);
+		SetCollisionValue(CollisionMatrixLayer::MarioFireball, CollisionMatrixLayer::Player, false);
+		SetCollisionValue(CollisionMatrixLayer::EnemyProjectile, CollisionMatrixLayer::Ground, false);
 	}
 
 	void SetCollisionValue(CollisionMatrixLayer a, CollisionMatrixLayer b, const bool value)

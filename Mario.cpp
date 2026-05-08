@@ -37,16 +37,19 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	slidingToYWinning = 0;
 	flagPoleFlipWaitTimer = Timer(1);
 	isGrounded = false;
-	isInvincible = true;
+	isInvincible = false;
 	isCollidable = true;
 	isFacingRight = true;
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
 	power = MarioPower::Normal;
-	fireCooldownTimer = Timer(MARIO_TIME_BTW_FIRE);
+	lastPower = MarioPower::Normal;
+	fireCooldownTimer = Timer(MARIO_FIRE_INTERVAL);
 	fireCooldownTimer.Start();
 	transformTimer = Timer(MARIO_GROW_TIME);
+	starmanTimer = Timer(STARMAN_INVINCIBLE_TIME);
+	invincibleTimer = Timer(MARIO_INVINCIBLE_TIME);
 	enemySequenceKilledCount = 0;
 	LoadSpriteAndAnimation();
 }
@@ -142,8 +145,6 @@ void Mario::MarioExitingPipe(float dt)
 	}
 }
 
-
-
 void Mario::ClampMario()
 {
 	auto cam = Game::GetInstance()->GetCamera();
@@ -205,12 +206,17 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		invincibleTimer.ProcessTimer(dt);
 		if (invincibleTimer.IsFinished())
 		{
-			isInvincible = false;
 			invincibleTimer.SetIdle();
-			if (power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig) {
-				power = MarioPower::Normal;//currently reset to normal. Will change later
-			}
-}
+			isInvincible = false;
+		}
+	}
+	if (power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig) {
+		starmanTimer.ProcessTimer(dt);
+		if (starmanTimer.IsFinished())
+		{
+			starmanTimer.SetIdle();
+			power = lastPower;//currently reset to normal. Will change later
+		}
 	}
 
 	auto input = InputManager::GetInstance();
@@ -229,7 +235,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	HandleShootFireball(dt, coObjects, ctx);
 	ApplyGravityAndClamp(dt);
 	UpdateFacingDirection();
-	
+
 	ClampMario();
 	RouteAnimationState();
 
@@ -299,4 +305,3 @@ Rect Mario::GetBoundingBox()
 
 
 
-	

@@ -57,6 +57,10 @@ Bowser::Bowser(int startX, int startY, Mario* mario) : GameObject(startX, startY
 	target = mario;
 	isGrounded = false;
 	isDead = false;
+
+	BOWSER_JUMP_INTERVAL = 1 + rand() % 3; //random jump interval between 1 to 3 seconds
+	BOWSER_FIRE_BREATH_INTERVAL = 2 + rand() % 3; //random fire breath interval between 2 to 4 seconds
+	BOWSER_HAMMERTHROW_INTERVAL = 1 + rand() % 3; //random hammer throw interval between 1 to 3 seconds
 }
 
 void Bowser::SetState(BowserState newState)
@@ -90,12 +94,10 @@ void Bowser::UpdateDirection()
 	if (target->position.x < position.x)
 	{
 		isFacingRight = false;
-		moveLeft = true;
 	}
 	else
 	{
 		isFacingRight = true;
-		moveLeft = false;
 	}
 }
 
@@ -132,7 +134,16 @@ void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		}
 		break;
 	}
-	velocity.y += 562.5f * dt;
+	float currentGravity = 562.5f;
+
+	// Check if Bowser is at the "peak" of his jump (moving very slowly up or down)
+	if (abs(velocity.y) < 60.0f)
+	{
+		// Cut gravity in half while he is hanging in the air!
+		currentGravity = 281.25f;
+	}
+
+	velocity.y += currentGravity * dt;
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 
 	if (target->GetState() == MarioState::Dying)
@@ -189,28 +200,74 @@ void Bowser::TimerHandler(float dt, SceneContext* ctx)
 {
 	if (state == BowserState::Dead || state == BowserState::Falling)
 		return;
-	nextFireBreathingTimer.ProcessTimer(dt);
-	fireBreathAnimTimer.ProcessTimer(dt);
-	if (nextFireBreathingTimer.IsFinished())
+
+	// --- FIRE BREATH LOGIC ---
+	if (fireBreathAnimTimer.IsTicking())
 	{
-		FireBreathAttack(ctx);
-		nextFireBreathingTimer.Start();
-		fireBreathAnimTimer.Start();
+		// Bowser is currently in the middle of breathing fire.
+
+		fireBreathAnimTimer.ProcessTimer(dt);
+		if (fireBreathAnimTimer.IsFinished())
+		{
+			// Animation finished! Shoot the fireball.
+			FireBreathAttack(ctx);
+
+			// Reset the cooldown timer for the NEXT attack
+			BOWSER_FIRE_BREATH_INTERVAL = 3 + rand() % 3;
+			nextFireBreathingTimer = Timer(BOWSER_FIRE_BREATH_INTERVAL);
+			nextFireBreathingTimer.Start();
+			if (isGrounded) SetState(BowserState::Walking);
+		}
 	}
-	nextHammerThrowTimer.ProcessTimer(dt);
-	hammerThrowAnimTimer.ProcessTimer(dt);
-	if (nextHammerThrowTimer.IsFinished())
+	else
 	{
-		HammerThrowAttack(ctx);
-		nextHammerThrowTimer.Start();
-		hammerThrowAnimTimer.Start();
+		// Bowser is NOT breathing fire, so tick the cooldown timer
+		nextFireBreathingTimer.ProcessTimer(dt);
+		if (nextFireBreathingTimer.IsFinished())
+		{
+			// Start the animation timer
+			fireBreathAnimTimer.Start();
+			nextFireBreathingTimer.Stop();
+		}
 	}
+
+	// --- HAMMER THROW LOGIC ---
+	if (hammerThrowAnimTimer.IsTicking())
+	{
+		hammerThrowAnimTimer.ProcessTimer(dt);
+		if (hammerThrowAnimTimer.IsFinished())
+		{
+			HammerThrowAttack(ctx);
+
+			BOWSER_HAMMERTHROW_INTERVAL = 1 + rand() % 3;
+			nextHammerThrowTimer = Timer(BOWSER_HAMMERTHROW_INTERVAL);
+			nextHammerThrowTimer.Start();
+		}
+	}
+	else
+	{
+		nextHammerThrowTimer.ProcessTimer(dt);
+		if (nextHammerThrowTimer.IsFinished())
+		{
+			hammerThrowAnimTimer.Start();
+			nextHammerThrowTimer.Stop();
+		}
+	}
+
+	// --- JUMP LOGIC ---
 	if (isGrounded)
 		nextJumpTimer.ProcessTimer(dt);
+
 	if (nextJumpTimer.IsFinished())
 	{
-		SetState(BowserState::Jumping);
+		int jumpDir = rand() % 2;// 0 or 1
+		moveLeft = (jumpDir == 0);
+
+		BOWSER_JUMP_INTERVAL = 1 + rand() % 3;
+		nextJumpTimer = Timer(BOWSER_JUMP_INTERVAL);
 		nextJumpTimer.Start();
+
+		SetState(BowserState::Jumping);
 	}
 }
 
@@ -218,7 +275,8 @@ void Bowser::FireBreathAttack(SceneContext* ctx)
 {
 	if (state == BowserState::Dead || state == BowserState::Falling)
 		return;
-	auto f = new BowserFireBullet(position.x, position.y, isFacingRight);
+	float targetHeight = target != nullptr ? target->position.y + 4.0f : position.y;
+	auto f = new BowserFireBullet(position.x, position.y, isFacingRight, targetHeight, false, false);
 	ctx->addObject(f);
 }
 
@@ -228,26 +286,26 @@ void Bowser::HammerThrowAttack(SceneContext* ctx)
 		return;
 	float wait = 0;
 	float offsetY = 0;
-	for (int index = 0; index < 8; index++)
+	int hammerCount = 3 + rand() % 6; // throw 3 to 8 hammers in quick succession
+	for (int index = 0; index < hammerCount; index++)
 	{
-		offsetY += -5.0f * index;
 		wait += index * 0.03f;
 
 		int spawnX = static_cast<int>(position.x);
-		int spawnY = static_cast<int>(position.y + offsetY);
+		int spawnY = static_cast<int>(position.y);
 		auto h = new BowserHammer(spawnX, spawnY, isFacingRight, wait);
 		ctx->addObject(h);
 	}
 
 	wait += 0.2f;
 	offsetY = -20.0f;
-	for (int index = 0; index < 8; index++)
+	hammerCount = 3 + rand() % 6; // throw 3 to 8 hammers in quick succession
+	for (int index = 0; index < hammerCount; index++)
 	{
-		offsetY += -5.0f * index;
 		wait += index * 0.03f;
 
 		int spawnX = static_cast<int>(position.x);
-		int spawnY = static_cast<int>(position.y + offsetY);
+		int spawnY = static_cast<int>(position.y);
 		auto h = new BowserHammer(spawnX, spawnY, isFacingRight, wait);
 		ctx->addObject(h);
 	}

@@ -54,6 +54,7 @@ class LevelLoader
 	void ParseInstantTeleportPipe(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseClearScreenColorTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseInWaterTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
+	void ParseFireShooter(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 
 	// helper
 	void RebuildCacheForLevel(vector<EntityInstance>& entities);

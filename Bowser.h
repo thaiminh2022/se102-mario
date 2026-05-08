@@ -25,9 +25,7 @@
 
 constexpr float BOWSER_WALKING_SPEED = 15.0f;
 constexpr float BOWSER_JUMPING_SPEED = 240.0f;
-constexpr float BOWSER_JUMP_INTERVAL = 1.5f;
-constexpr float BOWSER_FIRE_BREATH_INTERVAL = 3.0f;
-constexpr float BOWSER_HAMMERTHROW_INTERVAL = 4.0f;
+
 
 enum class BowserState : std::uint8_t
 {
@@ -37,7 +35,6 @@ enum class BowserState : std::uint8_t
 	Dead,
 	Falling
 };
-
 class Bowser :public GameObject
 {
 	bool moveLeft;
@@ -48,10 +45,14 @@ class Bowser :public GameObject
 	Timer nextFireBreathingTimer;
 	Timer nextJumpTimer;
 	Timer nextHammerThrowTimer;
+	Timer fireBreathingWarmup;
 	Timer fallingTimer;
 	BowserState state;
 	Timer fireBreathAnimTimer;
 	Timer hammerThrowAnimTimer;
+	float BOWSER_JUMP_INTERVAL = 3.0f;
+	float BOWSER_FIRE_BREATH_INTERVAL = 3.0f;
+	float BOWSER_HAMMERTHROW_INTERVAL = 3.0f;
 public:
 	Bowser(int startX, int startY, Mario* mario);
 	void SetState(BowserState newState);
@@ -73,5 +74,6 @@ public:
 		return Rect::FromXYWH(static_cast<int>(position.x), static_cast<int>(position.y), 32, 32);
 	}
 	bool IsActive() override { return state != BowserState::Dead; }
+	CollisionMatrixLayer GetCollisionLayer() override { return CollisionMatrixLayer::Enemies; }
 };
 
