@@ -14,11 +14,12 @@
 #include <cmath>
 
 #include "Debug.h"
+#include "Helper.h"
 
-Goomba::Goomba(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
+Goomba::Goomba(Vector2Int startPos, BiomeType biome) : GameObject(startPos)
 {
 	// Load the animations
-	auto t = Textures::GetInstance()->Get(GOOMBA_TEX_ID);
+	auto t = Textures::GetInstance()->Get(ChooseEnemyId(biome));
 	auto sp = Sprites::GetInstance();
 	sp->Add(GOOMBA_WALK_SPRITE_1, 0, 0, 15, 15, t);
 	sp->Add(GOOMBA_WALK_SPRITE_2, 16, 0, 31, 15, t);

@@ -193,7 +193,7 @@ static void LoadResource()
 	auto t = Textures::GetInstance();
 	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_sprites.png");
 
-	t->Add(GOOMBA_TEX_ID, L"Assets/Sprites/goomba_frames.png");
+	t->Add(OVERWORLD_ENEMY_TEX_ID, L"Assets/Sprites/overworld_enemies.png");
 	t->Add(FIREBALL_TEX_ID, L"Assets/Sprites/fireball.png");
 
 	t->Add(BLOCKS_OVERWORLD_TEX_ID, L"Assets/Sprites/overworld_blocks.png");
@@ -208,9 +208,6 @@ static void LoadResource()
 	t->Add(UNDERWATER_ITEMS_TEX_ID, L"Assets/Sprites/underwater_items.png");
 
 
-	t->Add(KOOPA_TEX_ID, L"Assets/Sprites/koopa_sprites.png");
-	t->Add(CHEEPS_TEX_ID, L"Assets/Sprites/cheepcheeps.png");
-	t->Add(BLOOPERS_TEX_ID, L"Assets/Sprites/bloopers.png");
 
 	
 	t->Add(HUDCOIN_TEX_ID, L"Assets/Sprites/HUDCoin.png");

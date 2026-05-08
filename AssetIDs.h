@@ -193,7 +193,7 @@ constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_6 = 17806;
 // ==========================================
 // GOOMBA (E = 2)
 // ==========================================
-constexpr int GOOMBA_TEX_ID = 20000;
+constexpr int OVERWORLD_ENEMY_TEX_ID = 20000;
 
 // Moving (A = 200)
 constexpr int GOOMBA_WALK_ANIM_ID = 21200;
@@ -348,7 +348,6 @@ constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61703;
 // ---------------------------------
 // NORMAL KOOPA (T = 1)
 // ---------------------------------
-constexpr int KOOPA_TEX_ID = 71000;
 
 // Moving (A = 200)
 constexpr int KOOPA_WALK_ANIM_ID = 71200;
@@ -389,7 +388,6 @@ constexpr int KOOPA_DEAD_SPRITE = 73701;
 /// ===============================
 
 /// cheep cheeps,  t = 1;
-constexpr int CHEEPS_TEX_ID = 81000;
 
 // RED (A = 1)
 constexpr int RED_CHEEP_ANIM = 81100;

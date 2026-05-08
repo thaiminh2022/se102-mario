@@ -135,35 +135,35 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	// goomba
 	for (const auto& gPos : config->entityData.goombaStarts)
 	{
-		const auto gb = new Goomba(gPos.x, gPos.y);
+		const auto gb = new Goomba(gPos, config->biome);
 		objects.push_back(gb);
 	}
 
 	// koopa 
 	for (const auto& kPos : config->entityData.koopaStarts)
 	{
-		const auto kp = new Koopa(kPos.x, kPos.y);
+		const auto kp = new Koopa(kPos, config->biome);
 		objects.push_back(kp);
 	}
 
 	// cheep cheeps
 	for (const auto& ccData : config->entityData.cheepCheeps)
 	{
-		const auto cc = new CheepCheeps(ccData.startPosition, ccData.isRed);
+		const auto cc = new CheepCheeps(ccData.startPosition, config->biome,ccData.isRed);
 		objects.push_back(cc);
 	}
 
 	// bloopers
 	for (const auto& blooperData : config->entityData.bloopers)
 	{
-		const auto blooper = new Bloopers(blooperData.lowestLimit, blooperData.highestLimit);
+		const auto blooper = new Bloopers(blooperData.lowestLimit, blooperData.highestLimit, config->biome);
 		objects.push_back(blooper);
 	}
 
 	// winged koopa
 	for (const auto& fkPos : config->entityData.WingedKoopaStarts)
 	{
-		const auto fkp = new Koopa(fkPos.x, fkPos.y, KoopaForm::Winged);
+		const auto fkp = new Koopa(fkPos, config->biome, KoopaForm::Winged);
 		objects.push_back(fkp);
 	}
 

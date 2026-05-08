@@ -15,31 +15,21 @@
 #include "Textures.h"
 #include <cmath>
 
-#include "Debug.h"
+#include "Helper.h"
 #include "StatManager.h"
 
-Koopa::Koopa(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
+Koopa::Koopa(const Vector2Int startPos, const BiomeType biome) : GameObject(startPos)
 {
 	// Load the animations
-	auto t = Textures::GetInstance()->Get(KOOPA_TEX_ID);
+	auto t = Textures::GetInstance()->Get(ChooseEnemyId(biome));
 	auto sp = Sprites::GetInstance();
-	sp->Add(KOOPA_WALK_SPRITE_1, 0, 0, 15, 23, t);
-	sp->Add(KOOPA_WALK_SPRITE_2, 18, 0, 33, 23, t);
-
-	sp->Add(WINGED_KOOPA_FLY_SPRITE_1, 36, 0, 51, 23, t);
-	sp->Add(WINGED_KOOPA_FLY_SPRITE_2, 54, 0, 69, 23, t);
-
-	sp->Add(HIDING_KOOPA_HIDE_SPRITE, 72, 8, 87, 23, t);
-
-	sp->Add(HIDING_KOOPA_SPIN_SPRITE_1, 72, 8, 87, 23, t);
-	sp->Add(HIDING_KOOPA_SPIN_SPRITE_2, 90, 8, 105, 23, t);
-
-	sp->Add(KOOPA_DEAD_SPRITE, 72, 8, 87, 23, t);
 
 	auto anims = Animations::GetInstance();
 	if (!anims->Contains(KOOPA_WALK_ANIM_ID))
 	{
 		auto walkAnim = new Animation(100);
+		sp->Add(KOOPA_WALK_SPRITE_1, 0, 16, 15, 39, t);
+		sp->Add(KOOPA_WALK_SPRITE_2, 16, 16, 31, 39, t);
 		walkAnim->Add(KOOPA_WALK_SPRITE_1);
 		walkAnim->Add(KOOPA_WALK_SPRITE_2);
 		anims->Add(KOOPA_WALK_ANIM_ID, walkAnim);
@@ -47,6 +37,8 @@ Koopa::Koopa(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	if (!anims->Contains(WINGED_KOOPA_FLY_ANIM_ID))
 	{
 		auto flyAnim = new Animation(100);
+		sp->Add(WINGED_KOOPA_FLY_SPRITE_1, 32, 16, 47, 39, t);
+		sp->Add(WINGED_KOOPA_FLY_SPRITE_2, 48, 16, 63, 39, t);
 		flyAnim->Add(WINGED_KOOPA_FLY_SPRITE_1);
 		flyAnim->Add(WINGED_KOOPA_FLY_SPRITE_2);
 		anims->Add(WINGED_KOOPA_FLY_ANIM_ID, flyAnim);
@@ -54,12 +46,17 @@ Koopa::Koopa(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	if (!anims->Contains(HIDING_KOOPA_HIDE_ANIM_ID))
 	{
 		auto hideAnim = new Animation(100);
+		sp->Add(HIDING_KOOPA_HIDE_SPRITE, 64, 16, 79, 31, t);
+
 		hideAnim->Add(HIDING_KOOPA_HIDE_SPRITE);
 		anims->Add(HIDING_KOOPA_HIDE_ANIM_ID, hideAnim);
 	}
 	if (!anims->Contains(HIDING_KOOPA_SPIN_ANIM_ID))
 	{
 		auto spinAnim = new Animation(100);
+		sp->Add(HIDING_KOOPA_SPIN_SPRITE_1, 64, 16, 79, 31, t);
+		sp->Add(HIDING_KOOPA_SPIN_SPRITE_2, 80, 16, 95, 31, t);
+		
 		spinAnim->Add(HIDING_KOOPA_SPIN_SPRITE_1);
 		spinAnim->Add(HIDING_KOOPA_SPIN_SPRITE_2);
 		anims->Add(HIDING_KOOPA_SPIN_ANIM_ID, spinAnim);
@@ -67,6 +64,8 @@ Koopa::Koopa(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	if (!anims->Contains(KOOPA_DEAD_ANIM_ID))
 	{
 		auto deadAnim = new Animation(100);
+		sp->Add(KOOPA_DEAD_SPRITE, 64, 16, 79, 31, t);
+
 		deadAnim->Add(KOOPA_DEAD_SPRITE);
 		anims->Add(KOOPA_DEAD_ANIM_ID, deadAnim);
 	}
@@ -77,7 +76,7 @@ Koopa::Koopa(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	enemyKilledByShellCount = 0;
 }
 
-Koopa::Koopa(int startX, int startY, KoopaForm form) : Koopa(startX, startY)
+Koopa::Koopa(const Vector2Int startPos, const BiomeType biome, const KoopaForm form) : Koopa(startPos, biome)
 {
 	this->form = form;
 }
@@ -144,11 +143,30 @@ void Koopa::Render()
 	float renderX, renderY;
 	Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
 
+	int renderId = 0;
+
+	switch (state)
+	{
+	case KoopaState::Moving:
+		if (form == KoopaForm::Normal)
+			renderId = KOOPA_WALK_ANIM_ID;
+		else if (form == KoopaForm::Winged)
+			renderId = WINGED_KOOPA_FLY_ANIM_ID;
+		else
+			renderId = HIDING_KOOPA_SPIN_ANIM_ID;
+		break;
+	case KoopaState::NotMoving:
+		renderId = HIDING_KOOPA_HIDE_ANIM_ID;
+		break;
+	case KoopaState::Dead:
+	case KoopaState::DeadUpsideDown:
+		renderId = KOOPA_DEAD_ANIM_ID;
+		break;
+	}
+
+
 	Animations::GetInstance()
-		->Get(state == KoopaState::Dead || state == KoopaState::DeadUpsideDown ? KOOPA_DEAD_ANIM_ID :
-			(form == KoopaForm::Normal ? KOOPA_WALK_ANIM_ID :
-				(form == KoopaForm::Winged ? WINGED_KOOPA_FLY_ANIM_ID :
-					(state == KoopaState::Moving ? HIDING_KOOPA_SPIN_ANIM_ID : HIDING_KOOPA_HIDE_ANIM_ID))))
+		->Get(renderId)
 		->Render(round(renderX), round(renderY), !moveLeft, state == KoopaState::DeadUpsideDown || state == KoopaState::Dead);
 }
 
