@@ -24,14 +24,16 @@ class QuestionBlock : public GameObject
 	bool isBrick; // there's no differences for now
 	bool isHidden;
 
+	BiomeType biome;
+
 public:
 	void SetState(QuestionBlockState newState);
 	bool HaveDrop() const { return drop != BlockDropType::None; }
 
 	void Render() override;
 	void CheckHitBounce(vector<GameObject*>& coObjects, SceneContext* ctx) const;
-	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
-	QuestionBlock(Vector2Int startPos, BlockDropType drop, bool isBrick = false, bool isHidden = false);
+	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;	
+	QuestionBlock(Vector2Int startPos, BlockDropType drop, BiomeType biome, bool isBrick = false, bool isHidden = false);
 	Rect GetBoundingBox() override;
 	bool IsCollidable() override { return true; }
 	bool IsBlocking() override { return true; }

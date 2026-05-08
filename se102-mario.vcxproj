@@ -209,6 +209,7 @@
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Goomba.h" />
+    <ClInclude Include="Helper.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="InWaterTrigger.h" />
     <ClInclude Include="Koopa.h" />

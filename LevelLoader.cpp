@@ -167,6 +167,10 @@ Tilemap *LevelLoader::ParseLevel(int level)
 		{
 			levelBiome = BiomeType::Castle;
 		}
+		else if (biome == "Water")
+		{
+			levelBiome = BiomeType::UnderWater;
+		}
 	}
 
 

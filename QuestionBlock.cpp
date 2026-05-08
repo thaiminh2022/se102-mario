@@ -7,6 +7,7 @@
 #include "Flower.h"
 #include "Game.h"
 #include "Goomba.h"
+#include "Helper.h"
 #include "Mario.h"
 #include "Mushroom.h"
 #include "Sprites.h"
@@ -114,7 +115,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 					Vector2Int(
 						static_cast<int>(round(startPosition.x)),
 						static_cast<int>(round(startPosition.y - 8))
-					),
+					), biome,
 					CoinState::CollectedFromQuestionBox)
 				);
 				StatManager::GetInstance()->AddCoin(1);
@@ -128,7 +129,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 
 				if (power == MarioPower::Normal)
 				{
-					ctx->addObject(new Mushroom(position));
+					ctx->addObject(new Mushroom(position, biome));
 				}
 				else
 				{
@@ -168,7 +169,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 	if (state == QuestionBlockState::Break)
 	{
 		CheckHitBounce(coObjects, ctx);
-		auto debris = new BrickExplode(startPosition);
+		auto debris = new BrickExplode(startPosition, biome);
 		ctx->addObject(debris);
 		isDeleted = true;
 		state = QuestionBlockState::Blocked;
@@ -176,11 +177,12 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 
 }
 
-QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop, const bool isBrick, const bool isHidden) : GameObject(startPos)
+QuestionBlock::QuestionBlock(Vector2Int startPos, BlockDropType drop, BiomeType biome, bool isBrick, bool isHidden) : GameObject(startPos)
 {
+	this->biome = biome;
 
 	state = QuestionBlockState::Closed;
-	const auto t = Textures::GetInstance()->Get(BLOCKS_OVERWORLD_TEX_ID);
+	const auto t = Textures::GetInstance()->Get(ChooseBlocksId(biome));
 	const auto sp = Sprites::GetInstance();
 	const auto anims = Animations::GetInstance();
 
@@ -231,6 +233,8 @@ QuestionBlock::QuestionBlock(const Vector2Int startPos, const BlockDropType drop
 
 	bounceCheckBox = Rect::FromXYWH(startPos.x, startPos.y - 16, 16, 16);
 }
+
+
 
 Rect QuestionBlock::GetBoundingBox()
 {
