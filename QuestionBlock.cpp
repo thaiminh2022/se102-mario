@@ -32,6 +32,11 @@ void QuestionBlock::SetState(const QuestionBlockState newState)
 		moveUpTimer.Start();
 		isHidden = false;
 	}
+	if (newState == QuestionBlockState::Bump)
+	{
+		moveUpTimer.Start();
+		isHidden = false;
+	}
 }
 
 void QuestionBlock::Render()
@@ -97,9 +102,9 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 	if (state == QuestionBlockState::Blocked)
 		return;
 	auto sm = StatManager::GetInstance();
-	if (state == QuestionBlockState::Opened)
+	if (state == QuestionBlockState::Opened || state == QuestionBlockState::Bump)
 	{
-		if (!spawnInternalItem)
+		if (state == QuestionBlockState::Opened && !spawnInternalItem)
 		{
 			CheckHitBounce(coObjects, ctx);
 
@@ -142,6 +147,10 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 			}
 			spawnInternalItem = true;
 		}
+		if (state == QuestionBlockState::Bump)
+		{
+			CheckHitBounce(coObjects, ctx);
+		}
 
 		moveUpTimer.ProcessTimer(dt);
 		if (!moveUpTimer.IsFinished())
@@ -160,7 +169,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 			{
 				moveUpTimer.SetIdle();
 				renderPosition.y = startPosition.y;
-				state = QuestionBlockState::Blocked;
+				state = state == QuestionBlockState::Opened ? QuestionBlockState::Blocked : QuestionBlockState::Closed;
 			}
 		}
 	}

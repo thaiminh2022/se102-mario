@@ -50,6 +50,11 @@ void StatManager::Reset()
 	lifeCount = 3; // Starting lives
 }
 
+void StatManager::AddScore(int addingScore)
+{
+	score += addingScore;
+}
+
 void StatManager::AddScore(int addingScore, Vector2 pos)
 {
 	score += addingScore;

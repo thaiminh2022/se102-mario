@@ -8,6 +8,7 @@ enum class QuestionBlockState
 	Blocked,
 	Closed,
 	Break,
+	Bump,
 };
 
 class QuestionBlock : public GameObject

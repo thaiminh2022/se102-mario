@@ -69,6 +69,7 @@ public:
 	unsigned int Play(int soundId, bool looping = false, std::function<void()> onEnd = nullptr);
 	unsigned int PlaySFX(int soundId);
 	unsigned int PlayMusic(int soundId, bool looping = true, std::function<void()> onEnd = nullptr);
+	float GetDuration(int soundId) const;
 
 	void Stop(unsigned int playbackHandle);
 	void Pause(unsigned int playbackHandle);

@@ -35,7 +35,7 @@ void LevelTransitionScene::Update(float dt)
 		const auto marioPowerValue = marioPower.hasValue ? marioPower.value : static_cast<MarioPower>(0);
 
 		Game::GetInstance()
-		->IndicateSceneSwitch(targetLevelID, SceneSwitchContext::NoTransition(marioPowerValue));
+		->IndicateSceneSwitch(targetLevelID, SceneSwitchContext::NoTransition(marioPowerValue, levelTimeLeft));
 	}
 }
 
@@ -90,8 +90,10 @@ void LevelTransitionScene::Load(const Optional<SceneSwitchContext>& ctx)
 	if (ctx.hasValue)
 	{
 		marioPower = ctx.value.marioPower;
+		levelTimeLeft = ctx.value.levelTimeLeft;
 	}else
 	{
 		marioPower = {};
+		levelTimeLeft = {};
 	}
 }

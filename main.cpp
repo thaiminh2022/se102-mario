@@ -201,6 +201,7 @@ static void LoadResource()
 	
 	t->Add(HUDCOIN_TEX_ID, L"Assets/Sprites/HUDCoin.png");
 	t->Add(POINTS_TEX_ID, L"Assets/Sprites/point.png");
+	t->Add(CASTLE_FLAG_TEX_ID, L"Assets/Sprites/flag.png");
 
 
 
@@ -219,6 +220,8 @@ static void LoadResource()
 	AudioManager::GetInstance()->LoadWAV(FLAG_PULL, L"Assets\\Audio\\SFX\\flagpole.wav");
 	AudioManager::GetInstance()->LoadWAV(STAGE_CLEAR, L"Assets\\Audio\\SFX\\stage_clear.wav");
 	AudioManager::GetInstance()->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
+	AudioManager::GetInstance()->LoadWAV(FIREWORKS, L"Assets\\Audio\\SFX\\fireworks.wav");
+	AudioManager::GetInstance()->LoadWAV(TING, L"Assets\\Audio\\SFX\\ting.wav");
 
 	// Fonts
 	FontManager::GetInstance()->AddFontCustom(

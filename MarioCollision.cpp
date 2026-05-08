@@ -4,11 +4,13 @@
 #include "FireballTrap.h"
 #include "FlagPole.h"
 #include "Flower.h"
+#include "Game.h"
 #include "Goomba.h"
 #include "Koopa.h"
 #include "Mario.h"
 #include "Mushroom.h"
 #include "NextLevelPortal.h"
+#include "PlayableScene.h"
 #include "QuestionBlock.h"
 #include "Star.h"
 #include "StatManager.h"
@@ -159,6 +161,10 @@ bool Mario::OnCollisionWithQuestionBlock(const CollisionEvent* e)
 				{
 					questionBlock->SetState(QuestionBlockState::Break);
 				}
+				else
+				{
+					questionBlock->SetState(QuestionBlockState::Bump);
+				}
 			}
 			else
 			{
@@ -280,6 +286,12 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 
 	// DebugOutTitle(L"Score for flagpole: %f\n", score); //for debugging
 	StatManager::GetInstance()->AddScore(score, this->position);
+
+	auto scene = dynamic_cast<PlayableScene*>(Game::GetInstance()->GetCurrentScene());
+	if (scene != nullptr)
+	{
+		scene->StartFlagPoleSequence();
+	}
 
 	AudioManager::GetInstance()->StopAll();
 	AudioManager::GetInstance()->PlaySFX(FLAG_PULL);

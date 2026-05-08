@@ -5,6 +5,7 @@
 #include "Debug.h"
 #include "Game.h"
 #include "Mario.h"
+#include "PlayableScene.h"
 
 void Mario::HandleGrowing(const float dt)
 {
@@ -77,7 +78,15 @@ void Mario::MarioPullingFlag(float dt)
 			flagPoleFlipWaitTimer.SetIdle();
 			isFacingRight = true;
 
-			AudioManager::GetInstance()->PlaySFX(STAGE_CLEAR);
+			auto scene = dynamic_cast<PlayableScene*>(Game::GetInstance()->GetCurrentScene());
+			if (scene != nullptr)
+			{
+				scene->PlayStageClearMusic();
+			}
+			else
+			{
+				AudioManager::GetInstance()->PlaySFX(STAGE_CLEAR);
+			}
 		}
 
 	}

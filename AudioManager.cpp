@@ -361,6 +361,20 @@ unsigned int AudioManager::PlayMusic(int soundId, bool looping, std::function<vo
     return musicHandle;
 }
 
+float AudioManager::GetDuration(int soundId) const
+{
+    auto it = soundData.find(soundId);
+    if (it == soundData.end())
+        return 0.0f;
+
+    const auto& data = it->second;
+    const auto bytesPerSecond = data.format.Format.nAvgBytesPerSec;
+    if (bytesPerSecond == 0)
+        return 0.0f;
+
+    return static_cast<float>(data.audioBytes.size()) / static_cast<float>(bytesPerSecond);
+}
+
 void AudioManager::Stop(unsigned int playbackHandle)
 {
     AudioInstance* instance = FindInstance(playbackHandle);

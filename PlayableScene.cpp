@@ -8,7 +8,10 @@
 #include <vector>
 
 #include "AudioManager.h"
+#include "AssetIDs.h"
+#include "CastleFlag.h"
 #include "Coin.h"
+#include "Firework.h"
 #include "FireballTrap.h"
 #include "FlagPole.h"
 #include "Goomba.h"
@@ -18,6 +21,7 @@
 #include "Pipe.h"
 #include "QuestionBlock.h"
 #include "HUD.h"
+#include "StatManager.h"
 #include <queue>
 
 
@@ -36,6 +40,12 @@ struct RenderCompare
 };
 
 typedef priority_queue<render_item, vector<render_item>, RenderCompare> render_queue;
+
+constexpr int TIME_SCORE_POINTS = 50;
+constexpr float FIREWORK_SPAWN_INTERVAL = 0.45f;
+constexpr float FIREWORK_FINISH_DELAY = 0.65f;
+constexpr float STAGE_CLEAR_FALLBACK_DURATION = 5.6f;
+constexpr float CASTLE_FLAG_TRANSITION_DELAY = 2.0f;
 
 void PlayableScene::Update(float dt)
 {
@@ -84,14 +94,37 @@ void PlayableScene::Update(float dt)
 		objects.push_back(g);
 		addPendingGos.pop();
 	}
-	HUD::GetInstance()->Update(dt);
-	levelTimer.ProcessTimer(dt);
-	HUD::GetInstance()->GetElement(3)->SetText(L"TIME\n" + std::to_wstring(static_cast<int>(levelTimer.GetTimeLeft())));
-	if (levelTimer.IsFinished())
+	if (isFlagPoleSequenceStarted)
 	{
-		// Time's up, kill Mario
-		//ctx->mario->OnMarioHit();
+		UpdateTimeScore(dt);
+		UpdateCastleFlag(dt);
+		UpdateFireworks(dt);
 	}
+	else
+	{
+		const bool isMarioDying = sceneContext != nullptr
+			&& sceneContext->mario != nullptr
+			&& sceneContext->mario->GetState() == MarioState::Dying;
+		const bool isMarioEnteringPipe = sceneContext != nullptr
+			&& sceneContext->mario != nullptr
+			&& sceneContext->mario->GetState() == MarioState::EnteringPipe;
+		if (!isMarioDying && !isMarioEnteringPipe)
+		{
+			levelTimer.ProcessTimer(dt);
+		}
+		displayTimeLeft = static_cast<int>(levelTimer.GetTimeLeft());
+		if (displayTimeLeft < 0)
+		{
+			displayTimeLeft = 0;
+		}
+		if (levelTimer.IsFinished())
+		{
+			// Time's up, kill Mario
+			//ctx->mario->OnMarioHit();
+		}
+	}
+	HUD::GetInstance()->Update(dt);
+	HUD::GetInstance()->GetElement(3)->SetText(L"TIME\n" + std::to_wstring(displayTimeLeft));
 }
 
 void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
@@ -107,6 +140,28 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	};
 
 	auto config = sceneContext->tilemap->GetConfig();
+	isFlagPoleSequenceStarted = false;
+	isTimeScoreCounting = false;
+	isStageClearMusicFinished = false;
+	isCastleFlagSequenceStarted = false;
+	isCastleFlagSequenceFinished = false;
+	isCastleFlagTransitionDelayFinished = false;
+	isFireworkSequenceStarted = false;
+	isFireworkSequenceFinished = false;
+	timeScoreStartValue = 0;
+	timeScoreAwardedUnits = 0;
+	displayTimeLeft = static_cast<int>(timeLeftForLevel);
+	fireworkCount = 0;
+	fireworksRemaining = 0;
+	nextFireworkPositionIndex = 0;
+	timeScoreAudioHandle = 0;
+	timeScoreElapsed = 0.0f;
+	timeScoreDuration = 0.0f;
+	castleFlagTransitionDelayTimer = 0.0f;
+	fireworkSpawnTimer = 0.0f;
+	fireworkFinishTimer = 0.0f;
+	fireworkPositions.clear();
+	castleFlag = nullptr;
 
 	// camera
 	auto c = Game::GetInstance()->GetCamera();
@@ -189,6 +244,7 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	if (config->entityData.flagPole.hasValue)
 	{
 		const auto flag = config->entityData.flagPole.value;
+		fireworkPositions = flag.fireworkPositions;
 		objects.push_back(new FlagPole(flag.zone, flag.moveToPosition));
 	}
 
@@ -205,10 +261,339 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		AudioManager::GetInstance()->PlayMusic(config->entityData.backgroundMusicID.value);
 	}
-	levelTimer = Timer(timeLeftForLevel);
+	float startingTimeLeft = timeLeftForLevel;
+	if (ctx.hasValue && ctx.value.levelTimeLeft.hasValue)
+	{
+		startingTimeLeft = ctx.value.levelTimeLeft.value;
+	}
+	if (startingTimeLeft < 0.0f)
+	{
+		startingTimeLeft = 0.0f;
+	}
+	displayTimeLeft = static_cast<int>(startingTimeLeft);
+	levelTimer = Timer(startingTimeLeft);
 	levelTimer.Start();
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
+}
+
+void PlayableScene::UpdateTimeScore(float dt)
+{
+	if (!isTimeScoreCounting)
+		return;
+
+	if (timeScoreDuration <= 0.0f || timeScoreStartValue <= 0)
+	{
+		FinishTimeScoreCountdown();
+		return;
+	}
+
+	timeScoreElapsed += dt;
+	float progress = timeScoreElapsed / timeScoreDuration;
+	if (progress > 1.0f)
+	{
+		progress = 1.0f;
+	}
+
+	int targetDisplayTime = timeScoreStartValue - static_cast<int>(progress * static_cast<float>(timeScoreStartValue));
+	if (progress >= 1.0f)
+	{
+		targetDisplayTime = 0;
+	}
+
+	const int awardedUnits = timeScoreStartValue - targetDisplayTime;
+	const int unitsToAward = awardedUnits - timeScoreAwardedUnits;
+	if (unitsToAward > 0)
+	{
+		StatManager::GetInstance()->AddScore(unitsToAward * TIME_SCORE_POINTS);
+		timeScoreAwardedUnits = awardedUnits;
+	}
+
+	displayTimeLeft = targetDisplayTime;
+
+	if (progress >= 1.0f)
+	{
+		FinishTimeScoreCountdown();
+	}
+}
+
+void PlayableScene::StartTimeScoreCountdown(float duration)
+{
+	if (timeScoreStartValue <= 0)
+	{
+		FinishTimeScoreCountdown();
+		return;
+	}
+
+	if (duration <= 0.0f)
+	{
+		duration = STAGE_CLEAR_FALLBACK_DURATION;
+	}
+
+	isTimeScoreCounting = true;
+	timeScoreElapsed = 0.0f;
+	timeScoreDuration = duration;
+	timeScoreAudioHandle = AudioManager::GetInstance()->Play(TING, true);
+}
+
+void PlayableScene::FinishTimeScoreCountdown()
+{
+	if (timeScoreAudioHandle != 0 && timeScoreAudioHandle != static_cast<unsigned int>(-1))
+	{
+		AudioManager::GetInstance()->Stop(timeScoreAudioHandle);
+		timeScoreAudioHandle = 0;
+	}
+
+	const int remainingUnits = timeScoreStartValue - timeScoreAwardedUnits;
+	if (remainingUnits > 0)
+	{
+		StatManager::GetInstance()->AddScore(remainingUnits * TIME_SCORE_POINTS);
+	}
+
+	timeScoreAwardedUnits = timeScoreStartValue;
+	displayTimeLeft = 0;
+	timeScoreElapsed = timeScoreDuration;
+	isTimeScoreCounting = false;
+}
+
+void PlayableScene::UpdateFireworks(float dt)
+{
+	if (!isCastleFlagSequenceFinished || isFireworkSequenceFinished)
+		return;
+
+	if (!isFireworkSequenceStarted)
+	{
+		isFireworkSequenceStarted = true;
+		fireworksRemaining = fireworkCount;
+		fireworkSpawnTimer = 0.0f;
+		fireworkFinishTimer = FIREWORK_FINISH_DELAY;
+
+		if (fireworksRemaining <= 0)
+		{
+			isFireworkSequenceFinished = true;
+		}
+	}
+
+	if (fireworksRemaining > 0)
+	{
+		fireworkSpawnTimer -= dt;
+		if (fireworkSpawnTimer <= 0.0f)
+		{
+			AddObject(new Firework(GetFireworkSpawnPosition()));
+			fireworksRemaining--;
+			fireworkSpawnTimer += FIREWORK_SPAWN_INTERVAL;
+			if (fireworksRemaining <= 0)
+			{
+				fireworkFinishTimer = FIREWORK_FINISH_DELAY;
+			}
+		}
+		return;
+	}
+
+	if (fireworkFinishTimer > 0.0f)
+	{
+		fireworkFinishTimer -= dt;
+		if (fireworkFinishTimer <= 0.0f)
+		{
+			isFireworkSequenceFinished = true;
+		}
+	}
+}
+
+void PlayableScene::UpdateCastleFlag(float dt)
+{
+	if (!isStageClearMusicFinished)
+		return;
+
+	if (!isCastleFlagSequenceStarted)
+	{
+		isCastleFlagSequenceStarted = true;
+		castleFlag = new CastleFlag(GetCastleFlagPosition());
+		AddObject(castleFlag);
+		return;
+	}
+
+	if (!isCastleFlagSequenceFinished)
+	{
+		if (castleFlag == nullptr || castleFlag->IsFinished())
+		{
+			isCastleFlagSequenceFinished = true;
+			castleFlagTransitionDelayTimer = 0.0f;
+		}
+		return;
+	}
+
+	if (!isCastleFlagTransitionDelayFinished)
+	{
+		castleFlagTransitionDelayTimer += dt;
+		if (castleFlagTransitionDelayTimer >= CASTLE_FLAG_TRANSITION_DELAY)
+		{
+			isCastleFlagTransitionDelayFinished = true;
+		}
+	}
+}
+
+int PlayableScene::GetFireworkCountForTime(int timeLeft) const
+{
+	switch (timeLeft % 10)
+	{
+	case 1:
+		return 1;
+	case 3:
+		return 3;
+	case 6:
+		return 6;
+	default:
+		return 0;
+	}
+}
+
+Vector2 PlayableScene::GetFireworkSpawnPosition()
+{
+	if (!fireworkPositions.empty())
+	{
+		auto position = fireworkPositions[nextFireworkPositionIndex % fireworkPositions.size()];
+		nextFireworkPositionIndex++;
+		return Vector2(position);
+	}
+
+	const Vector2 fallbackPositions[] = {
+		Vector2(-48.0f, 72.0f),
+		Vector2(32.0f, 56.0f),
+		Vector2(-16.0f, 96.0f),
+		Vector2(56.0f, 80.0f),
+		Vector2(-64.0f, 64.0f),
+		Vector2(8.0f, 104.0f),
+	};
+
+	auto camera = Game::GetInstance()->GetCamera();
+	auto fallback = fallbackPositions[nextFireworkPositionIndex % 6];
+	float anchorX = camera->GetX() + 224.0f;
+	if (sceneContext != nullptr && sceneContext->mario != nullptr)
+	{
+		anchorX = sceneContext->mario->position.x;
+	}
+	nextFireworkPositionIndex++;
+	float spawnX = anchorX + fallback.x;
+	const float minX = camera->GetX() + 24.0f;
+	const float maxX = camera->GetX() + Game::GetInstance()->GetBackBufferWidth() - 40.0f;
+	if (spawnX < minX)
+	{
+		spawnX = minX;
+	}
+	if (spawnX > maxX)
+	{
+		spawnX = maxX;
+	}
+	return Vector2(spawnX, camera->GetY() + fallback.y);
+}
+
+Vector2 PlayableScene::GetCastleFlagPosition()
+{
+	auto camera = Game::GetInstance()->GetCamera();
+	float flagX = camera->GetX() + 224.0f;
+	float flagY = camera->GetY() + 112.0f;
+
+	if (sceneContext != nullptr && sceneContext->mario != nullptr)
+	{
+		flagX = sceneContext->mario->position.x + 1.0f;
+		flagY = sceneContext->mario->position.y - 78.0f;
+	}
+
+	const float minX = camera->GetX() + 24.0f;
+	const float maxX = camera->GetX() + Game::GetInstance()->GetBackBufferWidth() - 40.0f;
+	if (flagX < minX)
+	{
+		flagX = minX;
+	}
+	if (flagX > maxX)
+	{
+		flagX = maxX;
+	}
+
+	const float minY = camera->GetY() + 56.0f;
+	const float maxY = camera->GetY() + 136.0f;
+	if (flagY < minY)
+	{
+		flagY = minY;
+	}
+	if (flagY > maxY)
+	{
+		flagY = maxY;
+	}
+
+	return Vector2(flagX, flagY);
+}
+
+void PlayableScene::StartFlagPoleSequence()
+{
+	if (isFlagPoleSequenceStarted)
+		return;
+
+	isFlagPoleSequenceStarted = true;
+	isTimeScoreCounting = false;
+	isStageClearMusicFinished = false;
+	isCastleFlagSequenceStarted = false;
+	isCastleFlagSequenceFinished = false;
+	isCastleFlagTransitionDelayFinished = false;
+	isFireworkSequenceStarted = false;
+	isFireworkSequenceFinished = false;
+	timeScoreStartValue = static_cast<int>(levelTimer.GetTimeLeft());
+	if (timeScoreStartValue < 0)
+	{
+		timeScoreStartValue = 0;
+	}
+	timeScoreAwardedUnits = 0;
+	displayTimeLeft = timeScoreStartValue;
+	fireworkCount = GetFireworkCountForTime(timeScoreStartValue);
+	fireworksRemaining = 0;
+	nextFireworkPositionIndex = 0;
+	timeScoreAudioHandle = 0;
+	timeScoreElapsed = 0.0f;
+	timeScoreDuration = 0.0f;
+	castleFlagTransitionDelayTimer = 0.0f;
+	fireworkSpawnTimer = 0.0f;
+	fireworkFinishTimer = 0.0f;
+	castleFlag = nullptr;
+	levelTimer.Pause();
+}
+
+void PlayableScene::PlayStageClearMusic()
+{
+	StartTimeScoreCountdown(AudioManager::GetInstance()->GetDuration(STAGE_CLEAR));
+
+	auto handle = AudioManager::GetInstance()->Play(STAGE_CLEAR, false, []()
+		{
+			auto scene = dynamic_cast<PlayableScene*>(Game::GetInstance()->GetCurrentScene());
+			if (scene != nullptr)
+			{
+				scene->MarkStageClearMusicFinished();
+			}
+		});
+
+	if (handle == static_cast<unsigned int>(-1))
+	{
+		MarkStageClearMusicFinished();
+	}
+}
+
+void PlayableScene::MarkStageClearMusicFinished()
+{
+	FinishTimeScoreCountdown();
+	isStageClearMusicFinished = true;
+}
+
+bool PlayableScene::IsReadyForLevelTransition() const
+{
+	if (!isFlagPoleSequenceStarted)
+		return true;
+
+	return !isTimeScoreCounting
+		&& isStageClearMusicFinished
+		&& isCastleFlagSequenceFinished
+		&& isCastleFlagTransitionDelayFinished
+		&& isFireworkSequenceStarted
+		&& isFireworkSequenceFinished;
 }
 
 void PlayableScene::UnLoad()

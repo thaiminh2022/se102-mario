@@ -16,6 +16,7 @@ private:
 public:
 	static StatManager* GetInstance();
 	void Init();
+	void AddScore(int addingScore);
 	void AddScore(int addingScore, Vector2 pos);
 	void AddCoin(int addingCoin);
 	void AddLife(int addingLife, Vector2 pos);

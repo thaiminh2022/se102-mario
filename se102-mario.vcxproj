@@ -38,13 +38,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -133,9 +133,11 @@
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="BrickExplode.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CastleFlag.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Firework.cpp" />
     <ClCompile Include="FireballTrap.cpp" />
     <ClCompile Include="FlagPole.cpp" />
     <ClCompile Include="Flower.cpp" />
@@ -179,11 +181,13 @@
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="BrickExplode.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CastleFlag.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionEvent.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Firework.h" />
     <ClInclude Include="FireballTrap.h" />
     <ClInclude Include="FlagPole.h" />
     <ClInclude Include="Flower.h" />

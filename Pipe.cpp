@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "InputManager.h"
 #include "Mario.h"
+#include "PlayableScene.h"
 
 Pipe::Pipe(const PipeData& pData)
 {
@@ -63,6 +64,13 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 		if (transitionTimer.IsFinished())
 		{
+			float levelTimeLeft = 0.0f;
+			auto scene = dynamic_cast<PlayableScene*>(Game::GetInstance()->GetCurrentScene());
+			if (scene != nullptr)
+			{
+				levelTimeLeft = scene->GetTimeLeft();
+			}
+
 			if (pipeData.returnPipeData.hasValue)
 			{
 				auto returnData = pipeData.returnPipeData.value;
@@ -71,14 +79,14 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 					returnData.returnRect,
 					returnData.moveTo,
 				};
-				Optional<SceneSwitchContext> switchCtx = SceneSwitchContext::PipeTransition(marioPipeCtx, ctx->mario->GetPowerLevel());
+				Optional<SceneSwitchContext> switchCtx = SceneSwitchContext::PipeTransition(marioPipeCtx, ctx->mario->GetPowerLevel(), levelTimeLeft);
 
 				Game::GetInstance()
 					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, switchCtx);
 			}else
 			{
 				Game::GetInstance()
-					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, SceneSwitchContext::NormalTransition(ctx->mario->GetPowerLevel()));
+					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, SceneSwitchContext::NormalTransition(ctx->mario->GetPowerLevel(), levelTimeLeft));
 			}
 		
 		}

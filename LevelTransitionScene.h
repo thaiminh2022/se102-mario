@@ -13,6 +13,7 @@ class LevelTransitionScene : public Scene
 	};
 
 	Optional<MarioPower> marioPower;
+	Optional<float> levelTimeLeft;
 	int targetLevelID;
 	float transitionDuration;
 	Timer transitionTimer;
