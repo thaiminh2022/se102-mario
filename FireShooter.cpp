@@ -1,5 +1,7 @@
 #include "FireShooter.h"
 #include "Mario.h"
+#include "Game.h"
+#include "BowserFireBullet.h"
 
 FireShooter::FireShooter(int startX, int startY, Vector2Int direction) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 {

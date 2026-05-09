@@ -15,6 +15,7 @@
 #include "Textures.h"
 #include <algorithm>
 #include <vector>
+#include "Bowser.h"
 
 #include <cmath>
 #include <string>

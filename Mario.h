@@ -2,10 +2,10 @@
 #include "GameObject.h"
 #include "Rect.h"
 #include "Scene.h"
-#include "Bowser.h"
 #include <vector>
 #include "Timer.h"
 
+class Bowser;
 
 enum class MarioState : std::uint8_t
 {

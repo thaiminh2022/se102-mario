@@ -19,6 +19,7 @@
 #include "QuestionBlock.h"
 #include "HUD.h"
 #include <queue>
+#include "Bowser.h"
 
 #include "BgMusicTrigger.h"
 #include "CheepCheeps.h"

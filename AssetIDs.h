@@ -430,36 +430,34 @@ constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_3 = 102003;
 constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_4 = 102004;
 
 /// ===============================
-// CHEEP CHEEPS (E = 80000) 
+// CHEEP CHEEPS (E = 110000) 
 /// ===============================
 
 /// cheep cheeps,  t = 1;
-constexpr int CHEEPS_TEX_ID = 81000;
+constexpr int CHEEPS_TEX_ID = 110000;
 
 // RED (A = 1)
-constexpr int RED_CHEEP_ANIM = 81100;
-constexpr int RED_CHEEP_SPRITE_1 = 81101;
-constexpr int RED_CHEEP_SPRITE_2 = 81102;
+constexpr int RED_CHEEP_ANIM = 111100;
+constexpr int RED_CHEEP_SPRITE_1 = 111101;
+constexpr int RED_CHEEP_SPRITE_2 = 111102;
 
 // WATER (A=2)
-constexpr int WATER_CHEEP_ANIM = 81200;
-constexpr int WATER_CHEEP_SPRITE_1 = 81201;
-constexpr int WATER_CHEEP_SPRITE_2 = 81202;
+constexpr int WATER_CHEEP_ANIM = 111200;
+constexpr int WATER_CHEEP_SPRITE_1 = 111201;
+constexpr int WATER_CHEEP_SPRITE_2 = 111202;
 
 /// ===============================
-// BLOOPERS (E = 90000) 
+// BLOOPERS (E = 120000) 
 /// ===============================
-constexpr int BLOOPERS_TEX_ID = 91000;
+constexpr int BLOOPERS_TEX_ID = 120000;
 
 // WATER SWIM (A = 1)
-constexpr int WATER_BLOOPER_SWIM_ANIM = 91100;
-constexpr int WATER_BLOOPER_SWIM_SPRITE_1 = 91101;
+constexpr int WATER_BLOOPER_SWIM_ANIM = 121100;
+constexpr int WATER_BLOOPER_SWIM_SPRITE_1 = 121101;
 
 // WATER IDLE (A = 2)
-
-constexpr int WATER_BLOOPER_IDLE_ANIM = 91200;
-constexpr int WATER_BLOOPER_IDLE_SPRITE_1 = 91201;
-
+constexpr int WATER_BLOOPER_IDLE_ANIM = 121200;
+constexpr int WATER_BLOOPER_IDLE_SPRITE_1 = 121201;
 
 /// ================================
 // HUD ELEMENTS

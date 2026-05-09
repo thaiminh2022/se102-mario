@@ -39,6 +39,12 @@ Bowser::Bowser(int startX, int startY, Mario* mario) : GameObject(startX, startY
 		hammerThrowLeftAnim->Add(BOWSER_HAMMER_THROW_SPRITE);
 		anims->Add(BOWSER_HAMMER_THROW_ANIM_ID, hammerThrowLeftAnim);
 	}
+	if (!anims->Contains(BOWSER_DEATH_ANIM_ID))
+	{
+		auto deathAnim = new Animation(100);
+		deathAnim->Add(BOWSER_DEATH_SPRITE_1);
+		anims->Add(BOWSER_DEATH_ANIM_ID, deathAnim);
+	}
 
 	nextFireBreathingTimer = Timer(BOWSER_FIRE_BREATH_INTERVAL);
 	nextJumpTimer = Timer(BOWSER_JUMP_INTERVAL);
@@ -77,7 +83,7 @@ void Bowser::SetState(BowserState newState)
 		break;
 	case BowserState::Jumping:
 		velocity.y = -BOWSER_JUMPING_SPEED;
-		velocity.x = moveLeft ? BOWSER_WALKING_SPEED : -BOWSER_WALKING_SPEED;
+		velocity.x = moveLeft ? -BOWSER_WALKING_SPEED : BOWSER_WALKING_SPEED;
 		break;
 	case BowserState::Dead:
 	case BowserState::Falling:
@@ -91,7 +97,7 @@ void Bowser::UpdateDirection()
 {
 	if (state == BowserState::Dead || state == BowserState::Falling || state == BowserState::Stop)
 		return;
-	if (target->position.x < position.x)
+	if (target != nullptr && target->position.x < position.x)
 	{
 		isFacingRight = false;
 	}
