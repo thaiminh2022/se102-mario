@@ -47,7 +47,7 @@ const string NEXT_LEVEL_ZONE = "NextLevel";
 const string BACKGROUND_MUSIC = "BackgroundMusic";
 const string FIREBALL_TRAP = "FireballTrap";
 const string FLAG_POLE = "FlagPole";
-const string BOWSER_START = "FlagPole";
+const string BOWSER_START = "BowserStart";
 const string BRIDGE = "Bridge";
 const string TOAD_START = "FlagPole";
 const string PIPE = "Pipe";
@@ -55,8 +55,7 @@ const string TELEPORT_PIPE = "TeleportPipe";
 const string INSTANT_TELEPORT_PIPE = "InstantTeleportPipe";
 const string CLRSCR_COLOR_TRIGGER = "ClearScreenColorTrigger";
 const string IN_WATER_TRIGGER = "WaterTrigger";
-
-
+const string FIRE_SHOOTER = "FireShooter";
 
 
 
@@ -812,6 +811,35 @@ void LevelLoader::ParseInWaterTrigger(SceneEntityData& sceneEntities, vector<Ent
 		sceneEntities.waterTriggers.emplace_back(zone, inWater);
 	}
 }
+
+void LevelLoader::ParseFireShooter(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
+{
+	const auto fireShooters = GetEntityDataWithIdentifier(entities, FIRE_SHOOTER);
+
+	for (const auto& fireShooter : fireShooters)
+	{
+		const auto& fireShooterJson = GetFieldValueWithIdentifier(fireShooter->fieldInstances, "Direction");
+		if (!fireShooterJson.hasValue)
+			continue;
+
+		const auto directionString = fireShooterJson.value.get<string>();
+		Vector2Int direction;
+		if (directionString == "Up") {
+			direction = Vector2Int::Up();
+		} else if (directionString == "Down") {
+			direction = Vector2Int::Down();
+		} else if (directionString == "Left") {
+			direction = Vector2Int::Left();
+		} else if (directionString == "Right") {
+			direction = Vector2Int::Right();
+		} else {
+			DebugOut(L"[Error] Invalid fire shooter direction");
+			direction = Vector2Int::Left();
+		}
+		const auto position = Vector2Int(fireShooter->px[0], fireShooter->px[1]);
+		sceneEntities.fireShooters.emplace_back(position, direction);
+	}
+}
   
 void LevelLoader::RebuildCacheForLevel(vector<EntityInstance>& entities)
 {
@@ -864,7 +892,7 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParseBackgroundMusic(level, sceneEntities, entities);
 	ParseClearScreenColorTrigger(sceneEntities, entities);
 	ParseInWaterTrigger(sceneEntities, entities);
-
+	ParseFireShooter(sceneEntities, entities);
 
 	return sceneEntities;
 }

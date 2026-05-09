@@ -133,6 +133,9 @@
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="BgMusicTrigger.cpp" />
     <ClCompile Include="Bloopers.cpp" />
+    <ClCompile Include="Bowser.cpp" />
+    <ClCompile Include="BowserFireBullet.cpp" />
+    <ClCompile Include="BowserHammer.cpp" />
     <ClCompile Include="BrickExplode.cpp" />
     <ClCompile Include="Bridge.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -143,6 +146,7 @@
     <ClCompile Include="CollisionMatrix.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="FireballTrap.cpp" />
+    <ClCompile Include="FireShooter.cpp" />
     <ClCompile Include="FlagPole.cpp" />
     <ClCompile Include="Flower.cpp" />
     <ClCompile Include="Fireball.cpp" />
@@ -184,6 +188,9 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="Bowser.h" />
+    <ClInclude Include="BowserFireBullet.h" />
+    <ClInclude Include="BowserHammer.h" />
     <ClInclude Include="BgMusicTrigger.h" />
     <ClInclude Include="Bloopers.h" />
     <ClInclude Include="BrickExplode.h" />
@@ -198,6 +205,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="FireballTrap.h" />
+    <ClInclude Include="FireShooter.h" />
     <ClInclude Include="FlagPole.h" />
     <ClInclude Include="Flower.h" />
     <ClInclude Include="Fireball.h" />

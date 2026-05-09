@@ -168,6 +168,16 @@ struct CheepCheepsData
 	{
 	}
 };
+struct FireShooterData
+{
+	Vector2Int position;
+	Vector2Int shootDirection;
+	FireShooterData(const Vector2Int& position, const Vector2Int& shootDirection)
+		: position(position),
+		  shootDirection(shootDirection)
+	{
+	}
+};
 
 struct SceneEntityData
 {
@@ -190,10 +200,12 @@ struct SceneEntityData
 	vector<BloopersStartData> bloopers;
 	vector<InWaterTriggerData> waterTriggers;
 	vector<Vector2Int> WingedKoopaStarts;
+	vector<Vector2Int> bowserStarts;
 	vector<QuestionBlockData> questionBlocks;
 	vector<BrickBlockData> brickBlocks;
 	vector<Vector2Int> coins;
 	vector<NextLevelData> nextLevelsData;
 	vector<Vector2Int> fireballTraps;
+	vector<FireShooterData> fireShooters;
 };
 

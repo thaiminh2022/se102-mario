@@ -20,7 +20,7 @@ class QuestionBlock : public GameObject
 
 	bool spawnInternalItem;
 	Rect bounceCheckBox;
-	
+
 	bool isBrick; // there's no differences for now
 	bool isHidden;
 
@@ -38,4 +38,3 @@ public:
 	bool IsCollidable() override { return true; }
 	bool IsBlocking() override { return true; }
 };
-
