@@ -4,6 +4,7 @@
 #include "AssetIDs.h"
 #include "AudioManager.h"
 #include "Game.h"
+#include "Helper.h"
 #include "Sprites.h"
 #include "Textures.h"
 
@@ -45,7 +46,7 @@ void Coin::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	}
 }
 
-Coin::Coin(Vector2Int startPos, const CoinState state) : GameObject(startPos)
+Coin::Coin(Vector2Int startPos, BiomeType biome, const CoinState state) : GameObject(startPos)
 {
 	moveUpTimer = Timer(0.3f);
 	this->state = state;
@@ -58,7 +59,7 @@ Coin::Coin(Vector2Int startPos, const CoinState state) : GameObject(startPos)
 		isCollidable = false;
 	}
 
-	auto t = Textures::GetInstance()->Get(OVERWORLD_ITEMS_TEX_ID);
+	auto t = Textures::GetInstance()->Get(ChooseItemsId(biome));
 	auto sp = Sprites::GetInstance();
 	auto anims = Animations::GetInstance();
 

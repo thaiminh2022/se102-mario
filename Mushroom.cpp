@@ -5,6 +5,7 @@
 #include "AudioManager.h"
 #include "Collision.h"
 #include "Game.h"
+#include "Helper.h"
 #include "Sprites.h"
 #include "Textures.h"
 
@@ -17,7 +18,7 @@ void Mushroom::SetState(CollectableItemState newState)
 	}
 }
 
-Mushroom::Mushroom(const Vector2 startPos) : GameObject(startPos.x, startPos.y)
+Mushroom::Mushroom(const Vector2 startPos, BiomeType biome) : GameObject(startPos.x, startPos.y)
 {
 	moveLeft = false;
 	state = CollectableItemState::Emerging;
@@ -28,7 +29,7 @@ Mushroom::Mushroom(const Vector2 startPos) : GameObject(startPos.x, startPos.y)
 
 	if (!anims->Contains(MUSHROOM_ANIM_ID))
 	{
-		auto t = Textures::GetInstance()->Get(OVERWORLD_ITEMS_TEX_ID);
+		auto t = Textures::GetInstance()->Get(ChooseItemsId(biome));
 		auto sp = Sprites::GetInstance();
 		sp->Add(MUSHROOM_SPRITE_1, 0, 48, 15, 63, t);
 		auto anim = new Animation;

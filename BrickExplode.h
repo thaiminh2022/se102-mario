@@ -25,7 +25,7 @@ class BrickExplode : public GameObject
 
 public:
 
-	explicit BrickExplode(Vector2 startPosition);
+	explicit BrickExplode(Vector2 startPosition, BiomeType biome);
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
 
