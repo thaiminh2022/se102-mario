@@ -47,6 +47,7 @@ class Bowser :public GameObject
 	Timer nextHammerThrowTimer;
 	Timer fireBreathingWarmup;
 	Timer fallingTimer;
+	Timer deathTimer; 
 	BowserState state;
 	Timer fireBreathAnimTimer;
 	Timer hammerThrowAnimTimer;
@@ -73,7 +74,7 @@ public:
 	{
 		return Rect::FromXYWH(static_cast<int>(position.x), static_cast<int>(position.y), 32, 32);
 	}
-	bool IsActive() override { return state != BowserState::Dead; }
+	bool IsActive() override { return state != BowserState::Dead || deathTimer.IsTicking(); }
 	CollisionMatrixLayer GetCollisionLayer() override { return CollisionMatrixLayer::Enemies; }
 };
 
