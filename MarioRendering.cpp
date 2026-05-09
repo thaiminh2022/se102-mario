@@ -44,6 +44,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
+		case MarioState::ExitingPipe:
 			return MARIO_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return MARIO_SKID_ANIM_ID;
@@ -67,6 +68,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
+		case MarioState::ExitingPipe:
 			return MARIO_BIG_RUN_ANIM_ID;
 		case MarioState::Skidding:
 
@@ -93,6 +95,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
+		case MarioState::ExitingPipe:
 			return MARIO_FIRE_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return MARIO_FIRE_SKID_ANIM_ID;
@@ -119,6 +122,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
+		case MarioState::ExitingPipe:
 			return STARMAN_BIG_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return STARMAN_BIG_SKID_ANIM_ID;
@@ -141,6 +145,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
+		case MarioState::ExitingPipe:
 			return STARMAN_SMALL_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return STARMAN_SMALL_SKID_ANIM_ID;

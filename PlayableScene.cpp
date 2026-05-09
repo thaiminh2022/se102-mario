@@ -494,10 +494,13 @@ Vector2 PlayableScene::GetCastleFlagPosition()
 	float flagX = camera->GetX() + 224.0f;
 	float flagY = camera->GetY() + 112.0f;
 
-	if (sceneContext != nullptr && sceneContext->mario != nullptr)
+	if (sceneContext != nullptr
+		&& sceneContext->tilemap != nullptr
+		&& sceneContext->tilemap->GetConfig()->entityData.flagPole.hasValue)
 	{
-		flagX = sceneContext->mario->position.x + 1.0f;
-		flagY = sceneContext->mario->position.y - 78.0f;
+		auto moveTo = sceneContext->tilemap->GetConfig()->entityData.flagPole.value.moveToPosition;
+		flagX = static_cast<float>(moveTo.x) + 1.0f;
+		flagY = static_cast<float>(moveTo.y) - 78.0f;
 	}
 
 	const float minX = camera->GetX() + 24.0f;
@@ -511,7 +514,7 @@ Vector2 PlayableScene::GetCastleFlagPosition()
 		flagX = maxX;
 	}
 
-	const float minY = camera->GetY() + 56.0f;
+	const float minY = camera->GetY() + 104.0f;
 	const float maxY = camera->GetY() + 136.0f;
 	if (flagY < minY)
 	{
