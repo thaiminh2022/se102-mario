@@ -39,6 +39,8 @@ public:
 	SweptAABBResult SweptAABB(GameObject* src, CollisionTile* tile, float dt);
 
 	void GetObjectEvents(vector<CollisionEvent>& events, GameObject* go, const vector<GameObject*>& coObjects, float dt);
+	//this is used to check if 2 objects should even trigger collision check, for example, if both are enemies, we can skip the collision check entirely
+	bool CanCollide(GameObject* a, GameObject* b);
 	void ProcessCollision(GameObject* go,
 	                      const vector<GameObject*>& coObjects,
 	                      const Tilemap* tilemap,

@@ -5,6 +5,7 @@
 #include <vector>
 #include "Timer.h"
 
+class Bowser;
 
 enum class MarioState : std::uint8_t
 {
@@ -33,10 +34,12 @@ enum class MarioPower
 	StarmanBig
 };
 
-const float MARIO_TIME_BTW_FIRE = 0.15f;
+const float MARIO_FIRE_INTERVAL = 0.15f;
 const float MARIO_GROW_TIME = 0.7f;
 const float MARIO_SHRINK_TIME = 0.75f;
 const float MARIO_INVINCIBLE_TIME = 2.0f;
+const float STARMAN_INVINCIBLE_TIME = 12.0f;
+
 const float MIN_WALK = 4.453125f; // Minimum speed to be considered walking, otherwise it's idle
 const float MAX_WALK = 93.75f;
 const float MAX_RUN = 153.75f;
@@ -74,12 +77,13 @@ class Mario : public GameObject
 	float fallAcc = 562.5f;
 	int GetFireBallCount(const vector<GameObject*>& coObjects) const;
 	Timer fireCooldownTimer;
-	Timer invincibleTimer; //used for star power and invincibility after getting hit
-
+	Timer invincibleTimer; //used for invincibility after getting hit
+	Timer starmanTimer; //used for starman power
 	Timer transformTimer; //used for growing and shrinking
 
 	MarioState state;
 	MarioPower power;
+	MarioPower lastPower;// used to store power before transformation for correct animation during transformation
 
 	// flag pole interaction
 	Vector2 marioWinningMoveToPosition;
@@ -100,6 +104,7 @@ class Mario : public GameObject
 	bool OnCollisionWithCheepCheeps(const CollisionEvent* e);
 	bool OnCollisionWithBloopers(const CollisionEvent* e);
 	bool OnCollisionWithKoopa(const CollisionEvent* e);
+	bool OnCollisionWithBowser(const CollisionEvent* e);
 	static bool OnCollisionWithPortal(const CollisionEvent* e);
 	bool OnCollisionWithQuestionBlock(const CollisionEvent* e);
 	bool OnCollisionWithCoin(const CollisionEvent* e);
@@ -157,5 +162,6 @@ public:
 	bool IsActive() override { return true; }
 	MarioState GetState() const { return state; }
 	int GetEnemyKilledOnSequenceCount() const;
+	void Die();
 };
 

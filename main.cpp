@@ -213,6 +213,8 @@ static void LoadResource()
 	t->Add(BLOOPERS_TEX_ID, L"Assets/Sprites/bloopers.png");
 
 	
+	t->Add(BOWSER_TEX_ID, L"Assets/Sprites/bowser_sprites.png");
+	t->Add(BOWSER_ITEM_BULLET_TEX_ID, L"Assets/Sprites/bowser_item_sprites.png");
 	t->Add(HUDCOIN_TEX_ID, L"Assets/Sprites/HUDCoin.png");
 	t->Add(POINTS_TEX_ID, L"Assets/Sprites/point.png");
 

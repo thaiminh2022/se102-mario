@@ -23,4 +23,3 @@ public:
 	bool IsBlocking() override { return false; }
 	int GetRenderIndex() override { return -1; }
 };
-

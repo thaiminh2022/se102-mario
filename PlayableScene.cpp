@@ -19,11 +19,13 @@
 #include "QuestionBlock.h"
 #include "HUD.h"
 #include <queue>
+#include "Bowser.h"
 
 #include "BgMusicTrigger.h"
 #include "CheepCheeps.h"
 #include "ClearScreenColorTrigger.h"
 #include "InWaterTrigger.h"
+#include "FireShooter.h"
 
 
 using std::priority_queue;
@@ -90,12 +92,15 @@ void PlayableScene::Update(float dt)
 		addPendingGos.pop();
 	}
 	HUD::GetInstance()->Update(dt);
-	levelTimer.ProcessTimer(dt);
-	HUD::GetInstance()->GetElement(3)->SetText(L"TIME\n" + std::to_wstring(static_cast<int>(levelTimer.GetTimeLeft())));
-	if (levelTimer.IsFinished())
+	levelTimer->ProcessTimer(dt);
+	HUD::GetInstance()->GetElement(3)->SetText(L"TIME\n" + std::to_wstring(static_cast<int>(levelTimer->GetTimeLeft())));
+	if (levelTimer->IsFinished())
 	{
 		// Time's up, kill Mario
-		//ctx->mario->OnMarioHit();
+		auto mario = sceneContext->mario;
+		if (mario != nullptr) {
+			mario->Die();
+		}
 	}
 }
 
@@ -106,10 +111,10 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		sceneContext = new SceneContext;
 	}
 	sceneContext->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
-	sceneContext->addObject =[this](GameObject *go)
-	{
-		AddObject(go);
-	};
+	sceneContext->addObject = [this](GameObject* go)
+		{
+			AddObject(go);
+		};
 
 	auto config = sceneContext->tilemap->GetConfig();
 
@@ -146,25 +151,26 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(kp);
 	}
 
-	// cheep cheeps
-	for (const auto& ccData : config->entityData.cheepCheeps)
-	{
-		const auto cc = new CheepCheeps(ccData.startPosition, ccData.isRed);
-		objects.push_back(cc);
-	}
-
-	// bloopers
-	for (const auto& blooperData : config->entityData.bloopers)
-	{
-		const auto blooper = new Bloopers(blooperData.lowestLimit, blooperData.highestLimit);
-		objects.push_back(blooper);
-	}
-
-	// winged koopa
+	// Winged koopa
 	for (const auto& fkPos : config->entityData.WingedKoopaStarts)
 	{
 		const auto fkp = new Koopa(fkPos.x, fkPos.y, KoopaForm::Winged);
 		objects.push_back(fkp);
+	}
+
+	// Bowser
+	if (config->entityData.bowserStart.hasValue)
+	{
+		auto pos = config->entityData.bowserStart.value;
+		const auto bowser = new Bowser(pos.x, pos.y, sceneContext->mario);
+		objects.push_back(bowser);
+	}
+
+	// FireShooter
+	for (const auto& fsPos : config->entityData.fireShooters)
+	{
+		const auto fs = new FireShooter(fsPos.position.x, fsPos.position.y, fsPos.shootDirection);
+		objects.push_back(fs);
 	}
 
 	// question
@@ -211,24 +217,12 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(new FlagPole(flag.zone, flag.moveToPosition));
 	}
 
+
 	// pipes
 	for (const auto& pipeData : config->entityData.pipes)
 	{
 		const auto pipe = new Pipe(pipeData);
 		objects.push_back(pipe);
-	}
-	// music triggers
-	for (const auto& musicTriggerData : config->entityData.musicTriggers)
-	{
-		const auto musicTrigger = new BgMusicTrigger(musicTriggerData.id, musicTriggerData.zone);
-		objects.push_back(musicTrigger);
-	}
-
-	// mario in water trigger
-	for (const auto& waterTrigger : config->entityData.waterTriggers)
-	{
-		const auto trigger = new InWaterTrigger(waterTrigger.zone, waterTrigger.inWater);
-		objects.push_back(trigger);
 	}
 
 	// background music
@@ -236,8 +230,8 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		AudioManager::GetInstance()->PlayMusic(config->entityData.backgroundMusicID.value);
 	}
-	levelTimer = Timer(timeLeftForLevel);
-	levelTimer.Start();
+	levelTimer = new Timer(timeLeftForLevel);
+	levelTimer->Start();
 
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
@@ -246,6 +240,11 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		const auto colorTrigger = new ClearScreenColorTrigger(colorTriggerData.zone, colorTriggerData.color);
 		objects.push_back(colorTrigger);
+	}
+	for (const auto& fPos : config->entityData.fireShooters)
+	{
+		const auto fs = new FireShooter(fPos.position.x, fPos.position.y, fPos.shootDirection);
+		objects.push_back(fs);
 	}
 }
 
@@ -277,9 +276,9 @@ void PlayableScene::Render()
 
 
 	renderQueue.emplace(tileMap->GetRenderIndex(), [&tileMap]
-	{
-		tileMap->Render();
-	});
+		{
+			tileMap->Render();
+		});
 
 	for (const auto& obj : objects)
 	{
@@ -287,9 +286,9 @@ void PlayableScene::Render()
 			continue;
 
 		renderQueue.emplace(obj->GetRenderIndex(), [&obj]
-		{
-			obj->Render();
-		});
+			{
+				obj->Render();
+			});
 	}
 
 	while (!renderQueue.empty())
