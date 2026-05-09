@@ -48,6 +48,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	fireCooldownTimer.Start();
 	transformTimer = Timer(MARIO_GROW_TIME);
 	enemySequenceKilledCount = 0;
+	waitToBowserTimer = Timer(2.0f);
 	LoadSpriteAndAnimation();
 }
 
@@ -188,6 +189,9 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		return;
 	case MarioState::Shrinking:
 		HandleShrinking(dt);
+		return;
+	case MarioState::StopToWaitBowser:
+		MarioWaitingToBowser(dt);
 		return;
 	case MarioState::Idle:
 	case MarioState::Walking:

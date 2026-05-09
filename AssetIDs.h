@@ -242,6 +242,10 @@ constexpr int BRICK_EXPLODE_SPRITE_2 = 32702;
 constexpr int BRICK_EXPLODE_SPRITE_3 = 32703;
 constexpr int BRICK_EXPLODE_SPRITE_4 = 32704;
 
+// Bridge (T = 4) 
+constexpr int BRIDGE_ANIM_ID = 34100;
+constexpr int BRIDGE_SPRITE_1 = 34101;
+
 // ==========================================
 // POINT POPUPS (E = 9) - MOVED TO 90000 RANGE
 // ==========================================
@@ -320,6 +324,10 @@ constexpr int STAR_IDLE_SPRITE_4 = 44104;
 // Flag (T = 5) -> Idle (A = 100)
 constexpr int FLAG_IDLE_ANIM_ID = 45100;
 constexpr int FLAG_IDLE_SPRITE_1 = 45101;
+
+//Axe (T = 7) 
+constexpr int AXE_ANIM_ID = 47100;
+constexpr int AXE_SPRITE_1 = 47101;
 
 
 // ==========================================

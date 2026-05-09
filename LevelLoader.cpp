@@ -414,7 +414,7 @@ void LevelLoader::ParseBridge(SceneEntityData& sceneEntities, vector<EntityInsta
 	if (!bridge.empty())
 	{
 		const auto s = bridge[0]; // only 1 per level;
-		auto axePosJson = GetFieldValueWithIdentifier(s->fieldInstances, "");
+		auto axePosJson = GetFieldValueWithIdentifier(s->fieldInstances, "AxePosition");
 		if (axePosJson.hasValue)
 		{
 			const auto axePos = axePosJson.value.get<LDTKPoint>();

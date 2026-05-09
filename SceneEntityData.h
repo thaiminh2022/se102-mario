@@ -66,6 +66,13 @@ struct BridgeData
 {
 	Rect zone;
 	Vector2Int axePosition;
+
+	BridgeData() = default;
+
+	BridgeData(const Rect& zone, const Vector2Int& axePosition)
+		: zone(zone), axePosition(axePosition)
+	{
+	}
 };
 
 struct ReturnPipeData

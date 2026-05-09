@@ -16,6 +16,7 @@
 #include "Koopa.h"
 #include "NextLevelPortal.h"
 #include "Pipe.h"
+#include "Bridge.h"
 #include "QuestionBlock.h"
 #include "HUD.h"
 #include <queue>
@@ -222,6 +223,16 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		const auto musicTrigger = new BgMusicTrigger(musicTriggerData.id, musicTriggerData.zone);
 		objects.push_back(musicTrigger);
+	}
+
+	// bridge
+	if (config->entityData.bridge.hasValue)
+	{
+		const auto bridgeData = config->entityData.bridge.value;
+		const auto bridge = new Bridge(bridgeData);
+		objects.push_back(bridge);
+		const auto axe = new AxeBridge(bridgeData.axePosition, bridge);
+		objects.push_back(axe);
 	}
 
 	// mario in water trigger
