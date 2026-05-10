@@ -20,7 +20,7 @@ class PlayableScene :
 	SceneContext* sceneContext;
 	int level;
 
-	Timer levelTimer;
+	Timer* levelTimer;
 	float timeLeftForLevel = 400; //time units w/ each = ~0.4s
 	bool isFlagPoleSequenceStarted;
 	bool isTimeScoreCounting;

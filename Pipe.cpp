@@ -5,7 +5,6 @@
 #include "Game.h"
 #include "InputManager.h"
 #include "Mario.h"
-#include "PlayableScene.h"
 
 Pipe::Pipe(const PipeData& pData)
 {
@@ -24,7 +23,7 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 	if (pipeData.isReturnPipe)
 		return;
-	
+
 	if (pipeState == PipeState::Idle)
 	{
 		auto marioBox = ctx->mario->GetBoundingBox();
@@ -45,7 +44,8 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 				AudioManager::GetInstance()->PauseMusic();
 				AudioManager::GetInstance()->PlaySFX(PIPE_ENTER);
 			}
-		}else
+		}
+		else
 		{
 			ctx->mario->SetEnterPipe(pipeData);
 			transitionTimer.Start();
@@ -74,7 +74,7 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 					returnData.returnRect,
 					returnData.moveTo,
 				};
-				Optional<SceneSwitchContext> switchCtx = SceneSwitchContext::PipeTransition(marioPipeCtx, ctx->mario->GetPowerLevel(), levelTimeLeft);
+				Optional<SceneSwitchContext> switchCtx = SceneSwitchContext::PipeTransition(marioPipeCtx, ctx->mario->GetPowerLevel());
 
 				Game::GetInstance()
 					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, switchCtx);
@@ -82,9 +82,10 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			else
 			{
 				Game::GetInstance()
-					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, SceneSwitchContext::NormalTransition(ctx->mario->GetPowerLevel(), levelTimeLeft));
+					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, SceneSwitchContext::NormalTransition(ctx->mario->GetPowerLevel()));
 			}
-		}else
+		}
+		else
 		{
 			if (pipeData.teleportToPosition.hasValue)
 			{
@@ -108,5 +109,5 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		}
 
 	}
-	
+
 }

@@ -117,24 +117,24 @@ void PlayableScene::Update(float dt)
 			&& sceneContext->mario->GetState() == MarioState::EnteringPipe;
 		if (!isMarioDying && !isMarioEnteringPipe)
 		{
-			levelTimer.ProcessTimer(dt * 2.5f);
+			levelTimer->ProcessTimer(dt * 2.5f);
 		}
-		displayTimeLeft = static_cast<int>(levelTimer.GetTimeLeft());
+		displayTimeLeft = static_cast<int>(levelTimer->GetTimeLeft());
 		if (displayTimeLeft < 0)
 		{
 			displayTimeLeft = 0;
 		}
-	HUD::GetInstance()->Update(dt);
-	levelTimer->ProcessTimer(dt);
-	HUD::GetInstance()->GetElement(3)->SetText(L"TIME\n" + std::to_wstring(static_cast<int>(levelTimer->GetTimeLeft())));
-	if (levelTimer->IsFinished())
-	{
-		// Time's up, kill Mario
-		auto mario = sceneContext->mario;
-		if (mario != nullptr) {
-			mario->Die();
+		if (levelTimer->IsFinished())
+		{
+			// Time's up, kill Mario
+			auto mario = sceneContext->mario;
+			if (mario != nullptr) {
+				mario->Die();
+			}
 		}
 	}
+	HUD::GetInstance()->Update(dt);
+	HUD::GetInstance()->GetElement(3)->SetText(L"TIME\n" + std::to_wstring(displayTimeLeft));
 }
 
 void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
@@ -295,9 +295,6 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		startingTimeLeft = 0.0f;
 	}
-	displayTimeLeft = static_cast<int>(startingTimeLeft);
-	levelTimer = Timer(startingTimeLeft);
-	levelTimer.Start();
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
 	// triggers;
@@ -306,11 +303,15 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		const auto colorTrigger = new ClearScreenColorTrigger(colorTriggerData.zone, colorTriggerData.color);
 		objects.push_back(colorTrigger);
 	}
+	//fire shooters
 	for (const auto& fPos : config->entityData.fireShooters)
 	{
 		const auto fs = new FireShooter(fPos.position.x, fPos.position.y, fPos.shootDirection);
 		objects.push_back(fs);
 	}
+	displayTimeLeft = static_cast<int>(startingTimeLeft);
+	levelTimer = new Timer(startingTimeLeft);
+	levelTimer->Start();
 }
 
 void PlayableScene::UpdateTimeScore(float dt)
@@ -577,7 +578,7 @@ void PlayableScene::StartFlagPoleSequence()
 	isCastleFlagTransitionDelayFinished = false;
 	isFireworkSequenceStarted = false;
 	isFireworkSequenceFinished = false;
-	timeScoreStartValue = static_cast<int>(levelTimer.GetTimeLeft());
+	timeScoreStartValue = static_cast<int>(levelTimer->GetTimeLeft());
 	if (timeScoreStartValue < 0)
 	{
 		timeScoreStartValue = 0;
@@ -594,7 +595,7 @@ void PlayableScene::StartFlagPoleSequence()
 	fireworkSpawnTimer = 0.0f;
 	fireworkFinishTimer = 0.0f;
 	castleFlag = nullptr;
-	levelTimer.Pause();
+	levelTimer->Pause();
 }
 
 void PlayableScene::PlayStageClearMusic()
