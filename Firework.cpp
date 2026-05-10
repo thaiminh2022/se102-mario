@@ -8,6 +8,7 @@
 #include "Sprites.h"
 #include "Textures.h"
 #include <cmath>
+#include "StatManager.h"
 
 constexpr float FIREWORK_LIFETIME = 0.45f;
 
@@ -39,6 +40,7 @@ Firework::Firework(Vector2 position) : GameObject(position)
 	lifeTimer.Start();
 	EnsureAssets();
 	AudioManager::GetInstance()->PlaySFX(FIREWORKS);
+	StatManager::GetInstance()->AddScore(500);
 }
 
 void Firework::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)

@@ -110,7 +110,7 @@ void PlayableScene::Update(float dt)
 			&& sceneContext->mario->GetState() == MarioState::EnteringPipe;
 		if (!isMarioDying && !isMarioEnteringPipe)
 		{
-			levelTimer.ProcessTimer(dt);
+			levelTimer.ProcessTimer(dt * 2.5f);
 		}
 		displayTimeLeft = static_cast<int>(levelTimer.GetTimeLeft());
 		if (displayTimeLeft < 0)
@@ -289,12 +289,12 @@ void PlayableScene::UpdateTimeScore(float dt)
 	}
 
 	timeScoreElapsed += dt;
-	float progress = timeScoreElapsed / timeScoreDuration;
+	float progress = timeScoreElapsed / timeScoreDuration; //percentage of time elapsed in the countdown
 	if (progress > 1.0f)
 	{
 		progress = 1.0f;
 	}
-
+	// Calculate how many time score units to award based on the elapsed time
 	int targetDisplayTime = timeScoreStartValue - static_cast<int>(progress * static_cast<float>(timeScoreStartValue));
 	if (progress >= 1.0f)
 	{

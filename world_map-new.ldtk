@@ -2641,22 +2641,6 @@
 							"__worldY": 480
 						},
 						{
-							"__identifier": "PlayerStart",
-							"__grid": [3,11],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
-							"__smartColor": "#63C74D",
-							"iid": "1e4f9f40-21a0-11f1-8cda-f19e2cb6af0a",
-							"width": 16,
-							"height": 16,
-							"defUid": 31,
-							"px": [48,176],
-							"fieldInstances": [],
-							"__worldX": 1760,
-							"__worldY": 496
-						},
-						{
 							"__identifier": "Pipe",
 							"__grid": [163,11],
 							"__pivot": [0,0],
@@ -2686,6 +2670,22 @@
 							],
 							"__worldX": 4320,
 							"__worldY": 496
+						},
+						{
+							"__identifier": "PlayerStart",
+							"__grid": [189,3],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
+							"__smartColor": "#63C74D",
+							"iid": "8fe77ce0-48b0-11f1-a684-cf7d34532d90",
+							"width": 16,
+							"height": 16,
+							"defUid": 31,
+							"px": [3024,48],
+							"fieldInstances": [],
+							"__worldX": 4736,
+							"__worldY": 368
 						}
 					]
 				},

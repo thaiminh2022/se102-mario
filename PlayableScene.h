@@ -21,29 +21,29 @@ class PlayableScene :
 	int level;
 
 	Timer levelTimer;
-	float timeLeftForLevel = 160; //seconds, originally 400 frames w/ each frame ~0.4s
-	bool isFlagPoleSequenceStarted = false;
-	bool isTimeScoreCounting = false;
-	bool isStageClearMusicFinished = false;
-	bool isCastleFlagSequenceStarted = false;
-	bool isCastleFlagSequenceFinished = false;
-	bool isCastleFlagTransitionDelayFinished = false;
-	bool isFireworkSequenceStarted = false;
-	bool isFireworkSequenceFinished = false;
-	int timeScoreStartValue = 0;
-	int timeScoreAwardedUnits = 0;
-	int displayTimeLeft = 0;
-	int fireworkCount = 0;
-	int fireworksRemaining = 0;
-	int nextFireworkPositionIndex = 0;
-	unsigned int timeScoreAudioHandle = 0;
-	float timeScoreElapsed = 0.0f;
-	float timeScoreDuration = 0.0f;
-	float castleFlagTransitionDelayTimer = 0.0f;
-	float fireworkSpawnTimer = 0.0f;
-	float fireworkFinishTimer = 0.0f;
+	float timeLeftForLevel = 400; //time units w/ each = ~0.4s
+	bool isFlagPoleSequenceStarted;
+	bool isTimeScoreCounting;
+	bool isStageClearMusicFinished;
+	bool isCastleFlagSequenceStarted;
+	bool isCastleFlagSequenceFinished;
+	bool isCastleFlagTransitionDelayFinished;
+	bool isFireworkSequenceStarted;
+	bool isFireworkSequenceFinished;
+	int timeScoreStartValue; //the time left when player hit the flag pole
+	int timeScoreAwardedUnits; // how many time score units HAVE BEEN AWARDED so far
+	int displayTimeLeft; // the time left to display on screen, will count down to 0 as time score is awarded
+	int fireworkCount;
+	int fireworksRemaining;
+	int nextFireworkPositionIndex;
+	unsigned int timeScoreAudioHandle;
+	float timeScoreElapsed; // how much time has elapsed since time score countdown started, used to calculate how many time score units to award
+	float timeScoreDuration; // how long the time score countdown should last, used to calculate how many time score units to award
+	float castleFlagTransitionDelayTimer;
+	float fireworkSpawnTimer;
+	float fireworkFinishTimer;
 	vector<Vector2Int> fireworkPositions;
-	CastleFlag* castleFlag = nullptr;
+	CastleFlag* castleFlag;
 
 	void UpdateTimeScore(float dt);
 	void UpdateCastleFlag(float dt);
