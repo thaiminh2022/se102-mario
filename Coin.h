@@ -18,9 +18,8 @@ public:
 	void SetState(CoinState s);
 	void Render() override;
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
-	Coin(Vector2Int startPos, CoinState state = CoinState::Idle);
+	Coin(Vector2Int startPos, BiomeType biome, CoinState state = CoinState::Idle);
 	Rect GetBoundingBox() override;
 	bool IsBlocking() override { return false; }
 	int GetRenderIndex() override { return -1; }
 };
-

@@ -6,7 +6,8 @@
 enum class PipeState
 {
 	Idle,
-	Transition
+	Transition,
+	Blocked,
 };
 
 class Pipe : public GameObject

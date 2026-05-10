@@ -22,12 +22,11 @@ Rect Pipe::GetBoundingBox()
 
 void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
-	if (pipeData.isReturnPipe || !pipeData.nextLevelToLoad.hasValue)
+	if (pipeData.isReturnPipe)
 		return;
 	
 	if (pipeState == PipeState::Idle)
 	{
-
 		auto marioBox = ctx->mario->GetBoundingBox();
 		auto pipeBox = GetBoundingBox();
 
@@ -43,7 +42,7 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 				ctx->mario->SetEnterPipe(pipeData);
 				transitionTimer.Start();
 				pipeState = PipeState::Transition;
-				AudioManager::GetInstance()->StopAll();
+				AudioManager::GetInstance()->PauseMusic();
 				AudioManager::GetInstance()->PlaySFX(PIPE_ENTER);
 			}
 		}else
@@ -51,25 +50,21 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			ctx->mario->SetEnterPipe(pipeData);
 			transitionTimer.Start();
 			pipeState = PipeState::Transition;
-			AudioManager::GetInstance()->StopAll();
+			AudioManager::GetInstance()->PauseMusic();
 			AudioManager::GetInstance()->PlaySFX(PIPE_ENTER);
 		}
-
-		return;
 	}
-
-	if (pipeState == PipeState::Transition)
+	else if (pipeState == PipeState::Transition)
 	{
 		transitionTimer.ProcessTimer(dt);
+		if (!transitionTimer.IsFinished())
+			return;
 
-		if (transitionTimer.IsFinished())
+
+		if (!pipeData.isTeleportPipe)
 		{
-			float levelTimeLeft = 0.0f;
-			auto scene = dynamic_cast<PlayableScene*>(Game::GetInstance()->GetCurrentScene());
-			if (scene != nullptr)
-			{
-				levelTimeLeft = scene->GetTimeLeft();
-			}
+			if (!pipeData.nextLevelToLoad.hasValue)
+				return;
 
 			if (pipeData.returnPipeData.hasValue)
 			{
@@ -83,13 +78,35 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 				Game::GetInstance()
 					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, switchCtx);
-			}else
+			}
+			else
 			{
 				Game::GetInstance()
 					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, SceneSwitchContext::NormalTransition(ctx->mario->GetPowerLevel(), levelTimeLeft));
 			}
-		
+		}else
+		{
+			if (pipeData.teleportToPosition.hasValue)
+			{
+				Game::GetInstance()->GetCamera()->SetPosition(0, 0);
+				ctx->mario->SetPosition(pipeData.teleportToPosition.value);
+				ctx->mario->ResetRender();
+				ctx->mario->ResetState();
+				pipeState = PipeState::Blocked;
+			}
+			else if (pipeData.returnPipeData.hasValue)
+			{
+				auto returnData = pipeData.returnPipeData.value;
+				auto marioPipeCtx = MarioPipeCtx{
+					returnData.returnDirection,
+					returnData.returnRect,
+					returnData.moveTo,
+				};
+
+				ctx->mario->SetExitPipe(marioPipeCtx);
+			}
 		}
+
 	}
 	
 }

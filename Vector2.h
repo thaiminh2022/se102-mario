@@ -69,6 +69,10 @@ struct Vector2
 		this->y = y;
 	}
 
+	static Vector2 Zero()
+	{
+		return Vector2Int(0, 0);
+	}
 
 	Vector2(const Vector2Int& vec)
 	{

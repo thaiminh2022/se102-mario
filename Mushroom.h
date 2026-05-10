@@ -9,7 +9,7 @@ class Mushroom : public GameObject
 
 public:
 	void SetState(CollectableItemState newState);
-	explicit Mushroom(Vector2 startPos);
+	explicit Mushroom(Vector2 startPos, BiomeType biome);
 	void SetMoveDirX(int newDirX);
 	bool IsBlocking() override { return false; }
 	void Render() override;

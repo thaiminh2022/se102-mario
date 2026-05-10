@@ -195,10 +195,26 @@ static void LoadResource()
 
 	t->Add(GOOMBA_TEX_ID, L"Assets/Sprites/goomba_frames.png");
 	t->Add(FIREBALL_TEX_ID, L"Assets/Sprites/fireball.png");
+
 	t->Add(BLOCKS_OVERWORLD_TEX_ID, L"Assets/Sprites/overworld_blocks.png");
+	t->Add(BLOCKS_UNDERGROUND_TEX_ID, L"Assets/Sprites/underground_blocks.png");
+	t->Add(BLOCKS_CASTLE_TEX_ID, L"Assets/Sprites/castle_blocks.png");
+	t->Add(BLOCKS_UNDERWATER_TEX_ID, L"Assets/Sprites/underwater_blocks.png");
+
+
 	t->Add(OVERWORLD_ITEMS_TEX_ID, L"Assets/Sprites/overworld_items.png");
+	t->Add(UNDERGROUND_ITEMS_TEX_ID, L"Assets/Sprites/underground_items.png");
+	t->Add(CASTLE_ITEMS_TEX_ID, L"Assets/Sprites/castle_items.png");
+	t->Add(UNDERWATER_ITEMS_TEX_ID, L"Assets/Sprites/underwater_items.png");
+
+
 	t->Add(KOOPA_TEX_ID, L"Assets/Sprites/koopa_sprites.png");
+	t->Add(CHEEPS_TEX_ID, L"Assets/Sprites/cheepcheeps.png");
+	t->Add(BLOOPERS_TEX_ID, L"Assets/Sprites/bloopers.png");
+
 	
+	t->Add(BOWSER_TEX_ID, L"Assets/Sprites/bowser_sprites.png");
+	t->Add(BOWSER_ITEM_BULLET_TEX_ID, L"Assets/Sprites/bowser_item_sprites.png");
 	t->Add(HUDCOIN_TEX_ID, L"Assets/Sprites/HUDCoin.png");
 	t->Add(POINTS_TEX_ID, L"Assets/Sprites/point.png");
 	t->Add(CASTLE_FLAG_TEX_ID, L"Assets/Sprites/flag.png");

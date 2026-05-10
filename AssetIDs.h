@@ -13,6 +13,7 @@
 
 #include <cinttypes>
 
+
 // ==========================================
 // MARIO (E = 1)
 // ==========================================
@@ -207,7 +208,13 @@ constexpr int GOOMBA_DEAD_SPRITE_1 = 21701;
 // ==========================================
 // BLOCKS (E = 3)
 // ==========================================
-constexpr int BLOCKS_OVERWORLD_TEX_ID = 30000;
+constexpr int BLOCKS_OVERWORLD_TEX_ID = 31000;
+constexpr int BLOCKS_UNDERGROUND_TEX_ID = 33000;
+constexpr int BLOCKS_CASTLE_TEX_ID = 34000;
+constexpr int BLOCKS_UNDERWATER_TEX_ID = 35000;
+
+
+
 
 // ---------------------------------
 // QUESTION BLOCK (T = 1)
@@ -278,6 +285,12 @@ constexpr int ONEUP_SPRITE_1 = 99001;
 // ITEMS (E = 4)
 // ==========================================
 constexpr int OVERWORLD_ITEMS_TEX_ID = 40000;
+constexpr int UNDERGROUND_ITEMS_TEX_ID = 46000;
+constexpr int CASTLE_ITEMS_TEX_ID = 47000;
+constexpr int UNDERWATER_ITEMS_TEX_ID = 48000;
+
+
+
 
 // Coin (T = 1) -> Moving/Spinning (A = 200)
 constexpr int COIN_SPIN_ANIM_ID = 41200;
@@ -370,16 +383,89 @@ constexpr int HIDING_KOOPA_SPIN_SPRITE_2 = 73202;
 constexpr int KOOPA_DEAD_ANIM_ID = 73700;
 constexpr int KOOPA_DEAD_SPRITE = 73701;
 
+/// ===============================
+// BOWSER (E = 80000, T = 1)
+/// ===============================
+constexpr int BOWSER_TEX_ID = 81000;
 
-// ==========================================
-// SCENES AND UI
-// ==========================================
+// WALKING (A = 100)
+constexpr int BOWSER_WALK_ANIM_ID = 81100;
+constexpr int BOWSER_WALK_SPRITE_1 = 81101;
+constexpr int BOWSER_WALK_SPRITE_2 = 81102;
 
+// FIRE BREATHING (A = 300)
+constexpr int BOWSER_FIRE_BREATH_ANIM_ID = 81300;
+constexpr int BOWSER_FIRE_BREATH_SPRITE_1 = 81301;
+constexpr int BOWSER_FIRE_BREATH_SPRITE_2 = 81302;
+
+// HAMMER THROWING (A = 400)
+constexpr int BOWSER_HAMMER_THROW_ANIM_ID = 81410;
+constexpr int BOWSER_HAMMER_THROW_SPRITE = 81411;
+
+//DYING (A = 500)
+constexpr int BOWSER_DEATH_ANIM_ID = 81500;
+constexpr int BOWSER_DEATH_SPRITE_1 = 81501;
+
+// FALLING (A = 600)
+constexpr int BOWSER_FALL_ANIM_ID = 81600;
+constexpr int BOWSER_FALL_SPRITE_1 = 81601;
+constexpr int BOWSER_FALL_SPRITE_2 = 81602;
+constexpr int BOWSER_FALL_SPRITE_3 = 81603;
+
+/// ================================
+// BOWSER ITEM BULLET (E = 100000)
+///=================================
+constexpr int BOWSER_ITEM_BULLET_TEX_ID = 100000;
+
+// Fire breath (T = 1000)
+constexpr int BOWSER_ITEM_BULLET_FIRE_ANIM_ID = 101000;
+constexpr int BOWSER_ITEM_BULLET_FIRE_SPRITE_1 = 101001;
+constexpr int BOWSER_ITEM_BULLET_FIRE_SPRITE_2 = 101002;
+
+// Hammer (T = 2000)
+constexpr int BOWSER_ITEM_BULLET_HAMMER_ANIM_ID = 102000;
+constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_1 = 102001;
+constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_2 = 102002;
+constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_3 = 102003;
+constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_4 = 102004;
+
+/// ===============================
+// CHEEP CHEEPS (E = 110000) 
+/// ===============================
+
+/// cheep cheeps,  t = 1;
+constexpr int CHEEPS_TEX_ID = 110000;
+
+// RED (A = 1)
+constexpr int RED_CHEEP_ANIM = 111100;
+constexpr int RED_CHEEP_SPRITE_1 = 111101;
+constexpr int RED_CHEEP_SPRITE_2 = 111102;
+
+// WATER (A=2)
+constexpr int WATER_CHEEP_ANIM = 111200;
+constexpr int WATER_CHEEP_SPRITE_1 = 111201;
+constexpr int WATER_CHEEP_SPRITE_2 = 111202;
+
+/// ===============================
+// BLOOPERS (E = 120000) 
+/// ===============================
+constexpr int BLOOPERS_TEX_ID = 120000;
+
+// WATER SWIM (A = 1)
+constexpr int WATER_BLOOPER_SWIM_ANIM = 121100;
+constexpr int WATER_BLOOPER_SWIM_SPRITE_1 = 121101;
+
+// WATER IDLE (A = 2)
+constexpr int WATER_BLOOPER_IDLE_ANIM = 121200;
+constexpr int WATER_BLOOPER_IDLE_SPRITE_1 = 121201;
+
+/// ================================
 // HUD ELEMENTS
 constexpr int HUDCOIN_TEX_ID = 50000;
 constexpr int HUDCOIN_SPRITE_ID = 50001;
 constexpr int HUDMARIO_SPRITE_ID = 51000;
 constexpr int CASTLE_FLAG_TEX_ID = 52000;
+
 
 // PLAYABLE SCENES IS MANAGE BY LEVEL LOADER (INIT FUNCTION)
 // NEGATIVE VALUE (AND 0) IS FOR PLAYABLE SCENE ONLY
@@ -389,27 +475,32 @@ enum NonPlayableScene : std::int8_t
 	LEVEL_TRANSITION = 99,
 };
 
-/// MUSICS: Background music will be managed by negative values in ldtk
-
-// SFX
-enum SFX : std::uint8_t
+// ALL BACKGROUND MUSIC WILL BE MANAGED BY NEGATIVE VALUE AND 0
+enum AUDIOS : std::int8_t
 {
+	GROUND_THEME = -3,
+	UNDERGROUND_THEME = -2,
+	CASTLE_THEME = -1,
+	UNDERWATER_THEME = 0,
+
+	// SFX 
+
 	MARIO_JUMP_SMALL = 1,
-	MARIO_JUMP_BIG,
-	GOOMBA_STOMP,
-	MARIO_DIE,
-	FIREBALL,
-	MARIO_COLLECT_COIN,
-	MARIO_BUMP,
-	MARIO_POWERUP,
-	POWERUP_APPEARS,
-	BREAK_BLOCK,
-	PIPE_ENTER,
-	INVINCIBILITY_THEME,
-	FLAG_PULL,
-	STAGE_CLEAR,
-	FIREWORKS,
-	TING,
+	MARIO_JUMP_BIG = 2,
+	GOOMBA_STOMP = 3,
+	MARIO_DIE = 4,
+	FIREBALL = 5,
+	MARIO_COLLECT_COIN = 6,
+	MARIO_BUMP = 7,
+	MARIO_POWERUP = 8,
+	POWERUP_APPEARS = 9,
+	BREAK_BLOCK = 10,
+	PIPE_ENTER = 11,
+	INVINCIBILITY_THEME = 12,
+	FLAG_PULL = 13,
+	STAGE_CLEAR = 14,
+	FIREWORKS = 15,
+	TING = 16,
 };
 
 /// FONT

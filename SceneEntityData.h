@@ -4,6 +4,7 @@
 #include "Vector2.h"
 #include <vector>
 
+#include "Color.h"
 #include "OptionalType.h"
 #include "Rect.h"	
 
@@ -23,6 +24,23 @@ enum class BlockDropType: std::uint8_t
 	JewDestroyer,
 };
 
+struct MusicTriggerData
+{
+	int id;
+	Rect zone;
+};
+
+struct ClearScreenColorTriggerData
+{
+	Rect zone;
+	Color color;
+
+	ClearScreenColorTriggerData(const Rect zone, const Color color)
+	{
+		this->zone = zone;
+		this->color = color;
+	}
+};
 
 struct QuestionBlockData
 {
@@ -56,6 +74,29 @@ struct ReturnPipeData
 	Rect returnRect;
 	Vector2Int moveTo;
 };
+struct BloopersStartData
+{
+	Vector2Int lowestLimit;
+	Vector2Int highestLimit;
+
+	BloopersStartData(const Vector2Int& lowestLimit, const Vector2Int& highestLimit)
+		: lowestLimit(lowestLimit),
+		  highestLimit(highestLimit)
+	{
+	}
+};
+
+struct InWaterTriggerData
+{
+	Rect zone;
+	bool inWater;
+
+	explicit InWaterTriggerData(const Rect zone, const bool inWater)
+		:zone(zone), inWater(inWater)
+	{
+	}
+};
+
 struct PipeData
 {
 	Rect zone;
@@ -66,6 +107,25 @@ struct PipeData
 	bool isReturnPipe;
 	Vector2Int enterDirection;
 	Vector2Int moveTo;
+	Optional<Vector2Int> teleportToPosition;
+	bool isTeleportPipe;
+
+	PipeData() = default;
+
+	PipeData(const Rect& zone, const Optional<int>& nextLevelToLoad, const Optional<ReturnPipeData>& returnPipeData,
+		bool isReturnPipe, const Vector2Int& enterDirection, const Vector2Int& moveTo,
+		const Optional<Vector2Int>& teleportToPosition, bool isTeleportPipe)
+		: zone(zone),
+		  nextLevelToLoad(nextLevelToLoad),
+		  returnPipeData(returnPipeData),
+		  isReturnPipe(isReturnPipe),
+		  enterDirection(enterDirection),
+		  moveTo(moveTo),
+		  teleportToPosition(teleportToPosition),
+		  isTeleportPipe(isTeleportPipe)
+	{
+	}
+
 
 	static Vector2Int GetDirection(const std::string& dir)
 	{
@@ -90,28 +150,55 @@ struct PipeData
 	}
 };
 
+struct CheepCheepsData
+{
+	Vector2Int startPosition;
+	bool isRed;
 
+	CheepCheepsData(const Vector2Int& startPosition, bool isRed)
+		: startPosition(startPosition),
+		  isRed(isRed)
+	{
+	}
+};
+struct FireShooterData
+{
+	Vector2Int position;
+	Vector2Int shootDirection;
+	FireShooterData(const Vector2Int& position, const Vector2Int& shootDirection)
+		: position(position),
+		  shootDirection(shootDirection)
+	{
+	}
+};
 
 struct SceneEntityData
 {
 	Optional<BridgeData> bridge;
 	Optional<int> backgroundMusicID;
+	vector<MusicTriggerData> musicTriggers;
 	Vector2Int playerStarts;
 	
 	vector<PipeData> pipes;
 	Optional<FlagPoleData> flagPole;
+
+	vector<ClearScreenColorTriggerData> clearScreenColorTriggers;
 	
 	Optional<Vector2Int> bowserStart;
 	Optional<Vector2Int> toadStart;
 
-
 	vector<Vector2Int> goombaStarts;
 	vector<Vector2Int> koopaStarts;
+	vector<CheepCheepsData> cheepCheeps;
+	vector<BloopersStartData> bloopers;
+	vector<InWaterTriggerData> waterTriggers;
 	vector<Vector2Int> WingedKoopaStarts;
+	vector<Vector2Int> bowserStarts;
 	vector<QuestionBlockData> questionBlocks;
 	vector<BrickBlockData> brickBlocks;
 	vector<Vector2Int> coins;
 	vector<NextLevelData> nextLevelsData;
 	vector<Vector2Int> fireballTraps;
+	vector<FireShooterData> fireShooters;
 };
 

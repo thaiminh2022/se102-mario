@@ -15,6 +15,7 @@
 #include "Textures.h"
 #include <algorithm>
 #include <vector>
+#include "Bowser.h"
 
 #include <cmath>
 #include <string>
@@ -197,8 +198,17 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 			Explode();
 			return;
 		}
-	}
 
+		const auto bowser = dynamic_cast<Bowser*>(e->otherObject);
+		if (bowser != nullptr)
+		{
+			bowser->HandleHeathDecrease(1);
+			this->isExploded = true;
+			Explode();
+			return;
+		}
+	}
+	//will add collision with firebreath and hammer later, for now only tile collision
 	if (e->IsBlocking()) {
 		if (e->normalizedDir.y == -1)
 			velocity.y = FIREBALL_BOUNCE_SPEED; // bounce up if hit the ground

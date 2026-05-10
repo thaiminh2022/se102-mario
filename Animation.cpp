@@ -17,9 +17,14 @@ void Animation::Add(int spriteId, DWORD timeMs)
 	frames.push_back(frame);
 }
 
-void Animation::Render(float x, float y, bool flipX, bool flipY)
+void Animation::Render(float x, float y, bool flipX, bool flipY, int startFrame)
 {
 	ULONGLONG now = GetTickCount64();
+	if (startFrame != -1 && startFrame < frames.size())
+	{
+		currentFrame = startFrame;
+		lastFrameTime = now;
+	}
 	if (currentFrame == -1)
 	{
 		currentFrame = 0;

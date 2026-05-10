@@ -123,6 +123,15 @@
     <ClCompile Include="Koopa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Bowser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BowserFireBullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BowserHammer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="UIElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -148,6 +157,30 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MarioSpecialStates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BgMusicTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bloopers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClearScreenColorTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CheepCheeps.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionMatrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InWaterTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointPopup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FireShooter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -296,6 +329,15 @@
     <ClInclude Include="Koopa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Bowser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BowserFireBullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BowserHammer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="UIElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -309,6 +351,30 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Pipe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BgMusicTrigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bloopers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClearScreenColorTrigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CheepCheeps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InWaterTrigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointPopup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FireShooter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

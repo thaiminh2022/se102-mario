@@ -3,6 +3,9 @@
 #include <algorithm>
 
 #include "GameObject.h"
+#include "BowserHammer.h"	
+#include "BowserFireBullet.h"
+
 #include "Mario.h"
 #include "Rect.h"
 #include "Tile.h"
@@ -20,6 +23,10 @@ Collision* Collision::_instance = nullptr;
 
 void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*& tilemap, GameObject*& go, float dt)
 {
+	if (dynamic_cast<BowserHammer*>(go) != nullptr)
+	{
+		return;
+	}
 	// tilemap collision
 	if (tilemap != nullptr)
 	{
@@ -43,7 +50,6 @@ void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*&
 			maxX,
 			maxY);
 
-		//Game::GetInstance()->DrawDebugRectWithCamera(r, Colors::YELLOW);
 		tilemap->GetPotentialCollidableCells(r, collisionTiles);
 
 		if (collisionTiles.empty())
@@ -51,6 +57,10 @@ void Collision::GetTilemapEvents(vector<CollisionEvent>& events, const Tilemap*&
 
 		for (const auto& c : collisionTiles)
 		{
+			// Check if the game object can collide with the tile
+			if (!CollisionMatrix::IsLayerCollide(c->GetCollisionLayer(), go->GetCollisionLayer()))
+				continue;
+
 			auto r = SweptAABB(go, c, dt);
 			auto e = CollisionEvent::CreateTileCollisionEvent(go, c, r);
 			events.push_back(e);
@@ -218,10 +228,12 @@ SweptAABBResult Collision::SweptAABB(GameObject* src, CollisionTile* tile, float
 void Collision::GetObjectEvents(vector<CollisionEvent>& events, GameObject* go, const vector<GameObject*>& coObjects,
 	const float dt)
 {
-
 	for (const auto& obj : coObjects)
 	{
 		if (obj == go || !obj->IsCollidable() || GameObject::IsDeleted(obj))
+			continue;
+
+		if (!CollisionMatrix::IsLayerCollide(obj->GetCollisionLayer(), go->GetCollisionLayer()))
 			continue;
 
 		auto r = SweptAABB(go, obj, dt);
@@ -233,9 +245,24 @@ void Collision::GetObjectEvents(vector<CollisionEvent>& events, GameObject* go, 
 	}
 }
 
+bool Collision::CanCollide(GameObject* a, GameObject* b)
+{
+	if (dynamic_cast<BowserHammer*>(a) != nullptr && dynamic_cast<BowserHammer*>(b) != nullptr)
+		return false;
+	else if (dynamic_cast<BowserFireBullet*>(a) != nullptr && dynamic_cast<BowserFireBullet*>(b) != nullptr)
+		return false;
+	else if ((dynamic_cast<BowserHammer*>(a) != nullptr && dynamic_cast<BowserFireBullet*>(b) != nullptr) ||
+		(dynamic_cast<BowserFireBullet*>(a) != nullptr && dynamic_cast<BowserHammer*>(b) != nullptr))
+		return false;
+	else if ((dynamic_cast<BowserHammer*>(a) != nullptr && dynamic_cast<Bowser*>(b) != nullptr) ||
+		(dynamic_cast<Bowser*>(a) != nullptr && dynamic_cast<BowserHammer*>(b) != nullptr))
+		return false;
+	return true;
+}
+
 void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coObjects, const Tilemap* tilemap, float dt)
 {
-	if (!go->IsCollidable())
+	if (!go->IsCollidable() )
 	{
 		go->OnNoCollision(dt);
 		return;

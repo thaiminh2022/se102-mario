@@ -14,7 +14,7 @@ class CastleFlag;
 class PlayableScene :
 	public Scene
 {
-    std::queue<GameObject*> addPendingGos;
+	std::queue<GameObject*> addPendingGos;
 
 	vector<GameObject*> objects;
 	SceneContext* sceneContext;
@@ -53,32 +53,33 @@ class PlayableScene :
 	int GetFireworkCountForTime(int timeLeft) const;
 	Vector2 GetCastleFlagPosition();
 	Vector2 GetFireworkSpawnPosition();
-	
+
 public:
 	int maxFireballs = 2; // Max fireballs allowed on screen at once, to prevent spamming
 	explicit PlayableScene(const int level)
 	{
 		this->level = level;
 		sceneContext = nullptr; // init on load
+		levelTimer = nullptr;
 	}
 
     void Update(float dt) override;
     void Load(const Optional<SceneSwitchContext>& ctx) override;
     void UnLoad() override;
-	void Render() override;
-	void CleanupDeletedObjects();
-	void AddObject(GameObject* go);
+    void Render() override;
+    void CleanupDeletedObjects();
+    void AddObject(GameObject* go);
 	void StartFlagPoleSequence();
 	void PlayStageClearMusic();
 	void MarkStageClearMusicFinished();
 	bool IsReadyForLevelTransition() const;
-
 	int GetMaxFireballs() const {
 		return maxFireballs;
 	}
 	float GetTimeLeft() const {
-		return levelTimer.GetTimeLeft();
+		return levelTimer->GetTimeLeft();
+	}
+	Timer* GetLevelTimer() {
+		return levelTimer;
 	}
 };
-
-

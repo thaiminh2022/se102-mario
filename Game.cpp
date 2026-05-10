@@ -477,8 +477,8 @@ Game::~Game()
 
 	
 	/// =================================================
-	camera = nullptr;
 	delete camera;
+	camera = nullptr;
 
 	for (auto& v: scenes)
 	{

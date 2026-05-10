@@ -6,6 +6,8 @@
 #include "Scene.h"
 #include <cinttypes>
 
+#include "CollisionMatrix.h"
+
 struct CollisionEvent;
 using std::vector;
 
@@ -38,7 +40,6 @@ public:
 		isFacingRight = true;
 		isActive = true;
 		renderIndex = 0;
-
 	}
 
 	explicit GameObject(const Vector2& position) {
@@ -61,14 +62,15 @@ public:
 	virtual bool IsBlocking() { return isBlocking; }
 	virtual bool IsActive() { return isActive; }
 	virtual void SetActive(bool newActive) { isActive = newActive; }
+	virtual bool IsFacingRight() const { return isFacingRight; }
 
 	virtual void OnNoCollision(float dt) {} // Call every collision check but returns no collision
 	virtual void OnCollisionWith(CollisionEvent* event) {} // Call every collision check with collision data
 	virtual Rect GetBoundingBox() = 0;
+	virtual CollisionMatrixLayer GetCollisionLayer() { return CollisionMatrixLayer::Default; }
 
 	static bool IsDeleted(const GameObject* o) { return o->isDeleted; }
 	virtual ~GameObject() = default;
-
 
 	static bool SortRenderIndex(GameObject* a, GameObject *b)
 	{
