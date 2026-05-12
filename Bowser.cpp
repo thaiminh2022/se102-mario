@@ -84,6 +84,7 @@ Bowser::Bowser(int startX, int startY, Mario* mario) : GameObject(startX, startY
 
 void Bowser::SetState(BowserState newState)
 {
+	auto sm = StatManager::GetInstance();
 	state = newState;
 	switch (state)
 	{
@@ -104,11 +105,13 @@ void Bowser::SetState(BowserState newState)
 		isCollidable = false;
 		deathTimer = Timer(2.5f);
 		deathTimer.Start();
+		sm->AddScore(5000, position);
 		break;
 	case BowserState::Falling:
 		velocity.x = 0;
 		velocity.y = 0;
 		isCollidable = false;
+		fallingTimer.Start();
 		break;
 	}
 }
@@ -134,8 +137,6 @@ void Bowser::HandleHeathDecrease(int amount)
 		if (state != BowserState::Dead)
 		{
 			SetState(BowserState::Dead);
-			auto sm = StatManager::GetInstance();
-			sm->AddScore(5000, position);
 		}
 	}
 }
@@ -166,8 +167,6 @@ void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		velocity.x = moveLeft ? -BOWSER_WALKING_SPEED : BOWSER_WALKING_SPEED;
 		break;
 	case BowserState::Falling:
-		if (!fallingTimer.IsTicking())
-			fallingTimer.Start();
 		fallingTimer.ProcessTimer(dt);
 		if (fallingTimer.IsFinished())
 		{
@@ -187,7 +186,7 @@ void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	velocity.y += currentGravity * dt;
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 
-	if (target->GetState() == MarioState::StopToWaitBowser)
+	if (target->GetState() == MarioState::StopToWaitBowser && state != BowserState::Dead && state != BowserState::Falling)
 		SetState(BowserState::Falling);
 
 	if (target->GetState() == MarioState::Dying)
@@ -196,6 +195,7 @@ void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		return;
 	}
 	TimerHandler(dt, ctx);
+	//DebugOut(L"Bowser State: %d, Health: %d, isGrounded: %d\n", static_cast<int>(state), health, isGrounded);
 }
 
 void Bowser::Render()
@@ -362,8 +362,11 @@ void Bowser::HammerThrowAttack(SceneContext* ctx)
 void Bowser::OnNoCollision(float dt)
 {
 	position += velocity * dt;
-	isGrounded = false;
-	state = BowserState::Jumping;
+	if (state != BowserState::Dead && state != BowserState::Falling)
+	{
+		isGrounded = false;
+		state = BowserState::Jumping;
+	}
 }
 
 void Bowser::OnCollisionWith(CollisionEvent* event)
