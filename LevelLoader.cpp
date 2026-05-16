@@ -256,6 +256,11 @@ RenderLayer LevelLoader::ParseBackgroundLayer(vector<LayerInstance>& v)
 		throw;
 	}
 	renderLayer.textureID = tID;
+	renderLayer.tileWidth = layerData->gridSize;
+	renderLayer.tileHeight = layerData->gridSize;
+	renderLayer.cellWidth = layerData->cWid;
+	renderLayer.cellHeight = layerData->cHei;
+	renderLayer.tileLookup.assign(renderLayer.cellWidth * renderLayer.cellHeight, -1);
 
 	for (auto l : layerData->gridTiles)
 	{
@@ -265,9 +270,14 @@ RenderLayer LevelLoader::ParseBackgroundLayer(vector<LayerInstance>& v)
 		t.srcX = l.src[0];
 		t.srcY = l.src[1];
 
-		t.width = 16;
-		t.height = 16;
+		t.width = renderLayer.tileWidth;
+		t.height = renderLayer.tileHeight;
+
+		const int tileIndex = static_cast<int>(renderLayer.tiles.size());
 		renderLayer.tiles.push_back(t);
+		const int cx = t.worldX / renderLayer.tileWidth;
+		const int cy = t.worldY / renderLayer.tileHeight;
+		renderLayer.tileLookup[cy * renderLayer.cellWidth + cx] = tileIndex;
 	}
 	return renderLayer;
 }
@@ -295,6 +305,11 @@ Optional<RenderLayer> LevelLoader::ParseAltLayer(vector<LayerInstance>& v)
 		throw;
 	}
 	renderLayer.textureID = tID;
+	renderLayer.tileWidth = layerData->gridSize;
+	renderLayer.tileHeight = layerData->gridSize;
+	renderLayer.cellWidth = layerData->cWid;
+	renderLayer.cellHeight = layerData->cHei;
+	renderLayer.tileLookup.assign(renderLayer.cellWidth * renderLayer.cellHeight, -1);
 
 	for (auto l : layerData->gridTiles)
 	{
@@ -304,9 +319,14 @@ Optional<RenderLayer> LevelLoader::ParseAltLayer(vector<LayerInstance>& v)
 		t.srcX = l.src[0];
 		t.srcY = l.src[1];
 
-		t.width = 16;
-		t.height = 16;
+		t.width = renderLayer.tileWidth;
+		t.height = renderLayer.tileHeight;
+
+		const int tileIndex = static_cast<int>(renderLayer.tiles.size());
 		renderLayer.tiles.push_back(t);
+		const int cx = t.worldX / renderLayer.tileWidth;
+		const int cy = t.worldY / renderLayer.tileHeight;
+		renderLayer.tileLookup[cy * renderLayer.cellWidth + cx] = tileIndex;
 	}
 	if (renderLayer.tiles.empty())
 	{
