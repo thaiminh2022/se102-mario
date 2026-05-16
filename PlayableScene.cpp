@@ -303,12 +303,6 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		const auto colorTrigger = new ClearScreenColorTrigger(colorTriggerData.zone, colorTriggerData.color);
 		objects.push_back(colorTrigger);
 	}
-	//fire shooters
-	for (const auto& fPos : config->entityData.fireShooters)
-	{
-		const auto fs = new FireShooter(fPos.position.x, fPos.position.y, fPos.shootDirection);
-		objects.push_back(fs);
-	}
 	displayTimeLeft = static_cast<int>(startingTimeLeft);
 	levelTimer = new Timer(startingTimeLeft);
 	levelTimer->Start();
@@ -504,7 +498,7 @@ Vector2 PlayableScene::GetFireworkSpawnPosition()
 	};
 
 	auto camera = Game::GetInstance()->GetCamera();
-	auto fallback = fallbackPositions[nextFireworkPositionIndex % 6];
+	auto fallback = fallbackPositions[nextFireworkPositionIndex % std::size(fallbackPositions)];
 	float anchorX = camera->GetX() + 224.0f;
 	if (sceneContext != nullptr && sceneContext->mario != nullptr)
 	{

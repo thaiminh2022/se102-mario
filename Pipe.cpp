@@ -81,8 +81,10 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			}
 			else
 			{
+				PlayableScene* scene = dynamic_cast<PlayableScene*>(Game::GetInstance()->GetCurrentScene());
+				float timeLeft = scene->GetTimeLeft();
 				Game::GetInstance()
-					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, SceneSwitchContext::NormalTransition(ctx->mario->GetPowerLevel()));
+					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, SceneSwitchContext::NormalTransition(ctx->mario->GetPowerLevel(), timeLeft));
 			}
 		}
 		else
