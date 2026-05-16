@@ -362,11 +362,15 @@ constexpr int FIREBALL_BOUNCE_SPRITE_2 = 61202;
 constexpr int FIREBALL_BOUNCE_SPRITE_3 = 61203;
 constexpr int FIREBALL_BOUNCE_SPRITE_4 = 61204;
 
-// Collision/Explode (A = 700)
-constexpr int FIREBALL_COLLIDE_ANIM_ID = 61700;
-constexpr int FIREBALL_COLLIDE_SPRITE_1 = 61701;
-constexpr int FIREBALL_COLLIDE_SPRITE_2 = 61702;
-constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61703;
+// Collision/Explode (A = 300)
+constexpr int FIREBALL_COLLIDE_ANIM_ID = 61300;
+constexpr int FIREBALL_COLLIDE_SPRITE_1 = 61301;
+constexpr int FIREBALL_COLLIDE_SPRITE_2 = 61302;
+constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61303;
+
+// Castle FLAG
+constexpr int CASTLE_FLAG_SPRITE_1 = 61401;
+
 
 
 // ==========================================
@@ -491,6 +495,7 @@ enum AUDIOS : std::int8_t
     INVINCIBILITY_THEME = 12,
     FLAG_PULL = 13,
     STAGE_CLEAR = 14,
+    FIREWORK = 15,
 };
 
 /// FONT

@@ -11,7 +11,7 @@
 	"iid": "542e4d40-21a0-11f1-b547-3f7639dce03c",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 286,
+	"nextUid": 289,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "LinearVertical",
@@ -214,9 +214,9 @@
 			"tileRect": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
 			"uiTileRect": null,
 			"nineSliceBorders": [],
-			"maxCount": 2,
+			"maxCount": 1,
 			"limitScope": "PerLevel",
-			"limitBehavior": "DiscardOldOnes",
+			"limitBehavior": "PreventAdding",
 			"pivotX": 0,
 			"pivotY": 0,
 			"fieldDefs": []
@@ -1097,41 +1097,6 @@
 			]
 		},
 		{
-			"identifier": "ToadStart",
-			"uid": 217,
-			"tags": ["entity"],
-			"exportToToc": false,
-			"allowOutOfBounds": false,
-			"doc": null,
-			"width": 16,
-			"height": 16,
-			"resizableX": false,
-			"resizableY": false,
-			"minWidth": null,
-			"maxWidth": null,
-			"minHeight": null,
-			"maxHeight": null,
-			"keepAspectRatio": false,
-			"tileOpacity": 1,
-			"fillOpacity": 1,
-			"lineOpacity": 1,
-			"hollow": false,
-			"color": "#FF7FB7",
-			"renderMode": "Rectangle",
-			"showName": true,
-			"tilesetId": null,
-			"tileRenderMode": "FitInside",
-			"tileRect": null,
-			"uiTileRect": null,
-			"nineSliceBorders": [],
-			"maxCount": 1,
-			"limitScope": "PerLevel",
-			"limitBehavior": "PreventAdding",
-			"pivotX": 0,
-			"pivotY": 0,
-			"fieldDefs": []
-		},
-		{
 			"identifier": "FlagPole",
 			"uid": 219,
 			"tags": ["gameplay"],
@@ -1176,43 +1141,6 @@
 					"arrayMinLength": null,
 					"arrayMaxLength": null,
 					"editorDisplayMode": "PointStar",
-					"editorDisplayScale": 1,
-					"editorDisplayPos": "Above",
-					"editorLinkStyle": "StraightArrow",
-					"editorDisplayColor": null,
-					"editorAlwaysShow": false,
-					"editorShowInWorld": true,
-					"editorCutLongValues": true,
-					"editorTextSuffix": null,
-					"editorTextPrefix": null,
-					"useForSmartColor": false,
-					"exportToToc": false,
-					"searchable": false,
-					"min": null,
-					"max": null,
-					"regex": null,
-					"acceptFileTypes": null,
-					"defaultOverride": null,
-					"textLanguageMode": null,
-					"symmetricalRef": false,
-					"autoChainRef": true,
-					"allowOutOfLevelRef": true,
-					"allowedRefs": "OnlySame",
-					"allowedRefsEntityUid": null,
-					"allowedRefTags": [],
-					"tilesetUid": null
-				},
-				{
-					"identifier": "fireworks_positions",
-					"doc": "Position to shoot firework after player enter",
-					"__type": "Array<Point>",
-					"uid": 221,
-					"type": "F_Point",
-					"isArray": true,
-					"canBeNull": false,
-					"arrayMinLength": null,
-					"arrayMaxLength": null,
-					"editorDisplayMode": "Points",
 					"editorDisplayScale": 1,
 					"editorDisplayPos": "Above",
 					"editorLinkStyle": "StraightArrow",
@@ -2026,6 +1954,116 @@
 					"tilesetUid": null
 				}
 			]
+		},
+		{
+			"identifier": "EnterCastleTrigger",
+			"uid": 286,
+			"tags": ["trigger"],
+			"exportToToc": false,
+			"allowOutOfBounds": false,
+			"doc": null,
+			"width": 16,
+			"height": 16,
+			"resizableX": true,
+			"resizableY": true,
+			"minWidth": 16,
+			"maxWidth": null,
+			"minHeight": 16,
+			"maxHeight": null,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 1,
+			"lineOpacity": 1,
+			"hollow": true,
+			"color": "#12892D",
+			"renderMode": "Rectangle",
+			"showName": true,
+			"tilesetId": null,
+			"tileRenderMode": "FitInside",
+			"tileRect": null,
+			"uiTileRect": null,
+			"nineSliceBorders": [],
+			"maxCount": 1,
+			"limitScope": "PerLevel",
+			"limitBehavior": "PreventAdding",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": [
+				{
+					"identifier": "firework_positions",
+					"doc": null,
+					"__type": "Array<Point>",
+					"uid": 287,
+					"type": "F_Point",
+					"isArray": true,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Points",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": "#ED00FF",
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "flag_move_to",
+					"doc": null,
+					"__type": "Point",
+					"uid": 288,
+					"type": "F_Point",
+					"isArray": false,
+					"canBeNull": true,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "PointPath",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				}
+			]
 		}
 	], "tilesets": [
 		{
@@ -2046,8 +2084,8 @@
 			"customData": [],
 			"savedSelections": [],
 			"cachedPixelData": {
-				"opaqueTiles": "101001101110111101100010000000010000010010000000110000000000000011100000",
-				"averageColors": "fa65f843f730f840c964f954f310e977f8bffa77f9407b87f520f730f520f000e966f6affa764c982fcc4c98febafca90000e4330000ba657b99ab872fccfebbfa75000014330000e7b0f8c0e7b0e6a0f6a0f6a0b7b0f6a0f49037b0d8c037b0f380f99f97a0d7b0d7b0d4a036a025a0216000000000f6a0e7b0f7b032708180f180f190f1808180f490e490f6b028d0"
+				"opaqueTiles": "101001101110111101100010010000010000010010000000110000000000000011100000",
+				"averageColors": "fa65f843f730f840c964f954f310e977f8bffa77f9407b87f520f730f520f000e966f6affa764c982fcc4c98febafca90000f4330000ba657b99ab872fccfebbfa75000000000000e7b0f8c0e7b0e6a0f6a0f6a0b7b0f6a0f49037b0d8c037b0f380f99f97a0d7b0d7b0d4a036a025a0216000000000f6a0e7b0f7b032708180f180f190f1808180f490e490f6b028d0"
 			}
 		},
 		{
@@ -2110,7 +2148,7 @@
 			"savedSelections": [],
 			"cachedPixelData": {
 				"opaqueTiles": "00000000000000000000",
-				"averageColors": "5d953c641ea63edd99819bb99bb99a9777607d927d927940ad970000000000008ded000000000000"
+				"averageColors": "5d953c641ea63edd99819bb99bb99a9777607d927d927940ad970000000000008ded7ecc00000000"
 			}
 		},
 		{
@@ -3305,13 +3343,10 @@
 							"height": 144,
 							"defUid": 219,
 							"px": [3120,48],
-							"fieldInstances": [
-								{ "__identifier": "player_move_to", "__type": "Point", "__value": { "cx": 204, "cy": 12 }, "__tile": null, "defUid": 220, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["204,12"]
-								}] },
-								{ "__identifier": "fireworks_positions", "__type": "Array<Point>", "__value": [], "__tile": null, "defUid": 221, "realEditorValues": [] }
-							]
+							"fieldInstances": [{ "__identifier": "player_move_to", "__type": "Point", "__value": { "cx": 204, "cy": 12 }, "__tile": null, "defUid": 220, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["204,12"]
+							}] }]
 						},
 						{
 							"__identifier": "BackgroundMusic",
@@ -3371,20 +3406,6 @@
 							"height": 24,
 							"defUid": 233,
 							"px": [560,160],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "PlayerStart",
-							"__grid": [3,11],
-							"__pivot": [0,0],
-							"__tags": ["entity"],
-							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
-							"__smartColor": "#63C74D",
-							"iid": "1e4f9f40-21a0-11f1-8cda-f19e2cb6af0a",
-							"width": 16,
-							"height": 16,
-							"defUid": 31,
-							"px": [48,176],
 							"fieldInstances": []
 						},
 						{
@@ -3467,6 +3488,67 @@
 									"params": ["Down"]
 								}] }
 							]
+						},
+						{
+							"__identifier": "EnterCastleTrigger",
+							"__grid": [204,11],
+							"__pivot": [0,0],
+							"__tags": ["trigger"],
+							"__tile": null,
+							"__smartColor": "#12892D",
+							"iid": "7944e090-48b0-11f1-a4d2-31d3cc977234",
+							"width": 16,
+							"height": 32,
+							"defUid": 286,
+							"px": [3264,176],
+							"fieldInstances": [
+								{ "__identifier": "firework_positions", "__type": "Array<Point>", "__value": [
+									{ "cx": 199, "cy": 4 },
+									{ "cx": 209, "cy": 4 },
+									{ "cx": 209, "cy": 7 },
+									{ "cx": 199, "cy": 7 },
+									{ "cx": 204, "cy": 5 }
+								], "__tile": null, "defUid": 287, "realEditorValues": [
+									{
+										"id": "V_String",
+										"params": ["199,4"]
+									},
+									{
+										"id": "V_String",
+										"params": ["209,4"]
+									},
+									{
+										"id": "V_String",
+										"params": ["209,7"]
+									},
+									{
+										"id": "V_String",
+										"params": ["199,7"]
+									},
+									{
+										"id": "V_String",
+										"params": ["204,5"]
+									}
+								] },
+								{ "__identifier": "flag_move_to", "__type": "Point", "__value": { "cx": 204, "cy": 7 }, "__tile": null, "defUid": 288, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["204,7"]
+								}] }
+							]
+						},
+						{
+							"__identifier": "PlayerStart",
+							"__grid": [188,3],
+							"__pivot": [0,0],
+							"__tags": ["entity"],
+							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
+							"__smartColor": "#63C74D",
+							"iid": "42b8b290-48b0-11f1-a4d2-67d8608895f4",
+							"width": 16,
+							"height": 16,
+							"defUid": 31,
+							"px": [3008,48],
+							"fieldInstances": []
 						}
 					]
 				},
@@ -4886,7 +4968,10 @@
 							"defUid": 265,
 							"px": [144,176],
 							"fieldInstances": [
-								{ "__identifier": "pipe_direction", "__type": "LocalEnum.Direction", "__value": "Up", "__tile": null, "defUid": 266, "realEditorValues": [] },
+								{ "__identifier": "pipe_direction", "__type": "LocalEnum.Direction", "__value": "Right", "__tile": null, "defUid": 266, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Right"]
+								}] },
 								{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 13, "cy": 11 }, "__tile": null, "defUid": 267, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["13,11"]
@@ -5099,16 +5184,16 @@
 						},
 						{
 							"__identifier": "NextLevel",
-							"__grid": [66,27],
+							"__grid": [33,24],
 							"__pivot": [0,0],
 							"__tags": ["trigger"],
 							"__tile": null,
 							"__smartColor": "#BE4A2F",
 							"iid": "5e76db60-48b0-11f1-a2ab-c9d697ee4efb",
 							"width": 16,
-							"height": 16,
+							"height": 32,
 							"defUid": 41,
-							"px": [1056,432],
+							"px": [528,384],
 							"fieldInstances": [
 								{ "__identifier": "level_to_load", "__type": "Int", "__value": 3, "__tile": null, "defUid": 227, "realEditorValues": [{ "id": "V_Int", "params": [3] }] },
 								{ "__identifier": "load_delay", "__type": "Float", "__value": 2, "__tile": null, "defUid": 226, "realEditorValues": [] }
@@ -6882,13 +6967,10 @@
 							"height": 160,
 							"defUid": 219,
 							"px": [2784,32],
-							"fieldInstances": [
-								{ "__identifier": "player_move_to", "__type": "Point", "__value": { "cx": 181, "cy": 12 }, "__tile": null, "defUid": 220, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["181,12"]
-								}] },
-								{ "__identifier": "fireworks_positions", "__type": "Array<Point>", "__value": [], "__tile": null, "defUid": 221, "realEditorValues": [] }
-							]
+							"fieldInstances": [{ "__identifier": "player_move_to", "__type": "Point", "__value": { "cx": 181, "cy": 12 }, "__tile": null, "defUid": 220, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["181,12"]
+							}] }]
 						},
 						{
 							"__identifier": "ClearScreenColorTrigger",
@@ -9312,20 +9394,6 @@
 								"id": "V_String",
 								"params": ["141,8"]
 							}] }]
-						},
-						{
-							"__identifier": "ToadStart",
-							"__grid": [152,12],
-							"__pivot": [0,0],
-							"__tags": ["entity"],
-							"__tile": null,
-							"__smartColor": "#FF7FB7",
-							"iid": "405a1ff0-21a0-11f1-b970-8faef523a63f",
-							"width": 16,
-							"height": 16,
-							"defUid": 217,
-							"px": [2432,192],
-							"fieldInstances": []
 						},
 						{
 							"__identifier": "FireballTrap",

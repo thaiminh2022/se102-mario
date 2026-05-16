@@ -59,7 +59,6 @@ struct FlagPoleData
 {
 	Rect zone;
 	Vector2Int moveToPosition;
-	vector<Vector2Int> fireworkPositions;
 };
 
 struct BridgeData
@@ -84,6 +83,13 @@ struct BloopersStartData
 		  highestLimit(highestLimit)
 	{
 	}
+};
+
+struct EnterCastleTriggerData
+{
+	Rect zone;
+	vector<Vector2Int> fireworkPositions;
+	Optional<Vector2Int> flagMoveTo;
 };
 
 struct InWaterTriggerData
@@ -174,18 +180,9 @@ struct FireShooterData
 
 struct SceneEntityData
 {
+	// entities
 	Optional<BridgeData> bridge;
-	Optional<int> backgroundMusicID;
-	vector<MusicTriggerData> musicTriggers;
 	Vector2Int playerStarts;
-	
-	vector<PipeData> pipes;
-	Optional<FlagPoleData> flagPole;
-
-	vector<ClearScreenColorTriggerData> clearScreenColorTriggers;
-	
-	Optional<Vector2Int> bowserStart;
-	Optional<Vector2Int> toadStart;
 
 	vector<Vector2Int> goombaStarts;
 	vector<Vector2Int> koopaStarts;
@@ -200,5 +197,18 @@ struct SceneEntityData
 	vector<NextLevelData> nextLevelsData;
 	vector<Vector2Int> fireballTraps;
 	vector<FireShooterData> fireShooters;
+
+	Optional<Vector2Int> bowserStart;
+	
+	// game play
+	Optional<int> backgroundMusicID;
+	vector<PipeData> pipes;
+	Optional<FlagPoleData> flagPole;
+
+	// trigger
+	vector<MusicTriggerData> musicTriggers;
+	vector<ClearScreenColorTriggerData> clearScreenColorTriggers;
+	Optional<EnterCastleTriggerData> enterCastleTrigger;
+
 };
 
