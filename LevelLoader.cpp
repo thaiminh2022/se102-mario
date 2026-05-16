@@ -43,8 +43,6 @@ const string WINGED_KOOPA_START = "WingedKoopaStart";
 const string QUESTION_BLOCK= "QuestionBlock";
 const string BRICK_BLOCK= "EmptyBrickBlock";
 const string COIN = "Coin";
-const string NEXT_LEVEL_ZONE = "NextLevel";
-const string BACKGROUND_MUSIC = "BackgroundMusic";
 const string FIREBALL_TRAP = "FireballTrap";
 const string FLAG_POLE = "FlagPole";
 const string BOWSER_START = "BowserStart";
@@ -53,11 +51,14 @@ const string TOAD_START = "FlagPole";
 const string PIPE = "Pipe";
 const string TELEPORT_PIPE = "TeleportPipe";
 const string INSTANT_TELEPORT_PIPE = "InstantTeleportPipe";
-const string CLRSCR_COLOR_TRIGGER = "ClearScreenColorTrigger";
-const string IN_WATER_TRIGGER = "WaterTrigger";
 const string FIRE_SHOOTER = "FireShooter";
 
-
+// TRIGGERS
+const string CLRSCR_COLOR_TRIGGER = "ClearScreenColorTrigger";
+const string IN_WATER_TRIGGER = "WaterTrigger";
+const string NEXT_LEVEL_ZONE = "NextLevel";
+const string BACKGROUND_MUSIC = "BackgroundMusic";
+const string ENTER_CASTLE_TRIGGER = "EnterCastleTrigger";
 
 
 /// Return the tilemap object for [level]. Value will be cached if new
@@ -800,6 +801,38 @@ void LevelLoader::ParseInWaterTrigger(SceneEntityData& sceneEntities, vector<Ent
 	}
 }
 
+void LevelLoader::ParseEnterCastleTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
+{
+	const auto inCastleTriggers = GetEntityDataWithIdentifier(entities, ENTER_CASTLE_TRIGGER);
+	if (inCastleTriggers.empty())
+		return;
+
+	// can only have 1 per level
+	const auto inCastleTrigger = inCastleTriggers[0];
+
+	// firework positions
+	const auto fireworkPosData = GetFieldValueWithIdentifier(inCastleTrigger->fieldInstances, "firework_positions");
+	const auto flagMoveToData = GetFieldValueWithIdentifier(inCastleTrigger->fieldInstances, "flag_move_to");
+
+	if (!fireworkPosData.hasValue)
+		return;
+
+	EnterCastleTriggerData data;
+
+	// parse firework pos to data
+	for (const auto ldtkPos : fireworkPosData.value.get<vector<LDTKPoint>>())
+	{
+		data.fireworkPositions.emplace_back(ldtkPos.cx * 16, ldtkPos.cy * 16);
+	}
+
+	// parse flag move to
+	if (!flagMoveToData.hasValue || flagMoveToData.value.is_null())
+		return;
+
+	const auto flagMoveTo = flagMoveToData.value.get<LDTKPoint>();
+	data.flagMoveTo = Vector2Int(flagMoveTo.cx * 16, flagMoveTo.cy * 16);
+}
+
 void LevelLoader::ParseFireShooter(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
 {
 	const auto fireShooters = GetEntityDataWithIdentifier(entities, FIRE_SHOOTER);
@@ -874,13 +907,16 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParsePipe(sceneEntities, entities);
 	ParseTeleportPipe(sceneEntities, entities);
 	ParseInstantTeleportPipe(sceneEntities, entities);
+	ParseFireShooter(sceneEntities, entities);
+
+
 
 	// triggers
 	ParseNextLevelZone(sceneEntities, entities);
 	ParseBackgroundMusic(level, sceneEntities, entities);
 	ParseClearScreenColorTrigger(sceneEntities, entities);
 	ParseInWaterTrigger(sceneEntities, entities);
-	ParseFireShooter(sceneEntities, entities);
+	ParseEnterCastleTrigger(sceneEntities, entities);
 
 	return sceneEntities;
 }

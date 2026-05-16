@@ -31,30 +31,32 @@ class LevelLoader
 
 	SceneEntityData ParseEntityLayer(int level, vector<LayerInstance>& v);
 
-	// parsing function
+	// parsing functions
+	// entities
 	void ParsePlayerStart(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseGoombas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseKoopas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseCheepCheeps(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseBloopers(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseWingedKoopas(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-
 	void ParseBowsers(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	void ParseToad(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseBridge(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseQuestionBlock(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseBrickBlock(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseCoin(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	void ParseNextLevelZone(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	void ParseBackgroundMusic(int level, SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseFireballTrap(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
-	void ParseFlagPole(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParsePipe(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseTeleportPipe(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseInstantTeleportPipe(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
+	void ParseFlagPole(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseFireShooter(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
+
+	// triggers
+	void ParseNextLevelZone(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
+	void ParseBackgroundMusic(int level, SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseClearScreenColorTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseInWaterTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
-	void ParseFireShooter(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
+	void ParseEnterCastleTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 
 	// helper
 	void RebuildCacheForLevel(vector<EntityInstance>& entities);
