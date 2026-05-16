@@ -11,10 +11,12 @@
 CheepCheeps::CheepCheeps(Vector2Int startPos, BiomeType biome, bool isRed) : GameObject(startPos)
 {
 	this->isRed = isRed;
+	deadTimer = Timer(2);
 
 	const auto t = Textures::GetInstance()->Get(ChooseEnemyId(biome));
 	const auto anims = Animations::GetInstance();
 	const auto sp = Sprites::GetInstance();
+
 
 	if (!anims->Contains(RED_CHEEP_ANIM))
 	{
@@ -42,7 +44,21 @@ CheepCheeps::CheepCheeps(Vector2Int startPos, BiomeType biome, bool isRed) : Gam
 
 void CheepCheeps::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
-	velocity.x = isRed ? -75.0f : -50.0f;
+	if (state == CheepCheepsState::Dead)
+	{
+		velocity.y = 250.0f;
+		deadTimer.ProcessTimer(dt);
+		if (deadTimer.IsFinished())
+		{
+			isDeleted = false;
+			isCollidable = false;
+			deadTimer.SetIdle();
+		}
+
+	}else
+	{
+		velocity.x = isRed ? -75.0f : -50.0f;
+	}
 
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }

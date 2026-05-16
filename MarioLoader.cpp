@@ -5,13 +5,25 @@
 #include "Sprites.h"
 #include "Textures.h"
 
-void Mario::LoadSpriteAndAnimation()
+static void LoadHorizontalSheet(int ids[], int n, int left, int top, int cellWidth, int cellHeight, Texture* t)
+{
+	const auto sp = Sprites::GetInstance();
+	int bottom = top + cellHeight - 1;
+	for (int i = 0; i < n; i++)
+	{
+		const int leftStep = left + cellWidth * i;
+		const int right = leftStep + cellWidth - 1;
+		sp->Add(ids[i], leftStep, top, right, bottom, t);
+	}
+}
+
+
+void Mario::LoadSmallNormalMario()
 {
 	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
 	auto anims = Animations::GetInstance();
 	auto sprites = Sprites::GetInstance();
 	Animation* anim = nullptr;
-
 	// =========================================================
 	// NORMAL MARIO (SMALL)
 	// =========================================================
@@ -29,6 +41,10 @@ void Mario::LoadSpriteAndAnimation()
 	sprites->Add(MARIO_GROWBIG_SPRITE_1, 0, 48, 15, 79, marioTex);
 	sprites->Add(MARIO_GROWBIG_SPRITE_2, 16, 48, 31, 79, marioTex);
 	sprites->Add(MARIO_GROWBIG_SPRITE_3, 0, 16, 15, 47, marioTex);
+
+	// swim sprites
+	int swimIds[4] = { MARIO_SWIM_SPRITE_1, MARIO_SWIM_SPRITE_2, MARIO_SWIM_SPRITE_3, MARIO_SWIM_SPRITE_4 };
+	LoadHorizontalSheet(swimIds, 4, 160, 0, 16, 16, marioTex);
 
 	// --- Animations ---
 	anim = new Animation(300);
@@ -68,7 +84,18 @@ void Mario::LoadSpriteAndAnimation()
 	anim->Add(MARIO_FLAG_PULL_SPRITE_2, 150);
 	anims->Add(MARIO_FLAG_PULL_ANIM_ID, anim);
 
+	// swim
+	anim = new Animation(swimIds, 4, 150);
+	anims->Add(MARIO_SWIM_ANIM_ID, anim);
+	
+}
 
+void Mario::LoadBigNormalMario()
+{
+	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
+	auto anims = Animations::GetInstance();
+	auto sprites = Sprites::GetInstance();
+	Animation* anim;
 	// =========================================================
 	// BIG MARIO
 	// =========================================================
@@ -86,6 +113,10 @@ void Mario::LoadSpriteAndAnimation()
 	sprites->Add(MARIO_SHRINK_SPRITE_3, 64, 48, 79, 79, marioTex);
 	sprites->Add(MARIO_BIG_FLAG_PULL_SPRITE_1, 112, 16, 127, 47, marioTex);
 	sprites->Add(MARIO_BIG_FLAG_PULL_SPRITE_2, 128, 16, 143, 47, marioTex);
+
+	// swim sprites
+	int swimIds[4] = { MARIO_BIG_SWIM_SPRITE_1, MARIO_BIG_SWIM_SPRITE_2, MARIO_BIG_SWIM_SPRITE_3, MARIO_BIG_SWIM_SPRITE_4 };
+	LoadHorizontalSheet(swimIds, 4, 160, 16, 16, 32, marioTex);
 
 	// --- Animations ---
 	anim = new Animation(100);
@@ -133,6 +164,17 @@ void Mario::LoadSpriteAndAnimation()
 	anim->Add(MARIO_BIG_FLAG_PULL_SPRITE_2, 150);
 	anims->Add(MARIO_BIG_FLAG_PULL_ANIM_ID, anim);
 
+	// swim
+	anim = new Animation(swimIds, 4, 150);
+	anims->Add(MARIO_BIG_SWIM_ANIM_ID, anim);
+}
+
+void Mario::LoadFireMario()
+{
+	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
+	auto anims = Animations::GetInstance();
+	auto sprites = Sprites::GetInstance();
+	Animation* anim = nullptr;
 
 	// =========================================================
 	// FIRE MARIO
@@ -149,6 +191,9 @@ void Mario::LoadSpriteAndAnimation()
 	sprites->Add(MARIO_FIRE_FIRE_SPRITE_1, 16, 80, 31, 111, marioTex); // Reusing run sprite for firing
 	sprites->Add(MARIO_FIRE_FLAG_PULL_SPRITE_1, 112, 80, 127, 111, marioTex);
 	sprites->Add(MARIO_FIRE_FLAG_PULL_SPRITE_2, 128, 80, 143, 111, marioTex);
+
+	int swimIds[4] = { MARIO_FIRE_SWIM_SPRITE_1, MARIO_FIRE_SWIM_SPRITE_2, MARIO_FIRE_SWIM_SPRITE_3, MARIO_FIRE_SWIM_SPRITE_4 };
+	LoadHorizontalSheet(swimIds, 4, 160, 80, 16, 32, marioTex);
 
 	// --- Animations ---
 	anim = new Animation(300);
@@ -182,6 +227,16 @@ void Mario::LoadSpriteAndAnimation()
 	anim->Add(MARIO_FIRE_FLAG_PULL_SPRITE_2, 150);
 	anims->Add(MARIO_FIRE_FLAG_PULL_ANIM_ID, anim);
 
+	anim = new Animation(swimIds, 4, 150);
+	anims->Add(MARIO_FIRE_SWIM_ANIM_ID, anim);
+}
+
+void Mario::LoadSmallStarman()
+{
+	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
+	auto anims = Animations::GetInstance();
+	auto sprites = Sprites::GetInstance();
+	Animation* anim = nullptr;
 
 	// =========================================================
 	// SMALL STARMAN
@@ -260,6 +315,57 @@ void Mario::LoadSpriteAndAnimation()
 	anim->Add(STARMAN_SMALL_FLAG_PULL_SPRITE_6);
 	anims->Add(STARMAN_SMALL_FLAG_PULL_ANIM_ID, anim);
 
+
+	// swim
+	int swimIdsBatch1[4] = { 
+		STARMAN_SWIM_SPRITE_1, 
+		STARMAN_SWIM_SPRITE_2,
+		STARMAN_SWIM_SPRITE_3,
+		STARMAN_SWIM_SPRITE_4,
+	};
+	LoadHorizontalSheet(swimIdsBatch1, 4, 160, 112, 16, 16, marioTex);
+
+	int swimIdsBatch2[4] = {
+		STARMAN_SWIM_SPRITE_5,
+		STARMAN_SWIM_SPRITE_6,
+		STARMAN_SWIM_SPRITE_7,
+		STARMAN_SWIM_SPRITE_8,
+	};
+	LoadHorizontalSheet(swimIdsBatch2, 4, 160, 160, 16, 16, marioTex);
+
+	int swimIdsBatch3[4] = {
+		STARMAN_SWIM_SPRITE_9,
+		STARMAN_SWIM_SPRITE_10,
+		STARMAN_SWIM_SPRITE_11,
+		STARMAN_SWIM_SPRITE_12,
+	};
+
+	LoadHorizontalSheet(swimIdsBatch3, 4, 160, 208, 16, 16, marioTex);
+	anim = new Animation(33);
+	
+	anim->Add(STARMAN_SWIM_SPRITE_1);
+	anim->Add(STARMAN_SWIM_SPRITE_5);
+	anim->Add(STARMAN_SWIM_SPRITE_9);
+	anim->Add(STARMAN_SWIM_SPRITE_2);
+	anim->Add(STARMAN_SWIM_SPRITE_6);
+	anim->Add(STARMAN_SWIM_SPRITE_10);
+	anim->Add(STARMAN_SWIM_SPRITE_3);
+	anim->Add(STARMAN_SWIM_SPRITE_7);
+	anim->Add(STARMAN_SWIM_SPRITE_11);
+	anim->Add(STARMAN_SWIM_SPRITE_4);
+	anim->Add(STARMAN_SWIM_SPRITE_8);
+	anim->Add(STARMAN_SWIM_SPRITE_12);
+
+	anims->Add(STARMAN_SWIM_ANIM_ID, anim);
+
+}
+
+void Mario::LoadBigStarman()
+{
+	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
+	auto anims = Animations::GetInstance();
+	auto sprites = Sprites::GetInstance();
+	Animation* anim = nullptr;
 
 	// =========================================================
 	// BIG STARMAN
@@ -348,4 +454,59 @@ void Mario::LoadSpriteAndAnimation()
 	anim->Add(STARMAN_BIG_FLAG_PULL_SPRITE_5);
 	anim->Add(STARMAN_BIG_FLAG_PULL_SPRITE_6);
 	anims->Add(STARMAN_BIG_FLAG_PULL_ANIM_ID, anim);
+
+
+	// swim
+	int swimIdsBatch1[4] = {
+		STARMAN_BIG_SWIM_SPRITE_1,
+		STARMAN_BIG_SWIM_SPRITE_2,
+		STARMAN_BIG_SWIM_SPRITE_3,
+		STARMAN_BIG_SWIM_SPRITE_4,
+	};
+	LoadHorizontalSheet(swimIdsBatch1, 4, 160, 128, 16, 32, marioTex);
+
+	int swimIdsBatch2[4] = {
+		STARMAN_BIG_SWIM_SPRITE_5,
+		STARMAN_BIG_SWIM_SPRITE_6,
+		STARMAN_BIG_SWIM_SPRITE_7,
+		STARMAN_BIG_SWIM_SPRITE_8,
+	};
+	LoadHorizontalSheet(swimIdsBatch2, 4, 160, 176, 16, 32, marioTex);
+
+	int swimIdsBatch3[4] = {
+		STARMAN_BIG_SWIM_SPRITE_9,
+		STARMAN_BIG_SWIM_SPRITE_10,
+		STARMAN_BIG_SWIM_SPRITE_11,
+		STARMAN_BIG_SWIM_SPRITE_12,
+	};
+
+	LoadHorizontalSheet(swimIdsBatch3, 4, 160, 224, 16, 32, marioTex);
+	anim = new Animation(33);
+
+	anim->Add(STARMAN_BIG_SWIM_SPRITE_1);
+	anim->Add(STARMAN_BIG_SWIM_SPRITE_5);
+	anim->Add(STARMAN_BIG_SWIM_SPRITE_9);
+	anim->Add(STARMAN_BIG_SWIM_SPRITE_2);
+	anim->Add(STARMAN_BIG_SWIM_SPRITE_6);
+	anim->Add(STARMAN_BIG_SWIM_SPRITE_10);
+	anim->Add(STARMAN_BIG_SWIM_SPRITE_3);
+	anim->Add(STARMAN_BIG_SWIM_SPRITE_7);
+	anim->Add(STARMAN_BIG_SWIM_SPRITE_11);
+	anim->Add(STARMAN_BIG_SWIM_SPRITE_4);
+	anim->Add(STARMAN_BIG_SWIM_SPRITE_8);
+	anim->Add(STARMAN_BIG_SWIM_SPRITE_12);
+
+	anims->Add(STARMAN_BIG_SWIM_ANIM_ID, anim);
 }
+
+void Mario::LoadSpriteAndAnimation()
+{
+
+	LoadSmallNormalMario();
+	LoadBigNormalMario();
+	LoadFireMario();
+	LoadSmallStarman();
+	LoadBigStarman();
+}
+
+

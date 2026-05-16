@@ -3,6 +3,9 @@
 #include "Rect.h"
 #include "Scene.h"
 #include <vector>
+
+#include "Animations.h"
+#include "Sprites.h"
 #include "Timer.h"
 
 class Bowser;
@@ -97,6 +100,13 @@ class Mario : public GameObject
 
 	void OnMarioHit(bool force = false);
 	int GetMarioAnimId() const;
+	
+	// loader
+	void LoadSmallNormalMario();
+	void LoadBigNormalMario();
+	void LoadFireMario();
+	void LoadSmallStarman();
+	void LoadBigStarman();
 	void LoadSpriteAndAnimation();
 
 	// on collision with

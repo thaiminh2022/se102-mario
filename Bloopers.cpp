@@ -23,10 +23,11 @@ Bloopers::Bloopers(const Vector2Int lowestLimit, const Vector2Int highestLimit, 
 {
 	this->lowestLimit = Vector2(lowestLimit);
 	this->highestLimit = Vector2(highestLimit);
-	moveState = BlooperMoveState::SwimmingUp;
+	moveState = BlooperState::SwimmingUp;
 	stateTimer = 0.0f;
 	stateStartY = position.y;
 	hasChosenInitialState = false;
+	deadTimer = Timer(2);
 
 	const auto t = Textures::GetInstance()->Get(ChooseEnemyId(biome));
 	const auto anims = Animations::GetInstance();
@@ -49,9 +50,14 @@ Bloopers::Bloopers(const Vector2Int lowestLimit, const Vector2Int highestLimit, 
 	}
 }
 
+void Bloopers::SetState(BlooperState s)
+{
+	moveState = s;
+}
+
 void Bloopers::StartSwimmingUp()
 {
-	moveState = BlooperMoveState::SwimmingUp;
+	moveState = BlooperState::SwimmingUp;
 	stateTimer = 0.0f;
 	stateStartY = position.y;
 	DebugOut(L"Staring swim up\n");
@@ -59,7 +65,7 @@ void Bloopers::StartSwimmingUp()
 
 void Bloopers::StartFalling()
 {
-	moveState = BlooperMoveState::Falling;
+	moveState = BlooperState::Falling;
 	stateTimer = 0.0f;
 	stateStartY = position.y;
 	DebugOut(L"Staring falling\n");
@@ -100,6 +106,25 @@ void Bloopers::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ct
 	- If the player is below lowestLimit.y, Blooper falls down to lowestLimit.y.
 	- In both cases, Blooper targets the nearest reachable Y position instead of the player's exact Y.
 	*/
+
+	if (moveState == BlooperState::Dead)
+	{
+		deadTimer.ProcessTimer(dt);
+		if (deadTimer.IsFinished())
+		{
+			deadTimer.SetIdle();
+			isDeleted = true;
+		}
+
+		velocity.y = 200;
+		isCollidable = false;
+		isBlocking = false;
+
+		Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
+		return;
+	}
+
+
 	const auto marioPosition = ctx->mario->position;
 
 	if (!hasChosenInitialState)
@@ -117,7 +142,7 @@ void Bloopers::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ct
 
 	stateTimer += dt;
 
-	if (moveState == BlooperMoveState::SwimmingUp)
+	if (moveState == BlooperState::SwimmingUp)
 	{
 		velocity.y = -BLOOPER_UP_SPEED;
 	}
@@ -138,7 +163,7 @@ void Bloopers::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ct
 
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 
-	if (moveState == BlooperMoveState::SwimmingUp)
+	if (moveState == BlooperState::SwimmingUp)
 	{
 		const bool hitUpperLimit = position.y <= highestLimit.y;
 		const bool movedMinDistance = stateStartY - position.y >= BLOOPER_MIN_SWIM_DISTANCE;
@@ -215,7 +240,7 @@ void Bloopers::Render()
 	float renderX, renderY;
 	Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
 	
-	int renderId = moveState == BlooperMoveState::SwimmingUp ? WATER_BLOOPER_SWIM_ANIM : WATER_BLOOPER_IDLE_ANIM;
+	int renderId = moveState == BlooperState::SwimmingUp ? WATER_BLOOPER_SWIM_ANIM : WATER_BLOOPER_IDLE_ANIM;
 	Animations::GetInstance()->Get(renderId)->Render(floor(renderX), floor(renderY), false, false);
 }
 
@@ -226,5 +251,5 @@ void Bloopers::OnNoCollision(float dt)
 
 Rect Bloopers::GetBoundingBox()
 {
-	return Rect::FromXYWH(position.x, position.y, 16, moveState == BlooperMoveState::SwimmingUp ? 16 : 24);
+	return Rect::FromXYWH(position.x, position.y, 16, moveState == BlooperState::SwimmingUp ? 16 : 24);
 }
