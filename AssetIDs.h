@@ -51,6 +51,8 @@ constexpr int MARIO_SWIM_SPRITE_1 = 11901;
 constexpr int MARIO_SWIM_SPRITE_2 = 11902;
 constexpr int MARIO_SWIM_SPRITE_3 = 11903;
 constexpr int MARIO_SWIM_SPRITE_4 = 11904;
+constexpr int MARIO_BREATH_BUBBLE = 11905;
+
 
 
 // ---------------------------------

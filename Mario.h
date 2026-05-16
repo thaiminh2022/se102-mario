@@ -83,6 +83,7 @@ class Mario : public GameObject
 	Timer invincibleTimer; //used for invincibility after getting hit
 	Timer starmanTimer; //used for starman power
 	Timer transformTimer; //used for growing and shrinking
+	Timer breathingTimer;
 
 	MarioState state;
 	MarioPower power;
@@ -145,7 +146,7 @@ class Mario : public GameObject
 	void MarioEnteringPipe(float dt);
 	void MarioExitingPipe(float dt);
 	void ClampMario();
-	void HandleSwim(float dt);
+	void HandleSwim(float dt, const SceneContext* ctx);
 
 
 public:
