@@ -154,22 +154,35 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	// Winged koopa
 	for (const auto& fkPos : config->entityData.WingedKoopaStarts)
 	{
-		const auto cc = new CheepCheeps(ccData.startPosition, config->biome,ccData.isRed);
+		const auto fk = new Koopa(fkPos, config->biome, KoopaForm::Winged);
+		objects.push_back(fk);
+	}
+	//cheep cheeps
+	for (const auto& ccData : config->entityData.cheepCheeps)
+	{
+		const auto cc = new CheepCheeps(ccData.startPosition, config->biome, ccData.isRed);
 		objects.push_back(cc);
+	}
+	//bloopers
+	for (const auto& bData : config->entityData.bloopers)
+	{
+		const auto b = new Bloopers(bData.lowestLimit, bData.highestLimit, config->biome);
+		objects.push_back(b);
 	}
 
 	// Bowser
 	if (config->entityData.bowserStart.hasValue)
 	{
-		const auto blooper = new Bloopers(blooperData.lowestLimit, blooperData.highestLimit, config->biome);
-		objects.push_back(blooper);
+		const auto bowserStart = config->entityData.bowserStart.value;
+		const auto bowser = new Bowser(bowserStart.x, bowserStart.y, sceneContext->mario);
+		objects.push_back(bowser);
 	}
 
 	// FireShooter
 	for (const auto& fsPos : config->entityData.fireShooters)
 	{
-		const auto fkp = new Koopa(fkPos, config->biome, KoopaForm::Winged);
-		objects.push_back(fkp);
+		const auto fs = new FireShooter(fsPos.position.x, fsPos.position.y, fsPos.shootDirection);
+		objects.push_back(fs);
 	}
 
 	// question
@@ -234,16 +247,31 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
+	
 	// triggers;
 	for (const auto& colorTriggerData : config->entityData.clearScreenColorTriggers)
 	{
 		const auto colorTrigger = new ClearScreenColorTrigger(colorTriggerData.zone, colorTriggerData.color);
 		objects.push_back(colorTrigger);
 	}
+	//water trigger
+	for (const auto& waterTriggerData : config->entityData.waterTriggers)
+	{
+		const auto waterTrigger = new InWaterTrigger(waterTriggerData.zone, waterTriggerData.inWater);
+		objects.push_back(waterTrigger);
+	}
+
 	for (const auto& fPos : config->entityData.fireShooters)
 	{
 		const auto fs = new FireShooter(fPos.position.x, fPos.position.y, fPos.shootDirection);
 		objects.push_back(fs);
+	}
+
+	// music trigger
+	for (const auto& mData : config->entityData.musicTriggers)
+	{
+		const auto musicTrigger = new BgMusicTrigger(mData.id, mData.zone);
+		objects.push_back(musicTrigger);
 	}
 }
 

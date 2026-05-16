@@ -148,6 +148,7 @@ constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_3 = 16803;
 constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_4 = 16804;
 constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_5 = 16805;
 constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_6 = 16806;
+
 // ---------------------------------
 // BIG STARMAN (T = 7)
 // ---------------------------------
@@ -276,9 +277,6 @@ constexpr int BLOCKS_UNDERGROUND_TEX_ID = 30001;
 constexpr int BLOCKS_CASTLE_TEX_ID = 30002;
 constexpr int BLOCKS_UNDERWATER_TEX_ID = 30003;
 
-
-
-
 // ---------------------------------
 // QUESTION BLOCK (T = 1)
 // ---------------------------------
@@ -305,6 +303,7 @@ constexpr int BRICK_EXPLODE_SPRITE_2 = 32702;
 constexpr int BRICK_EXPLODE_SPRITE_3 = 32703;
 constexpr int BRICK_EXPLODE_SPRITE_4 = 32704;
 
+
 // ==========================================
 // ITEMS (E = 4)
 // ==========================================
@@ -312,9 +311,6 @@ constexpr int OVERWORLD_ITEMS_TEX_ID = 40000;
 constexpr int UNDERGROUND_ITEMS_TEX_ID = 40001;
 constexpr int CASTLE_ITEMS_TEX_ID = 40002;
 constexpr int UNDERWATER_ITEMS_TEX_ID = 40003;
-
-
-
 
 // Coin (T = 1) -> Moving/Spinning (A = 200)
 constexpr int COIN_SPIN_ANIM_ID = 41200;
@@ -345,6 +341,7 @@ constexpr int STAR_IDLE_SPRITE_4 = 44104;
 constexpr int FLAG_IDLE_ANIM_ID = 45100;
 constexpr int FLAG_IDLE_SPRITE_1 = 45101;
 
+
 // ==========================================
 // HUD ELEMENTS (E = 5)
 // ==========================================
@@ -370,6 +367,55 @@ constexpr int FIREBALL_COLLIDE_ANIM_ID = 61700;
 constexpr int FIREBALL_COLLIDE_SPRITE_1 = 61701;
 constexpr int FIREBALL_COLLIDE_SPRITE_2 = 61702;
 constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61703;
+
+
+// ==========================================
+// BOWSER (E = 8)
+// ==========================================
+constexpr int BOWSER_TEX_ID = 80000; // Fixed from 81000 to prevent internal overlap
+
+// WALKING (A = 100)
+constexpr int BOWSER_WALK_ANIM_ID = 81100;
+constexpr int BOWSER_WALK_SPRITE_1 = 81101;
+constexpr int BOWSER_WALK_SPRITE_2 = 81102;
+
+// FIRE BREATHING (A = 300)
+constexpr int BOWSER_FIRE_BREATH_ANIM_ID = 81300;
+constexpr int BOWSER_FIRE_BREATH_SPRITE_1 = 81301;
+constexpr int BOWSER_FIRE_BREATH_SPRITE_2 = 81302;
+
+// HAMMER THROWING (A = 400)
+constexpr int BOWSER_HAMMER_THROW_ANIM_ID = 81410;
+constexpr int BOWSER_HAMMER_THROW_SPRITE = 81411;
+
+//DYING (A = 500)
+constexpr int BOWSER_DEATH_ANIM_ID = 81500;
+constexpr int BOWSER_DEATH_SPRITE_1 = 81501;
+
+// FALLING (A = 600)
+constexpr int BOWSER_FALL_ANIM_ID = 81600;
+constexpr int BOWSER_FALL_SPRITE_1 = 81601;
+constexpr int BOWSER_FALL_SPRITE_2 = 81602;
+constexpr int BOWSER_FALL_SPRITE_3 = 81603;
+
+
+// ==========================================
+// BOWSER ITEM BULLET (E = 9)  <-- FIXED from 100000 to prevent overlap with Points
+// ==========================================
+constexpr int BOWSER_ITEM_BULLET_TEX_ID = 90000;
+
+// Fire breath (T = 1) -> Moving (A = 200)
+constexpr int BOWSER_ITEM_BULLET_FIRE_ANIM_ID = 91200;
+constexpr int BOWSER_ITEM_BULLET_FIRE_SPRITE_1 = 91201;
+constexpr int BOWSER_ITEM_BULLET_FIRE_SPRITE_2 = 91202;
+
+// Hammer (T = 2) -> Moving (A = 200)
+constexpr int BOWSER_ITEM_BULLET_HAMMER_ANIM_ID = 92200;
+constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_1 = 92201;
+constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_2 = 92202;
+constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_3 = 92203;
+constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_4 = 92204;
+
 
 // ==========================================
 // POINT POPUPS (E = 10)
@@ -406,48 +452,50 @@ constexpr int POINT_5000_SPRITE_1 = 109101;
 constexpr int POINT_8000_ANIM_ID = 110100;
 constexpr int POINT_8000_SPRITE_1 = 110101;
 
+// 1-UP takes next entity slot natively in format (E = 11)
 constexpr int ONEUP_ANIM_ID = 111100;
 constexpr int ONEUP_SPRITE_1 = 111101;
 
 
-/// ================================
-// PLAYABLE SCENES IS MANAGE BY LEVEL LOADER (INIT FUNCTION)
-// NEGATIVE VALUE (AND 0) IS FOR PLAYABLE SCENE ONLY
+// ==========================================
+// SCENES & AUDIO
+// ==========================================
+/// PLAYABLE SCENES IS MANAGE BY LEVEL LOADER (INIT FUNCTION)
+/// NEGATIVE VALUE (AND 0) IS FOR PLAYABLE SCENE ONLY
 enum NonPlayableScene : std::int8_t
 {
-	MAIN_MENU = 1,
-	LEVEL_TRANSITION = 99,
+    MAIN_MENU = 1,
+    LEVEL_TRANSITION = 99,
 };
 
 // ALL BACKGROUND MUSIC WILL BE MANAGED BY NEGATIVE VALUE AND 0
 enum AUDIOS : std::int8_t
 {
-	GROUND_THEME = -3,
-	UNDERGROUND_THEME = -2,
-	CASTLE_THEME = -1,
-	UNDERWATER_THEME = 0,
+    GROUND_THEME = -3,
+    UNDERGROUND_THEME = -2,
+    CASTLE_THEME = -1,
+    UNDERWATER_THEME = 0,
 
-	// SFX 
-
-	MARIO_JUMP_SMALL = 1,
-	MARIO_JUMP_BIG = 2,
-	GOOMBA_STOMP = 3,
-	MARIO_DIE = 4,
-	FIREBALL = 5,
-	MARIO_COLLECT_COIN = 6,
-	MARIO_BUMP = 7,
-	MARIO_POWERUP = 8,
-	POWERUP_APPEARS = 9,
-	BREAK_BLOCK = 10,
-	PIPE_ENTER = 11,
-	INVINCIBILITY_THEME = 12,
-	FLAG_PULL = 13,
-	STAGE_CLEAR = 14,
+    // SFX 
+    MARIO_JUMP_SMALL = 1,
+    MARIO_JUMP_BIG = 2,
+    GOOMBA_STOMP = 3,
+    MARIO_DIE = 4,
+    FIREBALL = 5,
+    MARIO_COLLECT_COIN = 6,
+    MARIO_BUMP = 7,
+    MARIO_POWERUP = 8,
+    POWERUP_APPEARS = 9,
+    BREAK_BLOCK = 10,
+    PIPE_ENTER = 11,
+    INVINCIBILITY_THEME = 12,
+    FLAG_PULL = 13,
+    STAGE_CLEAR = 14,
 };
 
 /// FONT
 enum FONTS : std::uint8_t
 {
-	STATS_FONT = 1,
-	HUD_FONT = 2
+    STATS_FONT = 1,
+    HUD_FONT = 2
 };

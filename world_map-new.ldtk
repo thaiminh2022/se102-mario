@@ -3441,6 +3441,32 @@
 									"params": ["Down"]
 								}] }
 							]
+						},
+						{
+							"__identifier": "Pipe",
+							"__grid": [38,9],
+							"__pivot": [0,0],
+							"__tags": ["gameplay"],
+							"__tile": null,
+							"__smartColor": "#00FF86",
+							"iid": "0d6d6170-48b0-11f1-87a0-9bee18df25d4",
+							"width": 32,
+							"height": 16,
+							"defUid": 230,
+							"px": [608,144],
+							"fieldInstances": [
+								{ "__identifier": "is_return_pipe", "__type": "Bool", "__value": false, "__tile": null, "defUid": 238, "realEditorValues": [] },
+								{ "__identifier": "level_to_load", "__type": "Int", "__value": 4, "__tile": null, "defUid": 239, "realEditorValues": [{ "id": "V_Int", "params": [4] }] },
+								{ "__identifier": "return_pipe_ref", "__type": "EntityRef", "__value": null, "__tile": null, "defUid": 243, "realEditorValues": [] },
+								{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 38, "cy": 12 }, "__tile": null, "defUid": 244, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["38,12"]
+								}] },
+								{ "__identifier": "pipe_direction", "__type": "LocalEnum.Direction", "__value": "Down", "__tile": null, "defUid": 245, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Down"]
+								}] }
+							]
 						}
 					]
 				},
@@ -9018,20 +9044,6 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "PlayerStart",
-							"__grid": [2,5],
-							"__pivot": [0,0],
-							"__tags": ["entity"],
-							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
-							"__smartColor": "#63C74D",
-							"iid": "39a4c4d0-21a0-11f1-ab64-97a56788d7fd",
-							"width": 16,
-							"height": 16,
-							"defUid": 31,
-							"px": [32,80],
-							"fieldInstances": []
-						},
-						{
 							"__identifier": "QuestionBlock",
 							"__grid": [30,6],
 							"__pivot": [0,0],
@@ -9272,7 +9284,7 @@
 						},
 						{
 							"__identifier": "BowserStart",
-							"__grid": [137,9],
+							"__grid": [137,7],
 							"__pivot": [0,0],
 							"__tags": ["entity"],
 							"__tile": null,
@@ -9281,7 +9293,7 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 213,
-							"px": [2192,144],
+							"px": [2192,112],
 							"fieldInstances": []
 						},
 						{
@@ -9348,6 +9360,20 @@
 								}] },
 								{ "__identifier": "is_trigger", "__type": "Bool", "__value": false, "__tile": null, "defUid": 260, "realEditorValues": [] }
 							]
+						},
+						{
+							"__identifier": "PlayerStart",
+							"__grid": [104,10],
+							"__pivot": [0,0],
+							"__tags": ["entity"],
+							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
+							"__smartColor": "#63C74D",
+							"iid": "fc4b3de0-48b0-11f1-87a0-cf06e109ffaf",
+							"width": 16,
+							"height": 16,
+							"defUid": 31,
+							"px": [1664,160],
+							"fieldInstances": []
 						}
 					]
 				},
@@ -9419,7 +9445,7 @@
 						1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,
-						0,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,
+						0,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,
 						0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,
 						1,0,0,0,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
