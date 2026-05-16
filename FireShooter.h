@@ -19,7 +19,7 @@ class FireShooter : public GameObject
 	}
 	bool IsCollidable() override { return false; }
 	bool IsBlocking() override { return false; }
-	CollisionMatrixLayer GetCollisionLayer() override { return CollisionMatrixLayer::EnemyProjectile; }
+	CollisionMatrixLayer GetCollisionLayer() override { return CollisionMatrixLayer::Default; }
 	bool IsActive() override { return true; }
 };
 

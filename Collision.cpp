@@ -4,7 +4,6 @@
 
 #include "GameObject.h"
 #include "BowserHammer.h"	
-#include "BowserFireBullet.h"
 
 #include "Mario.h"
 #include "Rect.h"
@@ -243,21 +242,6 @@ void Collision::GetObjectEvents(vector<CollisionEvent>& events, GameObject* go, 
 			events.push_back(e);
 		}
 	}
-}
-
-bool Collision::CanCollide(GameObject* a, GameObject* b)
-{
-	if (dynamic_cast<BowserHammer*>(a) != nullptr && dynamic_cast<BowserHammer*>(b) != nullptr)
-		return false;
-	else if (dynamic_cast<BowserFireBullet*>(a) != nullptr && dynamic_cast<BowserFireBullet*>(b) != nullptr)
-		return false;
-	else if ((dynamic_cast<BowserHammer*>(a) != nullptr && dynamic_cast<BowserFireBullet*>(b) != nullptr) ||
-		(dynamic_cast<BowserFireBullet*>(a) != nullptr && dynamic_cast<BowserHammer*>(b) != nullptr))
-		return false;
-	else if ((dynamic_cast<BowserHammer*>(a) != nullptr && dynamic_cast<Bowser*>(b) != nullptr) ||
-		(dynamic_cast<Bowser*>(a) != nullptr && dynamic_cast<BowserHammer*>(b) != nullptr))
-		return false;
-	return true;
 }
 
 void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coObjects, const Tilemap* tilemap, float dt)
