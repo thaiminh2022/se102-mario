@@ -491,6 +491,7 @@ enum AUDIOS : std::int8_t
     INVINCIBILITY_THEME = 12,
     FLAG_PULL = 13,
     STAGE_CLEAR = 14,
+    FIREWORK = 15,
 };
 
 /// FONT

@@ -214,9 +214,9 @@
 			"tileRect": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
 			"uiTileRect": null,
 			"nineSliceBorders": [],
-			"maxCount": 2,
+			"maxCount": 1,
 			"limitScope": "PerLevel",
-			"limitBehavior": "DiscardOldOnes",
+			"limitBehavior": "PreventAdding",
 			"pivotX": 0,
 			"pivotY": 0,
 			"fieldDefs": []
@@ -3409,20 +3409,6 @@
 							"fieldInstances": []
 						},
 						{
-							"__identifier": "PlayerStart",
-							"__grid": [3,11],
-							"__pivot": [0,0],
-							"__tags": ["entity"],
-							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
-							"__smartColor": "#63C74D",
-							"iid": "1e4f9f40-21a0-11f1-8cda-f19e2cb6af0a",
-							"width": 16,
-							"height": 16,
-							"defUid": 31,
-							"px": [48,176],
-							"fieldInstances": []
-						},
-						{
 							"__identifier": "Pipe",
 							"__grid": [163,11],
 							"__pivot": [0,0],
@@ -3549,6 +3535,20 @@
 									"params": ["204,7"]
 								}] }
 							]
+						},
+						{
+							"__identifier": "PlayerStart",
+							"__grid": [188,3],
+							"__pivot": [0,0],
+							"__tags": ["entity"],
+							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
+							"__smartColor": "#63C74D",
+							"iid": "42b8b290-48b0-11f1-a4d2-67d8608895f4",
+							"width": 16,
+							"height": 16,
+							"defUid": 31,
+							"px": [3008,48],
+							"fieldInstances": []
 						}
 					]
 				},

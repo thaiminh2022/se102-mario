@@ -220,20 +220,24 @@ static void LoadResource()
 
 
 	// Audios
-	AudioManager::GetInstance()->LoadWAV(MARIO_JUMP_BIG, L"Assets\\Audio\\SFX\\jump-small.wav");
-	AudioManager::GetInstance()->LoadWAV(MARIO_JUMP_SMALL, L"Assets\\Audio\\SFX\\jump-super.wav");
-	AudioManager::GetInstance()->LoadWAV(GOOMBA_STOMP, L"Assets\\Audio\\SFX\\stomp.wav");
-	AudioManager::GetInstance()->LoadWAV(MARIO_DIE, L"Assets\\Audio\\SFX\\mariodie.wav");
-	AudioManager::GetInstance()->LoadWAV(MARIO_COLLECT_COIN, L"Assets\\Audio\\SFX\\coin.wav");
-	AudioManager::GetInstance()->LoadWAV(MARIO_BUMP, L"Assets\\Audio\\SFX\\bump.wav");
-	AudioManager::GetInstance()->LoadWAV(MARIO_POWERUP, L"Assets\\Audio\\SFX\\powerup.wav");
-	AudioManager::GetInstance()->LoadWAV(POWERUP_APPEARS, L"Assets\\Audio\\SFX\\powerup_appears.wav");
-	AudioManager::GetInstance()->LoadWAV(BREAK_BLOCK, L"Assets\\Audio\\SFX\\breakblock.wav");
-	AudioManager::GetInstance()->LoadWAV(PIPE_ENTER, L"Assets\\Audio\\SFX\\pipe.wav");
-	AudioManager::GetInstance()->LoadWAV(INVINCIBILITY_THEME, L"Assets\\Audio\\Soundtracks\\05.InvincibilityTheme.wav");
-	AudioManager::GetInstance()->LoadWAV(FLAG_PULL, L"Assets\\Audio\\SFX\\flagpole.wav");
-	AudioManager::GetInstance()->LoadWAV(STAGE_CLEAR, L"Assets\\Audio\\SFX\\stage_clear.wav");
-	AudioManager::GetInstance()->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
+	const auto& audioManager = AudioManager::GetInstance();
+	audioManager->LoadWAV(MARIO_JUMP_BIG, L"Assets\\Audio\\SFX\\jump-small.wav");
+	audioManager->LoadWAV(MARIO_JUMP_SMALL, L"Assets\\Audio\\SFX\\jump-super.wav");
+	audioManager->LoadWAV(GOOMBA_STOMP, L"Assets\\Audio\\SFX\\stomp.wav");
+	audioManager->LoadWAV(MARIO_DIE, L"Assets\\Audio\\SFX\\mariodie.wav");
+	audioManager->LoadWAV(MARIO_COLLECT_COIN, L"Assets\\Audio\\SFX\\coin.wav");
+	audioManager->LoadWAV(MARIO_BUMP, L"Assets\\Audio\\SFX\\bump.wav");
+	audioManager->LoadWAV(MARIO_POWERUP, L"Assets\\Audio\\SFX\\powerup.wav");
+	audioManager->LoadWAV(POWERUP_APPEARS, L"Assets\\Audio\\SFX\\powerup_appears.wav");
+	audioManager->LoadWAV(BREAK_BLOCK, L"Assets\\Audio\\SFX\\breakblock.wav");
+	audioManager->LoadWAV(PIPE_ENTER, L"Assets\\Audio\\SFX\\pipe.wav");
+	audioManager->LoadWAV(INVINCIBILITY_THEME, L"Assets\\Audio\\Soundtracks\\05.InvincibilityTheme.wav");
+	audioManager->LoadWAV(FLAG_PULL, L"Assets\\Audio\\SFX\\flagpole.wav");
+	audioManager->LoadWAV(STAGE_CLEAR, L"Assets\\Audio\\SFX\\stage_clear.wav");
+	audioManager->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
+	audioManager->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
+	audioManager->LoadWAV(FIREWORK, L"Assets\\Audio\\SFX\\fireworks.wav");
+
 
 	// Fonts
 	FontManager::GetInstance()->AddFontCustom(

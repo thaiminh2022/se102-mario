@@ -277,7 +277,7 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(musicTrigger);
 	}
 
-	// enter castle
+	// enter castle trigger
 	if (config->entityData.enterCastleTrigger.hasValue)
 	{
 		const auto& data = config->entityData.enterCastleTrigger.value;

@@ -24,11 +24,9 @@ class LevelLoader
 	Optional<WorldMap> worldMap;
 
 	Tilemap* ParseLevel(int level);
-	static LayerInstance* GetLayerWithIdentifier(vector<LayerInstance>& v, const string& identifier);
 	static CollisionLayer ParseCollisionLayer(vector<LayerInstance>& v);
 	static RenderLayer ParseBackgroundLayer(vector<LayerInstance>& v);
 	static Optional<RenderLayer> ParseAltLayer(vector<LayerInstance>& v);
-
 	SceneEntityData ParseEntityLayer(int level, vector<LayerInstance>& v);
 
 	// parsing functions
@@ -63,6 +61,8 @@ class LevelLoader
 	vector<EntityInstance*> GetEntityDataWithIdentifier(vector<EntityInstance>& v, const std::string& iden);
 	static Optional<json> GetFieldValueWithIdentifier(const vector<FieldInstance>& v, const std::string& iden);
 	Optional<EntityInstance> ParseEntityRef(const LDTKEntityRef& entityRef) const;
+	static LayerInstance* GetLayerWithIdentifier(vector<LayerInstance>& v, const string& identifier);
+
 
 
 public:

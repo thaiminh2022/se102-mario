@@ -47,7 +47,6 @@ const string FIREBALL_TRAP = "FireballTrap";
 const string FLAG_POLE = "FlagPole";
 const string BOWSER_START = "BowserStart";
 const string BRIDGE = "Bridge";
-const string TOAD_START = "FlagPole";
 const string PIPE = "Pipe";
 const string TELEPORT_PIPE = "TeleportPipe";
 const string INSTANT_TELEPORT_PIPE = "InstantTeleportPipe";
@@ -398,15 +397,7 @@ void LevelLoader::ParseBowsers(SceneEntityData& sceneEntities, vector<EntityInst
 	}
 }
 
-void LevelLoader::ParseToad(SceneEntityData& sceneEntities, vector<EntityInstance> entities)
-{
-	const auto toadStart = GetEntityDataWithIdentifier(entities, TOAD_START);
-	if (!toadStart.empty())
-	{
-		const auto s = toadStart[0]; // only 1 per level;
-		sceneEntities.toadStart.Set(Vector2Int(s->px[0], s->px[1]));
-	}
-}
+
 
 void LevelLoader::ParseBridge(SceneEntityData& sceneEntities, vector<EntityInstance> entities)
 {
@@ -818,6 +809,7 @@ void LevelLoader::ParseEnterCastleTrigger(SceneEntityData& sceneEntities, vector
 		return;
 
 	EnterCastleTriggerData data;
+	data.zone = Rect::FromXYWH(inCastleTrigger->px[0], inCastleTrigger->px[1], inCastleTrigger->width, inCastleTrigger->height);
 
 	// parse firework pos to data
 	for (const auto& ldtkPos : fireworkPosData.value.get<vector<LDTKPoint>>())
@@ -831,6 +823,9 @@ void LevelLoader::ParseEnterCastleTrigger(SceneEntityData& sceneEntities, vector
 
 	const auto flagMoveTo = flagMoveToData.value.get<LDTKPoint>();
 	data.flagMoveTo = Vector2Int(flagMoveTo.cx * 16, flagMoveTo.cy * 16);
+	
+	sceneEntities.enterCastleTrigger = data;
+
 }
 
 void LevelLoader::ParseFireShooter(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
@@ -893,7 +888,6 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParseBloopers(sceneEntities, entities);
 	ParseWingedKoopas(sceneEntities, entities);
 	ParseBowsers(sceneEntities, entities);
-	ParseToad(sceneEntities, entities);
 	ParseFireballTrap(sceneEntities, entities);
 	
 	// collectables
@@ -908,8 +902,6 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParseTeleportPipe(sceneEntities, entities);
 	ParseInstantTeleportPipe(sceneEntities, entities);
 	ParseFireShooter(sceneEntities, entities);
-
-
 
 	// triggers
 	ParseNextLevelZone(sceneEntities, entities);
