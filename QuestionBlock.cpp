@@ -241,4 +241,3 @@ Rect QuestionBlock::GetBoundingBox()
 	return Rect::FromXYWH(position.x, position.y, 16, 16);
 }
 
-
