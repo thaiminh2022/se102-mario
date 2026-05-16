@@ -820,7 +820,7 @@ void LevelLoader::ParseEnterCastleTrigger(SceneEntityData& sceneEntities, vector
 	EnterCastleTriggerData data;
 
 	// parse firework pos to data
-	for (const auto ldtkPos : fireworkPosData.value.get<vector<LDTKPoint>>())
+	for (const auto& ldtkPos : fireworkPosData.value.get<vector<LDTKPoint>>())
 	{
 		data.fireworkPositions.emplace_back(ldtkPos.cx * 16, ldtkPos.cy * 16);
 	}

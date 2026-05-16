@@ -144,6 +144,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionMatrix.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="EnterCastleTrigger.cpp" />
     <ClCompile Include="FireballTrap.cpp" />
     <ClCompile Include="FireShooter.cpp" />
     <ClCompile Include="FlagPole.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="CollisionMatrix.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="EnterCastleTrigger.h" />
     <ClInclude Include="FireballTrap.h" />
     <ClInclude Include="FireShooter.h" />
     <ClInclude Include="FlagPole.h" />

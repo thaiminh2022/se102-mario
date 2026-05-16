@@ -24,6 +24,7 @@
 #include "BgMusicTrigger.h"
 #include "CheepCheeps.h"
 #include "ClearScreenColorTrigger.h"
+#include "EnterCastleTrigger.h"
 #include "InWaterTrigger.h"
 #include "FireShooter.h"
 
@@ -186,7 +187,6 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	}
 
 	// question
-
 	for (const auto& qbData : config->entityData.questionBlocks)
 	{
 		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, config->biome, false);
@@ -237,6 +237,13 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(pipe);
 	}
 
+	// fire shooters
+	for (const auto& fPos : config->entityData.fireShooters)
+	{
+		const auto fs = new FireShooter(fPos.position.x, fPos.position.y, fPos.shootDirection);
+		objects.push_back(fs);
+	}
+
 	// background music
 	if (config->entityData.backgroundMusicID.hasValue)
 	{
@@ -249,22 +256,18 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
 	
 	// triggers;
+	// clear screen color trigger
 	for (const auto& colorTriggerData : config->entityData.clearScreenColorTriggers)
 	{
 		const auto colorTrigger = new ClearScreenColorTrigger(colorTriggerData.zone, colorTriggerData.color);
 		objects.push_back(colorTrigger);
 	}
-	//water trigger
+
+	// enter water trigger
 	for (const auto& waterTriggerData : config->entityData.waterTriggers)
 	{
 		const auto waterTrigger = new InWaterTrigger(waterTriggerData.zone, waterTriggerData.inWater);
 		objects.push_back(waterTrigger);
-	}
-
-	for (const auto& fPos : config->entityData.fireShooters)
-	{
-		const auto fs = new FireShooter(fPos.position.x, fPos.position.y, fPos.shootDirection);
-		objects.push_back(fs);
 	}
 
 	// music trigger
@@ -272,6 +275,14 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		const auto musicTrigger = new BgMusicTrigger(mData.id, mData.zone);
 		objects.push_back(musicTrigger);
+	}
+
+	// enter castle
+	if (config->entityData.enterCastleTrigger.hasValue)
+	{
+		const auto& data = config->entityData.enterCastleTrigger.value;
+		const auto enterCastleTrigger = new EnterCastleTrigger(data);
+		objects.push_back(enterCastleTrigger);
 	}
 }
 
