@@ -18,6 +18,7 @@
 // ==========================================
 // MARIO (E = 1)
 // ==========================================
+
 // ---------------------------------
 // SMALL MARIO (T = 1)
 // ---------------------------------
@@ -44,6 +45,16 @@ constexpr int MARIO_FLAG_PULL_ANIM_ID = 11800;
 constexpr int MARIO_FLAG_PULL_SPRITE_1 = 11801;
 constexpr int MARIO_FLAG_PULL_SPRITE_2 = 11802;
 
+// Swimming (A = 900)
+constexpr int MARIO_SWIM_ANIM_ID = 11900;
+constexpr int MARIO_SWIM_SPRITE_1 = 11901;
+constexpr int MARIO_SWIM_SPRITE_2 = 11902;
+constexpr int MARIO_SWIM_SPRITE_3 = 11903;
+constexpr int MARIO_SWIM_SPRITE_4 = 11904;
+constexpr int MARIO_BREATH_BUBBLE = 11905;
+
+
+
 // ---------------------------------
 // BIG MARIO (T = 2)
 // ---------------------------------
@@ -68,6 +79,13 @@ constexpr int MARIO_BIG_DUCK_SPRITE_1 = 12501;
 constexpr int MARIO_BIG_FLAG_PULL_ANIM_ID = 12800;
 constexpr int MARIO_BIG_FLAG_PULL_SPRITE_1 = 12801;
 constexpr int MARIO_BIG_FLAG_PULL_SPRITE_2 = 12802;
+
+// Swimming (A = 900)
+constexpr int MARIO_BIG_SWIM_ANIM_ID = 12900;
+constexpr int MARIO_BIG_SWIM_SPRITE_1 = 12901;
+constexpr int MARIO_BIG_SWIM_SPRITE_2 = 12902;
+constexpr int MARIO_BIG_SWIM_SPRITE_3 = 12903;
+constexpr int MARIO_BIG_SWIM_SPRITE_4 = 12904;
 
 // ---------------------------------
 // FIRE MARIO (T = 3)
@@ -96,6 +114,13 @@ constexpr int MARIO_FIRE_FIRE_SPRITE_1 = 13601;
 constexpr int MARIO_FIRE_FLAG_PULL_ANIM_ID = 13800;
 constexpr int MARIO_FIRE_FLAG_PULL_SPRITE_1 = 13801;
 constexpr int MARIO_FIRE_FLAG_PULL_SPRITE_2 = 13802;
+
+// Swimming (A = 900)
+constexpr int MARIO_FIRE_SWIM_ANIM_ID = 13900;
+constexpr int MARIO_FIRE_SWIM_SPRITE_1 = 13901;
+constexpr int MARIO_FIRE_SWIM_SPRITE_2 = 13902;
+constexpr int MARIO_FIRE_SWIM_SPRITE_3 = 13903;
+constexpr int MARIO_FIRE_SWIM_SPRITE_4 = 13904;
 
 // ---------------------------------
 // TRANSITION STATES (T = 4 and T = 5)
@@ -149,6 +174,22 @@ constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_4 = 16804;
 constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_5 = 16805;
 constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_6 = 16806;
 
+// Swimming (A = 900)
+constexpr int STARMAN_SWIM_ANIM_ID = 16900;
+constexpr int STARMAN_SWIM_SPRITE_1 = 16901;
+constexpr int STARMAN_SWIM_SPRITE_2 = 16902;
+constexpr int STARMAN_SWIM_SPRITE_3 = 16903;
+constexpr int STARMAN_SWIM_SPRITE_4 = 16904;
+constexpr int STARMAN_SWIM_SPRITE_5 = 16905;
+constexpr int STARMAN_SWIM_SPRITE_6 = 16906;
+constexpr int STARMAN_SWIM_SPRITE_7 = 16907;
+constexpr int STARMAN_SWIM_SPRITE_8 = 16908;
+constexpr int STARMAN_SWIM_SPRITE_9 = 16909;
+constexpr int STARMAN_SWIM_SPRITE_10 = 16910;
+constexpr int STARMAN_SWIM_SPRITE_11 = 16911;
+constexpr int STARMAN_SWIM_SPRITE_12 = 16912;
+
+
 // ---------------------------------
 // BIG STARMAN (T = 7)
 // ---------------------------------
@@ -191,6 +232,21 @@ constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_3 = 17803;
 constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_4 = 17804;
 constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_5 = 17805;
 constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_6 = 17806;
+
+// Swimming (A = 900)
+constexpr int STARMAN_BIG_SWIM_ANIM_ID = 17900;
+constexpr int STARMAN_BIG_SWIM_SPRITE_1 = 17901;
+constexpr int STARMAN_BIG_SWIM_SPRITE_2 = 17902;
+constexpr int STARMAN_BIG_SWIM_SPRITE_3 = 17903;
+constexpr int STARMAN_BIG_SWIM_SPRITE_4 = 17904;
+constexpr int STARMAN_BIG_SWIM_SPRITE_5 = 17905;
+constexpr int STARMAN_BIG_SWIM_SPRITE_6 = 17906;
+constexpr int STARMAN_BIG_SWIM_SPRITE_7 = 17907;
+constexpr int STARMAN_BIG_SWIM_SPRITE_8 = 17908;
+constexpr int STARMAN_BIG_SWIM_SPRITE_9 = 17909;
+constexpr int STARMAN_BIG_SWIM_SPRITE_10 = 17910;
+constexpr int STARMAN_BIG_SWIM_SPRITE_11 = 17911;
+constexpr int STARMAN_BIG_SWIM_SPRITE_12 = 17912;
 
 // ==========================================
 // ENEMIES (E = 2)

@@ -4,6 +4,7 @@
 #include "Fireball.h"
 #include "InputManager.h"
 #include "Mario.h"
+#include "MarioBreathBubble.h"
 
 const float SWIM_UP_SPEED = -150.0f;   // Upward impulse/speed when pressing swim
 const float WATER_GRAVITY = 180.0f;    // Slow underwater downward acceleration
@@ -89,15 +90,21 @@ void Mario::WhileOnAir(float dt)
 
 }
 
-void Mario::HandleSwim(float dt)
+void Mario::HandleSwim(float dt, const SceneContext* ctx)
 {
 	if (!isInWater)
 		return;
 
+	breathingTimer.ProcessTimer(dt);
+	if (breathingTimer.IsFinished())
+	{
+		const auto bubble = new MarioBreathBubble(position + Vector2(8, 0));
+		ctx->addObject(bubble);
+		breathingTimer.Start();
+	}
+
 	const auto input = InputManager::GetInstance();
-
 	fallAcc = WATER_GRAVITY;
-
 	if (input->IsKeyDownThisFrame('W'))
 	{
 		if (!isGrounded)
