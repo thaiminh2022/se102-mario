@@ -5,7 +5,7 @@ class CheepCheeps : public GameObject
 {
 	bool isRed;
 public:
-	CheepCheeps(Vector2Int startPos, bool isRed);
+	CheepCheeps(Vector2Int startPos,BiomeType biome,bool isRed);
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
 	bool IsBlocking() override { return false; }

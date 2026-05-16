@@ -5,6 +5,7 @@
 #include "Collision.h"
 #include "Debug.h"
 #include "Game.h"
+#include "Helper.h"
 #include "Mario.h"
 #include "Sprites.h"
 #include "Textures.h"
@@ -18,7 +19,7 @@ constexpr float BLOOPER_MIN_SWIM_DISTANCE = 48.0f;
 constexpr float BLOOPER_MIN_FALL_DISTANCE = 48.0f;
 constexpr float BLOOPER_HORIZONTAL_DEAD_ZONE = 8.0f;
 
-Bloopers::Bloopers(const Vector2Int lowestLimit, const Vector2Int highestLimit) : GameObject(lowestLimit)
+Bloopers::Bloopers(const Vector2Int lowestLimit, const Vector2Int highestLimit, BiomeType biome) : GameObject(lowestLimit)
 {
 	this->lowestLimit = Vector2(lowestLimit);
 	this->highestLimit = Vector2(highestLimit);
@@ -27,14 +28,14 @@ Bloopers::Bloopers(const Vector2Int lowestLimit, const Vector2Int highestLimit) 
 	stateStartY = position.y;
 	hasChosenInitialState = false;
 
-	const auto t = Textures::GetInstance()->Get(BLOOPERS_TEX_ID);
+	const auto t = Textures::GetInstance()->Get(ChooseEnemyId(biome));
 	const auto anims = Animations::GetInstance();
 	const auto sp = Sprites::GetInstance();
 
 	if (!anims->Contains(WATER_BLOOPER_IDLE_ANIM))
 	{
 		auto anim = new Animation();
-		sp->Add(WATER_BLOOPER_IDLE_SPRITE_1, 0, 0, 15, 23, t);
+		sp->Add(WATER_BLOOPER_IDLE_SPRITE_1, 32, 48, 47, 71, t);
 		anim->Add(WATER_BLOOPER_IDLE_SPRITE_1);
 		anims->Add(WATER_BLOOPER_IDLE_ANIM, anim);
 	}
@@ -42,7 +43,7 @@ Bloopers::Bloopers(const Vector2Int lowestLimit, const Vector2Int highestLimit) 
 	if (!anims->Contains(WATER_BLOOPER_SWIM_ANIM))
 	{
 		auto anim = new Animation();
-		sp->Add(WATER_BLOOPER_SWIM_SPRITE_1, 16, 0, 31, 15, t);
+		sp->Add(WATER_BLOOPER_SWIM_SPRITE_1, 48, 48, 63, 63, t);
 		anim->Add(WATER_BLOOPER_SWIM_SPRITE_1);
 		anims->Add(WATER_BLOOPER_SWIM_ANIM, anim);
 	}

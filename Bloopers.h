@@ -20,7 +20,7 @@ class Bloopers : public GameObject
 	void StartFalling();
 
 public:
-	Bloopers(Vector2Int lowestLimit, Vector2Int highestLimit);
+	Bloopers(Vector2Int lowestLimit, Vector2Int highestLimit, BiomeType biome);
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
 	bool IsBlocking() override { return false; }

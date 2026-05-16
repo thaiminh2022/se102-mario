@@ -18,7 +18,7 @@ class Goomba : public GameObject
 	GoombaState state;
 	Timer deadTimer;
 public:
-	Goomba(int startX, int startY);
+	Goomba(Vector2Int startPos, BiomeType biome);
 	void SetState(GoombaState newState);
 	GoombaState GetState() const { return state; }
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
