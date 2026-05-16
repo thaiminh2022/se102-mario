@@ -2084,8 +2084,8 @@
 			"customData": [],
 			"savedSelections": [],
 			"cachedPixelData": {
-				"opaqueTiles": "101001101110111101100010000000010000010010000000110000000000000011100000",
-				"averageColors": "fa65f843f730f840c964f954f310e977f8bffa77f9407b87f520f730f520f000e966f6affa764c982fcc4c98febafca90000e4330000ba657b99ab872fccfebbfa75000014330000e7b0f8c0e7b0e6a0f6a0f6a0b7b0f6a0f49037b0d8c037b0f380f99f97a0d7b0d7b0d4a036a025a0216000000000f6a0e7b0f7b032708180f180f190f1808180f490e490f6b028d0"
+				"opaqueTiles": "101001101110111101100010010000010000010010000000110000000000000011100000",
+				"averageColors": "fa65f843f730f840c964f954f310e977f8bffa77f9407b87f520f730f520f000e966f6affa764c982fcc4c98febafca90000f4330000ba657b99ab872fccfebbfa75000000000000e7b0f8c0e7b0e6a0f6a0f6a0b7b0f6a0f49037b0d8c037b0f380f99f97a0d7b0d7b0d4a036a025a0216000000000f6a0e7b0f7b032708180f180f190f1808180f490e490f6b028d0"
 			}
 		},
 		{
@@ -2148,7 +2148,7 @@
 			"savedSelections": [],
 			"cachedPixelData": {
 				"opaqueTiles": "00000000000000000000",
-				"averageColors": "5d953c641ea63edd99819bb99bb99a9777607d927d927940ad970000000000008ded000000000000"
+				"averageColors": "5d953c641ea63edd99819bb99bb99a9777607d927d927940ad970000000000008ded7ecc00000000"
 			}
 		},
 		{
@@ -3491,16 +3491,16 @@
 						},
 						{
 							"__identifier": "EnterCastleTrigger",
-							"__grid": [203,10],
+							"__grid": [204,11],
 							"__pivot": [0,0],
 							"__tags": ["trigger"],
 							"__tile": null,
 							"__smartColor": "#12892D",
 							"iid": "7944e090-48b0-11f1-a4d2-31d3cc977234",
-							"width": 48,
-							"height": 48,
+							"width": 16,
+							"height": 32,
 							"defUid": 286,
-							"px": [3248,160],
+							"px": [3264,176],
 							"fieldInstances": [
 								{ "__identifier": "firework_positions", "__type": "Array<Point>", "__value": [
 									{ "cx": 199, "cy": 4 },
@@ -4968,7 +4968,10 @@
 							"defUid": 265,
 							"px": [144,176],
 							"fieldInstances": [
-								{ "__identifier": "pipe_direction", "__type": "LocalEnum.Direction", "__value": "Up", "__tile": null, "defUid": 266, "realEditorValues": [] },
+								{ "__identifier": "pipe_direction", "__type": "LocalEnum.Direction", "__value": "Right", "__tile": null, "defUid": 266, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Right"]
+								}] },
 								{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 13, "cy": 11 }, "__tile": null, "defUid": 267, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["13,11"]
@@ -5181,16 +5184,16 @@
 						},
 						{
 							"__identifier": "NextLevel",
-							"__grid": [66,27],
+							"__grid": [33,24],
 							"__pivot": [0,0],
 							"__tags": ["trigger"],
 							"__tile": null,
 							"__smartColor": "#BE4A2F",
 							"iid": "5e76db60-48b0-11f1-a2ab-c9d697ee4efb",
 							"width": 16,
-							"height": 16,
+							"height": 32,
 							"defUid": 41,
-							"px": [1056,432],
+							"px": [528,384],
 							"fieldInstances": [
 								{ "__identifier": "level_to_load", "__type": "Int", "__value": 3, "__tile": null, "defUid": 227, "realEditorValues": [{ "id": "V_Int", "params": [3] }] },
 								{ "__identifier": "load_delay", "__type": "Float", "__value": 2, "__tile": null, "defUid": 226, "realEditorValues": [] }

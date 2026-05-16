@@ -5,6 +5,7 @@
 #include "AssetIDs.h"
 #include "AudioManager.h"
 #include "Game.h"
+#include "Helper.h"
 #include "Mario.h"
 #include "Sprites.h"
 #include "Textures.h"
@@ -15,15 +16,15 @@ void EnterCastleTrigger::SetNewFireworkPosition()
 	fireworkPosition = data.fireworkPositions[randomIndex];
 }
 
-EnterCastleTrigger::EnterCastleTrigger(const EnterCastleTriggerData& data)
+EnterCastleTrigger::EnterCastleTrigger(const EnterCastleTriggerData& data, BiomeType biome)
 {
 	this->data = data;
 	isTriggered = false;
 
+	// firework
 	const auto anims = Animations::GetInstance();
 	const auto sprites = Sprites::GetInstance();
-	timePerFireworkTimer = Timer(1);
-
+	timePerFireworkTimer = Timer(0.5);
 
 	if (!anims->Contains(FIREBALL_COLLIDE_ANIM_ID))
 	{
@@ -37,6 +38,15 @@ EnterCastleTrigger::EnterCastleTrigger(const EnterCastleTriggerData& data)
 		anim->Add(FIREBALL_COLLIDE_SPRITE_2);
 		anim->Add(FIREBALL_COLLIDE_SPRITE_3);
 		anims->Add(FIREBALL_COLLIDE_ANIM_ID, anim);
+	}
+
+	// castle flag
+	const auto& itemTex = Textures::GetInstance()->Get(ChooseItemsId(biome));
+	sprites->Add(CASTLE_FLAG_SPRITE_1, 16, 64, 31, 79, itemTex);
+	if (data.flagMoveTo.hasValue)
+	{
+		flagPosition = data.flagMoveTo.value + Vector2Int(0, 64);
+		flagFinishMoving = false;
 	}
 }
 
@@ -62,6 +72,22 @@ void EnterCastleTrigger::Update(const float dt, vector<GameObject*>& coObjects, 
 		}
 	}
 
+	if (data.flagMoveTo.hasValue && !flagFinishMoving)
+	{
+		const auto& flagMoveTo = data.flagMoveTo.value;
+		if (flagPosition.y > flagMoveTo.y)
+		{
+			constexpr float speed = 15.0f;
+			flagPosition.y -= speed * dt;
+
+			if (flagPosition.y < flagMoveTo.y)
+			{
+				flagPosition.y = flagMoveTo.y;
+				flagFinishMoving = true;
+			}
+		}
+	}
+
 }
 
 void EnterCastleTrigger::Render()
@@ -69,17 +95,29 @@ void EnterCastleTrigger::Render()
 	if (!isTriggered)
 		return;
 
-	float renderX, renderY;
-	Game::GetInstance()->GetCamera()->WorldToScreen(fireworkPosition.x, fireworkPosition.y, renderX, renderY);
+	if (!data.fireworkPositions.empty())
+	{
+		float renderX, renderY;
+		Game::GetInstance()->GetCamera()->WorldToScreen(fireworkPosition.x, fireworkPosition.y, renderX, renderY);
+		Animations::GetInstance()
+			->Get(FIREBALL_COLLIDE_ANIM_ID)
+			->Render(renderX, renderY, false, false);
+	}
 
-	Animations::GetInstance()
-	->Get(FIREBALL_COLLIDE_ANIM_ID)
-	->Render(renderX, renderY, false, false);
+	if (data.flagMoveTo.hasValue)
+	{
+		float renderX, renderY;
+		Game::GetInstance()->GetCamera()->WorldToScreen(flagPosition.x, flagPosition.y, renderX, renderY);
+		Sprites::GetInstance()
+			->Get(CASTLE_FLAG_SPRITE_1)
+			->Draw(round(renderX), round(renderY), false, false);
+	}
+
 }
 
 int EnterCastleTrigger::GetRenderIndex()
 {
-	return 1;
+	return -10;
 }
 
 bool EnterCastleTrigger::IsCollidable()

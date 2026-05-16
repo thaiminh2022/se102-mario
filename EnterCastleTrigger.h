@@ -9,10 +9,12 @@ class EnterCastleTrigger : public GameObject
 	Timer timePerFireworkTimer;
 
 	Vector2Int fireworkPosition;
+	Vector2 flagPosition;
+	bool flagFinishMoving;
 	void SetNewFireworkPosition();
 
 public:
-	EnterCastleTrigger(const EnterCastleTriggerData& data);
+	EnterCastleTrigger(const EnterCastleTriggerData& data, BiomeType biome);
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
 	int GetRenderIndex() override;

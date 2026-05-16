@@ -281,7 +281,7 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	if (config->entityData.enterCastleTrigger.hasValue)
 	{
 		const auto& data = config->entityData.enterCastleTrigger.value;
-		const auto enterCastleTrigger = new EnterCastleTrigger(data);
+		const auto enterCastleTrigger = new EnterCastleTrigger(data, config->biome);
 		objects.push_back(enterCastleTrigger);
 	}
 }
