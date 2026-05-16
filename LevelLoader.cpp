@@ -601,28 +601,16 @@ void LevelLoader::ParseFlagPole(SceneEntityData& sceneEntities, std::vector<Enti
 		auto flagPole = flagPoles[0]; // only one flag pole per level
 
 		auto moveTo = GetFieldValueWithIdentifier(flagPole->fieldInstances, "player_move_to");
-		auto ldtkFireworkPosition = GetFieldValueWithIdentifier(flagPole->fieldInstances, "fireworks_positions");
 
 		if (moveTo.hasValue)
 		{
 			const auto moveToValue = moveTo.value.get<LDTKPoint>();
-			vector<Vector2Int> fireworkPositions;
 			
-			if (ldtkFireworkPosition.hasValue)
-			{
-				for (const auto& fireWorkPos : ldtkFireworkPosition.value.get<vector<LDTKPoint>>())
-				{
-					fireworkPositions.emplace_back(
-						fireWorkPos.cx * 16,
-						fireWorkPos.cy * 16);
-				}
-			}
 	
 
 			flagPoleData.Set(FlagPoleData{
 				Rect::FromXYWH(flagPole->px[0], flagPole->px[1], flagPole->width, flagPole->height),
 				Vector2Int(moveToValue.cx * 16, moveToValue.cy * 16),
-				fireworkPositions
 			});
 		}
 	}

@@ -11,7 +11,7 @@
 	"iid": "542e4d40-21a0-11f1-b547-3f7639dce03c",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 286,
+	"nextUid": 287,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "LinearVertical",
@@ -1201,43 +1201,6 @@
 					"allowedRefsEntityUid": null,
 					"allowedRefTags": [],
 					"tilesetUid": null
-				},
-				{
-					"identifier": "fireworks_positions",
-					"doc": "Position to shoot firework after player enter",
-					"__type": "Array<Point>",
-					"uid": 221,
-					"type": "F_Point",
-					"isArray": true,
-					"canBeNull": false,
-					"arrayMinLength": null,
-					"arrayMaxLength": null,
-					"editorDisplayMode": "Points",
-					"editorDisplayScale": 1,
-					"editorDisplayPos": "Above",
-					"editorLinkStyle": "StraightArrow",
-					"editorDisplayColor": null,
-					"editorAlwaysShow": false,
-					"editorShowInWorld": true,
-					"editorCutLongValues": true,
-					"editorTextSuffix": null,
-					"editorTextPrefix": null,
-					"useForSmartColor": false,
-					"exportToToc": false,
-					"searchable": false,
-					"min": null,
-					"max": null,
-					"regex": null,
-					"acceptFileTypes": null,
-					"defaultOverride": null,
-					"textLanguageMode": null,
-					"symmetricalRef": false,
-					"autoChainRef": true,
-					"allowOutOfLevelRef": true,
-					"allowedRefs": "OnlySame",
-					"allowedRefsEntityUid": null,
-					"allowedRefTags": [],
-					"tilesetUid": null
 				}
 			]
 		},
@@ -2026,6 +1989,41 @@
 					"tilesetUid": null
 				}
 			]
+		},
+		{
+			"identifier": "EnterCastleTrigger",
+			"uid": 286,
+			"tags": ["trigger"],
+			"exportToToc": false,
+			"allowOutOfBounds": false,
+			"doc": null,
+			"width": 16,
+			"height": 16,
+			"resizableX": true,
+			"resizableY": true,
+			"minWidth": 16,
+			"maxWidth": null,
+			"minHeight": 16,
+			"maxHeight": null,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 1,
+			"lineOpacity": 1,
+			"hollow": true,
+			"color": "#12892D",
+			"renderMode": "Rectangle",
+			"showName": true,
+			"tilesetId": null,
+			"tileRenderMode": "FitInside",
+			"tileRect": null,
+			"uiTileRect": null,
+			"nineSliceBorders": [],
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": []
 		}
 	], "tilesets": [
 		{
@@ -3305,13 +3303,10 @@
 							"height": 144,
 							"defUid": 219,
 							"px": [3120,48],
-							"fieldInstances": [
-								{ "__identifier": "player_move_to", "__type": "Point", "__value": { "cx": 204, "cy": 12 }, "__tile": null, "defUid": 220, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["204,12"]
-								}] },
-								{ "__identifier": "fireworks_positions", "__type": "Array<Point>", "__value": [], "__tile": null, "defUid": 221, "realEditorValues": [] }
-							]
+							"fieldInstances": [{ "__identifier": "player_move_to", "__type": "Point", "__value": { "cx": 204, "cy": 12 }, "__tile": null, "defUid": 220, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["204,12"]
+							}] }]
 						},
 						{
 							"__identifier": "BackgroundMusic",
@@ -3467,6 +3462,20 @@
 									"params": ["Down"]
 								}] }
 							]
+						},
+						{
+							"__identifier": "EnterCastleTrigger",
+							"__grid": [203,10],
+							"__pivot": [0,0],
+							"__tags": ["trigger"],
+							"__tile": null,
+							"__smartColor": "#12892D",
+							"iid": "7944e090-48b0-11f1-a4d2-31d3cc977234",
+							"width": 48,
+							"height": 48,
+							"defUid": 286,
+							"px": [3248,160],
+							"fieldInstances": []
 						}
 					]
 				},
@@ -6882,13 +6891,10 @@
 							"height": 160,
 							"defUid": 219,
 							"px": [2784,32],
-							"fieldInstances": [
-								{ "__identifier": "player_move_to", "__type": "Point", "__value": { "cx": 181, "cy": 12 }, "__tile": null, "defUid": 220, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["181,12"]
-								}] },
-								{ "__identifier": "fireworks_positions", "__type": "Array<Point>", "__value": [], "__tile": null, "defUid": 221, "realEditorValues": [] }
-							]
+							"fieldInstances": [{ "__identifier": "player_move_to", "__type": "Point", "__value": { "cx": 181, "cy": 12 }, "__tile": null, "defUid": 220, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["181,12"]
+							}] }]
 						},
 						{
 							"__identifier": "ClearScreenColorTrigger",

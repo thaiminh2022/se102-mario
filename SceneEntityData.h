@@ -59,7 +59,6 @@ struct FlagPoleData
 {
 	Rect zone;
 	Vector2Int moveToPosition;
-	vector<Vector2Int> fireworkPositions;
 };
 
 struct BridgeData
