@@ -3541,16 +3541,16 @@
 						},
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [2,3],
+							"__grid": [3,11],
 							"__pivot": [0,0],
 							"__tags": ["entity"],
 							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
 							"__smartColor": "#63C74D",
-							"iid": "93995fc0-48b0-11f1-9b03-19b831574f25",
+							"iid": "fb84b5e0-48b0-11f1-be3f-4522300bece3",
 							"width": 16,
 							"height": 16,
 							"defUid": 31,
-							"px": [32,48],
+							"px": [48,176],
 							"fieldInstances": []
 						}
 					]
