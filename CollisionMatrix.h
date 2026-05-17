@@ -39,6 +39,8 @@ class CollisionMatrix
 		SetCollisionValue(CollisionMatrixLayer::EnemyProjectile, CollisionMatrixLayer::Enemies, false);
 		SetCollisionValue(CollisionMatrixLayer::MarioFireball, CollisionMatrixLayer::Player, false);
 		SetCollisionValue(CollisionMatrixLayer::EnemyProjectile, CollisionMatrixLayer::Ground, false);
+		SetCollisionValue(CollisionMatrixLayer::Player, CollisionMatrixLayer::Player, false);
+
 	}
 
 	void SetCollisionValue(CollisionMatrixLayer a, CollisionMatrixLayer b, const bool value)

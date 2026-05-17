@@ -2361,7 +2361,10 @@
 							"height": 16,
 							"defUid": 35,
 							"px": [256,144],
-							"fieldInstances": [{ "__identifier": "QuestionBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "Coin", "__tile": null, "defUid": 52, "realEditorValues": [] }]
+							"fieldInstances": [{ "__identifier": "QuestionBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "Starman", "__tile": null, "defUid": 52, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["Starman"]
+							}] }]
 						},
 						{
 							"__identifier": "QuestionBlock",
@@ -7052,6 +7055,74 @@
 							"fieldInstances": [{ "__identifier": "in_water", "__type": "Bool", "__value": false, "__tile": null, "defUid": 283, "realEditorValues": [{
 								"id": "V_Bool",
 								"params": [ false ]
+							}] }]
+						},
+						{
+							"__identifier": "QuestionBlock",
+							"__grid": [12,21],
+							"__pivot": [0,0],
+							"__tags": ["collectable"],
+							"__tile": { "tilesetUid": 50, "x": 0, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#B55088",
+							"iid": "c438a940-48b0-11f1-9b03-7b420fcc7630",
+							"width": 16,
+							"height": 16,
+							"defUid": 35,
+							"px": [192,336],
+							"fieldInstances": [{ "__identifier": "QuestionBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "Starman", "__tile": null, "defUid": 52, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["Starman"]
+							}] }]
+						},
+						{
+							"__identifier": "QuestionBlock",
+							"__grid": [13,21],
+							"__pivot": [0,0],
+							"__tags": ["collectable"],
+							"__tile": { "tilesetUid": 50, "x": 0, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#B55088",
+							"iid": "c45ecee0-48b0-11f1-9b03-613b106a7b62",
+							"width": 16,
+							"height": 16,
+							"defUid": 35,
+							"px": [208,336],
+							"fieldInstances": [{ "__identifier": "QuestionBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "JewDestroyer", "__tile": null, "defUid": 52, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["JewDestroyer"]
+							}] }]
+						},
+						{
+							"__identifier": "QuestionBlock",
+							"__grid": [14,21],
+							"__pivot": [0,0],
+							"__tags": ["collectable"],
+							"__tile": { "tilesetUid": 50, "x": 0, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#B55088",
+							"iid": "c48c2070-48b0-11f1-9b03-838b211f7b31",
+							"width": 16,
+							"height": 16,
+							"defUid": 35,
+							"px": [224,336],
+							"fieldInstances": [{ "__identifier": "QuestionBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "JewDestroyer", "__tile": null, "defUid": 52, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["JewDestroyer"]
+							}] }]
+						},
+						{
+							"__identifier": "QuestionBlock",
+							"__grid": [15,21],
+							"__pivot": [0,0],
+							"__tags": ["collectable"],
+							"__tile": { "tilesetUid": 50, "x": 0, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#B55088",
+							"iid": "c4bc3120-48b0-11f1-9b03-0fb946b6ece3",
+							"width": 16,
+							"height": 16,
+							"defUid": 35,
+							"px": [240,336],
+							"fieldInstances": [{ "__identifier": "QuestionBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "Starman", "__tile": null, "defUid": 52, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["Starman"]
 							}] }]
 						}
 					]

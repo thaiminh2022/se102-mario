@@ -162,6 +162,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="MarioBreathBubble.cpp" />
     <ClCompile Include="MarioCollision.cpp" />
     <ClCompile Include="MarioInput.cpp" />
     <ClCompile Include="MarioLoader.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="LevelTransitionScene.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Mario.h" />
+    <ClInclude Include="MarioBreathBubble.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="NextLevelPortal.h" />
     <ClInclude Include="Pipe.h" />
