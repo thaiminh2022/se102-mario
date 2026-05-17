@@ -237,13 +237,6 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(pipe);
 	}
 
-	// fire shooters
-	for (const auto& fPos : config->entityData.fireShooters)
-	{
-		const auto fs = new FireShooter(fPos.position.x, fPos.position.y, fPos.shootDirection);
-		objects.push_back(fs);
-	}
-
 	// background music
 	if (config->entityData.backgroundMusicID.hasValue)
 	{
