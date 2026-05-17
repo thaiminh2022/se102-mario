@@ -48,7 +48,9 @@ typedef priority_queue<render_item, vector<render_item>, RenderCompare> render_q
 void PlayableScene::Update(float dt)
 {
 	// coObjects is all object, not including obj itself
-	vector<GameObject*> coObjects;
+	vector<GameObject*> activeCollidableObjects;
+	activeCollidableObjects.reserve(objects.size());
+
 	for (const auto& obj : objects)
 	{
 		auto box = obj->GetBoundingBox();
@@ -63,6 +65,15 @@ void PlayableScene::Update(float dt)
 			obj->SetActive(false);
 		}
 
+		if (obj->IsActive() && obj->IsCollidable() && !GameObject::IsDeleted(obj))
+		{
+			activeCollidableObjects.push_back(obj);
+		}
+	}
+
+	vector<GameObject*> coObjects;
+	for (const auto& obj : objects)
+	{
 		if (!obj->IsActive())
 		{
 			continue;
@@ -72,11 +83,10 @@ void PlayableScene::Update(float dt)
 		coObjects.clear();
 		if (obj->IsCollidable())
 		{
-			for (auto other : objects)
+			for (auto other : activeCollidableObjects)
 			{
-				if (!other->IsCollidable()) continue;
 				if (other == obj) continue;
-				if (GameObject::IsDeleted(other)) continue;
+				if (!CollisionMatrix::IsLayerCollide(other->GetCollisionLayer(), obj->GetCollisionLayer())) continue;
 				coObjects.push_back(other);
 			}
 		}
