@@ -63,7 +63,7 @@ Coin::Coin(Vector2Int startPos, BiomeType biome, const CoinState state) : GameOb
 
 	auto anims = Animations::GetInstance();
 
-	if (anims->Contains(COIN_SPIN_ANIM_ID))
+	if (!anims->Contains(COIN_SPIN_ANIM_ID))
 	{
 		auto t = Textures::GetInstance()->Get(ChooseItemsId(biome));
 		auto sp = Sprites::GetInstance();

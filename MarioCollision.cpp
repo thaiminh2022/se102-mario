@@ -385,7 +385,7 @@ bool Mario::OnCollisionWithJetpack(const CollisionEvent* e)
 		return false;
 
 	jetpack->SetState(MarioJetPackState::OnMario);
-
+	return true;
 }
 
 
