@@ -27,6 +27,7 @@
 #include "EnterCastleTrigger.h"
 #include "InWaterTrigger.h"
 #include "FireShooter.h"
+#include "MarioJetPack.h"
 
 
 using std::priority_queue;
@@ -216,6 +217,13 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		const auto coin = new Coin(cPos, config->biome);
 		objects.push_back(coin);
+	}
+
+	// jetpack
+	for (const auto& cPos : config->entityData.jetpackStart)
+	{
+		const auto jp = new MarioJetPack(cPos);
+		objects.push_back(jp);
 	}
 
 	// next level portal

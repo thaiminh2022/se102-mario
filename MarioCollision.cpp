@@ -18,6 +18,7 @@
 #include "CollisionEvent.h"
 #include "PointPopup.h"
 #include "Game.h"
+#include "MarioJetPack.h"
 
 bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 {
@@ -377,6 +378,16 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 	return true;
 }
 
+bool Mario::OnCollisionWithJetpack(const CollisionEvent* e)
+{
+	const auto jetpack = dynamic_cast<MarioJetPack*>(e->otherObject);
+	if (jetpack == nullptr)
+		return false;
+
+	jetpack->SetState(MarioJetPackState::OnMario);
+
+}
+
 
 void Mario::OnCollisionWithFireballTrap(vector<GameObject*>& coObjects)
 {
@@ -434,6 +445,8 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		if (OnCollisionWithStar(e)) return;
 		if (OnCollisionWithFlagPole(e)) return;
 		if (OnCollisionWithBowser(e)) return;
+		if (OnCollisionWithJetpack(e)) return;
+
 	}
 }
 

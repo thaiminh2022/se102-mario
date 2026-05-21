@@ -199,6 +199,7 @@ struct SceneEntityData
 	vector<FireShooterData> fireShooters;
 
 	Optional<Vector2Int> bowserStart;
+	vector<Vector2Int> jetpackStart;
 	
 	// game play
 	Optional<int> backgroundMusicID;

@@ -22,8 +22,6 @@ using namespace std;
 LevelLoader *LevelLoader::_instance = nullptr;
 
 
-
-
 const string WORLD_PATH = "world_map-new.ldtk";
 
 // LAYER
@@ -38,19 +36,22 @@ const string GOOMBA_START= "GoombaStart";
 const string KOOPA_START= "KoopaStart";
 const string CHEEP_CHEEPS_START = "FishStart";
 const string BLOOPER_START = "SquidStart";
-
 const string WINGED_KOOPA_START = "WingedKoopaStart";
 const string QUESTION_BLOCK= "QuestionBlock";
 const string BRICK_BLOCK= "EmptyBrickBlock";
 const string COIN = "Coin";
 const string FIREBALL_TRAP = "FireballTrap";
-const string FLAG_POLE = "FlagPole";
 const string BOWSER_START = "BowserStart";
+const string FIRE_SHOOTER = "FireShooter";
+const string MARIO_JETPACK = "Jetpack";
+
+
+// Gameplay
+const string FLAG_POLE = "FlagPole";
 const string BRIDGE = "Bridge";
 const string PIPE = "Pipe";
 const string TELEPORT_PIPE = "TeleportPipe";
 const string INSTANT_TELEPORT_PIPE = "InstantTeleportPipe";
-const string FIRE_SHOOTER = "FireShooter";
 
 // TRIGGERS
 const string CLRSCR_COLOR_TRIGGER = "ClearScreenColorTrigger";
@@ -876,7 +877,19 @@ void LevelLoader::ParseFireShooter(SceneEntityData& sceneEntities, vector<Entity
 		sceneEntities.fireShooters.emplace_back(position, direction);
 	}
 }
-  
+
+void LevelLoader::ParseJetpack(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
+{
+	const auto data = GetEntityDataWithIdentifier(entities, MARIO_JETPACK);
+	if (data.empty())
+		return;
+
+	for (const auto& d: data)
+	{
+		sceneEntities.jetpackStart.emplace_back(d->px[0], d->px[1]);
+	}
+}
+
 void LevelLoader::RebuildCacheForLevel(vector<EntityInstance>& entities)
 {
 	levelEntitiesCache.clear();
@@ -909,6 +922,8 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParseWingedKoopas(sceneEntities, entities);
 	ParseBowsers(sceneEntities, entities);
 	ParseFireballTrap(sceneEntities, entities);
+	ParseJetpack(sceneEntities, entities);
+
 	
 	// collectables
 	ParseQuestionBlock(sceneEntities, entities);

@@ -123,6 +123,7 @@ class Mario : public GameObject
 	bool OnCollisionWithFlower(CollisionEvent* e);
 	bool OnCollisionWithStar(const CollisionEvent* e);
 	bool OnCollisionWithFlagPole(const CollisionEvent* collisionEvent);
+	bool OnCollisionWithJetpack(const CollisionEvent* e);
 
 
 	// update func
