@@ -3,6 +3,7 @@
 #include <d3d10.h>
 #include <D3DX10.h>
 #include <memory>
+#include <wrl/client.h>
 #include "Texture.h"
 #include "Scene.h"
 #include <unordered_map>
@@ -14,6 +15,7 @@
 
 using std::unordered_map;
 using std::unique_ptr;
+using Microsoft::WRL::ComPtr;
 
 class Game
 {
@@ -24,12 +26,12 @@ class Game
 	int backBufferWidth = 0;
 	int backBufferHeight = 0;
 
-	ID3D10Device *device = nullptr;
-	IDXGISwapChain *swapChain = nullptr;
-	ID3D10RenderTargetView *renderTargetView = nullptr;
-	ID3D10BlendState *blendStateAlpha = nullptr;
-	ID3DX10Sprite *spriteObject = nullptr;
-	ID3D10RasterizerState* rasterizerState = nullptr;
+	ComPtr<ID3D10Device> device;
+	ComPtr<IDXGISwapChain> swapChain;
+	ComPtr<ID3D10RenderTargetView> renderTargetView;
+	ComPtr<ID3D10BlendState> blendStateAlpha;
+	ComPtr<ID3DX10Sprite> spriteObject;
+	ComPtr<ID3D10RasterizerState> rasterizerState;
 
 	int currentSceneID;
 	int nextSceneID;
@@ -81,11 +83,11 @@ public:
 
 	Texture *LoadTexture(LPCWSTR texturePath) const;
 
-	ID3D10Device *GetDirect3DDevice() const { return this->device; }
-	IDXGISwapChain *GetSwapChain() const { return this->swapChain; }
-	ID3D10RenderTargetView *GetRenderTargetView() const { return this->renderTargetView; }
-	ID3DX10Sprite *GetSpriteHandler() const { return this->spriteObject; }
-	ID3D10BlendState *GetAlphaBlending() const { return blendStateAlpha; }
+	ID3D10Device *GetDirect3DDevice() const { return device.Get(); }
+	IDXGISwapChain *GetSwapChain() const { return swapChain.Get(); }
+	ID3D10RenderTargetView *GetRenderTargetView() const { return renderTargetView.Get(); }
+	ID3DX10Sprite *GetSpriteHandler() const { return spriteObject.Get(); }
+	ID3D10BlendState *GetAlphaBlending() const { return blendStateAlpha.Get(); }
 	Optional<D3DXCOLOR> GetBackgroundColor() const;
 	void SetBackgroundColor(const Optional<Color>& c);  
 

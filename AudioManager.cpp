@@ -16,11 +16,7 @@ AudioInstance* AudioManager::FindInstance(unsigned int handleID)
 
 void AudioManager::DestroyInstance(AudioInstance* instance)
 {
-    if (instance->voice)
-    {
-        instance->voice->DestroyVoice();
-        instance->voice = nullptr;
-    }
+    instance->voice.reset();
 }
 
 enum
@@ -111,24 +107,25 @@ bool AudioManager::Init()
         DebugOut(L"[ERROR] CoInitializeEx failed\n");
         return false;
     }
+    comInitialized = true;
 
-    hr = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
+    hr = XAudio2Create(xAudio2.ReleaseAndGetAddressOf(), 0, XAUDIO2_DEFAULT_PROCESSOR);
     if (FAILED(hr))
     {
         DebugOut(L"[ERROR] XAudio2Create failed\n");
-        xAudio2 = nullptr;
+        xAudio2.Reset();
         return false;
     }
 
-    hr = xAudio2->CreateMasteringVoice(&masteringVoice);
+    IXAudio2MasteringVoice* rawMasteringVoice = nullptr;
+    hr = xAudio2->CreateMasteringVoice(&rawMasteringVoice);
     if (FAILED(hr))
     {
         DebugOut(L"[ERROR] CreateMasteringVoice failed\n");
-
-        xAudio2->Release();
-        xAudio2 = nullptr;
+        xAudio2.Reset();
         return false;
     }
+    masteringVoice.reset(rawMasteringVoice);
 
     DebugOut(L"[INFO] XAudio2 initialized successfully\n");
     return true;
@@ -147,19 +144,14 @@ void AudioManager::Shutdown()
 
     soundData.clear();
 
-    if (masteringVoice)
-    {
-        masteringVoice->DestroyVoice();
-        masteringVoice = nullptr;
-    }
+    masteringVoice.reset();
+    xAudio2.Reset();
 
-    if (xAudio2)
+    if (comInitialized)
     {
-        xAudio2->Release();
-        xAudio2 = nullptr;
+        CoUninitialize();
+        comInitialized = false;
     }
-
-    CoUninitialize();
 
     musicHandle = 0;
     nextHandle = 1;
@@ -204,12 +196,6 @@ void AudioManager::Update()
     {
         if (it->second.markedForDelete)
         {
-            if (it->second.voice)
-            {
-                it->second.voice->DestroyVoice();
-                it->second.voice = nullptr;
-            }
-
             it = activeInstances.erase(it);
         }
         else
@@ -298,17 +284,18 @@ unsigned int AudioManager::Play(int soundId, bool looping, std::function<void()>
 	}
 	SoundData& data = it->second;
 
-    IXAudio2SourceVoice* sourceVoice = nullptr;
+    IXAudio2SourceVoice* rawSourceVoice = nullptr;
     HRESULT hr = xAudio2->CreateSourceVoice(
-        &sourceVoice,
+        &rawSourceVoice,
         reinterpret_cast<WAVEFORMATEX*>(&data.format)
     );
 
-    if (FAILED(hr) || sourceVoice == nullptr)
+    if (FAILED(hr) || rawSourceVoice == nullptr)
     {
         DebugOut(L"[ERROR] Cannot create source voice for sound id %d\n", soundId);
         return -1;
     }
+    SourceVoicePtr sourceVoice(rawSourceVoice);
 
     XAUDIO2_BUFFER buffer{};
     buffer.AudioBytes = static_cast<UINT32>(data.audioBytes.size());
@@ -323,7 +310,6 @@ unsigned int AudioManager::Play(int soundId, bool looping, std::function<void()>
     if (FAILED(hr))
     {
         DebugOut(L"[ERROR] SubmitSourceBuffer failed for sound id %d\n", soundId);
-        sourceVoice->DestroyVoice();
         return -1;
     }
 
@@ -331,14 +317,13 @@ unsigned int AudioManager::Play(int soundId, bool looping, std::function<void()>
     if (FAILED(hr))
     {
         DebugOut(L"[ERROR] Start failed for sound id %d\n", soundId);
-        sourceVoice->DestroyVoice();
         return -1;
     }
 
     AudioInstance instance;
     instance.handle = nextHandle++;
     instance.soundId = soundId;
-    instance.voice = sourceVoice;
+    instance.voice = std::move(sourceVoice);
     instance.paused = false;
     instance.looping = looping;
     instance.markedForDelete = false;

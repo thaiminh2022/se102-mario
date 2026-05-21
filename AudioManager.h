@@ -1,6 +1,8 @@
 #pragma once
 #include <functional>
+#include <memory>
 #include <string>
+#include <wrl/client.h>
 #include <xaudio2.h>
 #include <unordered_map>
 #include  <vector>
@@ -8,7 +10,23 @@
 #include "OptionalType.h"
 
 using std::unordered_map;
+using std::unique_ptr;
 using std::vector;
+using Microsoft::WRL::ComPtr;
+
+struct XAudioVoiceDeleter
+{
+	void operator()(IXAudio2Voice* voice) const
+	{
+		if (voice != nullptr)
+		{
+			voice->DestroyVoice();
+		}
+	}
+};
+
+using MasteringVoicePtr = unique_ptr<IXAudio2MasteringVoice, XAudioVoiceDeleter>;
+using SourceVoicePtr = unique_ptr<IXAudio2SourceVoice, XAudioVoiceDeleter>;
 
 struct SoundData
 {
@@ -21,7 +39,7 @@ struct AudioInstance
 {
 	int soundId = -1;
 	unsigned int handle = 0;
-	IXAudio2SourceVoice* voice = nullptr;
+	SourceVoicePtr voice;
 	bool paused = false;
 	bool looping = false;
 	bool markedForDelete = false;
@@ -34,8 +52,9 @@ class AudioManager
 {
 	static AudioManager* _instance;
 
-	IXAudio2* xAudio2 = nullptr;
-	IXAudio2MasteringVoice* masteringVoice = nullptr;
+	ComPtr<IXAudio2> xAudio2;
+	MasteringVoicePtr masteringVoice;
+	bool comInitialized = false;
 
 	unordered_map<int, SoundData> soundData;
 	unordered_map<unsigned int, AudioInstance> activeInstances;
@@ -92,10 +111,7 @@ public:
 	
 	~AudioManager()
 	{
-		if (masteringVoice) masteringVoice->DestroyVoice();
-		if (xAudio2) xAudio2->Release();
-		xAudio2 = nullptr;
-		masteringVoice = nullptr;
+		Shutdown();
 	}
 };
 
