@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <d3d10.h>
 #include <D3DX10.h>
+#include <memory>
 #include "Texture.h"
 #include "Scene.h"
 #include <unordered_map>
@@ -12,6 +13,7 @@
 #include "PlayableScene.h"
 
 using std::unordered_map;
+using std::unique_ptr;
 
 class Game
 {
@@ -31,7 +33,7 @@ class Game
 
 	int currentSceneID;
 	int nextSceneID;
-	unordered_map<int, Scene *> scenes;
+	unordered_map<int, unique_ptr<Scene>> scenes;
 	bool forceReload;
 
 	vector<std::pair<Rect, D3DXCOLOR>> debugRects;
@@ -40,10 +42,10 @@ class Game
 
 
 	Optional<Color> bgColor;
-	Camera* camera;
+	unique_ptr<Camera> camera;
 	Game() : hWnd(nullptr), currentSceneID(0), nextSceneID(0)
 	{
-		camera = new Camera;
+		camera = std::make_unique<Camera>();
 		currentSceneID = -100;
 		nextSceneID = -200;
 		forceReload = false;
@@ -90,19 +92,20 @@ public:
 
 	int GetBackBufferWidth() const { return backBufferWidth; }
 	int GetBackBufferHeight() const { return backBufferHeight; }
-	Scene *GetCurrentScene() { return scenes[currentSceneID]; }
+	Scene *GetCurrentScene() { return scenes[currentSceneID].get(); }
 
 	// Scene related
 	void SwitchScene();
 	void IndicateSceneSwitch(int newID, const Optional<SceneSwitchContext>& ctx);
 	void LoadSceneAndEnterFirst();
 	void AddScene(int id, Scene* scene);
+	void AddScene(int id, unique_ptr<Scene> scene);
 	bool HaveSceneWithID(int id);
 	void ReloadCurrentScene();
 
 
 	// Camera related	
-	Camera* GetCamera() const { return camera; }
+	Camera* GetCamera() const { return camera.get(); }
 
 	~Game();
 };

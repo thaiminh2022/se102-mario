@@ -4,6 +4,7 @@
 #include "StatManager.h"
 #include <sstream>
 #include <iomanip>
+#include <memory>
 
 HUD* HUD::_instance = nullptr;
 HUD::HUD() {
@@ -23,14 +24,20 @@ void HUD::Init() {
 	Vector2 livesSize = FontManager::GetInstance()->MeasureString(HUD_FONT, L"LIVES\n000");
 	Vector2 coinSize = FontManager::GetInstance()->MeasureString(HUD_FONT, L"COINS\n000");
 	Vector2 timerSize = FontManager::GetInstance()->MeasureString(HUD_FONT, L"TIME\n000");
-	scoreLabel = new UILabel(Vector2(10, 8), scoreSize, L"SCORE\n000000", HUD_FONT, Colors::WHITE, TextFormat::Left | TextFormat::Top);
-	coinLabel = new UILabel(Vector2(95, 8), coinSize, L"COINS\n0", HUD_FONT, Colors::WHITE, TextFormat::Left | TextFormat::Top);
-	lifeLabel = new UILabel(Vector2(180, 8), livesSize, L"LIVES\n3", HUD_FONT, Colors::WHITE, TextFormat::Left | TextFormat::Top);
-	timeLabel = new UILabel(Vector2(265, 8), timerSize, L"TIME\n160", HUD_FONT, Colors::WHITE, TextFormat::Left | TextFormat::Top);
-	elements.push_back(scoreLabel);
-	elements.push_back(coinLabel);
-	elements.push_back(lifeLabel);
-	elements.push_back(timeLabel);
+	auto score = std::make_unique<UILabel>(Vector2(10, 8), scoreSize, L"SCORE\n000000", HUD_FONT, Colors::WHITE, TextFormat::Left | TextFormat::Top);
+	auto coin = std::make_unique<UILabel>(Vector2(95, 8), coinSize, L"COINS\n0", HUD_FONT, Colors::WHITE, TextFormat::Left | TextFormat::Top);
+	auto life = std::make_unique<UILabel>(Vector2(180, 8), livesSize, L"LIVES\n3", HUD_FONT, Colors::WHITE, TextFormat::Left | TextFormat::Top);
+	auto time = std::make_unique<UILabel>(Vector2(265, 8), timerSize, L"TIME\n160", HUD_FONT, Colors::WHITE, TextFormat::Left | TextFormat::Top);
+
+	scoreLabel = score.get();
+	coinLabel = coin.get();
+	lifeLabel = life.get();
+	timeLabel = time.get();
+
+	elements.push_back(std::move(score));
+	elements.push_back(std::move(coin));
+	elements.push_back(std::move(life));
+	elements.push_back(std::move(time));
 }
 void HUD::Update(float dt) {
 	auto statManager = StatManager::GetInstance();
@@ -48,21 +55,18 @@ void HUD::Update(float dt) {
 
 }
 void HUD::Render() {
-	for (auto el : elements) {
+	for (const auto& el : elements) {
 		el->Render();
 	}
 }
 HUD::~HUD() {
-	for (auto el : elements) {
-		delete el;
-	}
 	elements.clear();
 }
 
 void HUD::Hide()
 {
-	for (auto el : elements) {
-		if (auto label = dynamic_cast<UILabel*>(el)) {
+	for (const auto& el : elements) {
+		if (auto label = dynamic_cast<UILabel*>(el.get())) {
 			label->SetVisible(false);
 		}
 	}

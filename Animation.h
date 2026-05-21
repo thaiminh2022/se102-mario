@@ -19,7 +19,7 @@ class Animation
 	ULONGLONG lastFrameTime;
 	int defaultTime;
 	int currentFrame;
-	vector<AnimationFrame*> frames;
+	vector<AnimationFrame> frames;
 
 public:
 	Animation(int defaultTime = 100) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }

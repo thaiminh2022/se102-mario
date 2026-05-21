@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include "Tilemap.h"
 #include "Vector2.h"
 #include <functional>
@@ -8,7 +7,6 @@
 
 class Mario;
 class GameObject;
-using std::vector;
 
 struct SceneContext
 {

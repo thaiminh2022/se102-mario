@@ -5,6 +5,7 @@
 #include "PlayableScene.h"
 #include "Scene.h"
 #include <algorithm>
+#include <memory>
 #include <vector>
 
 #include "AudioManager.h"
@@ -67,9 +68,9 @@ void PlayableScene::Update(float dt)
 			obj->SetActive(false);
 		}
 
-		if (obj->IsActive() && obj->IsCollidable() && !GameObject::IsDeleted(obj))
+		if (obj->IsActive() && obj->IsCollidable() && !GameObject::IsDeleted(obj.get()))
 		{
-			activeCollidableObjects.push_back(obj);
+			activeCollidableObjects.push_back(obj.get());
 		}
 	}
 
@@ -87,21 +88,21 @@ void PlayableScene::Update(float dt)
 		{
 			for (auto other : activeCollidableObjects)
 			{
-				if (other == obj) continue;
+				if (other == obj.get()) continue;
 				if (!CollisionMatrix::IsLayerCollide(other->GetCollisionLayer(), obj->GetCollisionLayer())) continue;
 				coObjects.push_back(other);
 			}
 		}
 
-		obj->Update(dt, coObjects, sceneContext);
+		obj->Update(dt, coObjects, sceneContext.get());
 	}
 	Game::GetInstance()->GetCamera()->Update();
 	CleanupDeletedObjects();
 
 	while (!addPendingGos.empty())
 	{
-		auto& g = addPendingGos.front();
-		objects.push_back(g);
+		auto g = std::move(addPendingGos.front());
+		objects.push_back(std::move(g));
 		addPendingGos.pop();
 	}
 	HUD::GetInstance()->Update(dt);
@@ -121,7 +122,7 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 {
 	if (sceneContext == nullptr)
 	{
-		sceneContext = new SceneContext;
+		sceneContext = std::make_unique<SceneContext>();
 	}
 	sceneContext->tilemap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
 	sceneContext->addObject = [this](GameObject* go)
@@ -137,8 +138,9 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 
 	// player
 	auto playerStart = config->entityData.playerStarts;
-	sceneContext->mario = new Mario(playerStart.x, playerStart.y);
-	objects.push_back(sceneContext->mario);
+	auto mario = std::make_unique<Mario>(playerStart.x, playerStart.y);
+	sceneContext->mario = mario.get();
+	objects.push_back(std::move(mario));
 	if (ctx.has_value())
 	{
 		sceneContext->mario->SetPowerLevel(ctx.value().marioPower);
@@ -153,107 +155,93 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	// goomba
 	for (const auto& gPos : config->entityData.goombaStarts)
 	{
-		const auto gb = new Goomba(gPos, config->biome);
-		objects.push_back(gb);
+		objects.push_back(std::make_unique<Goomba>(gPos, config->biome));
 	}
 
 	// koopa 
 	for (const auto& kPos : config->entityData.koopaStarts)
 	{
-		const auto kp = new Koopa(kPos, config->biome);
-		objects.push_back(kp);
+		objects.push_back(std::make_unique<Koopa>(kPos, config->biome));
 	}
 
 	// Winged koopa
 	for (const auto& fkPos : config->entityData.WingedKoopaStarts)
 	{
-		const auto fk = new Koopa(fkPos, config->biome, KoopaForm::Winged);
-		objects.push_back(fk);
+		objects.push_back(std::make_unique<Koopa>(fkPos, config->biome, KoopaForm::Winged));
 	}
 	//cheep cheeps
 	for (const auto& ccData : config->entityData.cheepCheeps)
 	{
-		const auto cc = new CheepCheeps(ccData.startPosition, config->biome, ccData.isRed);
-		objects.push_back(cc);
+		objects.push_back(std::make_unique<CheepCheeps>(ccData.startPosition, config->biome, ccData.isRed));
 	}
 	//bloopers
 	for (const auto& bData : config->entityData.bloopers)
 	{
-		const auto b = new Bloopers(bData.lowestLimit, bData.highestLimit, config->biome);
-		objects.push_back(b);
+		objects.push_back(std::make_unique<Bloopers>(bData.lowestLimit, bData.highestLimit, config->biome));
 	}
 
 	// Bowser
 	if (config->entityData.bowserStart.has_value())
 	{
 		const auto bowserStart = config->entityData.bowserStart.value();
-		const auto bowser = new Bowser(bowserStart.x, bowserStart.y, sceneContext->mario);
-		objects.push_back(bowser);
+		objects.push_back(std::make_unique<Bowser>(bowserStart.x, bowserStart.y, sceneContext->mario));
 	}
 
 	// FireShooter
 	for (const auto& fsPos : config->entityData.fireShooters)
 	{
-		const auto fs = new FireShooter(fsPos.position.x, fsPos.position.y, fsPos.shootDirection);
-		objects.push_back(fs);
+		objects.push_back(std::make_unique<FireShooter>(fsPos.position.x, fsPos.position.y, fsPos.shootDirection));
 	}
 
 	// question
 	for (const auto& qbData : config->entityData.questionBlocks)
 	{
-		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, config->biome, false);
-		objects.push_back(qb);
+		objects.push_back(std::make_unique<QuestionBlock>(qbData.position, qbData.dropType, config->biome, false));
 	}
 
 	//bricks
 	for (const auto& qbData : config->entityData.brickBlocks)
 	{
-		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, config->biome, true, qbData.isHidden);
-		objects.push_back(qb);
+		objects.push_back(std::make_unique<QuestionBlock>(qbData.position, qbData.dropType, config->biome, true, qbData.isHidden));
 	}
 
 
 	// coins
 	for (const auto& cPos : config->entityData.coins)
 	{
-		const auto coin = new Coin(cPos, config->biome);
-		objects.push_back(coin);
+		objects.push_back(std::make_unique<Coin>(cPos, config->biome));
 	}
 
 	// jetpack
 	for (const auto& cPos : config->entityData.jetpackStart)
 	{
-		const auto jp = new MarioJetPack(cPos);
-		objects.push_back(jp);
+		objects.push_back(std::make_unique<MarioJetPack>(cPos));
 	}
 
 	// next level portal
 	for (const auto& pPos : config->entityData.nextLevelsData)
 	{
-		const auto portal = new NextLevelPortal(pPos.zone, pPos.levelToLoad, pPos.delaySeconds);
-		objects.push_back(portal);
+		objects.push_back(std::make_unique<NextLevelPortal>(pPos.zone, pPos.levelToLoad, pPos.delaySeconds));
 	}
 
 	// fire trap
 	for (const auto& pPos : config->entityData.fireballTraps)
 	{
-		const auto trap = new FireballTrap(pPos);
-		objects.push_back(trap);
+		objects.push_back(std::make_unique<FireballTrap>(pPos));
 	}
 
 	// flagpole
 	if (config->entityData.flagPole.has_value())
 	{
 		const auto flag = config->entityData.flagPole.value();
-		objects.push_back(new FlagPole(flag.zone, flag.moveToPosition));
+		objects.push_back(std::make_unique<FlagPole>(flag.zone, flag.moveToPosition));
 	}
 
 
 	// pipes
 	for (const auto& pipeData : config->entityData.pipes)
 	{
-		const auto pipe = new Pipe(pipeData);
-		objects.push_back(pipe);
+		objects.push_back(std::make_unique<Pipe>(pipeData));
 	}
 
 	// background music
@@ -261,7 +249,7 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		AudioManager::GetInstance()->PlayMusic(config->entityData.backgroundMusicID.value());
 	}
-	levelTimer = new Timer(timeLeftForLevel);
+	levelTimer = std::make_unique<Timer>(timeLeftForLevel);
 	levelTimer->Start();
 
 	// background color
@@ -271,30 +259,26 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	// clear screen color trigger
 	for (const auto& colorTriggerData : config->entityData.clearScreenColorTriggers)
 	{
-		const auto colorTrigger = new ClearScreenColorTrigger(colorTriggerData.zone, colorTriggerData.color);
-		objects.push_back(colorTrigger);
+		objects.push_back(std::make_unique<ClearScreenColorTrigger>(colorTriggerData.zone, colorTriggerData.color));
 	}
 
 	// enter water trigger
 	for (const auto& waterTriggerData : config->entityData.waterTriggers)
 	{
-		const auto waterTrigger = new InWaterTrigger(waterTriggerData.zone, waterTriggerData.inWater);
-		objects.push_back(waterTrigger);
+		objects.push_back(std::make_unique<InWaterTrigger>(waterTriggerData.zone, waterTriggerData.inWater));
 	}
 
 	// music trigger
 	for (const auto& mData : config->entityData.musicTriggers)
 	{
-		const auto musicTrigger = new BgMusicTrigger(mData.id, mData.zone);
-		objects.push_back(musicTrigger);
+		objects.push_back(std::make_unique<BgMusicTrigger>(mData.id, mData.zone));
 	}
 
 	// enter castle trigger
 	if (config->entityData.enterCastleTrigger.has_value())
 	{
 		const auto& data = config->entityData.enterCastleTrigger.value();
-		const auto enterCastleTrigger = new EnterCastleTrigger(data, config->biome);
-		objects.push_back(enterCastleTrigger);
+		objects.push_back(std::make_unique<EnterCastleTrigger>(data, config->biome));
 	}
 }
 
@@ -302,21 +286,15 @@ void PlayableScene::UnLoad()
 {
 	AudioManager::GetInstance()->StopAll();
 
-	for (auto& ob : objects)
-	{
-		delete ob;
-		ob = nullptr;
-	}
 	objects.clear();
 
 	while (!addPendingGos.empty())
 	{
-		delete addPendingGos.front();
 		addPendingGos.pop();
 	}
 
-	delete sceneContext;
 	sceneContext = nullptr;
+	levelTimer = nullptr;
 }
 
 void PlayableScene::Render()
@@ -335,9 +313,10 @@ void PlayableScene::Render()
 		if (!obj->IsActive())
 			continue;
 
-		renderQueue.emplace(obj->GetRenderIndex(), [&obj]
+		auto object = obj.get();
+		renderQueue.emplace(object->GetRenderIndex(), [object]
 			{
-				obj->Render();
+				object->Render();
 			});
 	}
 
@@ -352,26 +331,21 @@ void PlayableScene::Render()
 
 void PlayableScene::CleanupDeletedObjects()
 {
-	for (auto it = objects.begin(); it != objects.end(); ++it)
-	{
-		GameObject* o = *it;
-		if (GameObject::IsDeleted(o))
-		{
-			delete o;
-			*it = nullptr;
-		}
-	}
-
 	objects.erase(
 		std::remove_if(objects.begin(), objects.end(),
-			[](const GameObject* o)
+			[](const unique_ptr<GameObject>& o)
 			{
-				return o == nullptr;
+				return GameObject::IsDeleted(o.get());
 			}),
 		objects.end());
 }
 
 void PlayableScene::AddObject(GameObject* go)
 {
-	addPendingGos.push(go);
+	AddObject(unique_ptr<GameObject>(go));
+}
+
+void PlayableScene::AddObject(unique_ptr<GameObject> go)
+{
+	addPendingGos.push(std::move(go));
 }

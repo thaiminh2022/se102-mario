@@ -404,7 +404,7 @@ void Game::SwitchScene()
 
 
 	currentSceneID = nextSceneID;
-	auto targetScene = scenes[currentSceneID];
+	auto targetScene = scenes[currentSceneID].get();
 
 	if (useTransition)
 	{
@@ -439,10 +439,15 @@ void Game::LoadSceneAndEnterFirst()
 	
 void Game::AddScene(int id, Scene* scene)
 {
+	AddScene(id, unique_ptr<Scene>(scene));
+}
+
+void Game::AddScene(int id, unique_ptr<Scene> scene)
+{
 	if (scenes.find(id) != scenes.end())
 		return;
 
-	scenes[id] = scene;
+	scenes[id] = std::move(scene);
 }
 
 bool Game::HaveSceneWithID(const int id)
@@ -477,13 +482,5 @@ Game::~Game()
 
 	
 	/// =================================================
-	delete camera;
-	camera = nullptr;
-
-	for (auto& v: scenes)
-	{
-		delete v.second;
-		v.second = nullptr;
-	}
 	scenes.clear();
 }

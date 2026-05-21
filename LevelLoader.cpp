@@ -74,10 +74,10 @@ Tilemap* LevelLoader::GetTilemapForLevel(const int level)
 
 		if (tilemap == nullptr)
 			return nullptr;
-		tilemaps[level] = tilemap;
+		tilemaps[level] = std::move(tilemap);
 	}
 
-	return tilemaps[level];
+	return tilemaps[level].get();
 }
 
 /// Parse the [worldMap.ldtk] json file and store in memory
@@ -118,7 +118,7 @@ void LevelLoader::Init()
 }
 
 
-Tilemap *LevelLoader::ParseLevel(int level)
+unique_ptr<Tilemap> LevelLoader::ParseLevel(int level)
 {
 	if (!worldMap.has_value())
 	{
@@ -178,7 +178,7 @@ Tilemap *LevelLoader::ParseLevel(int level)
 	}
 
 
-	const auto config = new TilemapConfig(
+	auto config = std::make_unique<TilemapConfig>(
 		entitiesData,
 		levelData.pxWid,
 		levelData.pxHei,
@@ -190,8 +190,7 @@ Tilemap *LevelLoader::ParseLevel(int level)
 		levelBiome
 	);
 
-	const auto tilemap = new Tilemap(config);
-	return tilemap;
+	return std::make_unique<Tilemap>(std::move(config));
 }
 
 LayerInstance* LevelLoader::GetLayerWithIdentifier(

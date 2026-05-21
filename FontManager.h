@@ -1,12 +1,14 @@
 #pragma once
 #include <d3dx10math.h>
 #include "Rect.h"
+#include <memory>
 #include <unordered_map>
 
 #include "Color.h"
 #include "Vector2.h"
 
 using std::unordered_map;
+using std::unique_ptr;
 
 enum FontWeight : UINT16
 {
@@ -68,8 +70,19 @@ struct FontDrawConfig
 /// https://learn.microsoft.com/en-us/windows/win32/direct3d9/id3dxfont--drawtext
 class FontManager
 {
+	struct FontReleaser
+	{
+		void operator()(ID3DX10Font* font) const
+		{
+			if (font != nullptr)
+			{
+				font->Release();
+			}
+		}
+	};
+
 	static FontManager* _instance;
-	unordered_map<int, ID3DX10Font*> fonts;
+	unordered_map<int, unique_ptr<ID3DX10Font, FontReleaser>> fonts;
 
 public:
 	static  FontManager* GetInstance()

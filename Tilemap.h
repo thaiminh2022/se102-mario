@@ -3,21 +3,27 @@
 #include "Tile.h"
 #include "TilemapConfig.h"
 #include "Vector2.h"
+#include <memory>
 #include <vector>
 using std::vector;
+using std::unique_ptr;
 
 class Tilemap
 
 {
-	TilemapConfig* config;
+	unique_ptr<TilemapConfig> config;
 
 public:
 	explicit Tilemap(TilemapConfig* conf)
 	{
-		config = conf;
+		config = unique_ptr<TilemapConfig>(conf);
+	}
+	explicit Tilemap(unique_ptr<TilemapConfig> conf)
+	{
+		config = std::move(conf);
 	}
 	void Render() const;
-	TilemapConfig* GetConfig() const { return config; }
+	TilemapConfig* GetConfig() const { return config.get(); }
 
 	Vector2Int GetPlayerStartPosition() const
 	{

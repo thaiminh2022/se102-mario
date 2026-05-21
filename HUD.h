@@ -1,12 +1,16 @@
 #pragma once
 #include "UIElement.h"
+#include <memory>
 #include <vector>
 #include "UILabel.h"
+
+using std::unique_ptr;
+
 class HUD
 {
 private:
 	static HUD* _instance;
-	std::vector<UIElement*> elements;
+	std::vector<unique_ptr<UIElement>> elements;
 	UILabel* scoreLabel;
 	UILabel* coinLabel;
 	UILabel* lifeLabel;
@@ -22,7 +26,7 @@ public:
 	void Hide();
 	UIElement* GetElement(int index) {
 		if (index < 0 || index >= elements.size()) return nullptr;
-		return elements[index];
+		return elements[index].get();
 	}
 };
 

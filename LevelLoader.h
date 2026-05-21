@@ -6,24 +6,23 @@
 #include "SceneEntityData.h"
 #include "Tile.h"
 #include "Tilemap.h"
+#include <memory>
 #include "unordered_map"
-#include <fstream>
 
 using std::vector;
-using std::wstring;
-using std::ifstream;
 using std::unordered_map;
 using std::string;
+using std::unique_ptr;
 
 
 class LevelLoader
 {
 	static LevelLoader* _instance;
-	unordered_map<int, Tilemap*> tilemaps;
+	unordered_map<int, unique_ptr<Tilemap>> tilemaps;
 	unordered_map<string, vector<EntityInstance*>> levelEntitiesCache;
 	Optional<WorldMap> worldMap;
 
-	Tilemap* ParseLevel(int level);
+	unique_ptr<Tilemap> ParseLevel(int level);
 	static CollisionLayer ParseCollisionLayer(vector<LayerInstance>& v);
 	static RenderLayer ParseBackgroundLayer(vector<LayerInstance>& v);
 	static Optional<RenderLayer> ParseAltLayer(vector<LayerInstance>& v);
