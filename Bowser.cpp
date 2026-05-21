@@ -1,7 +1,7 @@
 #include "Bowser.h"
 #include "StatManager.h"
 
-Bowser::Bowser(int startX, int startY, Mario* mario) : GameObject(startX, startY)
+Bowser::Bowser(int startX, int startY, Mario* mario) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
 {
 	auto t = Textures::GetInstance()->Get(BOWSER_TEX_ID);
 	auto sp = Sprites::GetInstance();
@@ -64,9 +64,9 @@ Bowser::Bowser(int startX, int startY, Mario* mario) : GameObject(startX, startY
 	isGrounded = false;
 	isDead = false;
 
-	BOWSER_JUMP_INTERVAL = 1 + rand() % 3; //random jump interval between 1 to 3 seconds
-	BOWSER_FIRE_BREATH_INTERVAL = 2 + rand() % 3; //random fire breath interval between 2 to 4 seconds
-	BOWSER_HAMMERTHROW_INTERVAL = 1 + rand() % 3; //random hammer throw interval between 1 to 3 seconds
+	BOWSER_JUMP_INTERVAL = static_cast<float>(1 + rand() % 3); //random jump interval between 1 to 3 seconds
+	BOWSER_FIRE_BREATH_INTERVAL = static_cast<float>(2 + rand() % 3); //random fire breath interval between 2 to 4 seconds
+	BOWSER_HAMMERTHROW_INTERVAL = static_cast<float>(1 + rand() % 3); //random hammer throw interval between 1 to 3 seconds
 }
 
 void Bowser::SetState(BowserState newState)
@@ -75,8 +75,8 @@ void Bowser::SetState(BowserState newState)
 	switch (state)
 	{
 	case BowserState::Stop:
-		velocity.x = 0;
-		velocity.y = 0;
+		velocity.x = 0.0f;
+		velocity.y = 0.0f;
 		break;
 	case BowserState::Walking:
 		velocity.x = moveLeft ? -BOWSER_WALKING_SPEED : BOWSER_WALKING_SPEED;
@@ -87,8 +87,8 @@ void Bowser::SetState(BowserState newState)
 		break;
 	case BowserState::Dead:
 	case BowserState::Falling:
-		velocity.x = 0;
-		velocity.y = 0;
+		velocity.x = 0.0f;
+		velocity.y = 0.0f;
 		isCollidable = false;
 		break;
 	}
@@ -219,7 +219,7 @@ void Bowser::TimerHandler(float dt, SceneContext* ctx)
 			FireBreathAttack(ctx);
 
 			// Reset the cooldown timer for the NEXT attack
-			BOWSER_FIRE_BREATH_INTERVAL = 3 + rand() % 3;
+			BOWSER_FIRE_BREATH_INTERVAL = static_cast<float>(3 + rand() % 3);
 			nextFireBreathingTimer = Timer(BOWSER_FIRE_BREATH_INTERVAL);
 			nextFireBreathingTimer.Start();
 			if (isGrounded) SetState(BowserState::Walking);
@@ -245,7 +245,7 @@ void Bowser::TimerHandler(float dt, SceneContext* ctx)
 		{
 			HammerThrowAttack(ctx);
 
-			BOWSER_HAMMERTHROW_INTERVAL = 1 + rand() % 3;
+			BOWSER_HAMMERTHROW_INTERVAL = static_cast<float>(1 + rand() % 3);
 			nextHammerThrowTimer = Timer(BOWSER_HAMMERTHROW_INTERVAL);
 			nextHammerThrowTimer.Start();
 		}
@@ -269,7 +269,7 @@ void Bowser::TimerHandler(float dt, SceneContext* ctx)
 		int jumpDir = rand() % 2;// 0 or 1
 		moveLeft = (jumpDir == 0);
 
-		BOWSER_JUMP_INTERVAL = 1 + rand() % 3;
+		BOWSER_JUMP_INTERVAL = static_cast<float>(1 + rand() % 3);
 		nextJumpTimer = Timer(BOWSER_JUMP_INTERVAL);
 		nextJumpTimer.Start();
 
@@ -297,8 +297,8 @@ void Bowser::HammerThrowAttack(SceneContext* ctx)
 	{
 		wait += index * 0.03f;
 
-		int spawnX = static_cast<int>(position.x);
-		int spawnY = static_cast<int>(position.y);
+		float spawnX = position.x;
+		float spawnY = position.y;
 		auto h = new BowserHammer(spawnX, spawnY, isFacingRight, wait);
 		ctx->addObject(h);
 	}
@@ -310,8 +310,8 @@ void Bowser::HammerThrowAttack(SceneContext* ctx)
 	{
 		wait += index * 0.03f;
 
-		int spawnX = static_cast<int>(position.x);
-		int spawnY = static_cast<int>(position.y);
+		float spawnX = position.x;
+		float spawnY = position.y;
 		auto h = new BowserHammer(spawnX, spawnY, isFacingRight, wait);
 		ctx->addObject(h);
 	}
@@ -347,7 +347,7 @@ void Bowser::OnCollisionWith(CollisionEvent* event)
 		}
 		else if (event->normalizedDir.y > 0 && event->otherTile->IsBlocking())
 		{
-			position.y = event->otherTile->worldY + event->otherTile->tileHeight;
+			position.y = static_cast<float>(event->otherTile->worldY + event->otherTile->tileHeight);
 			if (state == BowserState::Jumping)
 				SetState(BowserState::Walking);
 		}

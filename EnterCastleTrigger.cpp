@@ -82,7 +82,7 @@ void EnterCastleTrigger::Update(const float dt, vector<GameObject*>& coObjects, 
 
 			if (flagPosition.y < flagMoveTo.y)
 			{
-				flagPosition.y = flagMoveTo.y;
+				flagPosition.y = static_cast<float>(flagMoveTo.y);
 				flagFinishMoving = true;
 			}
 		}

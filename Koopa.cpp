@@ -198,7 +198,7 @@ void Koopa::OnCollisionWith(CollisionEvent* event)
 			}
 			else if (event->normalizedDir.y > 0 && event->otherTile->IsBlocking())
 			{
-				position.y = event->otherTile->worldY + event->otherTile->tileHeight;
+				position.y = static_cast<float>(event->otherTile->worldY + event->otherTile->tileHeight);
 			}
 		}
 

@@ -48,7 +48,7 @@ void LevelTransitionScene::Render()
 
 	for (int i = 0; i < Texts.size(); i++)
 	{
-		float x = i * 150;
+		float x = static_cast<float>(i * 150);
 		float y = 0;
 		if (i == 1)
 		{

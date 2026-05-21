@@ -70,23 +70,23 @@ void Mario::SetExitPipe(const MarioPipeCtx& returnPipeData)
 	const auto& pipeRect = pipeExitingData.returnZone;
 	if (pipeExitingData.dir == Vector2Int::Up())
 	{
-		position.x = pipeRect.left + 8;
-		position.y = pipeRect.bottom;
+		position.x = static_cast<float>(pipeRect.left) + 8.0f;
+		position.y = static_cast<float>(pipeRect.bottom);
 	}
 	if (pipeExitingData.dir == Vector2Int::Down())
 	{
-		position.x = pipeRect.left + 8;
-		position.y = pipeRect.top - GetBoundingBox().GetHeight();
+		position.x = static_cast<float>(pipeRect.left) + 8.0f;
+		position.y = static_cast<float>(pipeRect.top - GetBoundingBox().GetHeight());
 	}
 	if (pipeExitingData.dir == Vector2Int::Left())
 	{
-		position.x = pipeRect.right;
-		position.y = pipeRect.bottom - GetBoundingBox().GetHeight();
+		position.x = static_cast<float>(pipeRect.right);
+		position.y = static_cast<float>(pipeRect.bottom - GetBoundingBox().GetHeight());
 	}
 	if (pipeExitingData.dir == Vector2Int::Right())
 	{
-		position.x = pipeRect.left - GetBoundingBox().GetWidth();
-		position.y = pipeRect.bottom - GetBoundingBox().GetHeight();
+		position.x = static_cast<float>(pipeRect.left - GetBoundingBox().GetWidth());
+		position.y = static_cast<float>(pipeRect.bottom - GetBoundingBox().GetHeight());
 	}
 
 	Game::GetInstance()->GetCamera()->SetPosition(position.x - 64, 0);

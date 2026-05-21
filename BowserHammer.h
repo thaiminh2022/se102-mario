@@ -35,7 +35,7 @@ class BowserHammer :public GameObject
 	BowserHammerState state;
 	Timer waitTimer;
 public:
-	BowserHammer(int startX, int startY, bool isFacingRight, float waitTime);
+	BowserHammer(float startX, float startY, bool isFacingRight, float waitTime);
 	void SetState(BowserHammerState newState);
 	void SetRandomVelocity();
 	bool IsBlocking() override { return false; }

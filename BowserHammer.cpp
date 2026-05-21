@@ -1,6 +1,6 @@
 #include "BowserHammer.h"
 #include "Fireball.h"
-BowserHammer::BowserHammer(int startX, int startY, bool isFacingRight, float waitTime) : GameObject(startX, startY), waitTimer(waitTime)
+BowserHammer::BowserHammer(float startX, float startY, bool isFacingRight, float waitTime) : GameObject(startX, startY), waitTimer(waitTime)
 {
 	auto t = Textures::GetInstance()->Get(BOWSER_ITEM_BULLET_TEX_ID);
 	auto sp = Sprites::GetInstance();
@@ -37,7 +37,7 @@ void BowserHammer::SetState(BowserHammerState newState)
 		isDeleted = false;
 		break;
 	case BowserHammerState::Discarded:
-		velocity.x = 0;
+		velocity.x = 0.0f;
 		isCollidable = false;
 		isDeleted = true;
 		break;
@@ -48,8 +48,8 @@ void BowserHammer::SetRandomVelocity()
 {
 	int randomX = rand() % 70 + 80; // 80 to 150
 	int randomY = rand() % 50 + 250; // 250 to 300
-	velocity.x = isFacingRight ? randomX : -randomX;
-	velocity.y = -randomY;
+	velocity.x = static_cast<float>(isFacingRight ? randomX : -randomX);
+	velocity.y = static_cast<float>(-randomY);
 }
 
 void BowserHammer::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)

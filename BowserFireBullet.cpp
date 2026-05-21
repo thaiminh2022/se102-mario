@@ -1,7 +1,7 @@
 #include "BowserFireBullet.h"
 #include "Fireball.h"
 
-BowserFireBullet::BowserFireBullet(int startX, int startY, bool isFacingRight, float targetHeight, bool heightReached, bool isAlwaysActive) : GameObject(startX, startY)
+BowserFireBullet::BowserFireBullet(float startX, float startY, bool isFacingRight, float targetHeight, bool heightReached, bool isAlwaysActive) : GameObject(startX, startY)
 {
 	auto t = Textures::GetInstance()->Get(BOWSER_ITEM_BULLET_TEX_ID);
 	auto sp = Sprites::GetInstance();

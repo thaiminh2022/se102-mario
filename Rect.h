@@ -38,6 +38,17 @@ struct Rect
 	{
 		return Rect{ static_cast<int>(left), static_cast<int>(top), static_cast<int>(left) + width, static_cast<int>(top) + height };
 	}
+	static Rect FromXYWH(float left, float top, float width, float height)
+	{
+		const int rectLeft = static_cast<int>(std::round(left));
+		const int rectTop = static_cast<int>(std::round(top));
+		return Rect{
+			rectLeft,
+			rectTop,
+			rectLeft + static_cast<int>(std::round(width)),
+			rectTop + static_cast<int>(std::round(height))
+		};
+	}
 
 	Rect(const RECT& r) {
 		left = r.left;
