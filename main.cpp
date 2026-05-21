@@ -75,7 +75,7 @@ void Render()
 		Optional<D3DXCOLOR> clearColor = g->GetBackgroundColor();
 
 		// clear the background
-		pD3DDevice->ClearRenderTargetView(pRenderTargetView, clearColor.hasValue ? clearColor.value : BACKGROUND_COLOR);
+		pD3DDevice->ClearRenderTargetView(pRenderTargetView, clearColor.has_value() ? clearColor.value() : BACKGROUND_COLOR);
 
 		spriteHandler->Begin(D3DX10_SPRITE_SORT_TEXTURE);
 

@@ -62,12 +62,12 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 		if (!pipeData.isTeleportPipe)
 		{
-			if (!pipeData.nextLevelToLoad.hasValue)
+			if (!pipeData.nextLevelToLoad.has_value())
 				return;
 
-			if (pipeData.returnPipeData.hasValue)
+			if (pipeData.returnPipeData.has_value())
 			{
-				auto returnData = pipeData.returnPipeData.value;
+				auto returnData = pipeData.returnPipeData.value();
 				auto marioPipeCtx = MarioPipeCtx{
 					returnData.returnDirection,
 					returnData.returnRect,
@@ -76,26 +76,26 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 				Optional<SceneSwitchContext> switchCtx = SceneSwitchContext::PipeTransition(marioPipeCtx, ctx->mario->GetPowerLevel());
 
 				Game::GetInstance()
-					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, switchCtx);
+					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value(), switchCtx);
 			}
 			else
 			{
 				Game::GetInstance()
-					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value, SceneSwitchContext::NormalTransition(ctx->mario->GetPowerLevel()));
+					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value(), SceneSwitchContext::NormalTransition(ctx->mario->GetPowerLevel()));
 			}
 		}else
 		{
-			if (pipeData.teleportToPosition.hasValue)
+			if (pipeData.teleportToPosition.has_value())
 			{
 				Game::GetInstance()->GetCamera()->SetPosition(0, 0);
-				ctx->mario->SetPosition(pipeData.teleportToPosition.value);
+				ctx->mario->SetPosition(pipeData.teleportToPosition.value());
 				ctx->mario->ResetRender();
 				ctx->mario->ResetState();
 				pipeState = PipeState::Blocked;
 			}
-			else if (pipeData.returnPipeData.hasValue)
+			else if (pipeData.returnPipeData.has_value())
 			{
-				auto returnData = pipeData.returnPipeData.value;
+				auto returnData = pipeData.returnPipeData.value();
 				auto marioPipeCtx = MarioPipeCtx{
 					returnData.returnDirection,
 					returnData.returnRect,

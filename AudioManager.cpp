@@ -221,7 +221,7 @@ void AudioManager::Update()
 
 bool AudioManager::LoadWAV(int id, LPCWSTR filePath)
 {
-    if (GetIdForWAVFile(filePath).hasValue)
+    if (GetIdForWAVFile(filePath).has_value())
         return false;
 
 

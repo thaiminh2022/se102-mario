@@ -43,9 +43,9 @@ EnterCastleTrigger::EnterCastleTrigger(const EnterCastleTriggerData& data, Biome
 	// castle flag
 	const auto& itemTex = Textures::GetInstance()->Get(ChooseItemsId(biome));
 	sprites->Add(CASTLE_FLAG_SPRITE_1, 16, 64, 31, 79, itemTex);
-	if (data.flagMoveTo.hasValue)
+	if (data.flagMoveTo.has_value())
 	{
-		flagPosition = data.flagMoveTo.value + Vector2Int(0, 64);
+		flagPosition = data.flagMoveTo.value() + Vector2Int(0, 64);
 		flagFinishMoving = false;
 	}
 }
@@ -72,9 +72,9 @@ void EnterCastleTrigger::Update(const float dt, vector<GameObject*>& coObjects, 
 		}
 	}
 
-	if (data.flagMoveTo.hasValue && !flagFinishMoving)
+	if (data.flagMoveTo.has_value() && !flagFinishMoving)
 	{
-		const auto& flagMoveTo = data.flagMoveTo.value;
+		const auto& flagMoveTo = data.flagMoveTo.value();
 		if (flagPosition.y > flagMoveTo.y)
 		{
 			constexpr float speed = 15.0f;
@@ -104,7 +104,7 @@ void EnterCastleTrigger::Render()
 			->Render(renderX, renderY, false, false);
 	}
 
-	if (data.flagMoveTo.hasValue)
+	if (data.flagMoveTo.has_value())
 	{
 		float renderX, renderY;
 		Game::GetInstance()->GetCamera()->WorldToScreen(flagPosition.x, flagPosition.y, renderX, renderY);

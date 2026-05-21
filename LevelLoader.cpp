@@ -18,7 +18,10 @@
 #include "Vector2.h"
 
 using json = nlohmann::json;
-using namespace std;
+using std::ifstream;
+using std::string;
+using std::vector;
+using std::wstring;
 LevelLoader *LevelLoader::_instance = nullptr;
 
 
@@ -99,9 +102,9 @@ void LevelLoader::Init()
 
 	ifstream f(WORLD_PATH);
 	const auto data = json::parse(f);
-	worldMap.Set(data.get<WorldMap>());
+	worldMap.emplace(data.get<WorldMap>());
 
-	for (auto i = 0; i < worldMap.value.levels.size(); i++)
+	for (auto i = 0; i < worldMap.value().levels.size(); i++)
 	{
 		if (Game::GetInstance()->HaveSceneWithID(i))
 			continue;
@@ -117,22 +120,22 @@ void LevelLoader::Init()
 
 Tilemap *LevelLoader::ParseLevel(int level)
 {
-	if (!worldMap.hasValue)
+	if (!worldMap.has_value())
 	{
 		// what happened lol, though you got init innit?
 		Init();
 	}
 
-	auto& map = worldMap.value;
+	auto& map = worldMap.value();
 	if (level >= map.levels.size())
 		return nullptr;
 	
 	auto& levelData = map.levels[level];
-	if (!levelData.layerInstances.hasValue)
+	if (!levelData.layerInstances.has_value())
 	{
 		return nullptr;
 	}
-	auto& layersValue = levelData.layerInstances.value;
+	auto& layersValue = levelData.layerInstances.value();
 	/// -----
 	vector<RenderLayer> renderLayers;
 	const auto col = ParseCollisionLayer(layersValue);
@@ -141,23 +144,23 @@ Tilemap *LevelLoader::ParseLevel(int level)
 	const auto entitiesData = ParseEntityLayer(level, layersValue);
 	renderLayers.push_back(r1);
 
-	if (r2.hasValue)
+	if (r2.has_value())
 	{
-		renderLayers.push_back(r2.value);
+		renderLayers.push_back(r2.value());
 	}
 
 	
 	Optional<Color> bgColor;
 	if (!levelData.bgColor.empty())
 	{
-		bgColor.Set(Color(levelData.bgColor));
+		bgColor.emplace(Color(levelData.bgColor));
 	}
 
 	const auto biomeJson = GetFieldValueWithIdentifier(levelData.fieldInstances, "Biome");
 	auto levelBiome = BiomeType::Overworld;
-	if (biomeJson.hasValue)
+	if (biomeJson.has_value())
 	{
-		auto biome = biomeJson.value.get<string>();
+		auto biome = biomeJson.value().get<string>();
 		if (biome == "Overworld")
 		{
 			levelBiome = BiomeType::Overworld;
@@ -246,9 +249,9 @@ RenderLayer LevelLoader::ParseBackgroundLayer(vector<LayerInstance>& v)
 	auto texturePath = layerData->tilesetRelPath;
 	wstring path;
 	
-	if (texturePath.hasValue)
+	if (texturePath.has_value())
 	{
-		path = wstring(texturePath.value.begin(), texturePath.value.end());
+		path = wstring(texturePath.value().begin(), texturePath.value().end());
 	}
 
 	if (!Textures::GetInstance()->HaveTextureWithPath(path, tID))
@@ -292,9 +295,9 @@ Optional<RenderLayer> LevelLoader::ParseAltLayer(vector<LayerInstance>& v)
 	auto texturePath = layerData->tilesetRelPath;
 	wstring path;
 
-	if (texturePath.hasValue)
+	if (texturePath.has_value())
 	{
-		path = wstring(texturePath.value.begin(), texturePath.value.end());
+		path = wstring(texturePath.value().begin(), texturePath.value().end());
 	}else
 	{
 		return {};
@@ -369,12 +372,12 @@ void LevelLoader::ParseCheepCheeps(SceneEntityData& sceneEntities, std::vector<E
 	for (const auto& g : cheepCheeps)
 	{
 		const auto isRedJson = GetFieldValueWithIdentifier(g->fieldInstances, "is_red");
-		if (!isRedJson.hasValue)
+		if (!isRedJson.has_value())
 			continue;
 
 		sceneEntities.cheepCheeps.emplace_back(
 			Vector2Int(g->px[0], g->px[1]), 
-			isRedJson.value.get<bool>());
+			isRedJson.value().get<bool>());
 	}
 }
 
@@ -387,11 +390,11 @@ void LevelLoader::ParseBloopers(SceneEntityData& sceneEntities, std::vector<Enti
 		const auto highestLimitJson = GetFieldValueWithIdentifier(g->fieldInstances, "highest_limit");
 
 
-		if (!lowestLimitJson.hasValue || !highestLimitJson.hasValue)
+		if (!lowestLimitJson.has_value() || !highestLimitJson.has_value())
 			continue;
 
-		const auto lowestLimit = lowestLimitJson.value.get<LDTKPoint>();
-		const auto highestLimit = highestLimitJson.value.get<LDTKPoint>();
+		const auto lowestLimit = lowestLimitJson.value().get<LDTKPoint>();
+		const auto highestLimit = highestLimitJson.value().get<LDTKPoint>();
 
 		sceneEntities.bloopers.emplace_back(
 			Vector2Int(lowestLimit.cx * 16, lowestLimit.cy * 16), 
@@ -414,7 +417,7 @@ void LevelLoader::ParseBowsers(SceneEntityData& sceneEntities, vector<EntityInst
 	if (!bowserStart.empty())
 	{
 		const auto s = bowserStart[0]; // only 1 per level;
-		sceneEntities.bowserStart.Set(Vector2Int(s->px[0], s->px[1]));
+		sceneEntities.bowserStart.emplace(Vector2Int(s->px[0], s->px[1]));
 	}
 }
 
@@ -427,14 +430,14 @@ void LevelLoader::ParseBridge(SceneEntityData& sceneEntities, vector<EntityInsta
 	{
 		const auto s = bridge[0]; // only 1 per level;
 		auto axePosJson = GetFieldValueWithIdentifier(s->fieldInstances, "");
-		if (axePosJson.hasValue)
+		if (axePosJson.has_value())
 		{
-			const auto axePos = axePosJson.value.get<LDTKPoint>();
+			const auto axePos = axePosJson.value().get<LDTKPoint>();
 
 			const auto bridgeRect = Rect::FromXYWH(
 				s->px[0], s->px[1], s->width, s->height
 			);
-			sceneEntities.bridge.Set(BridgeData{
+			sceneEntities.bridge.emplace(BridgeData{
 				bridgeRect,
 				Vector2Int(axePos.cx * 16, axePos.cy * 16),
 			});
@@ -485,11 +488,11 @@ void LevelLoader::ParseBrickBlock(SceneEntityData& sceneEntities, vector<EntityI
 		auto blockDropJson = GetFieldValueWithIdentifier(g->fieldInstances, "BrickBlockDropType");
 		auto isHiddenJson = GetFieldValueWithIdentifier(g->fieldInstances, "is_hidden");
 
-		if (!blockDropJson.hasValue || !isHiddenJson.hasValue)
+		if (!blockDropJson.has_value() || !isHiddenJson.has_value())
 			continue;
 
-		auto blockDrop = blockDropJson.value.get<string>();
-		auto isHidden = isHiddenJson.value.get<bool>();
+		auto blockDrop = blockDropJson.value().get<string>();
+		auto isHidden = isHiddenJson.value().get<bool>();
 
 		auto blockDropValue = BlockDropType::None;
 		if (blockDrop == "Coin")
@@ -538,13 +541,13 @@ void LevelLoader::ParseNextLevelZone(SceneEntityData& sceneEntities, vector<Enti
 		auto nextLevel = GetFieldValueWithIdentifier(g->fieldInstances, "level_to_load");
 		auto delay = GetFieldValueWithIdentifier(g->fieldInstances, "load_delay");
 
-		if (!nextLevel.hasValue || !delay.hasValue)
+		if (!nextLevel.has_value() || !delay.has_value())
 		{
 			continue;
 		}
 
-		int nextLevelValue = -nextLevel.value.get<int>();
-		float delayValue = delay.value.get<float>();
+		int nextLevelValue = -nextLevel.value().get<int>();
+		float delayValue = delay.value().get<float>();
 
 		NextLevelData data{
 			zone,
@@ -565,13 +568,13 @@ void LevelLoader::ParseBackgroundMusic(int level, SceneEntityData& sceneEntities
 		const auto audioJson = GetFieldValueWithIdentifier(bgMusic->fieldInstances, "Audio");
 		const auto isTriggerJson = GetFieldValueWithIdentifier(bgMusic->fieldInstances, "is_trigger");
 	
-		if (!audioJson.hasValue || !isTriggerJson.hasValue)
+		if (!audioJson.has_value() || !isTriggerJson.has_value())
 		{
 			continue;
 		}
 
-		const auto audioPath = audioJson.value.get<string>();
-		const auto isTrigger = isTriggerJson.value.get<bool>();
+		const auto audioPath = audioJson.value().get<string>();
+		const auto isTrigger = isTriggerJson.value().get<bool>();
 
 		const auto utf16String = wstring(audioPath.begin(), audioPath.end());
 
@@ -580,10 +583,10 @@ void LevelLoader::ParseBackgroundMusic(int level, SceneEntityData& sceneEntities
 
 		if (isTrigger == false)
 		{
-			bgMusicId = idData.value;
+			bgMusicId = idData.value();
 		}
 
-		if (!idData.hasValue)
+		if (!idData.has_value())
 			continue;
 		const auto rect = Rect::FromXYWH(bgMusic->px[0],
 			bgMusic->px[1], 
@@ -591,7 +594,7 @@ void LevelLoader::ParseBackgroundMusic(int level, SceneEntityData& sceneEntities
 			bgMusic->height
 		);
 
-		sceneEntities.musicTriggers.push_back({idData.value, rect});
+		sceneEntities.musicTriggers.push_back({ idData.value(), rect });
 	}
 	sceneEntities.backgroundMusicID = bgMusicId;
 }
@@ -615,13 +618,13 @@ void LevelLoader::ParseFlagPole(SceneEntityData& sceneEntities, std::vector<Enti
 
 		auto moveTo = GetFieldValueWithIdentifier(flagPole->fieldInstances, "player_move_to");
 
-		if (moveTo.hasValue)
+		if (moveTo.has_value())
 		{
-			const auto moveToValue = moveTo.value.get<LDTKPoint>();
+			const auto moveToValue = moveTo.value().get<LDTKPoint>();
 			
 	
 
-			flagPoleData.Set(FlagPoleData{
+			flagPoleData.emplace(FlagPoleData{
 				Rect::FromXYWH(flagPole->px[0], flagPole->px[1], flagPole->width, flagPole->height),
 				Vector2Int(moveToValue.cx * 16, moveToValue.cy * 16),
 			});
@@ -641,44 +644,44 @@ void LevelLoader::ParsePipe(SceneEntityData& sceneEntities, std::vector<EntityIn
 		auto nextLevelJson = GetFieldValueWithIdentifier(p->fieldInstances, "level_to_load");
 		auto moveToJson = GetFieldValueWithIdentifier(p->fieldInstances, "move_to");
 
-		if (!isReturnJson.hasValue || !pipeDirectionJson.hasValue || !moveToJson.hasValue)
+		if (!isReturnJson.has_value() || !pipeDirectionJson.has_value() || !moveToJson.has_value())
 			continue;
 		
 		auto zone = Rect::FromXYWH(p->px[0], p->px[1], p->width, p->height);
-		bool isReturnPipe = isReturnJson.value.get<bool>();
-		auto pipeDir = pipeDirectionJson.value.get<string>();
-		auto moveTo = moveToJson.value.get<LDTKPoint>();
+		bool isReturnPipe = isReturnJson.value().get<bool>();
+		auto pipeDir = pipeDirectionJson.value().get<string>();
+		auto moveTo = moveToJson.value().get<LDTKPoint>();
 
 		// parse next level
 		Optional<int> nextLevel;
-		if (nextLevelJson.hasValue && !nextLevelJson.value.is_null())
+		if (nextLevelJson.has_value() && !nextLevelJson.value().is_null())
 		{
-			nextLevel.Set(-nextLevelJson.value.get<int>());
+			nextLevel.emplace(-nextLevelJson.value().get<int>());
 		}
 
 		// parse return pipe
 		Optional<ReturnPipeData> returnPipeData;
-		if (pipeRefJson.hasValue && !pipeRefJson.value.is_null())
+		if (pipeRefJson.has_value() && !pipeRefJson.value().is_null())
 		{
-			auto entityRef = pipeRefJson.value.get<LDTKEntityRef>();
+			auto entityRef = pipeRefJson.value().get<LDTKEntityRef>();
 			auto otherPipeData = ParseEntityRef(entityRef);
 
-			if (otherPipeData.hasValue)
+			if (otherPipeData.has_value())
 			{
-				const auto& otherPipe = otherPipeData.value;
+				const auto& otherPipe = otherPipeData.value();
 				auto otherReturnJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "is_return_pipe");
 				auto otherDirJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "pipe_direction");
 				auto otherMoveToJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "move_to");
 
-				if (otherReturnJson.hasValue && otherDirJson.hasValue && otherMoveToJson.hasValue)
+				if (otherReturnJson.has_value() && otherDirJson.has_value() && otherMoveToJson.has_value())
 				{
-					auto otherMoveTo = otherMoveToJson.value.get<LDTKPoint>();
+					auto otherMoveTo = otherMoveToJson.value().get<LDTKPoint>();
 
-					returnPipeData.Set({
-						PipeData::GetDirection(otherDirJson.value),
+					returnPipeData = ReturnPipeData{
+						PipeData::GetDirection(otherDirJson.value().get<string>()),
 						Rect::FromXYWH(otherPipe.px[0], otherPipe.px[1], otherPipe.width, otherPipe.height),
 						Vector2Int(otherMoveTo.cx * 16, otherMoveTo.cy * 16)
-					});
+					};
 				}
 			}
 		}
@@ -704,37 +707,37 @@ void LevelLoader::ParseTeleportPipe(SceneEntityData& sceneEntities,  vector<Enti
 		auto pipeRefJson = GetFieldValueWithIdentifier(p->fieldInstances, "teleport_to");
 		auto moveToJson = GetFieldValueWithIdentifier(p->fieldInstances, "move_to");
 
-		if (!isReturnJson.hasValue || !pipeDirectionJson.hasValue || !moveToJson.hasValue)
+		if (!isReturnJson.has_value() || !pipeDirectionJson.has_value() || !moveToJson.has_value())
 			continue;
 
 		auto zone = Rect::FromXYWH(p->px[0], p->px[1], p->width, p->height);
-		bool isReturnPipe = isReturnJson.value.get<bool>();
-		auto pipeDir = pipeDirectionJson.value.get<string>();
-		auto moveTo = moveToJson.value.get<LDTKPoint>();
+		bool isReturnPipe = isReturnJson.value().get<bool>();
+		auto pipeDir = pipeDirectionJson.value().get<string>();
+		auto moveTo = moveToJson.value().get<LDTKPoint>();
 
 		// parse return pipe
 		Optional<ReturnPipeData> returnPipeData;
-		if (pipeRefJson.hasValue && !pipeRefJson.value.is_null())
+		if (pipeRefJson.has_value() && !pipeRefJson.value().is_null())
 		{
-			auto entityRef = pipeRefJson.value.get<LDTKEntityRef>();
+			auto entityRef = pipeRefJson.value().get<LDTKEntityRef>();
 			auto otherPipeData = ParseEntityRef(entityRef);
 
-			if (otherPipeData.hasValue)
+			if (otherPipeData.has_value())
 			{
-				const auto& otherPipe = otherPipeData.value;
+				const auto& otherPipe = otherPipeData.value();
 				auto otherReturnJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "is_return_pipe");
 				auto otherDirJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "pipe_direction");
 				auto otherMoveToJson = GetFieldValueWithIdentifier(otherPipe.fieldInstances, "move_to");
 
-				if (otherReturnJson.hasValue && otherDirJson.hasValue && otherMoveToJson.hasValue)
+				if (otherReturnJson.has_value() && otherDirJson.has_value() && otherMoveToJson.has_value())
 				{
-					auto otherMoveTo = otherMoveToJson.value.get<LDTKPoint>();
+					auto otherMoveTo = otherMoveToJson.value().get<LDTKPoint>();
 
-					returnPipeData.Set({
-						PipeData::GetDirection(otherDirJson.value),
+					returnPipeData = ReturnPipeData{
+						PipeData::GetDirection(otherDirJson.value().get<string>()),
 						Rect::FromXYWH(otherPipe.px[0], otherPipe.px[1], otherPipe.width, otherPipe.height),
 						Vector2Int(otherMoveTo.cx * 16, otherMoveTo.cy * 16)
-						});
+					};
 				}
 			}
 		}
@@ -759,13 +762,13 @@ void LevelLoader::ParseInstantTeleportPipe(SceneEntityData& sceneEntities, vecto
 		auto teleportToJson = GetFieldValueWithIdentifier(p->fieldInstances, "teleport_to");
 
 
-		if (!pipeDirectionJson.hasValue || !moveToJson.hasValue || !teleportToJson.hasValue)
+		if (!pipeDirectionJson.has_value() || !moveToJson.has_value() || !teleportToJson.has_value())
 			continue;
 
 		auto zone = Rect::FromXYWH(p->px[0], p->px[1], p->width, p->height);
-		auto pipeDir = pipeDirectionJson.value.get<string>();
-		auto moveTo = moveToJson.value.get<LDTKPoint>();
-		auto teleportTo = teleportToJson.value.get<LDTKPoint>();
+		auto pipeDir = pipeDirectionJson.value().get<string>();
+		auto moveTo = moveToJson.value().get<LDTKPoint>();
+		auto teleportTo = teleportToJson.value().get<LDTKPoint>();
 
 		sceneEntities.pipes.push_back(PipeData(zone,
 			{},
@@ -786,10 +789,10 @@ void LevelLoader::ParseClearScreenColorTrigger(SceneEntityData& sceneEntities,
 	for (const auto& clrscrTrigger : clrscrTriggers)
 	{
 		const auto& colorJson = GetFieldValueWithIdentifier(clrscrTrigger->fieldInstances, "color");
-		if (!colorJson.hasValue)
+		if (!colorJson.has_value())
 			continue;
 	
-		const auto colorHex = colorJson.value.get<string>();
+		const auto colorHex = colorJson.value().get<string>();
 		const auto zone = Rect::FromXYWH(clrscrTrigger->px[0], clrscrTrigger->px[1], clrscrTrigger->width, clrscrTrigger->height);
 		const auto color = Color(colorHex);
 
@@ -804,10 +807,10 @@ void LevelLoader::ParseInWaterTrigger(SceneEntityData& sceneEntities, vector<Ent
 	for (const auto& waterTrigger : waterTriggers)
 	{
 		const auto& inWaterJson = GetFieldValueWithIdentifier(waterTrigger->fieldInstances, "in_water");
-		if (!inWaterJson.hasValue)
+		if (!inWaterJson.has_value())
 			continue;
 
-		const auto inWater = inWaterJson.value.get<bool>();
+		const auto inWater = inWaterJson.value().get<bool>();
 		const auto zone = Rect::FromXYWH(waterTrigger->px[0], waterTrigger->px[1], waterTrigger->width, waterTrigger->height);
 		sceneEntities.waterTriggers.emplace_back(zone, inWater);
 	}
@@ -826,23 +829,23 @@ void LevelLoader::ParseEnterCastleTrigger(SceneEntityData& sceneEntities, vector
 	const auto fireworkPosData = GetFieldValueWithIdentifier(inCastleTrigger->fieldInstances, "firework_positions");
 	const auto flagMoveToData = GetFieldValueWithIdentifier(inCastleTrigger->fieldInstances, "flag_move_to");
 
-	if (!fireworkPosData.hasValue)
+	if (!fireworkPosData.has_value())
 		return;
 
 	EnterCastleTriggerData data;
 	data.zone = Rect::FromXYWH(inCastleTrigger->px[0], inCastleTrigger->px[1], inCastleTrigger->width, inCastleTrigger->height);
 
 	// parse firework pos to data
-	for (const auto& ldtkPos : fireworkPosData.value.get<vector<LDTKPoint>>())
+	for (const auto& ldtkPos : fireworkPosData.value().get<vector<LDTKPoint>>())
 	{
 		data.fireworkPositions.emplace_back(ldtkPos.cx * 16, ldtkPos.cy * 16);
 	}
 
 	// parse flag move to
-	if (!flagMoveToData.hasValue || flagMoveToData.value.is_null())
+	if (!flagMoveToData.has_value() || flagMoveToData.value().is_null())
 		return;
 
-	const auto flagMoveTo = flagMoveToData.value.get<LDTKPoint>();
+	const auto flagMoveTo = flagMoveToData.value().get<LDTKPoint>();
 	data.flagMoveTo = Vector2Int(flagMoveTo.cx * 16, flagMoveTo.cy * 16);
 	
 	sceneEntities.enterCastleTrigger = data;
@@ -856,10 +859,10 @@ void LevelLoader::ParseFireShooter(SceneEntityData& sceneEntities, vector<Entity
 	for (const auto& fireShooter : fireShooters)
 	{
 		const auto& fireShooterJson = GetFieldValueWithIdentifier(fireShooter->fieldInstances, "Direction");
-		if (!fireShooterJson.hasValue)
+		if (!fireShooterJson.has_value())
 			continue;
 
-		const auto directionString = fireShooterJson.value.get<string>();
+		const auto directionString = fireShooterJson.value().get<string>();
 		Vector2Int direction;
 		if (directionString == "Up") {
 			direction = Vector2Int::Up();
@@ -973,7 +976,7 @@ Optional<json> LevelLoader::GetFieldValueWithIdentifier(const vector<FieldInstan
 	{
 		if (f.identifier == iden)
 		{
-			returnVal.Set(f.value);
+			returnVal.emplace(f.value);
 			break;
 		} 
 	}
@@ -982,16 +985,16 @@ Optional<json> LevelLoader::GetFieldValueWithIdentifier(const vector<FieldInstan
 
 Optional<EntityInstance> LevelLoader::ParseEntityRef(const LDTKEntityRef& entityRef) const
 {
-	if (!worldMap.hasValue)
+	if (!worldMap.has_value())
 		return {};
-	auto worldMapValue = worldMap.value;
+	auto worldMapValue = worldMap.value();
 	
 	for (auto& lvl : worldMapValue.levels)
 	{
 		if (lvl.iid != entityRef.levelIid)
 			continue;
 
-		for (auto& layer : lvl.layerInstances.value)
+		for (auto& layer : lvl.layerInstances.value())
 		{
 			if (layer.iid != entityRef.layerIid)
 				continue;

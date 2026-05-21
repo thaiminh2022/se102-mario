@@ -1,4 +1,4 @@
-﻿#include "Game.h"
+#include "Game.h"
 #include "GameObject.h"
 #include "LevelLoader.h"
 #include "Mario.h"
@@ -32,19 +32,20 @@
 
 using std::priority_queue;
 using std::pair;
+using std::function;
 
-typedef pair<int, std::function<void()>> render_item;
+using RenderItem = pair<int, function<void()>>;
 
 
 struct RenderCompare
 {
-	bool operator()(const render_item& a, const render_item& b) const
+	bool operator()(const RenderItem& a, const RenderItem& b) const
 	{
 		return a.first > b.first;
 	}
 };
 
-typedef priority_queue<render_item, vector<render_item>, RenderCompare> render_queue;
+using RenderQueue = priority_queue<RenderItem, vector<RenderItem>, RenderCompare>;
 
 void PlayableScene::Update(float dt)
 {
@@ -138,12 +139,12 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	auto playerStart = config->entityData.playerStarts;
 	sceneContext->mario = new Mario(playerStart.x, playerStart.y);
 	objects.push_back(sceneContext->mario);
-	if (ctx.hasValue)
+	if (ctx.has_value())
 	{
-		sceneContext->mario->SetPowerLevel(ctx.value.marioPower);
-		if (ctx.value.marioCtx.hasValue)
+		sceneContext->mario->SetPowerLevel(ctx.value().marioPower);
+		if (ctx.value().marioCtx.has_value())
 		{
-			sceneContext->mario->SetExitPipe(ctx.value.marioCtx.value);
+			sceneContext->mario->SetExitPipe(ctx.value().marioCtx.value());
 		}
 	}
 
@@ -183,9 +184,9 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	}
 
 	// Bowser
-	if (config->entityData.bowserStart.hasValue)
+	if (config->entityData.bowserStart.has_value())
 	{
-		const auto bowserStart = config->entityData.bowserStart.value;
+		const auto bowserStart = config->entityData.bowserStart.value();
 		const auto bowser = new Bowser(bowserStart.x, bowserStart.y, sceneContext->mario);
 		objects.push_back(bowser);
 	}
@@ -241,9 +242,9 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	}
 
 	// flagpole
-	if (config->entityData.flagPole.hasValue)
+	if (config->entityData.flagPole.has_value())
 	{
-		const auto flag = config->entityData.flagPole.value;
+		const auto flag = config->entityData.flagPole.value();
 		objects.push_back(new FlagPole(flag.zone, flag.moveToPosition));
 	}
 
@@ -256,9 +257,9 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	}
 
 	// background music
-	if (config->entityData.backgroundMusicID.hasValue)
+	if (config->entityData.backgroundMusicID.has_value())
 	{
-		AudioManager::GetInstance()->PlayMusic(config->entityData.backgroundMusicID.value);
+		AudioManager::GetInstance()->PlayMusic(config->entityData.backgroundMusicID.value());
 	}
 	levelTimer = new Timer(timeLeftForLevel);
 	levelTimer->Start();
@@ -289,9 +290,9 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	}
 
 	// enter castle trigger
-	if (config->entityData.enterCastleTrigger.hasValue)
+	if (config->entityData.enterCastleTrigger.has_value())
 	{
-		const auto& data = config->entityData.enterCastleTrigger.value;
+		const auto& data = config->entityData.enterCastleTrigger.value();
 		const auto enterCastleTrigger = new EnterCastleTrigger(data, config->biome);
 		objects.push_back(enterCastleTrigger);
 	}
@@ -320,7 +321,7 @@ void PlayableScene::UnLoad()
 
 void PlayableScene::Render()
 {
-	render_queue renderQueue;
+	RenderQueue renderQueue;
 	const auto tileMap = LevelLoader::GetInstance()->GetTilemapForLevel(level);
 
 

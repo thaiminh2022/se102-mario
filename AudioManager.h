@@ -78,7 +78,7 @@ public:
 		Optional<int> id{};
 		if (filePathToID.find(filePath) != filePathToID.end())
 		{
-			id.Set(filePathToID[filePath]);
+			id.emplace(filePathToID[filePath]);
 		} 
 		return id;
 	}

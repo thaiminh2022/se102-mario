@@ -368,9 +368,9 @@ Texture* Game::LoadTexture(LPCWSTR texturePath) const
 Optional<D3DXCOLOR> Game::GetBackgroundColor() const
 {
 	Optional<D3DXCOLOR> c;
-	if (bgColor.hasValue)
+	if (bgColor.has_value())
 	{
-		c.Set(bgColor.value.GetD3DXColor());
+		c.emplace(bgColor.value().GetD3DXColor());
 	}
 	return c;
 }
@@ -395,7 +395,7 @@ void Game::SwitchScene()
 
 
 	auto preferNextScene = nextSceneID;
-	auto useTransition = sceneSwitchCtx.hasValue && sceneSwitchCtx.value.useTransitionScene;
+	auto useTransition = sceneSwitchCtx.has_value() && sceneSwitchCtx.value().useTransitionScene;
 	
 	if (useTransition)
 	{
