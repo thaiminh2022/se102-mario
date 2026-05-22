@@ -1,5 +1,7 @@
 #include "MarioJetPack.h"
 
+#include <algorithm>
+
 #include "AssetIDs.h"
 #include "FontManager.h"
 #include "Game.h"
@@ -44,24 +46,20 @@ void MarioJetPack::Update(float dt, vector<GameObject*>& coObjects, SceneContext
 		isDeleted = true;
 		return;
 	}
+
 	if (state == MarioJetPackState::OnMario)
 	{
-		if (ctx->mario->GetState() == MarioState::Running)
+		if (ctx != nullptr && ctx->mario != nullptr && ctx->mario->GetState() == MarioState::Running)
 		{
-			pMeter += 50 * dt;
-
-			// clamp p meter
-			pMeter = max(pMeter, 0);
-			pMeter = min(pMeter, 100);
-			pMeter = round(pMeter);
+			pMeter += 50.0f * dt;
+			pMeter = std::clamp(pMeter, 0.0f, 100.0f);
+			if (pMeter >= 100)
+			{
+				readyToFly = true;
+			}
 		}
-	
 	}
-
-
-
 }
-
 void MarioJetPack::SetState(MarioJetPackState s)
 {
 	state = s;
@@ -83,7 +81,7 @@ void MarioJetPack::Render()
 
 	// draw p-meter
 	const auto drawY = Game::GetInstance()->GetBackBufferHeight() - 20;
-	const auto str = std::to_wstring(pMeter) + L"%";
+	const auto str = std::format(L"P: {}%", static_cast<int>(std::round(pMeter)));
 	
 	FontManager::GetInstance()->Draw(STATS_FONT, Vector2Int(0, drawY), str.c_str() , Colors::WHITE);
 }

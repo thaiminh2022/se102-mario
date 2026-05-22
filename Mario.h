@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Animations.h"
+#include "MarioJetPack.h"
 #include "Sprites.h"
 #include "Timer.h"
 
@@ -87,7 +88,9 @@ class Mario : public GameObject
 
 	MarioState state;
 	MarioPower power;
-	MarioPower lastPower;// used to store power before transformation for correct animation during transformation
+	MarioPower lastPower; // used to store power before transformation for correct animation during transformation
+
+	std::shared_ptr<MarioJetPack> jetpack;
 
 	// flag pole interaction
 	Vector2 marioWinningMoveToPosition;

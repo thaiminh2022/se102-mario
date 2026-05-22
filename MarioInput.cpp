@@ -74,6 +74,7 @@ void Mario::WhileGrounded(float dt)
 
 void Mario::WhileOnAir(float dt)
 {
+
 	const auto input = InputManager::GetInstance();
 
 	// AIR PHYSICS
@@ -143,6 +144,11 @@ void Mario::HandleJump(float dt)
 			velocity.y = -300.0f; // Higher bounce due to momentum
 			fallAcc = RUN_FALL; // Extremely heavy gravity
 		}
+
+		// can keep jumping
+		if (jetpack && jetpack->ReadyToFly())
+			return;
+
 		isGrounded = false; // Lift off the ground
 	}
 

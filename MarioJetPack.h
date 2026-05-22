@@ -11,12 +11,17 @@ enum class MarioJetPackState
 class MarioJetPack : public GameObject
 {
 	float pMeter = 0;
+	bool readyToFly = false;
 	MarioJetPackState state;
 
 public:
 
 	Rect GetBoundingBox() override;
-	MarioJetPack(Vector2Int startPos);
+	explicit MarioJetPack(Vector2Int startPos);
+	bool ReadyToFly() const
+	{
+		return pMeter > 0 && readyToFly;
+	}
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void SetState(MarioJetPackState s);
 	void Render() override;

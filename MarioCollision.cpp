@@ -16,7 +16,6 @@
 #include "Star.h"
 #include "StatManager.h"
 #include "CollisionEvent.h"
-#include "PointPopup.h"
 #include "Game.h"
 #include "MarioJetPack.h"
 
@@ -380,11 +379,12 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 
 bool Mario::OnCollisionWithJetpack(const CollisionEvent* e)
 {
-	const auto jetpack = dynamic_cast<MarioJetPack*>(e->otherObject);
-	if (jetpack == nullptr)
+	const auto jp = dynamic_cast<MarioJetPack*>(e->otherObject);
+	if (jp == nullptr)
 		return false;
 
 	jetpack->SetState(MarioJetPackState::OnMario);
+	this->jetpack.reset(jp);
 	return true;
 }
 
