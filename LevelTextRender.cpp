@@ -10,10 +10,12 @@ Rect LevelTextRender::GetBoundingBox()
 
 void LevelTextRender::Render()
 {
-	
-	for (auto text : texts)
+	const auto game = Game::GetInstance();
+	const auto camera = game->GetCamera();
+
+	for (const auto& text : texts)
 	{
-		bool inView = Game::GetInstance()->GetCamera()->IsInView(text.zone);
+		bool inView = camera->IsInView(text.zone);
 		if (!inView)
 			continue;
 
@@ -30,10 +32,19 @@ void LevelTextRender::Render()
 			drawId = WORLD_FONT_ITALIC;
 		}
 
+		float screenX, screenY;
+		camera->WorldToScreen(text.zone.left, text.zone.top, screenX, screenY);
+		const auto screenZone = Rect::FromXYWH(
+			screenX,
+			screenY,
+			text.zone.right - text.zone.left,
+			text.zone.bottom - text.zone.top
+		);
+
 		FontManager::GetInstance()->Draw(
 			drawId,
 			FontDrawConfig(
-				text.zone, 
+				screenZone,
 				text.content.c_str(), 
 				Colors::WHITE, 
 				text.textFormat

@@ -924,7 +924,7 @@ void LevelLoader::ParseTextRender(SceneEntityData& sceneEntities, vector<EntityI
 		WorldTextData data;
 
 		data.italic = italic;
-		data.fontWeight = bold ? Normal : Bold;
+		data.fontWeight = bold ? Bold : Normal;
 		data.content = std::wstring(content.begin(), content.end());
 		data.zone = Rect::FromXYWH(tr->px[0], tr->px[1], tr->width, tr->height);
 

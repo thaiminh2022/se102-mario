@@ -2141,7 +2141,7 @@
 					"uid": 292,
 					"type": "F_String",
 					"isArray": false,
-					"canBeNull": true,
+					"canBeNull": false,
 					"arrayMinLength": null,
 					"arrayMaxLength": null,
 					"editorDisplayMode": "ValueOnly",
@@ -2161,7 +2161,10 @@
 					"max": null,
 					"regex": null,
 					"acceptFileTypes": null,
-					"defaultOverride": null,
+					"defaultOverride": {
+						"id": "V_String",
+						"params": ["Empty String"]
+					},
 					"textLanguageMode": null,
 					"symmetricalRef": false,
 					"autoChainRef": true,
@@ -3848,25 +3851,130 @@
 						},
 						{
 							"__identifier": "TextRender",
-							"__grid": [28,9],
+							"__grid": [27,9],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": { "tilesetUid": 49, "x": 160, "y": 16, "w": 16, "h": 16 },
 							"__smartColor": "#0099DB",
 							"iid": "a0cbf810-48b0-11f1-91d3-e7da9c3bb9e5",
-							"width": 32,
+							"width": 64,
 							"height": 16,
 							"defUid": 291,
-							"px": [448,144],
+							"px": [432,144],
 							"fieldInstances": [
-								{ "__identifier": "Content", "__type": "String", "__value": "A", "__tile": null, "defUid": 292, "realEditorValues": [{
+								{ "__identifier": "Content", "__type": "String", "__value": "Water", "__tile": null, "defUid": 292, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["A"]
+									"params": ["Water"]
 								}] },
-								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Before", "__tile": null, "defUid": 294, "realEditorValues": [] },
-								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Before", "__tile": null, "defUid": 295, "realEditorValues": [] },
+								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 294, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 295, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "italic", "__type": "Bool", "__value": false, "__tile": null, "defUid": 296, "realEditorValues": [] },
+								{ "__identifier": "bold", "__type": "Bool", "__value": false, "__tile": null, "defUid": 297, "realEditorValues": [{
+									"id": "V_Bool",
+									"params": [ false ]
+								}] }
+							]
+						},
+						{
+							"__identifier": "TextRender",
+							"__grid": [37,8],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 49, "x": 160, "y": 16, "w": 16, "h": 16 },
+							"__smartColor": "#0099DB",
+							"iid": "e8c6c580-48b0-11f1-91d3-1f6aceef9012",
+							"width": 64,
+							"height": 16,
+							"defUid": 291,
+							"px": [592,128],
+							"fieldInstances": [
+								{ "__identifier": "Content", "__type": "String", "__value": "Castle", "__tile": null, "defUid": 292, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Castle"]
+								}] },
+								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 294, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 295, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
 								{ "__identifier": "italic", "__type": "Bool", "__value": false, "__tile": null, "defUid": 296, "realEditorValues": [] },
 								{ "__identifier": "bold", "__type": "Bool", "__value": false, "__tile": null, "defUid": 297, "realEditorValues": [] }
+							]
+						},
+						{
+							"__identifier": "TextRender",
+							"__grid": [45,7],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 49, "x": 160, "y": 16, "w": 16, "h": 16 },
+							"__smartColor": "#0099DB",
+							"iid": "fb53eac0-48b0-11f1-91d3-2d025837b2b3",
+							"width": 64,
+							"height": 16,
+							"defUid": 291,
+							"px": [720,112],
+							"fieldInstances": [
+								{ "__identifier": "Content", "__type": "String", "__value": "Fly", "__tile": null, "defUid": 292, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Fly"]
+								}] },
+								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 294, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 295, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "italic", "__type": "Bool", "__value": true, "__tile": null, "defUid": 296, "realEditorValues": [{
+									"id": "V_Bool",
+									"params": [ true ]
+								}] },
+								{ "__identifier": "bold", "__type": "Bool", "__value": false, "__tile": null, "defUid": 297, "realEditorValues": [] }
+							]
+						},
+						{
+							"__identifier": "TextRender",
+							"__grid": [56,7],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 49, "x": 160, "y": 16, "w": 16, "h": 16 },
+							"__smartColor": "#0099DB",
+							"iid": "03097d20-48b0-11f1-91d3-1bc91d3aa5ef",
+							"width": 64,
+							"height": 16,
+							"defUid": 291,
+							"px": [896,112],
+							"fieldInstances": [
+								{ "__identifier": "Content", "__type": "String", "__value": "Secret", "__tile": null, "defUid": 292, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Secret"]
+								}] },
+								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 294, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 295, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "italic", "__type": "Bool", "__value": true, "__tile": null, "defUid": 296, "realEditorValues": [{
+									"id": "V_Bool",
+									"params": [ true ]
+								}] },
+								{ "__identifier": "bold", "__type": "Bool", "__value": true, "__tile": null, "defUid": 297, "realEditorValues": [{
+									"id": "V_Bool",
+									"params": [ true ]
+								}] }
 							]
 						}
 					]

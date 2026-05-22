@@ -259,25 +259,25 @@ static void LoadResource()
 		WORLD_FONT,
 		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
 		L"Super Mario Bros. NES",
-		FontData(4)
+		FontData(8)
 	);
 	FontManager::GetInstance()->AddFontCustom(
 		WORLD_FONT_BOLD,
 		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
 		L"Super Mario Bros. NES",
-		FontData(4, Bold)
+		FontData(8, Bold)
 	);
 	FontManager::GetInstance()->AddFontCustom(
 		WORLD_FONT_ITALIC,
 		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
 		L"Super Mario Bros. NES",
-		FontData(4, Normal, true)
+		FontData(8, Normal, true)
 	);
 	FontManager::GetInstance()->AddFontCustom(
 		WORLD_FONT_BOLD_ITALIC,
 		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
 		L"Super Mario Bros. NES",
-		FontData(4, Bold, true)
+		FontData(8, Bold, true)
 	);
 }
 
