@@ -12,8 +12,8 @@ const float WATER_MAX_FALL = 90.0f;    // Slow sinking cap
 const float MAX_SWIM = 100.0f;         // horizontal cap
 const float PMETER_MIN_RUN_SPEED = MAX_WALK;
 const float JETPACK_FLY_GRAVITY = 220.0f;
-const float JETPACK_LIFT_ACCELERATION = 620.0f;
-const float JETPACK_MAX_RISE = -210.0f;
+const float JETPACK_LIFT_ACCELERATION = 520.0f;
+const float JETPACK_MAX_RISE = -110.0f;
 const float JETPACK_MAX_FALL = 120.0f;
 
 void Mario::WhileGrounded(float dt)

@@ -5,15 +5,14 @@
 #include "AssetIDs.h"
 #include "FontManager.h"
 #include "Game.h"
-#include "Helper.h"
 #include "Mario.h"
 #include "Textures.h"
 #include <format>
 
 const float PMETER_MAX = 100.0f;
-const float PMETER_CHARGE_RATE = 65.0f;
+const float PMETER_CHARGE_RATE = 100.0f;
 const float PMETER_DECAY_RATE = 55.0f;
-const float PMETER_FLIGHT_DRAIN_RATE = 18.0f;
+const float PMETER_FLIGHT_DRAIN_RATE = 5.0f;
 
 Rect MarioJetPack::GetBoundingBox()
 {

@@ -3589,20 +3589,6 @@
 							"fieldInstances": []
 						},
 						{
-							"__identifier": "Jetpack",
-							"__grid": [10,12],
-							"__pivot": [0,0],
-							"__tags": ["entity"],
-							"__tile": { "tilesetUid": 49, "x": 128, "y": 192, "w": 16, "h": 16 },
-							"__smartColor": "#124E89",
-							"iid": "e711dc40-48b0-11f1-a5f8-e7a807a8d43f",
-							"width": 16,
-							"height": 16,
-							"defUid": 290,
-							"px": [160,192],
-							"fieldInstances": []
-						},
-						{
 							"__identifier": "Pipe",
 							"__grid": [46,8],
 							"__pivot": [0,0],
@@ -10780,14 +10766,14 @@
 			"worldDepth": 0,
 			"pxWid": 2560,
 			"pxHei": 240,
-			"__bgColor": "#696A79",
-			"bgColor": null,
+			"__bgColor": "#5C94FC",
+			"bgColor": "#5C94FC",
 			"useAutoIdentifier": true,
 			"bgRelPath": null,
 			"bgPos": null,
 			"bgPivotX": 0.5,
 			"bgPivotY": 0.5,
-			"__smartColor": "#ADADB5",
+			"__smartColor": "#A5C4FD",
 			"__bgPos": null,
 			"externalRelPath": null,
 			"fieldInstances": [{ "__identifier": "Biome", "__type": "LocalEnum.BiomeType", "__value": "Overworld", "__tile": null, "defUid": 91, "realEditorValues": [] }],
@@ -10863,6 +10849,182 @@
 								"id": "V_String",
 								"params": ["150,12"]
 							}] }]
+						},
+						{
+							"__identifier": "Jetpack",
+							"__grid": [3,12],
+							"__pivot": [0,0],
+							"__tags": ["entity"],
+							"__tile": { "tilesetUid": 49, "x": 128, "y": 192, "w": 16, "h": 16 },
+							"__smartColor": "#124E89",
+							"iid": "571de310-48b0-11f1-91d3-af54bc353f55",
+							"width": 16,
+							"height": 16,
+							"defUid": 290,
+							"px": [48,192],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "BackgroundMusic",
+							"__grid": [1,2],
+							"__pivot": [0,0],
+							"__tags": ["trigger"],
+							"__tile": { "tilesetUid": 49, "x": 240, "y": 48, "w": 16, "h": 16 },
+							"__smartColor": "#A200FF",
+							"iid": "590d7e10-48b0-11f1-91d3-7bc1afa05e0b",
+							"width": 16,
+							"height": 16,
+							"defUid": 47,
+							"px": [16,32],
+							"fieldInstances": [
+								{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/01.GroundTheme.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Assets/Audio/Soundtracks/01.GroundTheme.wav"]
+								}] },
+								{ "__identifier": "is_trigger", "__type": "Bool", "__value": false, "__tile": null, "defUid": 260, "realEditorValues": [] }
+							]
+						},
+						{
+							"__identifier": "EnterCastleTrigger",
+							"__grid": [150,11],
+							"__pivot": [0,0],
+							"__tags": ["trigger"],
+							"__tile": null,
+							"__smartColor": "#12892D",
+							"iid": "c818a860-48b0-11f1-91d3-b3eeb8e7ecb0",
+							"width": 16,
+							"height": 32,
+							"defUid": 286,
+							"px": [2400,176],
+							"fieldInstances": [
+								{ "__identifier": "firework_positions", "__type": "Array<Point>", "__value": [
+									{ "cx": 144, "cy": 9 },
+									{ "cx": 145, "cy": 7 },
+									{ "cx": 142, "cy": 6 },
+									{ "cx": 144, "cy": 4 },
+									{ "cx": 146, "cy": 5 },
+									{ "cx": 148, "cy": 4 },
+									{ "cx": 147, "cy": 2 },
+									{ "cx": 145, "cy": 2 },
+									{ "cx": 150, "cy": 2 },
+									{ "cx": 150, "cy": 4 },
+									{ "cx": 149, "cy": 6 },
+									{ "cx": 152, "cy": 6 },
+									{ "cx": 152, "cy": 3 },
+									{ "cx": 152, "cy": 2 },
+									{ "cx": 154, "cy": 1 },
+									{ "cx": 156, "cy": 3 },
+									{ "cx": 156, "cy": 5 },
+									{ "cx": 153, "cy": 5 },
+									{ "cx": 155, "cy": 8 },
+									{ "cx": 157, "cy": 8 },
+									{ "cx": 157, "cy": 5 },
+									{ "cx": 154, "cy": 5 },
+									{ "cx": 154, "cy": 3 },
+									{ "cx": 147, "cy": 7 }
+								], "__tile": null, "defUid": 287, "realEditorValues": [
+									{
+										"id": "V_String",
+										"params": ["144,9"]
+									},
+									{
+										"id": "V_String",
+										"params": ["145,7"]
+									},
+									{
+										"id": "V_String",
+										"params": ["142,6"]
+									},
+									{
+										"id": "V_String",
+										"params": ["144,4"]
+									},
+									{
+										"id": "V_String",
+										"params": ["146,5"]
+									},
+									{
+										"id": "V_String",
+										"params": ["148,4"]
+									},
+									{
+										"id": "V_String",
+										"params": ["147,2"]
+									},
+									{
+										"id": "V_String",
+										"params": ["145,2"]
+									},
+									{
+										"id": "V_String",
+										"params": ["150,2"]
+									},
+									{
+										"id": "V_String",
+										"params": ["150,4"]
+									},
+									{
+										"id": "V_String",
+										"params": ["149,6"]
+									},
+									{
+										"id": "V_String",
+										"params": ["152,6"]
+									},
+									{
+										"id": "V_String",
+										"params": ["152,3"]
+									},
+									{
+										"id": "V_String",
+										"params": ["152,2"]
+									},
+									{
+										"id": "V_String",
+										"params": ["154,1"]
+									},
+									{
+										"id": "V_String",
+										"params": ["156,3"]
+									},
+									{
+										"id": "V_String",
+										"params": ["156,5"]
+									},
+									{
+										"id": "V_String",
+										"params": ["153,5"]
+									},
+									{
+										"id": "V_String",
+										"params": ["155,8"]
+									},
+									{
+										"id": "V_String",
+										"params": ["157,8"]
+									},
+									{
+										"id": "V_String",
+										"params": ["157,5"]
+									},
+									{
+										"id": "V_String",
+										"params": ["154,5"]
+									},
+									{
+										"id": "V_String",
+										"params": ["154,3"]
+									},
+									{
+										"id": "V_String",
+										"params": ["147,7"]
+									}
+								] },
+								{ "__identifier": "flag_move_to", "__type": "Point", "__value": { "cx": 150, "cy": 7 }, "__tile": null, "defUid": 288, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["150,7"]
+								}] }
+							]
 						}
 					]
 				},
@@ -10885,10 +11047,10 @@
 					"visible": true,
 					"optionalRules": [],
 					"intGridCsv": [
-						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,3,3,0,0,0,
-						3,3,0,0,0,0,3,3,0,0,0,0,3,3,0,3,3,0,3,3,0,0,0,0,0,3,3,0,0,0,0,0,3,3,0,
-						0,0,3,3,0,0,0,3,3,0,0,0,3,3,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,
-						0,3,3,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,
+						3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+						3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+						3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,
 						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 						0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,3,3,0,0,0,3,3,0,0,0,0,3,3,0,0,0,0,3,3,0,
 						3,3,0,3,3,0,0,0,0,0,3,3,0,0,0,0,0,3,3,0,0,0,3,3,0,0,0,3,3,0,0,0,3,3,0,
@@ -10949,10 +11111,10 @@
 						0,0,0,0,0,3,3,0,0,0,0,0,3,3,0,0,0,3,3,0,0,0,3,3,0,0,0,3,3,0,0,0,0,0,0,
 						3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,3,3,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,
 						0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,3,3,0,3,3,0,0,0,
-						3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,3,3,0,
-						0,0,3,3,0,0,0,3,3,0,0,0,3,3,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,
-						0,3,3,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,
+						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3,3,3,3,3,3,3,3,
+						3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+						3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+						3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 					],
 					"autoLayerTiles": [],
