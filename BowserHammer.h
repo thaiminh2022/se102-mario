@@ -4,23 +4,7 @@
 #include "Scene.h"
 #include <vector>
 #include "Timer.h"
-#include "Collision.h"
-#include "GameObject.h"
-#include "Scene.h"
-#include "Mario.h"
-#include "BowserFireBullet.h"
-#include <vector>
-
-#include "Animation.h"
-#include "Animations.h"
-
-#include "AssetIDs.h"
-#include "Game.h"
-#include "Sprites.h"
-#include "Textures.h"
 #include <cmath>
-
-#include "Debug.h"
 
 #define BOWSER_ITEM_FIRE_HAMMER_SPEED 120.0f
 

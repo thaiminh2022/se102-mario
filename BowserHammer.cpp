@@ -1,5 +1,12 @@
 #include "BowserHammer.h"
+
+#include "Animations.h"
+#include "AssetIDs.h"
 #include "Fireball.h"
+#include "Game.h"
+#include "Sprites.h"
+#include "Textures.h"
+
 BowserHammer::BowserHammer(float startX, float startY, bool isFacingRight, float waitTime) : GameObject(startX, startY), waitTimer(waitTime)
 {
 	auto t = Textures::GetInstance()->Get(BOWSER_ITEM_BULLET_TEX_ID);

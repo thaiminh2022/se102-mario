@@ -28,6 +28,7 @@
 #include "EnterCastleTrigger.h"
 #include "InWaterTrigger.h"
 #include "FireShooter.h"
+#include "LevelTextRender.h"
 #include "MarioJetPack.h"
 
 
@@ -242,6 +243,13 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	for (const auto& pipeData : config->entityData.pipes)
 	{
 		objects.push_back(std::make_unique<Pipe>(pipeData));
+	}
+
+	// text render
+
+	if (!config->entityData.worldTextData.empty())
+	{
+		objects.push_back(std::make_unique<LevelTextRender>(config->entityData.worldTextData));
 	}
 
 	// background music

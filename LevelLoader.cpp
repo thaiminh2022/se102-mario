@@ -55,6 +55,8 @@ const string BRIDGE = "Bridge";
 const string PIPE = "Pipe";
 const string TELEPORT_PIPE = "TeleportPipe";
 const string INSTANT_TELEPORT_PIPE = "InstantTeleportPipe";
+const string TEXT_RENDER = "TextRender";
+
 
 // TRIGGERS
 const string CLRSCR_COLOR_TRIGGER = "ClearScreenColorTrigger";
@@ -892,6 +894,72 @@ void LevelLoader::ParseJetpack(SceneEntityData& sceneEntities, vector<EntityInst
 	}
 }
 
+void LevelLoader::ParseTextRender(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
+{
+	const auto textRenders = GetEntityDataWithIdentifier(entities, TEXT_RENDER);
+	for (const auto& tr : textRenders)
+	{
+		auto contentJson = GetFieldValueWithIdentifier(tr->fieldInstances, "Content");
+		auto horizontalAlignJson = GetFieldValueWithIdentifier(tr->fieldInstances, "HorizontalAlign");
+		auto verticalAlignJson = GetFieldValueWithIdentifier(tr->fieldInstances, "VerticalAlign");
+		auto italicJson = GetFieldValueWithIdentifier(tr->fieldInstances, "italic");
+		auto boldJson = GetFieldValueWithIdentifier(tr->fieldInstances, "bold");
+
+		if (!contentJson.has_value() ||
+			!horizontalAlignJson.has_value() ||
+			!verticalAlignJson.has_value() ||
+			!italicJson.has_value() ||
+			!boldJson.has_value() 
+			)
+		{
+			continue;
+		}
+
+		auto content = contentJson->get<string>();
+		auto horizontalAlignEnum = horizontalAlignJson->get<string>();
+		auto verticalAlignEnum = verticalAlignJson->get<string>();
+		auto italic = italicJson->get<bool>();
+		auto bold = boldJson->get<bool>();
+
+		WorldTextData data;
+
+		data.italic = italic;
+		data.fontWeight = bold ? Normal : Bold;
+		data.content = std::wstring(content.begin(), content.end());
+		data.zone = Rect::FromXYWH(tr->px[0], tr->px[1], tr->width, tr->height);
+
+		UINT alignment = 0;
+
+		if (horizontalAlignEnum == "Before")
+		{
+			alignment |= TextFormat::Left;
+		}else if (horizontalAlignEnum	 == "After")
+		{
+			alignment |= TextFormat::Right;
+		}
+		else if (horizontalAlignEnum == "Center")
+		{
+			alignment |= TextFormat::Center;
+		}
+
+		if (verticalAlignEnum == "Before")
+		{
+			alignment |= TextFormat::Top;
+		}
+		else if (verticalAlignEnum == "After")
+		{
+			alignment |= TextFormat::Bottom;
+		}
+		else if (verticalAlignEnum == "Center")
+		{
+			alignment |= TextFormat::VerticalCenter;
+		}
+
+		data.textFormat = static_cast<TextFormat>(alignment);
+		sceneEntities.worldTextData.push_back(data);
+	}
+}
+
 void LevelLoader::RebuildCacheForLevel(vector<EntityInstance>& entities)
 {
 	levelEntitiesCache.clear();
@@ -939,6 +1007,8 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParseTeleportPipe(sceneEntities, entities);
 	ParseInstantTeleportPipe(sceneEntities, entities);
 	ParseFireShooter(sceneEntities, entities);
+	ParseTextRender(sceneEntities, entities);
+
 
 	// triggers
 	ParseNextLevelZone(sceneEntities, entities);

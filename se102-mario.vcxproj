@@ -167,6 +167,7 @@
     <ClCompile Include="InWaterTrigger.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
+    <ClCompile Include="LevelTextRender.cpp" />
     <ClCompile Include="LevelTransitionScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="LevelTextRender.h" />
     <ClInclude Include="LevelTransitionScene.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Mario.h" />

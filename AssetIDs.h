@@ -565,5 +565,10 @@ enum AUDIOS : std::int8_t
 enum FONTS : std::uint8_t
 {
     STATS_FONT = 1,
-    HUD_FONT = 2
+    HUD_FONT = 2,
+    WORLD_FONT = 3,
+    WORLD_FONT_BOLD,
+    WORLD_FONT_ITALIC,
+    WORLD_FONT_BOLD_ITALIC,
+
 };

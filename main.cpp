@@ -254,6 +254,31 @@ static void LoadResource()
 		L"Super Mario Bros. NES",
 		FontData(10)
 	);
+
+	FontManager::GetInstance()->AddFontCustom(
+		WORLD_FONT,
+		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
+		L"Super Mario Bros. NES",
+		FontData(4)
+	);
+	FontManager::GetInstance()->AddFontCustom(
+		WORLD_FONT_BOLD,
+		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
+		L"Super Mario Bros. NES",
+		FontData(4, Bold)
+	);
+	FontManager::GetInstance()->AddFontCustom(
+		WORLD_FONT_ITALIC,
+		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
+		L"Super Mario Bros. NES",
+		FontData(4, Normal, true)
+	);
+	FontManager::GetInstance()->AddFontCustom(
+		WORLD_FONT_BOLD_ITALIC,
+		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
+		L"Super Mario Bros. NES",
+		FontData(4, Bold, true)
+	);
 }
 
 int WINAPI WinMain(

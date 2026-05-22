@@ -48,6 +48,7 @@ class LevelLoader
 	void ParseFlagPole(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseFireShooter(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseJetpack(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
+	void ParseTextRender(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 
 
 	// triggers
