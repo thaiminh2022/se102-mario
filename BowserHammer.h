@@ -38,6 +38,7 @@ public:
 	BowserHammer(int startX, int startY, bool isFacingRight, float waitTime);
 	void SetState(BowserHammerState newState);
 	void SetRandomVelocity();
+	bool IsBlocking() override { return false; }
 	BowserHammerState GetState() const { return state; }
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;

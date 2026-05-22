@@ -99,10 +99,7 @@ void FireballTrap::Render()
 		->Get(FIREBALL_BOUNCE_ANIM_ID)
 		->Render(round(renderX), round(renderY), false, false);
 	
-		Game::GetInstance()->DrawDebugRectRaw(
-			Rect::FromXYWH(renderX, renderY, 8, 8), 
-			Colors::GREEN.WithAlpha(0.7f)
-		);
+		
 	}
 }
 

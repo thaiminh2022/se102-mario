@@ -24,6 +24,7 @@
 #include "BgMusicTrigger.h"
 #include "CheepCheeps.h"
 #include "ClearScreenColorTrigger.h"
+#include "EnterCastleTrigger.h"
 #include "InWaterTrigger.h"
 #include "FireShooter.h"
 
@@ -47,7 +48,9 @@ typedef priority_queue<render_item, vector<render_item>, RenderCompare> render_q
 void PlayableScene::Update(float dt)
 {
 	// coObjects is all object, not including obj itself
-	vector<GameObject*> coObjects;
+	vector<GameObject*> activeCollidableObjects;
+	activeCollidableObjects.reserve(objects.size());
+
 	for (const auto& obj : objects)
 	{
 		auto box = obj->GetBoundingBox();
@@ -62,6 +65,15 @@ void PlayableScene::Update(float dt)
 			obj->SetActive(false);
 		}
 
+		if (obj->IsActive() && obj->IsCollidable() && !GameObject::IsDeleted(obj))
+		{
+			activeCollidableObjects.push_back(obj);
+		}
+	}
+
+	vector<GameObject*> coObjects;
+	for (const auto& obj : objects)
+	{
 		if (!obj->IsActive())
 		{
 			continue;
@@ -71,11 +83,10 @@ void PlayableScene::Update(float dt)
 		coObjects.clear();
 		if (obj->IsCollidable())
 		{
-			for (auto other : objects)
+			for (auto other : activeCollidableObjects)
 			{
-				if (!other->IsCollidable()) continue;
 				if (other == obj) continue;
-				if (GameObject::IsDeleted(other)) continue;
+				if (!CollisionMatrix::IsLayerCollide(other->GetCollisionLayer(), obj->GetCollisionLayer())) continue;
 				coObjects.push_back(other);
 			}
 		}
@@ -140,29 +151,41 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	// goomba
 	for (const auto& gPos : config->entityData.goombaStarts)
 	{
-		const auto gb = new Goomba(gPos.x, gPos.y);
+		const auto gb = new Goomba(gPos, config->biome);
 		objects.push_back(gb);
 	}
 
 	// koopa 
 	for (const auto& kPos : config->entityData.koopaStarts)
 	{
-		const auto kp = new Koopa(kPos.x, kPos.y);
+		const auto kp = new Koopa(kPos, config->biome);
 		objects.push_back(kp);
 	}
 
 	// Winged koopa
 	for (const auto& fkPos : config->entityData.WingedKoopaStarts)
 	{
-		const auto fkp = new Koopa(fkPos.x, fkPos.y, KoopaForm::Winged);
-		objects.push_back(fkp);
+		const auto fk = new Koopa(fkPos, config->biome, KoopaForm::Winged);
+		objects.push_back(fk);
+	}
+	//cheep cheeps
+	for (const auto& ccData : config->entityData.cheepCheeps)
+	{
+		const auto cc = new CheepCheeps(ccData.startPosition, config->biome, ccData.isRed);
+		objects.push_back(cc);
+	}
+	//bloopers
+	for (const auto& bData : config->entityData.bloopers)
+	{
+		const auto b = new Bloopers(bData.lowestLimit, bData.highestLimit, config->biome);
+		objects.push_back(b);
 	}
 
 	// Bowser
 	if (config->entityData.bowserStart.hasValue)
 	{
-		auto pos = config->entityData.bowserStart.value;
-		const auto bowser = new Bowser(pos.x, pos.y, sceneContext->mario);
+		const auto bowserStart = config->entityData.bowserStart.value;
+		const auto bowser = new Bowser(bowserStart.x, bowserStart.y, sceneContext->mario);
 		objects.push_back(bowser);
 	}
 
@@ -174,7 +197,6 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	}
 
 	// question
-
 	for (const auto& qbData : config->entityData.questionBlocks)
 	{
 		const auto qb = new QuestionBlock(qbData.position, qbData.dropType, config->biome, false);
@@ -235,16 +257,35 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
+	
 	// triggers;
+	// clear screen color trigger
 	for (const auto& colorTriggerData : config->entityData.clearScreenColorTriggers)
 	{
 		const auto colorTrigger = new ClearScreenColorTrigger(colorTriggerData.zone, colorTriggerData.color);
 		objects.push_back(colorTrigger);
 	}
-	for (const auto& fPos : config->entityData.fireShooters)
+
+	// enter water trigger
+	for (const auto& waterTriggerData : config->entityData.waterTriggers)
 	{
-		const auto fs = new FireShooter(fPos.position.x, fPos.position.y, fPos.shootDirection);
-		objects.push_back(fs);
+		const auto waterTrigger = new InWaterTrigger(waterTriggerData.zone, waterTriggerData.inWater);
+		objects.push_back(waterTrigger);
+	}
+
+	// music trigger
+	for (const auto& mData : config->entityData.musicTriggers)
+	{
+		const auto musicTrigger = new BgMusicTrigger(mData.id, mData.zone);
+		objects.push_back(musicTrigger);
+	}
+
+	// enter castle trigger
+	if (config->entityData.enterCastleTrigger.hasValue)
+	{
+		const auto& data = config->entityData.enterCastleTrigger.value;
+		const auto enterCastleTrigger = new EnterCastleTrigger(data, config->biome);
+		objects.push_back(enterCastleTrigger);
 	}
 }
 

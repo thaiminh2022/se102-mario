@@ -1,5 +1,8 @@
 #include "Tilemap.h"
 
+#include <algorithm>
+#include <cmath>
+
 #include "Game.h"
 #include "Textures.h"
 
@@ -8,30 +11,42 @@ void Tilemap::Render() const
 {
 	const auto g = Game::GetInstance();
 	const auto cam = g->GetCamera();
+	const auto camLeft = cam->GetX();
+	const auto camTop = cam->GetY();
+	const auto camRight = camLeft + g->GetBackBufferWidth();
+	const auto camBottom = camTop + g->GetBackBufferHeight();
 
 	for (const auto& tLayer : config->renderLayers)
 	{
 		const auto tex = Textures::GetInstance()->Get(tLayer.textureID);
-		for (const auto& t :  tLayer.tiles)
+
+		int startCol = static_cast<int>(std::floor(camLeft / tLayer.tileWidth));
+		int endCol = static_cast<int>(std::floor((camRight - 1) / tLayer.tileWidth));
+		int startRow = static_cast<int>(std::floor(camTop / tLayer.tileHeight));
+		int endRow = static_cast<int>(std::floor((camBottom - 1) / tLayer.tileHeight));
+
+		startCol = max(0, startCol);
+		endCol = min(tLayer.cellWidth - 1, endCol);
+		startRow = max(0, startRow);
+		endRow = min(tLayer.cellHeight - 1, endRow);
+
+		for (int row = startRow; row <= endRow; ++row)
 		{
-			const auto b = t.GetBounds();
-			auto pb = t.GetTextureBounds();
-
-			if (!cam->IsInView(
-				static_cast<float>(b.left), 
-				static_cast<float>(b.top), 
-				static_cast<float>(b.right), 
-				static_cast<float>(b.bottom))
-				)
+			for (int col = startCol; col <= endCol; ++col)
 			{
-				continue;
-			}
+				const auto t = tLayer.GetCell(col, row);
+				if (t == nullptr)
+				{
+					continue;
+				}
 
-			float renderX, renderY;
-			cam->WorldToScreen(static_cast<float>(t.worldX), static_cast<float>(t.worldY), renderX, renderY);
-			g->Draw(round(renderX), round(renderY), tex, &pb);
+				auto pb = t->GetTextureBounds();
+
+				float renderX, renderY;
+				cam->WorldToScreen(static_cast<float>(t->worldX), static_cast<float>(t->worldY), renderX, renderY);
+				g->Draw(round(renderX), round(renderY), tex, &pb);
+			}
 		}
-		
 	}
 }
 void Tilemap::GetPotentialCollidableCells(const RectF& bound, vector<CollisionTile*>& outCells) const

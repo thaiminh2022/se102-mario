@@ -4,22 +4,25 @@
 #include "AssetIDs.h"
 #include "Collision.h"
 #include "Game.h"
+#include "Helper.h"
 #include "Sprites.h"
 #include "Textures.h"
 
-CheepCheeps::CheepCheeps(const Vector2Int startPos, bool isRed) : GameObject(startPos)
+CheepCheeps::CheepCheeps(Vector2Int startPos, BiomeType biome, bool isRed) : GameObject(startPos)
 {
 	this->isRed = isRed;
+	deadTimer = Timer(2);
 
-	const auto t = Textures::GetInstance()->Get(CHEEPS_TEX_ID);
+	const auto t = Textures::GetInstance()->Get(ChooseEnemyId(biome));
 	const auto anims = Animations::GetInstance();
 	const auto sp = Sprites::GetInstance();
+
 
 	if (!anims->Contains(RED_CHEEP_ANIM))
 	{
 		auto anim = new Animation();
-		sp->Add(RED_CHEEP_SPRITE_1, 0, 16, 15, 31, t);
-		sp->Add(RED_CHEEP_SPRITE_2, 16, 16, 31, 31, t);
+		sp->Add(RED_CHEEP_SPRITE_1, 0, 64, 15, 79, t);
+		sp->Add(RED_CHEEP_SPRITE_2, 16, 64, 31, 79, t);
 
 		anim->Add(RED_CHEEP_SPRITE_1);
 		anim->Add(RED_CHEEP_SPRITE_2);
@@ -29,8 +32,8 @@ CheepCheeps::CheepCheeps(const Vector2Int startPos, bool isRed) : GameObject(sta
 	if (!anims->Contains(WATER_CHEEP_ANIM))
 	{
 		auto anim = new Animation();
-		sp->Add(WATER_CHEEP_SPRITE_1, 0, 0, 15, 15, t);
-		sp->Add(WATER_CHEEP_SPRITE_2, 16, 0, 31, 15, t);
+		sp->Add(WATER_CHEEP_SPRITE_1, 0, 48, 15, 63, t);
+		sp->Add(WATER_CHEEP_SPRITE_2, 16, 48, 31, 63, t);
 
 
 		anim->Add(WATER_CHEEP_SPRITE_1);
@@ -41,7 +44,21 @@ CheepCheeps::CheepCheeps(const Vector2Int startPos, bool isRed) : GameObject(sta
 
 void CheepCheeps::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
-	velocity.x = isRed ? -75.0f : -50.0f;
+	if (state == CheepCheepsState::Dead)
+	{
+		velocity.y = 250.0f;
+		deadTimer.ProcessTimer(dt);
+		if (deadTimer.IsFinished())
+		{
+			isDeleted = false;
+			isCollidable = false;
+			deadTimer.SetIdle();
+		}
+
+	}else
+	{
+		velocity.x = isRed ? -75.0f : -50.0f;
+	}
 
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }

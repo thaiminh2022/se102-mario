@@ -31,8 +31,8 @@ class Koopa : public GameObject
 	float fallAcc = 562.5f;
 	int enemyKilledByShellCount = 0; // used for scoring when player kick shell and kill enemies
 public:
-	Koopa(int startX, int startY);
-	Koopa(int startX, int startY, KoopaForm form);
+	Koopa(Vector2Int startPos, BiomeType biome);
+	Koopa(Vector2Int startPos, BiomeType biome,KoopaForm form);
 	void SetState(KoopaState newState);
 	KoopaState GetState() const { return state; }
 	void SetForm(KoopaForm newForm);

@@ -995,8 +995,8 @@
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": null,
-			"width": 32,
-			"height": 32,
+			"width": 16,
+			"height": 16,
 			"resizableX": false,
 			"resizableY": false,
 			"minWidth": null,
@@ -3423,7 +3423,7 @@
 							"px": [448,160],
 							"fieldInstances": [
 								{ "__identifier": "is_return_pipe", "__type": "Bool", "__value": false, "__tile": null, "defUid": 238, "realEditorValues": [] },
-								{ "__identifier": "level_to_load", "__type": "Int", "__value": 2, "__tile": null, "defUid": 239, "realEditorValues": [{ "id": "V_Int", "params": [2] }] },
+								{ "__identifier": "level_to_load", "__type": "Int", "__value": 3, "__tile": null, "defUid": 239, "realEditorValues": [{ "id": "V_Int", "params": [3] }] },
 								{ "__identifier": "return_pipe_ref", "__type": "EntityRef", "__value": null, "__tile": null, "defUid": 243, "realEditorValues": [] },
 								{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 28, "cy": 12 }, "__tile": null, "defUid": 244, "realEditorValues": [{
 									"id": "V_String",
@@ -4994,7 +4994,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [114,9],
+							"__grid": [2,5],
 							"__pivot": [0,0],
 							"__tags": ["entity"],
 							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
@@ -5003,10 +5003,10 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 31,
-							"px": [1824,144],
+							"px": [32,80],
 							"fieldInstances": [],
-							"__worldX": 6912,
-							"__worldY": 464
+							"__worldX": 5120,
+							"__worldY": 400
 						},
 						{
 							"__identifier": "QuestionBlock",
@@ -5275,19 +5275,19 @@
 						},
 						{
 							"__identifier": "BowserStart",
-							"__grid": [137,8],
+							"__grid": [137,9],
 							"__pivot": [0,0],
 							"__tags": ["entity"],
 							"__tile": null,
 							"__smartColor": "#FF0044",
 							"iid": "5d5bc5f0-21a0-11f1-b970-fb74d35e2133",
-							"width": 32,
-							"height": 32,
+							"width": 16,
+							"height": 16,
 							"defUid": 213,
-							"px": [2192,128],
+							"px": [2192,144],
 							"fieldInstances": [],
 							"__worldX": 7280,
-							"__worldY": 448
+							"__worldY": 464
 						},
 						{
 							"__identifier": "Bridge",
@@ -5301,9 +5301,9 @@
 							"height": 16,
 							"defUid": 214,
 							"px": [2048,160],
-							"fieldInstances": [{ "__identifier": "AxePosition", "__type": "Point", "__value": { "cx": 142, "cy": 8 }, "__tile": null, "defUid": 215, "realEditorValues": [{
+							"fieldInstances": [{ "__identifier": "AxePosition", "__type": "Point", "__value": { "cx": 141, "cy": 8 }, "__tile": null, "defUid": 215, "realEditorValues": [{
 								"id": "V_String",
-								"params": ["142,8"]
+								"params": ["141,8"]
 							}] }],
 							"__worldX": 7136,
 							"__worldY": 480
@@ -5448,7 +5448,7 @@
 						1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,
-						0,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,
+						0,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,
 						0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,
 						1,0,0,0,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,

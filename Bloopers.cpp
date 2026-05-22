@@ -5,6 +5,7 @@
 #include "Collision.h"
 #include "Debug.h"
 #include "Game.h"
+#include "Helper.h"
 #include "Mario.h"
 #include "Sprites.h"
 #include "Textures.h"
@@ -18,23 +19,24 @@ constexpr float BLOOPER_MIN_SWIM_DISTANCE = 48.0f;
 constexpr float BLOOPER_MIN_FALL_DISTANCE = 48.0f;
 constexpr float BLOOPER_HORIZONTAL_DEAD_ZONE = 8.0f;
 
-Bloopers::Bloopers(const Vector2Int lowestLimit, const Vector2Int highestLimit) : GameObject(lowestLimit)
+Bloopers::Bloopers(const Vector2Int lowestLimit, const Vector2Int highestLimit, BiomeType biome) : GameObject(lowestLimit)
 {
 	this->lowestLimit = Vector2(lowestLimit);
 	this->highestLimit = Vector2(highestLimit);
-	moveState = BlooperMoveState::SwimmingUp;
+	moveState = BlooperState::SwimmingUp;
 	stateTimer = 0.0f;
 	stateStartY = position.y;
 	hasChosenInitialState = false;
+	deadTimer = Timer(2);
 
-	const auto t = Textures::GetInstance()->Get(BLOOPERS_TEX_ID);
+	const auto t = Textures::GetInstance()->Get(ChooseEnemyId(biome));
 	const auto anims = Animations::GetInstance();
 	const auto sp = Sprites::GetInstance();
 
 	if (!anims->Contains(WATER_BLOOPER_IDLE_ANIM))
 	{
 		auto anim = new Animation();
-		sp->Add(WATER_BLOOPER_IDLE_SPRITE_1, 0, 0, 15, 23, t);
+		sp->Add(WATER_BLOOPER_IDLE_SPRITE_1, 32, 48, 47, 71, t);
 		anim->Add(WATER_BLOOPER_IDLE_SPRITE_1);
 		anims->Add(WATER_BLOOPER_IDLE_ANIM, anim);
 	}
@@ -42,15 +44,20 @@ Bloopers::Bloopers(const Vector2Int lowestLimit, const Vector2Int highestLimit) 
 	if (!anims->Contains(WATER_BLOOPER_SWIM_ANIM))
 	{
 		auto anim = new Animation();
-		sp->Add(WATER_BLOOPER_SWIM_SPRITE_1, 16, 0, 31, 15, t);
+		sp->Add(WATER_BLOOPER_SWIM_SPRITE_1, 48, 48, 63, 63, t);
 		anim->Add(WATER_BLOOPER_SWIM_SPRITE_1);
 		anims->Add(WATER_BLOOPER_SWIM_ANIM, anim);
 	}
 }
 
+void Bloopers::SetState(BlooperState s)
+{
+	moveState = s;
+}
+
 void Bloopers::StartSwimmingUp()
 {
-	moveState = BlooperMoveState::SwimmingUp;
+	moveState = BlooperState::SwimmingUp;
 	stateTimer = 0.0f;
 	stateStartY = position.y;
 	DebugOut(L"Staring swim up\n");
@@ -58,7 +65,7 @@ void Bloopers::StartSwimmingUp()
 
 void Bloopers::StartFalling()
 {
-	moveState = BlooperMoveState::Falling;
+	moveState = BlooperState::Falling;
 	stateTimer = 0.0f;
 	stateStartY = position.y;
 	DebugOut(L"Staring falling\n");
@@ -99,6 +106,25 @@ void Bloopers::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ct
 	- If the player is below lowestLimit.y, Blooper falls down to lowestLimit.y.
 	- In both cases, Blooper targets the nearest reachable Y position instead of the player's exact Y.
 	*/
+
+	if (moveState == BlooperState::Dead)
+	{
+		deadTimer.ProcessTimer(dt);
+		if (deadTimer.IsFinished())
+		{
+			deadTimer.SetIdle();
+			isDeleted = true;
+		}
+
+		velocity.y = 200;
+		isCollidable = false;
+		isBlocking = false;
+
+		Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
+		return;
+	}
+
+
 	const auto marioPosition = ctx->mario->position;
 
 	if (!hasChosenInitialState)
@@ -116,7 +142,7 @@ void Bloopers::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ct
 
 	stateTimer += dt;
 
-	if (moveState == BlooperMoveState::SwimmingUp)
+	if (moveState == BlooperState::SwimmingUp)
 	{
 		velocity.y = -BLOOPER_UP_SPEED;
 	}
@@ -137,7 +163,7 @@ void Bloopers::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ct
 
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 
-	if (moveState == BlooperMoveState::SwimmingUp)
+	if (moveState == BlooperState::SwimmingUp)
 	{
 		const bool hitUpperLimit = position.y <= highestLimit.y;
 		const bool movedMinDistance = stateStartY - position.y >= BLOOPER_MIN_SWIM_DISTANCE;
@@ -214,7 +240,7 @@ void Bloopers::Render()
 	float renderX, renderY;
 	Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
 	
-	int renderId = moveState == BlooperMoveState::SwimmingUp ? WATER_BLOOPER_SWIM_ANIM : WATER_BLOOPER_IDLE_ANIM;
+	int renderId = moveState == BlooperState::SwimmingUp ? WATER_BLOOPER_SWIM_ANIM : WATER_BLOOPER_IDLE_ANIM;
 	Animations::GetInstance()->Get(renderId)->Render(floor(renderX), floor(renderY), false, false);
 }
 
@@ -225,5 +251,5 @@ void Bloopers::OnNoCollision(float dt)
 
 Rect Bloopers::GetBoundingBox()
 {
-	return Rect::FromXYWH(position.x, position.y, 16, moveState == BlooperMoveState::SwimmingUp ? 16 : 24);
+	return Rect::FromXYWH(position.x, position.y, 16, moveState == BlooperState::SwimmingUp ? 16 : 24);
 }

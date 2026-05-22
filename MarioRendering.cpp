@@ -50,7 +50,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Idle:
 			return MARIO_IDLE_ANIM_ID;
 		case MarioState::Jumping:
-			return MARIO_JUMP_ANIM_ID;
+			return  isInWater ? MARIO_SWIM_ANIM_ID : MARIO_JUMP_ANIM_ID;
 		case MarioState::Firing:
 			return MARIO_IDLE_ANIM_ID;
 		case MarioState::PullingFlag:
@@ -74,7 +74,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Idle:
 			return MARIO_BIG_IDLE_ANIM_ID;
 		case MarioState::Jumping:
-			return MARIO_BIG_JUMP_ANIM_ID;
+			return isInWater ? MARIO_BIG_SWIM_ANIM_ID : MARIO_BIG_JUMP_ANIM_ID;
 		case MarioState::Ducking:
 			return MARIO_BIG_DUCK_ANIM_ID;
 		case MarioState::Shrinking:
@@ -99,7 +99,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Idle:
 			return MARIO_FIRE_IDLE_ANIM_ID;
 		case MarioState::Jumping:
-			return MARIO_FIRE_JUMP_ANIM_ID;
+			return isInWater ? MARIO_FIRE_SWIM_ANIM_ID : MARIO_FIRE_JUMP_ANIM_ID;
 		case MarioState::Ducking:
 			return MARIO_FIRE_DUCK_ANIM_ID;
 		case MarioState::Firing:
@@ -125,7 +125,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Idle:
 			return STARMAN_BIG_IDLE_ANIM_ID;
 		case MarioState::Jumping:
-			return STARMAN_BIG_JUMP_ANIM_ID;
+			return isInWater ? STARMAN_BIG_SWIM_ANIM_ID : STARMAN_BIG_JUMP_ANIM_ID;
 		case MarioState::Ducking:
 			return STARMAN_BIG_DUCK_ANIM_ID;
 		case MarioState::PullingFlag:
@@ -147,7 +147,7 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Idle:
 			return STARMAN_SMALL_IDLE_ANIM_ID;
 		case MarioState::Jumping:
-			return STARMAN_SMALL_JUMP_ANIM_ID;
+			return isInWater ? STARMAN_SWIM_ANIM_ID :  STARMAN_SMALL_JUMP_ANIM_ID;
 		case MarioState::PullingFlag:
 			return STARMAN_SMALL_FLAG_PULL_ANIM_ID;
 		default:
