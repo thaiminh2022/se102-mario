@@ -182,20 +182,13 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(b);
 	}
 
-	// Bowser
-	if (config->entityData.bowserStart.hasValue)
-	{
-		const auto bowserStart = config->entityData.bowserStart.value;
-		const auto bowser = new Bowser(bowserStart.x, bowserStart.y, sceneContext->mario);
-		objects.push_back(bowser);
-	}
-
 	// FireShooter
 	for (const auto& fsPos : config->entityData.fireShooters)
 	{
 		const auto fs = new FireShooter(fsPos.position.x, fsPos.position.y, fsPos.shootDirection);
 		objects.push_back(fs);
 	}
+
 
 	// question
 	for (const auto& qbData : config->entityData.questionBlocks)
@@ -262,6 +255,20 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(bridge);
 		const auto axe = new AxeBridge(bridgeData.axePosition, bridge);
 		objects.push_back(axe);
+	}
+	// Bowser
+	if (config->entityData.bowserStart.hasValue)
+	{
+		Rect bowserArena;
+		//Bowser arena
+		for (const auto& BowserArenaData : config->entityData.bowserArenas)
+		{
+			bowserArena = BowserArenaData.arenaZone;
+			break; // only 1 arena per world
+		}
+		const auto bowserStart = config->entityData.bowserStart.value;
+		const auto bowser = new Bowser(bowserStart.x, bowserStart.y, bowserArena, sceneContext->mario);
+		objects.push_back(bowser);
 	}
 
 	// mario in water trigger

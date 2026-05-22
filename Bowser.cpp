@@ -2,7 +2,7 @@
 #include "StatManager.h"
 #include "Bridge.h"
 
-Bowser::Bowser(int startX, int startY, Mario* mario) : GameObject(startX, startY)
+Bowser::Bowser(int startX, int startY, Rect arena, Mario* mario) : GameObject(startX, startY), bowserArena(arena)
 {
 	auto t = Textures::GetInstance()->Get(BOWSER_TEX_ID);
 	auto sp = Sprites::GetInstance();
@@ -84,7 +84,6 @@ Bowser::Bowser(int startX, int startY, Mario* mario) : GameObject(startX, startY
 
 void Bowser::SetState(BowserState newState)
 {
-	auto sm = StatManager::GetInstance();
 	state = newState;
 	switch (state)
 	{
@@ -105,7 +104,6 @@ void Bowser::SetState(BowserState newState)
 		isCollidable = false;
 		deathTimer = Timer(2.5f);
 		deathTimer.Start();
-		sm->AddScore(5000, position);
 		break;
 	case BowserState::Falling:
 		velocity.x = 0;
@@ -137,6 +135,8 @@ void Bowser::HandleHeathDecrease(int amount)
 		if (state != BowserState::Dead)
 		{
 			SetState(BowserState::Dead);
+			auto sm = StatManager::GetInstance();
+			sm->AddScore(5000, position); //only award points if Bowser died of fireballs
 		}
 	}
 }
@@ -185,7 +185,7 @@ void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 
 	velocity.y += currentGravity * dt;
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
-
+	ClampInsideArena();
 	if (target->GetState() == MarioState::StopToWaitBowser && state != BowserState::Dead && state != BowserState::Falling)
 		SetState(BowserState::Falling);
 
@@ -308,8 +308,14 @@ void Bowser::TimerHandler(float dt, SceneContext* ctx)
 
 	if (nextJumpTimer.IsFinished())
 	{
-		int jumpDir = rand() % 2;// 0 or 1
-		moveLeft = (jumpDir == 0);
+		bool wantMoveLeft = (rand() % 2 == 0);
+
+		if (WillJumpOutsideArena(wantMoveLeft))
+		{
+			wantMoveLeft = !wantMoveLeft;
+		}
+
+		moveLeft = wantMoveLeft;
 
 		BOWSER_JUMP_INTERVAL = 1 + rand() % 3;
 		nextJumpTimer = Timer(BOWSER_JUMP_INTERVAL);
@@ -373,6 +379,7 @@ void Bowser::OnCollisionWith(CollisionEvent* event)
 		if (event->normalizedDir.y < 0 && event->otherTile->IsBlocking() && velocity.y >= 0.0f)
 		{
 			SetState(BowserState::Walking);
+			DebugOutTitle(L"Bowser grounded");
 			isGrounded = true;
 		}
 		else if (event->normalizedDir.y > 0 && event->otherTile->IsBlocking())
@@ -393,5 +400,48 @@ void Bowser::OnCollisionWith(CollisionEvent* event)
 				isGrounded = true;
 			}
 		}
+	}
+}
+bool Bowser::WillJumpOutsideArena(bool movingLeft)
+{
+	Rect bounds = GetBoundingBox();
+
+	float predictedDistance = 64.0f;
+
+	float predictedLeft =
+		movingLeft
+		? bounds.left - predictedDistance
+		: bounds.left + predictedDistance;
+
+	float predictedRight =
+		predictedLeft +
+		(bounds.right - bounds.left);
+
+	return predictedLeft < bowserArena.left + BOWSER_BOUND_PADDING || predictedRight > bowserArena.right - BOWSER_BOUND_PADDING;
+}
+void Bowser::ClampInsideArena()
+{
+	Rect bounds = GetBoundingBox();
+
+	// LEFT
+	if (bounds.left < bowserArena.left)
+	{
+		position.x += static_cast<float>(
+			bowserArena.left - bounds.left
+			);
+
+		moveLeft = false;
+		velocity.x = BOWSER_WALKING_SPEED;
+	}
+
+	// RIGHT
+	if (bounds.right > bowserArena.right)
+	{
+		position.x -= static_cast<float>(
+			bounds.right - bowserArena.right
+			);
+
+		moveLeft = true;
+		velocity.x = -BOWSER_WALKING_SPEED;
 	}
 }

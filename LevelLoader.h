@@ -48,6 +48,7 @@ class LevelLoader
 	void ParseInstantTeleportPipe(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseFlagPole(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
 	void ParseFireShooter(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
+	void ParseBowserArena(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 
 	// triggers
 	void ParseNextLevelZone(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);

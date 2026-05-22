@@ -23,6 +23,9 @@ public:
 	Rect GetBoundingBox() override;
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;	
+	bool IsBlocking() override { return true; }
+	bool IsActive() override { return true; }
+	CollisionMatrixLayer GetCollisionLayer() override { return CollisionMatrixLayer::Ground; }
 };
 
 
@@ -37,4 +40,5 @@ public:
 	}
 	void SolveCollisionWithMario();
 	void Render() override;
+	bool IsBlocking() override { return false; }
 };

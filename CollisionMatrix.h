@@ -1,6 +1,6 @@
 #pragma once
 #include <cinttypes>
-
+#include "Debug.h"
 
 typedef std::uint8_t matrixType;
 
@@ -40,6 +40,7 @@ class CollisionMatrix
 		SetCollisionValue(CollisionMatrixLayer::MarioFireball, CollisionMatrixLayer::Player, false);
 		SetCollisionValue(CollisionMatrixLayer::EnemyProjectile, CollisionMatrixLayer::Ground, false);
 		SetCollisionValue(CollisionMatrixLayer::Player, CollisionMatrixLayer::Player, false);
+		SetCollisionValue(CollisionMatrixLayer::Enemies, CollisionMatrixLayer::Ground, true);
 
 	}
 

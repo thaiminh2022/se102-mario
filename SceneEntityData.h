@@ -184,6 +184,14 @@ struct FireShooterData
 	{
 	}
 };
+struct BowserArenaData
+{
+	Rect arenaZone;
+	BowserArenaData(const Rect& arenaZone)
+		: arenaZone(arenaZone)
+	{
+	}
+};
 
 struct SceneEntityData
 {
@@ -204,6 +212,7 @@ struct SceneEntityData
 	vector<NextLevelData> nextLevelsData;
 	vector<Vector2Int> fireballTraps;
 	vector<FireShooterData> fireShooters;
+	vector<BowserArenaData> bowserArenas;
 
 	Optional<Vector2Int> bowserStart;
 	

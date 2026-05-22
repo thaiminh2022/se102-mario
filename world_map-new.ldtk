@@ -11,7 +11,7 @@
 	"iid": "542e4d40-21a0-11f1-b547-3f7639dce03c",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 286,
+	"nextUid": 288,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "Free",
@@ -2026,6 +2026,41 @@
 					"tilesetUid": null
 				}
 			]
+		},
+		{
+			"identifier": "BowserArena",
+			"uid": 286,
+			"tags": ["gameplay"],
+			"exportToToc": false,
+			"allowOutOfBounds": false,
+			"doc": null,
+			"width": 208,
+			"height": 16,
+			"resizableX": true,
+			"resizableY": true,
+			"minWidth": 16,
+			"maxWidth": null,
+			"minHeight": 16,
+			"maxHeight": null,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 1,
+			"lineOpacity": 1,
+			"hollow": true,
+			"color": "#FF0044",
+			"renderMode": "Rectangle",
+			"showName": true,
+			"tilesetId": null,
+			"tileRenderMode": "FitInside",
+			"tileRect": null,
+			"uiTileRect": null,
+			"nineSliceBorders": [],
+			"maxCount": 1,
+			"limitScope": "PerLevel",
+			"limitBehavior": "PreventAdding",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": []
 		}
 	], "tilesets": [
 		{
@@ -2046,8 +2081,8 @@
 			"customData": [],
 			"savedSelections": [],
 			"cachedPixelData": {
-				"opaqueTiles": "101001101110111101100010000000010000010010000000110000000000000011100000",
-				"averageColors": "fa65f843f730f840c964f954f310e977f8bffa77f9407b87f520f730f520f000e966f6affa764c982fcc4c98febafca90000e4330000ba657b99ab872fccfebbfa75000014330000e7b0f8c0e7b0e6a0f6a0f6a0b7b0f6a0f49037b0d8c037b0f380f99f97a0d7b0d7b0d4a036a025a0216000000000f6a0e7b0f7b032708180f180f190f1808180f490e490f6b028d0"
+				"opaqueTiles": "101001101110111101100010010000010000010010000000110000000000000011100000",
+				"averageColors": "fa65f843f730f840c964f954f310e977f8bffa77f9407b87f520f730f520f000e966f6affa764c982fcc4c98febafca90000f4330000ba657b99ab872fccfebbfa75000000000000e7b0f8c0e7b0e6a0f6a0f6a0b7b0f6a0f49037b0d8c037b0f380f99f97a0d7b0d7b0d4a036a025a0216000000000f6a0e7b0f7b032708180f180f190f1808180f490e490f6b028d0"
 			}
 		},
 		{
@@ -2110,7 +2145,7 @@
 			"savedSelections": [],
 			"cachedPixelData": {
 				"opaqueTiles": "00000000000000000000",
-				"averageColors": "5d953c641ea63edd99819bb99bb99a9777607d927d927940ad970000000000008ded000000000000"
+				"averageColors": "5d953c641ea63edd99819bb99bb99a9777607d927d927940ad970000000000008ded7ecc00000000"
 			}
 		},
 		{
@@ -2196,7 +2231,7 @@
 			"enumTags": [],
 			"customData": [],
 			"savedSelections": [],
-			"cachedPixelData": { "opaqueTiles": "000", "averageColors": "ba76ba765a76" }
+			"cachedPixelData": null
 		}
 	], "enums": [
 		{ "identifier": "BlockDropType", "uid": 51, "values": [
@@ -3423,7 +3458,7 @@
 							"px": [448,160],
 							"fieldInstances": [
 								{ "__identifier": "is_return_pipe", "__type": "Bool", "__value": false, "__tile": null, "defUid": 238, "realEditorValues": [] },
-								{ "__identifier": "level_to_load", "__type": "Int", "__value": 3, "__tile": null, "defUid": 239, "realEditorValues": [{ "id": "V_Int", "params": [3] }] },
+								{ "__identifier": "level_to_load", "__type": "Int", "__value": 2, "__tile": null, "defUid": 239, "realEditorValues": [{ "id": "V_Int", "params": [2] }] },
 								{ "__identifier": "return_pipe_ref", "__type": "EntityRef", "__value": null, "__tile": null, "defUid": 243, "realEditorValues": [] },
 								{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 28, "cy": 12 }, "__tile": null, "defUid": 244, "realEditorValues": [{
 									"id": "V_String",
@@ -5377,6 +5412,22 @@
 							"fieldInstances": [{ "__identifier": "Direction", "__type": "LocalEnum.Direction", "__value": "Left", "__tile": null, "defUid": 285, "realEditorValues": [] }],
 							"__worldX": 7152,
 							"__worldY": 448
+						},
+						{
+							"__identifier": "BowserArena",
+							"__grid": [128,5],
+							"__pivot": [0,0],
+							"__tags": ["gameplay"],
+							"__tile": null,
+							"__smartColor": "#FF0044",
+							"iid": "b196ec90-48b0-11f1-b303-5d5e9aaeadc8",
+							"width": 208,
+							"height": 80,
+							"defUid": 286,
+							"px": [2048,80],
+							"fieldInstances": [],
+							"__worldX": 7136,
+							"__worldY": 400
 						}
 					]
 				},

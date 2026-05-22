@@ -7,6 +7,7 @@
 #include "Sprites.h"
 #include "Animations.h"
 #include "AssetIDs.h"
+#include "AudioManager.h"
 
 static bool isRendered = false;
 Bridge:: Bridge(const BridgeData &bridgeData)
@@ -14,7 +15,7 @@ Bridge:: Bridge(const BridgeData &bridgeData)
 	this->bridgeData = bridgeData;
 	this->state = BridgeState::Normal;
 	position = Vector2(bridgeData.zone.left, bridgeData.zone.top);
-	disappearTimer = Timer(0.1f);
+	disappearTimer = Timer(0.05f);
 
 	auto t = Textures::GetInstance()->Get(BLOCKS_CASTLE_TEX_ID); 
 	auto s = Sprites::GetInstance();
@@ -64,6 +65,7 @@ void Bridge::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		if (disappearTimer.IsFinished())
 		{
 			bridgeData.zone.right -= 16;
+			AudioManager::GetInstance()->PlaySFX(BREAK_BLOCK);
 			if (bridgeData.zone.GetWidth() <= 0)
 			{
 				SetState(BridgeState::Disappeared);
