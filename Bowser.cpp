@@ -245,7 +245,7 @@ void Bowser::TimerHandler(float dt, SceneContext* ctx)
 		{
 			HammerThrowAttack(ctx);
 
-			BOWSER_HAMMERTHROW_INTERVAL = 1 + rand() % 3;
+			BOWSER_HAMMERTHROW_INTERVAL = 5 + rand() % 4;
 			nextHammerThrowTimer = Timer(BOWSER_HAMMERTHROW_INTERVAL);
 			nextHammerThrowTimer.Start();
 		}
