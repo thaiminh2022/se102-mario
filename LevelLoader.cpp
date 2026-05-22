@@ -43,21 +43,21 @@ const string WINGED_KOOPA_START = "WingedKoopaStart";
 const string QUESTION_BLOCK= "QuestionBlock";
 const string BRICK_BLOCK= "EmptyBrickBlock";
 const string COIN = "Coin";
-const string NEXT_LEVEL_ZONE = "NextLevel";
-const string BACKGROUND_MUSIC = "BackgroundMusic";
 const string FIREBALL_TRAP = "FireballTrap";
 const string FLAG_POLE = "FlagPole";
 const string BOWSER_START = "BowserStart";
 const string BRIDGE = "Bridge";
-const string TOAD_START = "FlagPole";
 const string PIPE = "Pipe";
 const string TELEPORT_PIPE = "TeleportPipe";
 const string INSTANT_TELEPORT_PIPE = "InstantTeleportPipe";
-const string CLRSCR_COLOR_TRIGGER = "ClearScreenColorTrigger";
-const string IN_WATER_TRIGGER = "WaterTrigger";
 const string FIRE_SHOOTER = "FireShooter";
 
-
+// TRIGGERS
+const string CLRSCR_COLOR_TRIGGER = "ClearScreenColorTrigger";
+const string IN_WATER_TRIGGER = "WaterTrigger";
+const string NEXT_LEVEL_ZONE = "NextLevel";
+const string BACKGROUND_MUSIC = "BackgroundMusic";
+const string ENTER_CASTLE_TRIGGER = "EnterCastleTrigger";
 
 
 /// Return the tilemap object for [level]. Value will be cached if new
@@ -256,6 +256,11 @@ RenderLayer LevelLoader::ParseBackgroundLayer(vector<LayerInstance>& v)
 		throw;
 	}
 	renderLayer.textureID = tID;
+	renderLayer.tileWidth = layerData->gridSize;
+	renderLayer.tileHeight = layerData->gridSize;
+	renderLayer.cellWidth = layerData->cWid;
+	renderLayer.cellHeight = layerData->cHei;
+	renderLayer.tileLookup.assign(renderLayer.cellWidth * renderLayer.cellHeight, -1);
 
 	for (auto l : layerData->gridTiles)
 	{
@@ -265,9 +270,14 @@ RenderLayer LevelLoader::ParseBackgroundLayer(vector<LayerInstance>& v)
 		t.srcX = l.src[0];
 		t.srcY = l.src[1];
 
-		t.width = 16;
-		t.height = 16;
+		t.width = renderLayer.tileWidth;
+		t.height = renderLayer.tileHeight;
+
+		const int tileIndex = static_cast<int>(renderLayer.tiles.size());
 		renderLayer.tiles.push_back(t);
+		const int cx = t.worldX / renderLayer.tileWidth;
+		const int cy = t.worldY / renderLayer.tileHeight;
+		renderLayer.tileLookup[cy * renderLayer.cellWidth + cx] = tileIndex;
 	}
 	return renderLayer;
 }
@@ -295,6 +305,11 @@ Optional<RenderLayer> LevelLoader::ParseAltLayer(vector<LayerInstance>& v)
 		throw;
 	}
 	renderLayer.textureID = tID;
+	renderLayer.tileWidth = layerData->gridSize;
+	renderLayer.tileHeight = layerData->gridSize;
+	renderLayer.cellWidth = layerData->cWid;
+	renderLayer.cellHeight = layerData->cHei;
+	renderLayer.tileLookup.assign(renderLayer.cellWidth * renderLayer.cellHeight, -1);
 
 	for (auto l : layerData->gridTiles)
 	{
@@ -304,9 +319,14 @@ Optional<RenderLayer> LevelLoader::ParseAltLayer(vector<LayerInstance>& v)
 		t.srcX = l.src[0];
 		t.srcY = l.src[1];
 
-		t.width = 16;
-		t.height = 16;
+		t.width = renderLayer.tileWidth;
+		t.height = renderLayer.tileHeight;
+
+		const int tileIndex = static_cast<int>(renderLayer.tiles.size());
 		renderLayer.tiles.push_back(t);
+		const int cx = t.worldX / renderLayer.tileWidth;
+		const int cy = t.worldY / renderLayer.tileHeight;
+		renderLayer.tileLookup[cy * renderLayer.cellWidth + cx] = tileIndex;
 	}
 	if (renderLayer.tiles.empty())
 	{
@@ -397,15 +417,7 @@ void LevelLoader::ParseBowsers(SceneEntityData& sceneEntities, vector<EntityInst
 	}
 }
 
-void LevelLoader::ParseToad(SceneEntityData& sceneEntities, vector<EntityInstance> entities)
-{
-	const auto toadStart = GetEntityDataWithIdentifier(entities, TOAD_START);
-	if (!toadStart.empty())
-	{
-		const auto s = toadStart[0]; // only 1 per level;
-		sceneEntities.toadStart.Set(Vector2Int(s->px[0], s->px[1]));
-	}
-}
+
 
 void LevelLoader::ParseBridge(SceneEntityData& sceneEntities, vector<EntityInstance> entities)
 {
@@ -601,28 +613,16 @@ void LevelLoader::ParseFlagPole(SceneEntityData& sceneEntities, std::vector<Enti
 		auto flagPole = flagPoles[0]; // only one flag pole per level
 
 		auto moveTo = GetFieldValueWithIdentifier(flagPole->fieldInstances, "player_move_to");
-		auto ldtkFireworkPosition = GetFieldValueWithIdentifier(flagPole->fieldInstances, "fireworks_positions");
 
 		if (moveTo.hasValue)
 		{
 			const auto moveToValue = moveTo.value.get<LDTKPoint>();
-			vector<Vector2Int> fireworkPositions;
 			
-			if (ldtkFireworkPosition.hasValue)
-			{
-				for (const auto& fireWorkPos : ldtkFireworkPosition.value.get<vector<LDTKPoint>>())
-				{
-					fireworkPositions.emplace_back(
-						fireWorkPos.cx * 16,
-						fireWorkPos.cy * 16);
-				}
-			}
 	
 
 			flagPoleData.Set(FlagPoleData{
 				Rect::FromXYWH(flagPole->px[0], flagPole->px[1], flagPole->width, flagPole->height),
 				Vector2Int(moveToValue.cx * 16, moveToValue.cy * 16),
-				fireworkPositions
 			});
 		}
 	}
@@ -812,6 +812,42 @@ void LevelLoader::ParseInWaterTrigger(SceneEntityData& sceneEntities, vector<Ent
 	}
 }
 
+void LevelLoader::ParseEnterCastleTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
+{
+	const auto inCastleTriggers = GetEntityDataWithIdentifier(entities, ENTER_CASTLE_TRIGGER);
+	if (inCastleTriggers.empty())
+		return;
+
+	// can only have 1 per level
+	const auto inCastleTrigger = inCastleTriggers[0];
+
+	// firework positions
+	const auto fireworkPosData = GetFieldValueWithIdentifier(inCastleTrigger->fieldInstances, "firework_positions");
+	const auto flagMoveToData = GetFieldValueWithIdentifier(inCastleTrigger->fieldInstances, "flag_move_to");
+
+	if (!fireworkPosData.hasValue)
+		return;
+
+	EnterCastleTriggerData data;
+	data.zone = Rect::FromXYWH(inCastleTrigger->px[0], inCastleTrigger->px[1], inCastleTrigger->width, inCastleTrigger->height);
+
+	// parse firework pos to data
+	for (const auto& ldtkPos : fireworkPosData.value.get<vector<LDTKPoint>>())
+	{
+		data.fireworkPositions.emplace_back(ldtkPos.cx * 16, ldtkPos.cy * 16);
+	}
+
+	// parse flag move to
+	if (!flagMoveToData.hasValue || flagMoveToData.value.is_null())
+		return;
+
+	const auto flagMoveTo = flagMoveToData.value.get<LDTKPoint>();
+	data.flagMoveTo = Vector2Int(flagMoveTo.cx * 16, flagMoveTo.cy * 16);
+	
+	sceneEntities.enterCastleTrigger = data;
+
+}
+
 void LevelLoader::ParseFireShooter(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
 {
 	const auto fireShooters = GetEntityDataWithIdentifier(entities, FIRE_SHOOTER);
@@ -872,7 +908,6 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParseBloopers(sceneEntities, entities);
 	ParseWingedKoopas(sceneEntities, entities);
 	ParseBowsers(sceneEntities, entities);
-	ParseToad(sceneEntities, entities);
 	ParseFireballTrap(sceneEntities, entities);
 	
 	// collectables
@@ -886,13 +921,14 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParsePipe(sceneEntities, entities);
 	ParseTeleportPipe(sceneEntities, entities);
 	ParseInstantTeleportPipe(sceneEntities, entities);
+	ParseFireShooter(sceneEntities, entities);
 
 	// triggers
 	ParseNextLevelZone(sceneEntities, entities);
 	ParseBackgroundMusic(level, sceneEntities, entities);
 	ParseClearScreenColorTrigger(sceneEntities, entities);
 	ParseInWaterTrigger(sceneEntities, entities);
-	ParseFireShooter(sceneEntities, entities);
+	ParseEnterCastleTrigger(sceneEntities, entities);
 
 	return sceneEntities;
 }

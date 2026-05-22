@@ -30,15 +30,14 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 		if (goomba->GetState() == GoombaState::Dead)
 			return false;
 		auto sm = StatManager::GetInstance();
-		if ((power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig) && e->normalizedDir.y != -1)
+		if (power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig)
 		{
 			// kill goomba by touch
 			goomba->SetState(GoombaState::Dead);
 			sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
-			return true;
 		}
-		if (e->normalizedDir.y == -1)
+		else if (e->normalizedDir.y == -1)
 		{
 			// jump on head
 			goomba->SetState(GoombaState::Dead);
@@ -50,13 +49,12 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 			velocity.y = -240.0f;
 			state = MarioState::Jumping;
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
-			return true;
 		}
 		else {
 			// dead
 			OnMarioHit();
-			return true;
 		}
+		return true;
 	}
 	return false;
 }
@@ -66,7 +64,20 @@ bool Mario::OnCollisionWithCheepCheeps(const CollisionEvent* e)
 	const auto cc = dynamic_cast<CheepCheeps*>(e->otherObject);
 	if (cc != nullptr)
 	{
-		OnMarioHit();
+		if (cc->GetState() == CheepCheepsState::Dead)
+			return false;
+		auto sm = StatManager::GetInstance();
+		if (power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig)
+		{
+			// kill goomba by touch
+			cc->SetState(CheepCheepsState::Dead);
+			sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
+			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
+		}
+		else {
+			// dead
+			OnMarioHit();
+		}
 		return true;
 	}
 	return false;
@@ -77,7 +88,20 @@ bool Mario::OnCollisionWithBloopers(const CollisionEvent* e)
 	const auto blooper = dynamic_cast<Bloopers*>(e->otherObject);
 	if (blooper != nullptr)
 	{
-		OnMarioHit();
+		if (blooper->GetState() == BlooperState::Dead)
+			return false;
+		auto sm = StatManager::GetInstance();
+		if (power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig)
+		{
+			// kill goomba by touch
+			blooper->SetState(BlooperState::Dead);
+			sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
+			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
+		}
+		else {
+			// dead
+			OnMarioHit();
+		}
 		return true;
 	}
 	return false;
@@ -91,15 +115,14 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 		if (koopa->GetState() == KoopaState::Dead)
 			return false;
 		auto sm = StatManager::GetInstance();
-		if ((power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig) && e->normalizedDir.y != -1)
+		if (power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig)
 		{
 			//kill koopa by touch
 			koopa->SetState(KoopaState::Dead);
 			sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
-			return true;
 		}
-		if (e->normalizedDir.x != 0 && koopa->GetForm() == KoopaForm::HiddingInShell && koopa->GetState() == KoopaState::NotMoving)
+		else if (e->normalizedDir.x != 0 && koopa->GetForm() == KoopaForm::HiddingInShell && koopa->GetState() == KoopaState::NotMoving)
 		{
 			// hit from left or right when koopa is in shell and not moving, kick the shell
 			if (e->normalizedDir.x == 1)
@@ -113,9 +136,8 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 			}
 			koopa->SetState(KoopaState::Moving);
 			AudioManager::GetInstance()->PlaySFX(AUDIOS::GOOMBA_STOMP);
-			return true;
 		}
-		if (e->normalizedDir.y == -1)
+		else if (e->normalizedDir.y == -1)
 		{
 			// jump on head
 			velocity.y = -240.0f;
@@ -147,10 +169,10 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 				}
 			}
 			AudioManager::GetInstance()->PlaySFX(AUDIOS::GOOMBA_STOMP);
-
-			return true;
+		}else
+		{
+			OnMarioHit();
 		}
-		OnMarioHit();
 		return true;
 	}
 	return false;

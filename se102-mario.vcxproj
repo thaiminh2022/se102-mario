@@ -145,6 +145,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionMatrix.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="EnterCastleTrigger.cpp" />
     <ClCompile Include="FireballTrap.cpp" />
     <ClCompile Include="FireShooter.cpp" />
     <ClCompile Include="FlagPole.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="MarioBreathBubble.cpp" />
     <ClCompile Include="MarioCollision.cpp" />
     <ClCompile Include="MarioInput.cpp" />
     <ClCompile Include="MarioLoader.cpp" />
@@ -204,6 +206,7 @@
     <ClInclude Include="CollisionMatrix.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="EnterCastleTrigger.h" />
     <ClInclude Include="FireballTrap.h" />
     <ClInclude Include="FireShooter.h" />
     <ClInclude Include="FlagPole.h" />
@@ -223,6 +226,7 @@
     <ClInclude Include="LevelTransitionScene.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Mario.h" />
+    <ClInclude Include="MarioBreathBubble.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="NextLevelPortal.h" />
     <ClInclude Include="Pipe.h" />

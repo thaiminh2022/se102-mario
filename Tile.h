@@ -28,8 +28,40 @@ struct RenderLayer
 	int tileWidth, tileHeight;
 	int cellWidth, cellHeight;
 	vector<RenderTile> tiles;
+	vector<int> tileLookup;
 
+	RenderTile* GetCell(int cx, int cy)
+	{
+		if (cx < 0 || cx >= cellWidth || cy < 0 || cy >= cellHeight)
+			return nullptr;
 
+		const int lookupIndex = cy * cellWidth + cx;
+		const int tileIndex = tileLookup[lookupIndex];
+
+		if (tileIndex < 0)
+			return nullptr;
+
+		return &tiles[tileIndex];
+	}
+
+	const RenderTile* GetCell(int cx, int cy) const
+	{
+		if (cx < 0 || cx >= cellWidth || cy < 0 || cy >= cellHeight)
+			return nullptr;
+
+		const int lookupIndex = cy * cellWidth + cx;
+		const int tileIndex = tileLookup[lookupIndex];
+
+		if (tileIndex < 0)
+			return nullptr;
+
+		return &tiles[tileIndex];
+	}
+
+	const RenderTile* GetTileAtWorldPosition(int x, int y) const
+	{
+		return GetCell(x / tileWidth, y / tileHeight);
+	}
 };
 
 enum class CollisionTileType : std::uint8_t

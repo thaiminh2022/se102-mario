@@ -3,6 +3,9 @@
 #include "Rect.h"
 #include "Scene.h"
 #include <vector>
+
+#include "Animations.h"
+#include "Sprites.h"
 #include "Timer.h"
 
 class Bowser;
@@ -81,6 +84,7 @@ class Mario : public GameObject
 	Timer invincibleTimer; //used for invincibility after getting hit
 	Timer starmanTimer; //used for starman power
 	Timer transformTimer; //used for growing and shrinking
+	Timer breathingTimer;
 
 	MarioState state;
 	MarioPower power;
@@ -100,6 +104,13 @@ class Mario : public GameObject
 
 	void OnMarioHit(bool force = false);
 	int GetMarioAnimId() const;
+	
+	// loader
+	void LoadSmallNormalMario();
+	void LoadBigNormalMario();
+	void LoadFireMario();
+	void LoadSmallStarman();
+	void LoadBigStarman();
 	void LoadSpriteAndAnimation();
 
 	// on collision with
@@ -141,7 +152,7 @@ class Mario : public GameObject
 	void MarioEnteringPipe(float dt);
 	void MarioExitingPipe(float dt);
 	void ClampMario();
-	void HandleSwim(float dt);
+	void HandleSwim(float dt, const SceneContext* ctx);
 
 
 public:

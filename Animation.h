@@ -23,6 +23,17 @@ class Animation
 
 public:
 	Animation(int defaultTime = 100) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
+	Animation(int spriteIds[], int n, int defaultTime)
+	{
+		this->defaultTime = defaultTime;
+		lastFrameTime = -1; 
+		currentFrame = -1;
+
+		for (int i = 0; i < n; i++)
+		{
+			Add(spriteIds[i]);
+		}
+	}
 	void Add(int spriteId, DWORD timeMs = 0);
 	void Render(float x, float y, bool flipX, bool flipY, int startFrame = -1);
 };

@@ -193,7 +193,11 @@ static void LoadResource()
 	auto t = Textures::GetInstance();
 	t->Add(MARIO_TEX_ID, L"Assets/Sprites/mario_sprites.png");
 
-	t->Add(GOOMBA_TEX_ID, L"Assets/Sprites/goomba_frames.png");
+	t->Add(OVERWORLD_ENEMY_TEX_ID, L"Assets/Sprites/overworld_enemies.png");
+	t->Add(CASTLE_ENEMY_TEX_ID, L"Assets/Sprites/castle_enemies.png");
+	t->Add(UNDERGROUND_ENEMY_TEX_ID, L"Assets/Sprites/underground_enemies.png");
+	t->Add(UNDERWATER_ENEMY_TEX_ID, L"Assets/Sprites/underwater_enemies.png");
+
 	t->Add(FIREBALL_TEX_ID, L"Assets/Sprites/fireball.png");
 
 	t->Add(BLOCKS_OVERWORLD_TEX_ID, L"Assets/Sprites/overworld_blocks.png");
@@ -207,11 +211,6 @@ static void LoadResource()
 	t->Add(CASTLE_ITEMS_TEX_ID, L"Assets/Sprites/castle_items.png");
 	t->Add(UNDERWATER_ITEMS_TEX_ID, L"Assets/Sprites/underwater_items.png");
 
-
-	t->Add(KOOPA_TEX_ID, L"Assets/Sprites/koopa_sprites.png");
-	t->Add(CHEEPS_TEX_ID, L"Assets/Sprites/cheepcheeps.png");
-	t->Add(BLOOPERS_TEX_ID, L"Assets/Sprites/bloopers.png");
-
 	
 	t->Add(BOWSER_TEX_ID, L"Assets/Sprites/bowser_sprites.png");
 	t->Add(BOWSER_ITEM_BULLET_TEX_ID, L"Assets/Sprites/bowser_item_sprites.png");
@@ -221,20 +220,24 @@ static void LoadResource()
 
 
 	// Audios
-	AudioManager::GetInstance()->LoadWAV(MARIO_JUMP_BIG, L"Assets\\Audio\\SFX\\jump-small.wav");
-	AudioManager::GetInstance()->LoadWAV(MARIO_JUMP_SMALL, L"Assets\\Audio\\SFX\\jump-super.wav");
-	AudioManager::GetInstance()->LoadWAV(GOOMBA_STOMP, L"Assets\\Audio\\SFX\\stomp.wav");
-	AudioManager::GetInstance()->LoadWAV(MARIO_DIE, L"Assets\\Audio\\SFX\\mariodie.wav");
-	AudioManager::GetInstance()->LoadWAV(MARIO_COLLECT_COIN, L"Assets\\Audio\\SFX\\coin.wav");
-	AudioManager::GetInstance()->LoadWAV(MARIO_BUMP, L"Assets\\Audio\\SFX\\bump.wav");
-	AudioManager::GetInstance()->LoadWAV(MARIO_POWERUP, L"Assets\\Audio\\SFX\\powerup.wav");
-	AudioManager::GetInstance()->LoadWAV(POWERUP_APPEARS, L"Assets\\Audio\\SFX\\powerup_appears.wav");
-	AudioManager::GetInstance()->LoadWAV(BREAK_BLOCK, L"Assets\\Audio\\SFX\\breakblock.wav");
-	AudioManager::GetInstance()->LoadWAV(PIPE_ENTER, L"Assets\\Audio\\SFX\\pipe.wav");
-	AudioManager::GetInstance()->LoadWAV(INVINCIBILITY_THEME, L"Assets\\Audio\\Soundtracks\\05.InvincibilityTheme.wav");
-	AudioManager::GetInstance()->LoadWAV(FLAG_PULL, L"Assets\\Audio\\SFX\\flagpole.wav");
-	AudioManager::GetInstance()->LoadWAV(STAGE_CLEAR, L"Assets\\Audio\\SFX\\stage_clear.wav");
-	AudioManager::GetInstance()->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
+	const auto& audioManager = AudioManager::GetInstance();
+	audioManager->LoadWAV(MARIO_JUMP_BIG, L"Assets\\Audio\\SFX\\jump-small.wav");
+	audioManager->LoadWAV(MARIO_JUMP_SMALL, L"Assets\\Audio\\SFX\\jump-super.wav");
+	audioManager->LoadWAV(GOOMBA_STOMP, L"Assets\\Audio\\SFX\\stomp.wav");
+	audioManager->LoadWAV(MARIO_DIE, L"Assets\\Audio\\SFX\\mariodie.wav");
+	audioManager->LoadWAV(MARIO_COLLECT_COIN, L"Assets\\Audio\\SFX\\coin.wav");
+	audioManager->LoadWAV(MARIO_BUMP, L"Assets\\Audio\\SFX\\bump.wav");
+	audioManager->LoadWAV(MARIO_POWERUP, L"Assets\\Audio\\SFX\\powerup.wav");
+	audioManager->LoadWAV(POWERUP_APPEARS, L"Assets\\Audio\\SFX\\powerup_appears.wav");
+	audioManager->LoadWAV(BREAK_BLOCK, L"Assets\\Audio\\SFX\\breakblock.wav");
+	audioManager->LoadWAV(PIPE_ENTER, L"Assets\\Audio\\SFX\\pipe.wav");
+	audioManager->LoadWAV(INVINCIBILITY_THEME, L"Assets\\Audio\\Soundtracks\\05.InvincibilityTheme.wav");
+	audioManager->LoadWAV(FLAG_PULL, L"Assets\\Audio\\SFX\\flagpole.wav");
+	audioManager->LoadWAV(STAGE_CLEAR, L"Assets\\Audio\\SFX\\stage_clear.wav");
+	audioManager->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
+	audioManager->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
+	audioManager->LoadWAV(FIREWORK, L"Assets\\Audio\\SFX\\fireworks.wav");
+
 
 	// Fonts
 	FontManager::GetInstance()->AddFontCustom(

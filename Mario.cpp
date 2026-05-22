@@ -51,6 +51,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	starmanTimer = Timer(STARMAN_INVINCIBLE_TIME);
 	invincibleTimer = Timer(MARIO_INVINCIBLE_TIME);
 	enemySequenceKilledCount = 0;
+	breathingTimer = Timer(2.5);
 	waitToBowserTimer = Timer(2.0f);
 	LoadSpriteAndAnimation();
 }
@@ -104,9 +105,11 @@ void Mario::SetIsInWater(const bool newIsInWater)
 	{
 		fallAcc = 180.0f;
 		velocity.y = min(velocity.y, 190.0f);
+		breathingTimer.Start();
 	}
 	else
 	{
+		breathingTimer.Stop();
 		fallAcc = STOP_FALL;
 	}
 }
@@ -234,7 +237,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	}
 
 	// orders matters
-	HandleSwim(dt);
+	HandleSwim(dt, ctx);
 	HandleJump(dt);
 	HandleShootFireball(dt, coObjects, ctx);
 	ApplyGravityAndClamp(dt);

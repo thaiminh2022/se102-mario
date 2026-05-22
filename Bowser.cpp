@@ -78,8 +78,8 @@ Bowser::Bowser(int startX, int startY, Mario* mario) : GameObject(startX, startY
 	isDead = false;
 
 	BOWSER_JUMP_INTERVAL = 1 + rand() % 3; //random jump interval between 1 to 3 seconds
-	BOWSER_FIRE_BREATH_INTERVAL = 2 + rand() % 3; //random fire breath interval between 2 to 4 seconds
-	BOWSER_HAMMERTHROW_INTERVAL = 1 + rand() % 3; //random hammer throw interval between 1 to 3 seconds
+	BOWSER_FIRE_BREATH_INTERVAL = 3 + rand() % 3; //random fire breath interval between 3 to 5 seconds
+	BOWSER_HAMMERTHROW_INTERVAL = 5 + rand() % 4; //random hammer throw interval between 5 to 8 seconds
 }
 
 void Bowser::SetState(BowserState newState)
@@ -174,13 +174,13 @@ void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		}
 		return;
 	}
-	float currentGravity = 562.5f;
+	float currentGravity = 500.0f;
 
 	// Check if Bowser is at the "peak" of his jump (moving very slowly up or down)
 	if (abs(velocity.y) < 60.0f)
 	{
 		// Cut gravity in half while he is hanging in the air!
-		currentGravity = 281.25f;
+		currentGravity /= 2;
 	}
 
 	velocity.y += currentGravity * dt;
@@ -287,7 +287,7 @@ void Bowser::TimerHandler(float dt, SceneContext* ctx)
 		{
 			HammerThrowAttack(ctx);
 
-			BOWSER_HAMMERTHROW_INTERVAL = 1 + rand() % 3;
+			BOWSER_HAMMERTHROW_INTERVAL = 5 + rand() % 4;
 			nextHammerThrowTimer = Timer(BOWSER_HAMMERTHROW_INTERVAL);
 			nextHammerThrowTimer.Start();
 		}
@@ -333,21 +333,7 @@ void Bowser::HammerThrowAttack(SceneContext* ctx)
 	if (state == BowserState::Dead || state == BowserState::Falling)
 		return;
 	float wait = 0;
-	float offsetY = 0;
 	int hammerCount = 3 + rand() % 6; // throw 3 to 8 hammers in quick succession
-	for (int index = 0; index < hammerCount; index++)
-	{
-		wait += index * 0.03f;
-
-		int spawnX = static_cast<int>(position.x);
-		int spawnY = static_cast<int>(position.y);
-		auto h = new BowserHammer(spawnX, spawnY, isFacingRight, wait);
-		ctx->addObject(h);
-	}
-
-	wait += 0.2f;
-	offsetY = -20.0f;
-	hammerCount = 3 + rand() % 6; // throw 3 to 8 hammers in quick succession
 	for (int index = 0; index < hammerCount; index++)
 	{
 		wait += index * 0.03f;
