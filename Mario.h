@@ -90,7 +90,7 @@ class Mario : public GameObject
 	MarioPower power;
 	MarioPower lastPower; // used to store power before transformation for correct animation during transformation
 
-	std::shared_ptr<MarioJetPack> jetpack;
+	MarioJetPack* jetpack = nullptr;
 
 	// flag pole interaction
 	Vector2 marioWinningMoveToPosition;
@@ -135,6 +135,7 @@ class Mario : public GameObject
 	void WhileGrounded(float dt);
 	void WhileOnAir(float dt);
 	void HandleJump(float dt);
+	void HandleJetpack(float dt);
 	void HandleShootFireball(float dt, const vector<GameObject*>& coObjects, const SceneContext* ctx);
 	void ApplyGravityAndClamp(float dt);
 	void UpdateFacingDirection();

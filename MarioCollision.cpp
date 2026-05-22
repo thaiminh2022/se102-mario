@@ -383,8 +383,8 @@ bool Mario::OnCollisionWithJetpack(const CollisionEvent* e)
 	if (jp == nullptr)
 		return false;
 
-	jetpack->SetState(MarioJetPackState::OnMario);
-	this->jetpack.reset(jp);
+	jp->SetState(MarioJetPackState::OnMario);
+	jetpack = jp;
 	return true;
 }
 

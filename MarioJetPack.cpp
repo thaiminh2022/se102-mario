@@ -10,6 +10,11 @@
 #include "Textures.h"
 #include <format>
 
+const float PMETER_MAX = 100.0f;
+const float PMETER_CHARGE_RATE = 65.0f;
+const float PMETER_DECAY_RATE = 55.0f;
+const float PMETER_FLIGHT_DRAIN_RATE = 18.0f;
+
 Rect MarioJetPack::GetBoundingBox()
 {
 	return Rect::FromXYWH(position.x, position.y, 16, 16);
@@ -39,30 +44,55 @@ MarioJetPack::MarioJetPack(Vector2Int startPos) : GameObject(startPos)
 	}
 }
 
+void MarioJetPack::UpdateMeter(float dt, bool canCharge)
+{
+	if (state != MarioJetPackState::OnMario)
+		return;
+
+	if (canCharge)
+	{
+		pMeter += PMETER_CHARGE_RATE * dt;
+		pMeter = std::clamp(pMeter, 0.0f, PMETER_MAX);
+		if (pMeter >= PMETER_MAX)
+		{
+			readyToFly = true;
+		}
+		return;
+	}
+
+	pMeter -= PMETER_DECAY_RATE * dt;
+	pMeter = std::clamp(pMeter, 0.0f, PMETER_MAX);
+	if (pMeter <= 0.0f)
+	{
+		readyToFly = false;
+	}
+}
+
+void MarioJetPack::DrainFlight(float dt)
+{
+	if (state != MarioJetPackState::OnMario || !readyToFly)
+		return;
+
+	pMeter -= PMETER_FLIGHT_DRAIN_RATE * dt;
+	pMeter = std::clamp(pMeter, 0.0f, PMETER_MAX);
+	if (pMeter <= 0.0f)
+	{
+		readyToFly = false;
+	}
+}
+
 void MarioJetPack::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 	if (state == MarioJetPackState::Removed)
 	{
 		isDeleted = true;
-		return;
 	}
 
-	if (state == MarioJetPackState::OnMario)
-	{
-		if (ctx != nullptr && ctx->mario != nullptr && ctx->mario->GetState() == MarioState::Running)
-		{
-			pMeter += 50.0f * dt;
-			pMeter = std::clamp(pMeter, 0.0f, 100.0f);
-			if (pMeter >= 100)
-			{
-				readyToFly = true;
-			}
-		}
-	}
 }
 void MarioJetPack::SetState(MarioJetPackState s)
 {
 	state = s;
+	isCollidable = state == MarioJetPackState::Idle;
 }
 
 void MarioJetPack::Render()

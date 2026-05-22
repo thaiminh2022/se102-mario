@@ -10,6 +10,11 @@ const float SWIM_UP_SPEED = -150.0f;   // Upward impulse/speed when pressing swi
 const float WATER_GRAVITY = 180.0f;    // Slow underwater downward acceleration
 const float WATER_MAX_FALL = 90.0f;    // Slow sinking cap
 const float MAX_SWIM = 100.0f;         // horizontal cap
+const float PMETER_MIN_RUN_SPEED = MAX_WALK;
+const float JETPACK_FLY_GRAVITY = 220.0f;
+const float JETPACK_LIFT_ACCELERATION = 620.0f;
+const float JETPACK_MAX_RISE = -210.0f;
+const float JETPACK_MAX_FALL = 120.0f;
 
 void Mario::WhileGrounded(float dt)
 {
@@ -145,10 +150,6 @@ void Mario::HandleJump(float dt)
 			fallAcc = RUN_FALL; // Extremely heavy gravity
 		}
 
-		// can keep jumping
-		if (jetpack && jetpack->ReadyToFly())
-			return;
-
 		isGrounded = false; // Lift off the ground
 	}
 
@@ -159,6 +160,39 @@ void Mario::HandleJump(float dt)
 		if (fallAcc == STOP_FALL) velocity.y -= (STOP_FALL - STOP_FALL_A) * dt;
 		if (fallAcc == WALK_FALL) velocity.y -= (WALK_FALL - WALK_FALL_A) * dt;
 		if (fallAcc == RUN_FALL) velocity.y -= (RUN_FALL - RUN_FALL_A) * dt;
+	}
+}
+
+void Mario::HandleJetpack(float dt)
+{
+	if (jetpack == nullptr || isInWater)
+		return;
+
+	const auto input = InputManager::GetInstance();
+	const bool movingWithInput =
+		(velocity.x > 0.0f && input->IsKeyDown('D')) ||
+		(velocity.x < 0.0f && input->IsKeyDown('A'));
+	const bool canCharge =
+		isGrounded &&
+		state != MarioState::Ducking &&
+		input->IsKeyDown(VK_SHIFT) &&
+		movingWithInput &&
+		abs(velocity.x) >= PMETER_MIN_RUN_SPEED;
+
+	if (isGrounded || !jetpack->ReadyToFly())
+	{
+		jetpack->UpdateMeter(dt, canCharge);
+	}
+
+	if (!jetpack->ReadyToFly() || isGrounded)
+		return;
+
+	fallAcc = JETPACK_FLY_GRAVITY;
+	if (input->IsKeyDown('W'))
+	{
+		velocity.y -= JETPACK_LIFT_ACCELERATION * dt;
+		velocity.y = max(velocity.y, JETPACK_MAX_RISE);
+		jetpack->DrainFlight(dt);
 	}
 }
 
@@ -217,8 +251,9 @@ void Mario::ApplyGravityAndClamp(float dt)
 	{
 		velocity.x = min(velocity.x, MAX_RUN);
 		velocity.x = max(velocity.x, -MAX_RUN);
-		velocity.y = min(velocity.y, MAX_FALL);
-		velocity.y = max(velocity.y, -MAX_FALL);
+		const bool isJetpackFlying = jetpack != nullptr && jetpack->ReadyToFly();
+		velocity.y = min(velocity.y, isJetpackFlying ? JETPACK_MAX_FALL : MAX_FALL);
+		velocity.y = max(velocity.y, isJetpackFlying ? JETPACK_MAX_RISE : -MAX_FALL);
 	}
 
 

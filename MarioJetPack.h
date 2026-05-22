@@ -22,6 +22,9 @@ public:
 	{
 		return pMeter > 0 && readyToFly;
 	}
+	void UpdateMeter(float dt, bool canCharge);
+	void DrainFlight(float dt);
+	float GetPMeter() const { return pMeter; }
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void SetState(MarioJetPackState s);
 	void Render() override;
