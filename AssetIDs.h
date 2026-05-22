@@ -397,6 +397,13 @@ constexpr int STAR_IDLE_SPRITE_4 = 44104;
 constexpr int FLAG_IDLE_ANIM_ID = 45100;
 constexpr int FLAG_IDLE_SPRITE_1 = 45101;
 
+// Crown / Jetpack (T = 6) -> Idle (A = 100)
+constexpr int CROWN_TEX_ID = 46000;
+constexpr int CROWN_IDLE_ANIM_ID = 46100;
+constexpr int CROWN_WEAR_ANIM_ID = 46110;
+constexpr int CROWN_BIG_SPRITE = 46101;
+constexpr int CROWN_SMALL_SPRITE = 46102;
+
 
 // ==========================================
 // HUD ELEMENTS (E = 5)

@@ -25,22 +25,20 @@ MarioJetPack::MarioJetPack(Vector2Int startPos) : GameObject(startPos)
 	auto anims = Animations::GetInstance();
 	state = MarioJetPackState::Idle;
 
-	if (!anims->Contains(COIN_SPIN_ANIM_ID))
+	if (!anims->Contains(CROWN_IDLE_ANIM_ID))
 	{
-		auto t = Textures::GetInstance()->Get(ChooseItemsId(BiomeType::Overworld));
+		auto t = Textures::GetInstance()->Get(CROWN_TEX_ID);
 		auto sp = Sprites::GetInstance();
-		sp->Add(COIN_SPIN_SPRITE_1, 0, 0, 15, 15, t);
-		sp->Add(COIN_SPIN_SPRITE_2, 16, 0, 31, 15, t);
-		sp->Add(COIN_SPIN_SPRITE_3, 32, 0, 47, 15, t);
-		sp->Add(COIN_SPIN_SPRITE_4, 48, 0, 63, 15, t);
+		sp->Add(CROWN_BIG_SPRITE, 0, 0, 15, 15, t);
+		sp->Add(CROWN_SMALL_SPRITE, 16, 0, 31, 15, t);
 
-		auto anim = new Animation;
-		anim->Add(COIN_SPIN_SPRITE_1);
-		anim->Add(COIN_SPIN_SPRITE_2);
-		anim->Add(COIN_SPIN_SPRITE_3);
-		anim->Add(COIN_SPIN_SPRITE_4);
+		auto worldCrownAnim = new Animation;
+		worldCrownAnim->Add(CROWN_BIG_SPRITE, 180);
+		anims->Add(CROWN_IDLE_ANIM_ID, worldCrownAnim);
 
-		anims->Add(COIN_SPIN_ANIM_ID, anim);
+		auto wearCrownAnim = new Animation;
+		wearCrownAnim->Add(CROWN_SMALL_SPRITE, 180);
+		anims->Add(CROWN_WEAR_ANIM_ID, wearCrownAnim);
 	}
 }
 
@@ -101,7 +99,7 @@ void MarioJetPack::Render()
 	{
 		float  renderX, renderY;
 		Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
-		Animations::GetInstance()->Get(COIN_SPIN_ANIM_ID)->Render(round(renderX), round(renderY), false, false);
+		Animations::GetInstance()->Get(CROWN_IDLE_ANIM_ID)->Render(round(renderX), round(renderY), false, false);
 		return;
 	}
 
@@ -114,6 +112,13 @@ void MarioJetPack::Render()
 	const auto str = std::format(L"P: {}%", static_cast<int>(std::round(pMeter)));
 	
 	FontManager::GetInstance()->Draw(STATS_FONT, Vector2Int(0, drawY), str.c_str() , Colors::WHITE);
+}
+
+void MarioJetPack::RenderCrownAt(const Vector2& marioPosition) const
+{
+	float renderX, renderY;
+	Game::GetInstance()->GetCamera()->WorldToScreen(marioPosition.x, marioPosition.y - 12.0f, renderX, renderY);
+	Animations::GetInstance()->Get(CROWN_WEAR_ANIM_ID)->Render(round(renderX), round(renderY), false, false);
 }
 
 
