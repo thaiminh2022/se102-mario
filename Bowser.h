@@ -50,9 +50,9 @@ class Bowser :public GameObject
 	BowserState state;
 	Timer fireBreathAnimTimer;
 	Timer hammerThrowAnimTimer;
-	float BOWSER_JUMP_INTERVAL = 3.0f;
-	float BOWSER_FIRE_BREATH_INTERVAL = 3.0f;
-	float BOWSER_HAMMERTHROW_INTERVAL = 3.0f;
+	float BOWSER_JUMP_INTERVAL;
+	float BOWSER_FIRE_BREATH_INTERVAL;
+	float BOWSER_HAMMERTHROW_INTERVAL;
 public:
 	Bowser(int startX, int startY, Mario* mario);
 	void SetState(BowserState newState);
