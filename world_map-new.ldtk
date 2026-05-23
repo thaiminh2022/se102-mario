@@ -5029,7 +5029,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [2,5],
+							"__grid": [30,6],
 							"__pivot": [0,0],
 							"__tags": ["entity"],
 							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
@@ -5038,10 +5038,10 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 31,
-							"px": [32,80],
+							"px": [480,96],
 							"fieldInstances": [],
-							"__worldX": 5120,
-							"__worldY": 400
+							"__worldX": 5568,
+							"__worldY": 416
 						},
 						{
 							"__identifier": "QuestionBlock",
@@ -5310,7 +5310,7 @@
 						},
 						{
 							"__identifier": "BowserStart",
-							"__grid": [137,8],
+							"__grid": [133,8],
 							"__pivot": [0,0],
 							"__tags": ["entity"],
 							"__tile": null,
@@ -5319,9 +5319,9 @@
 							"width": 32,
 							"height": 32,
 							"defUid": 213,
-							"px": [2192,128],
+							"px": [2128,128],
 							"fieldInstances": [],
-							"__worldX": 7280,
+							"__worldX": 7216,
 							"__worldY": 448
 						},
 						{
@@ -5427,6 +5427,22 @@
 							"px": [2048,80],
 							"fieldInstances": [],
 							"__worldX": 7136,
+							"__worldY": 400
+						},
+						{
+							"__identifier": "PlayerStart",
+							"__grid": [1,5],
+							"__pivot": [0,0],
+							"__tags": ["entity"],
+							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
+							"__smartColor": "#63C74D",
+							"iid": "d30df790-48b0-11f1-a34e-673e7a7bfb71",
+							"width": 16,
+							"height": 16,
+							"defUid": 31,
+							"px": [16,80],
+							"fieldInstances": [],
+							"__worldX": 5104,
 							"__worldY": 400
 						}
 					]

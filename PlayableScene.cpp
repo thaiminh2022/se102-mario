@@ -259,16 +259,13 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	// Bowser
 	if (config->entityData.bowserStart.hasValue)
 	{
-		Rect bowserArena;
-		//Bowser arena
-		for (const auto& BowserArenaData : config->entityData.bowserArenas)
-		{
-			bowserArena = BowserArenaData.arenaZone;
-			break; // only 1 arena per world
+		if (config->entityData.bowserArenas.hasValue) {
+			Rect bowserArena = config->entityData.bowserArenas.value.arenaZone;
+
+			const auto bowserStart = config->entityData.bowserStart.value;
+			const auto bowser = new Bowser(bowserStart.x, bowserStart.y, bowserArena, sceneContext->mario);
+			objects.push_back(bowser);
 		}
-		const auto bowserStart = config->entityData.bowserStart.value;
-		const auto bowser = new Bowser(bowserStart.x, bowserStart.y, bowserArena, sceneContext->mario);
-		objects.push_back(bowser);
 	}
 
 	// mario in water trigger
@@ -288,7 +285,7 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
-	
+
 	// triggers;
 	// clear screen color trigger
 	for (const auto& colorTriggerData : config->entityData.clearScreenColorTriggers)

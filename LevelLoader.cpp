@@ -887,20 +887,19 @@ void LevelLoader::ParseFireShooter(SceneEntityData& sceneEntities, vector<Entity
 	}
 }
 
-void LevelLoader::ParseBowserArena( SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
+void LevelLoader::ParseBowserArena(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
 {
 	const auto bowserArenas = GetEntityDataWithIdentifier(entities, BOWSER_ARENA);
-
-	for (const auto& arena : bowserArenas)
-	{
-		Rect rect = Rect::FromXYWH(
-			arena->px[0],
-			arena->px[1],
-			arena->width,
-			arena->height
-		); 
-		sceneEntities.bowserArenas.emplace_back(rect);
-	}
+	if (bowserArenas.empty())
+		return;
+	auto arena = bowserArenas[0];
+	Rect rect = Rect::FromXYWH(
+		arena->px[0],
+		arena->px[1],
+		arena->width,
+		arena->height
+	);
+	sceneEntities.bowserArenas = BowserArenaData(rect);
 }
 
 void LevelLoader::RebuildCacheForLevel(vector<EntityInstance>& entities)
