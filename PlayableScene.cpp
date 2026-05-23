@@ -240,12 +240,6 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		const auto pipe = new Pipe(pipeData);
 		objects.push_back(pipe);
 	}
-	// music triggers
-	for (const auto& musicTriggerData : config->entityData.musicTriggers)
-	{
-		const auto musicTrigger = new BgMusicTrigger(musicTriggerData.id, musicTriggerData.zone);
-		objects.push_back(musicTrigger);
-	}
 
 	// bridge
 	if (config->entityData.bridge.hasValue)
@@ -266,13 +260,6 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 			const auto bowser = new Bowser(bowserStart.x, bowserStart.y, bowserArena, sceneContext->mario);
 			objects.push_back(bowser);
 		}
-	}
-
-	// mario in water trigger
-	for (const auto& waterTrigger : config->entityData.waterTriggers)
-	{
-		const auto trigger = new InWaterTrigger(waterTrigger.zone, waterTrigger.inWater);
-		objects.push_back(trigger);
 	}
 
 	// background music

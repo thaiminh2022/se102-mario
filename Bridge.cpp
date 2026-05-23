@@ -9,7 +9,6 @@
 #include "AssetIDs.h"
 #include "AudioManager.h"
 
-static bool isRendered = false;
 Bridge:: Bridge(const BridgeData &bridgeData)
 {
 	this->bridgeData = bridgeData;
@@ -66,8 +65,9 @@ void Bridge::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		{
 			bridgeData.zone.right -= 16;
 			AudioManager::GetInstance()->PlaySFX(BREAK_BLOCK);
-			if (bridgeData.zone.GetWidth() <= 0)
+			if (bridgeData.zone.right <= bridgeData.zone.left)
 			{
+				bridgeData.zone.right = bridgeData.zone.left;
 				SetState(BridgeState::Disappeared);
 			}
 		}

@@ -214,7 +214,7 @@
 			"tileRect": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
 			"uiTileRect": null,
 			"nineSliceBorders": [],
-			"maxCount": 2,
+			"maxCount": 1,
 			"limitScope": "PerLevel",
 			"limitBehavior": "DiscardOldOnes",
 			"pivotX": 0,
@@ -5028,22 +5028,6 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "PlayerStart",
-							"__grid": [30,6],
-							"__pivot": [0,0],
-							"__tags": ["entity"],
-							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
-							"__smartColor": "#63C74D",
-							"iid": "39a4c4d0-21a0-11f1-ab64-97a56788d7fd",
-							"width": 16,
-							"height": 16,
-							"defUid": 31,
-							"px": [480,96],
-							"fieldInstances": [],
-							"__worldX": 5568,
-							"__worldY": 416
-						},
-						{
 							"__identifier": "QuestionBlock",
 							"__grid": [30,6],
 							"__pivot": [0,0],
@@ -5431,19 +5415,19 @@
 						},
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [1,5],
+							"__grid": [114,9],
 							"__pivot": [0,0],
 							"__tags": ["entity"],
 							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
 							"__smartColor": "#63C74D",
-							"iid": "d30df790-48b0-11f1-a34e-673e7a7bfb71",
+							"iid": "cab18160-48b0-11f1-a6b5-39fcebf1780d",
 							"width": 16,
 							"height": 16,
 							"defUid": 31,
-							"px": [16,80],
+							"px": [1824,144],
 							"fieldInstances": [],
-							"__worldX": 5104,
-							"__worldY": 400
+							"__worldX": 6912,
+							"__worldY": 464
 						}
 					]
 				},

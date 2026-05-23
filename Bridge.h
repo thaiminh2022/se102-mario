@@ -3,6 +3,7 @@
 #include "Rect.h"
 #include "Vector2.h"
 #include "Timer.h"
+#include "SceneEntityData.h"
 
 enum class BridgeState
 {

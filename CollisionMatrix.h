@@ -40,7 +40,6 @@ class CollisionMatrix
 		SetCollisionValue(CollisionMatrixLayer::MarioFireball, CollisionMatrixLayer::Player, false);
 		SetCollisionValue(CollisionMatrixLayer::EnemyProjectile, CollisionMatrixLayer::Ground, false);
 		SetCollisionValue(CollisionMatrixLayer::Player, CollisionMatrixLayer::Player, false);
-		SetCollisionValue(CollisionMatrixLayer::Enemies, CollisionMatrixLayer::Ground, true);
 
 	}
 

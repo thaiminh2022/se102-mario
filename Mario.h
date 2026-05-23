@@ -99,7 +99,7 @@ class Mario : public GameObject
 	PipeData pipeData;
 	MarioPipeCtx pipeExitingData;
 
-	// Bridge collapse timmer
+	// Bridge collapse timer
 	Timer waitToBowserTimer;
 
 	void OnMarioHit(bool force = false);

@@ -486,7 +486,6 @@ constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_4 = 92204;
 
 // ==========================================
 // POINT POPUPS (E = 10
-
 // ==========================================
 constexpr int POINTS_TEX_ID = 100000;
 

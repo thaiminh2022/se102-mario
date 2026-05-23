@@ -379,7 +379,6 @@ void Bowser::OnCollisionWith(CollisionEvent* event)
 		if (event->normalizedDir.y < 0 && event->otherTile->IsBlocking() && velocity.y >= 0.0f)
 		{
 			SetState(BowserState::Walking);
-			DebugOutTitle(L"Bowser grounded");
 			isGrounded = true;
 		}
 		else if (event->normalizedDir.y > 0 && event->otherTile->IsBlocking())
