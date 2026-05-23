@@ -248,21 +248,20 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	}
 
 	// bridge
-	if (config->entityData.bridge.hasValue)
+	if (config->entityData.bridge.has_value())
 	{
-		const auto bridgeData = config->entityData.bridge.value;
-		const auto bridge = new Bridge(bridgeData);
-		objects.push_back(bridge);
-		const auto axe = new AxeBridge(bridgeData.axePosition, bridge);
-		objects.push_back(axe);
+		const auto bridgeData = config->entityData.bridge.value();
+		objects.push_back(std::make_unique<Bridge>(bridgeData));
+
+		objects.push_back(std::make_unique<AxeBridge>(bridgeData.axePosition, bridge));
 	}
 	// Bowser
-	if (config->entityData.bowserStart.hasValue)
+	if (config->entityData.bowserStart.has_value())
 	{
-		if (config->entityData.bowserArenas.hasValue) {
-			Rect bowserArena = config->entityData.bowserArenas.value.arenaZone;
+		if (config->entityData.bowserArenas.has_value()) {
+			Rect bowserArena = config->entityData.bowserArenas.value().arenaZone;
 
-			const auto bowserStart = config->entityData.bowserStart.value;
+			const auto bowserStart = config->entityData.bowserStart.value();
 			const auto bowser = new Bowser(bowserStart.x, bowserStart.y, bowserArena, sceneContext->mario);
 			objects.push_back(bowser);
 		}
