@@ -17,6 +17,7 @@
 #include "Koopa.h"
 #include "NextLevelPortal.h"
 #include "Pipe.h"
+#include "Bridge.h"
 #include "QuestionBlock.h"
 #include "HUD.h"
 #include <queue>
@@ -181,18 +182,12 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(std::make_unique<Bloopers>(bData.lowestLimit, bData.highestLimit, config->biome));
 	}
 
-	// Bowser
-	if (config->entityData.bowserStart.has_value())
-	{
-		const auto bowserStart = config->entityData.bowserStart.value();
-		objects.push_back(std::make_unique<Bowser>(bowserStart.x, bowserStart.y, sceneContext->mario));
-	}
-
 	// FireShooter
 	for (const auto& fsPos : config->entityData.fireShooters)
 	{
 		objects.push_back(std::make_unique<FireShooter>(fsPos.position.x, fsPos.position.y, fsPos.shootDirection));
 	}
+
 
 	// question
 	for (const auto& qbData : config->entityData.questionBlocks)
@@ -252,6 +247,27 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(std::make_unique<LevelTextRender>(config->entityData.worldTextData));
 	}
 
+	// bridge
+	if (config->entityData.bridge.hasValue)
+	{
+		const auto bridgeData = config->entityData.bridge.value;
+		const auto bridge = new Bridge(bridgeData);
+		objects.push_back(bridge);
+		const auto axe = new AxeBridge(bridgeData.axePosition, bridge);
+		objects.push_back(axe);
+	}
+	// Bowser
+	if (config->entityData.bowserStart.hasValue)
+	{
+		if (config->entityData.bowserArenas.hasValue) {
+			Rect bowserArena = config->entityData.bowserArenas.value.arenaZone;
+
+			const auto bowserStart = config->entityData.bowserStart.value;
+			const auto bowser = new Bowser(bowserStart.x, bowserStart.y, bowserArena, sceneContext->mario);
+			objects.push_back(bowser);
+		}
+	}
+
 	// background music
 	if (config->entityData.backgroundMusicID.has_value())
 	{
@@ -262,7 +278,7 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
-	
+
 	// triggers;
 	// clear screen color trigger
 	for (const auto& colorTriggerData : config->entityData.clearScreenColorTriggers)

@@ -50,6 +50,7 @@ class LevelLoader
 	void ParseJetpack(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseTextRender(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 
+	void ParseBowserArena(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 
 	// triggers
 	void ParseNextLevelZone(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);

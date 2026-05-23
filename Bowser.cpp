@@ -1,7 +1,8 @@
 #include "Bowser.h"
 #include "StatManager.h"
+#include "Bridge.h"
 
-Bowser::Bowser(int startX, int startY, Mario* mario) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
+Bowser::Bowser(int startX, int startY, Rect arena, Mario* mario) : GameObject(startX, startY), bowserArena(arena)
 {
 	auto t = Textures::GetInstance()->Get(BOWSER_TEX_ID);
 	auto sp = Sprites::GetInstance();
@@ -16,6 +17,10 @@ Bowser::Bowser(int startX, int startY, Mario* mario) : GameObject(static_cast<fl
 	sp->Add(BOWSER_HAMMER_THROW_SPRITE, 128, 0, 159, 40, t);
 
 	sp->Add(BOWSER_DEATH_SPRITE_1, 32, 9, 63, 40, t); // will be vertically flipped later
+
+	sp->Add(BOWSER_FALL_SPRITE_1, 0, 9, 31, 40, t);
+	sp->Add(BOWSER_FALL_SPRITE_2, 32, 9, 63, 40, t);
+
 
 	if (!anims->Contains(BOWSER_WALK_ANIM_ID))
 	{
@@ -45,11 +50,19 @@ Bowser::Bowser(int startX, int startY, Mario* mario) : GameObject(static_cast<fl
 		deathAnim->Add(BOWSER_DEATH_SPRITE_1);
 		anims->Add(BOWSER_DEATH_ANIM_ID, deathAnim);
 	}
+	if (!anims->Contains(BOWSER_FALL_ANIM_ID))
+	{
+		auto fallAnim = new Animation(30);
+		fallAnim->Add(BOWSER_FALL_SPRITE_1);
+		fallAnim->Add(BOWSER_FALL_SPRITE_2);
+		anims->Add(BOWSER_FALL_ANIM_ID, fallAnim);
+	}
 
 	nextFireBreathingTimer = Timer(BOWSER_FIRE_BREATH_INTERVAL);
 	nextJumpTimer = Timer(BOWSER_JUMP_INTERVAL);
 	nextHammerThrowTimer = Timer(BOWSER_HAMMERTHROW_INTERVAL);
-	fallingTimer = Timer(1.0f);
+	fallingTimer = Timer(1.5f);
+	deathTimer = Timer(2.5f); // initialize but do not start
 
 	nextFireBreathingTimer.Start();
 	nextJumpTimer.Start();
@@ -64,9 +77,9 @@ Bowser::Bowser(int startX, int startY, Mario* mario) : GameObject(static_cast<fl
 	isGrounded = false;
 	isDead = false;
 
-	BOWSER_JUMP_INTERVAL = static_cast<float>(1 + rand() % 3); //random jump interval between 1 to 3 seconds
-	BOWSER_FIRE_BREATH_INTERVAL = static_cast<float>(2 + rand() % 3); //random fire breath interval between 2 to 4 seconds
-	BOWSER_HAMMERTHROW_INTERVAL = static_cast<float>(1 + rand() % 3); //random hammer throw interval between 1 to 3 seconds
+	BOWSER_JUMP_INTERVAL = 1 + rand() % 3; //random jump interval between 1 to 3 seconds
+	BOWSER_FIRE_BREATH_INTERVAL = 3 + rand() % 3; //random fire breath interval between 3 to 5 seconds
+	BOWSER_HAMMERTHROW_INTERVAL = 5 + rand() % 4; //random hammer throw interval between 5 to 8 seconds
 }
 
 void Bowser::SetState(BowserState newState)
@@ -86,10 +99,17 @@ void Bowser::SetState(BowserState newState)
 		velocity.x = moveLeft ? -BOWSER_WALKING_SPEED : BOWSER_WALKING_SPEED;
 		break;
 	case BowserState::Dead:
+		velocity.x = 0;
+		velocity.y = 0;
+		isCollidable = false;
+		deathTimer = Timer(2.5f);
+		deathTimer.Start();
+		break;
 	case BowserState::Falling:
 		velocity.x = 0.0f;
 		velocity.y = 0.0f;
 		isCollidable = false;
+		fallingTimer.Start();
 		break;
 	}
 }
@@ -112,19 +132,34 @@ void Bowser::HandleHeathDecrease(int amount)
 	health -= amount;
 	if (health <= 0)
 	{
-		SetState(BowserState::Dead);
-		isDead = true;
-		auto sm = StatManager::GetInstance();
-		sm->AddScore(5000, position);
+		if (state != BowserState::Dead)
+		{
+			SetState(BowserState::Dead);
+			auto sm = StatManager::GetInstance();
+			sm->AddScore(5000, position); //only award points if Bowser died of fireballs
+		}
 	}
 }
 
 void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
-	if (health <= 0)
-		isDead = true;
-	if (isDead)
-		return;
+	if (health <= 0 && state != BowserState::Dead)
+	{
+		SetState(BowserState::Dead);
+	}
+
+	if (state == BowserState::Dead)
+	{
+		if (deathTimer.IsTicking())
+		{
+			deathTimer.ProcessTimer(dt);
+			if (deathTimer.IsFinished())
+			{
+				isDead = true;
+			}
+		}
+	}
+
 	UpdateDirection();
 	switch (state)
 	{
@@ -132,25 +167,27 @@ void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		velocity.x = moveLeft ? -BOWSER_WALKING_SPEED : BOWSER_WALKING_SPEED;
 		break;
 	case BowserState::Falling:
-		fallingTimer.Start();
 		fallingTimer.ProcessTimer(dt);
 		if (fallingTimer.IsFinished())
 		{
 			SetState(BowserState::Dead); //currently kill Bowser if he falls for more than 1 second, will change later 
 		}
-		break;
+		return;
 	}
-	float currentGravity = 562.5f;
+	float currentGravity = 500.0f;
 
 	// Check if Bowser is at the "peak" of his jump (moving very slowly up or down)
 	if (abs(velocity.y) < 60.0f)
 	{
 		// Cut gravity in half while he is hanging in the air!
-		currentGravity = 281.25f;
+		currentGravity /= 2;
 	}
 
 	velocity.y += currentGravity * dt;
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
+	ClampInsideArena();
+	if (target->GetState() == MarioState::StopToWaitBowser && state != BowserState::Dead && state != BowserState::Falling)
+		SetState(BowserState::Falling);
 
 	if (target->GetState() == MarioState::Dying)
 	{
@@ -158,6 +195,7 @@ void Bowser::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		return;
 	}
 	TimerHandler(dt, ctx);
+	//DebugOut(L"Bowser State: %d, Health: %d, isGrounded: %d\n", static_cast<int>(state), health, isGrounded);
 }
 
 void Bowser::Render()
@@ -171,18 +209,22 @@ void Bowser::Render()
 	if (state == BowserState::Dead) {
 		animId = BOWSER_DEATH_ANIM_ID;
 	}
-	else if (state == BowserState::Walking || state == BowserState::Jumping || state == BowserState::Falling || state == BowserState::Stop) {
+	else if (state == BowserState::Falling) {
+		animId = BOWSER_FALL_ANIM_ID;
+	}
+	else if (state == BowserState::Walking || state == BowserState::Jumping || state == BowserState::Stop) {
 		animId = BOWSER_WALK_ANIM_ID;
 	}
 	else
 	{
 		animId = BOWSER_WALK_ANIM_ID;
 	}
-	if (fireBreathAnimTimer.IsTicking())
+	// override with attack animations if necessary (but only if not dead)
+	if (fireBreathAnimTimer.IsTicking() && state != BowserState::Dead)
 	{
 		animId = BOWSER_FIRE_BREATH_ANIM_ID;
 	}
-	else if (hammerThrowAnimTimer.IsTicking())
+	else if (hammerThrowAnimTimer.IsTicking() && state != BowserState::Dead)
 	{
 		animId = BOWSER_HAMMER_THROW_ANIM_ID;
 		yOffset = 9.0f;
@@ -191,7 +233,7 @@ void Bowser::Render()
 
 	if (ani != nullptr)
 	{
-		int flipY = (state == BowserState::Dead) ? 1 : 0;
+		int flipY = state == BowserState::Dead ? 1 : 0; // flip vertically if dead
 
 		ani->Render(
 			round(renderX),
@@ -245,7 +287,7 @@ void Bowser::TimerHandler(float dt, SceneContext* ctx)
 		{
 			HammerThrowAttack(ctx);
 
-			BOWSER_HAMMERTHROW_INTERVAL = static_cast<float>(1 + rand() % 3);
+			BOWSER_HAMMERTHROW_INTERVAL = 5 + rand() % 4;
 			nextHammerThrowTimer = Timer(BOWSER_HAMMERTHROW_INTERVAL);
 			nextHammerThrowTimer.Start();
 		}
@@ -266,10 +308,16 @@ void Bowser::TimerHandler(float dt, SceneContext* ctx)
 
 	if (nextJumpTimer.IsFinished())
 	{
-		int jumpDir = rand() % 2;// 0 or 1
-		moveLeft = (jumpDir == 0);
+		bool wantMoveLeft = (rand() % 2 == 0);
 
-		BOWSER_JUMP_INTERVAL = static_cast<float>(1 + rand() % 3);
+		if (WillJumpOutsideArena(wantMoveLeft))
+		{
+			wantMoveLeft = !wantMoveLeft;
+		}
+
+		moveLeft = wantMoveLeft;
+
+		BOWSER_JUMP_INTERVAL = 1 + rand() % 3;
 		nextJumpTimer = Timer(BOWSER_JUMP_INTERVAL);
 		nextJumpTimer.Start();
 
@@ -291,21 +339,7 @@ void Bowser::HammerThrowAttack(SceneContext* ctx)
 	if (state == BowserState::Dead || state == BowserState::Falling)
 		return;
 	float wait = 0;
-	float offsetY = 0;
 	int hammerCount = 3 + rand() % 6; // throw 3 to 8 hammers in quick succession
-	for (int index = 0; index < hammerCount; index++)
-	{
-		wait += index * 0.03f;
-
-		float spawnX = position.x;
-		float spawnY = position.y;
-		auto h = new BowserHammer(spawnX, spawnY, isFacingRight, wait);
-		ctx->addObject(h);
-	}
-
-	wait += 0.2f;
-	offsetY = -20.0f;
-	hammerCount = 3 + rand() % 6; // throw 3 to 8 hammers in quick succession
 	for (int index = 0; index < hammerCount; index++)
 	{
 		wait += index * 0.03f;
@@ -320,8 +354,11 @@ void Bowser::HammerThrowAttack(SceneContext* ctx)
 void Bowser::OnNoCollision(float dt)
 {
 	position += velocity * dt;
-	isGrounded = false;
-	state = BowserState::Jumping;
+	if (state != BowserState::Dead && state != BowserState::Falling)
+	{
+		isGrounded = false;
+		state = BowserState::Jumping;
+	}
 }
 
 void Bowser::OnCollisionWith(CollisionEvent* event)
@@ -343,7 +380,6 @@ void Bowser::OnCollisionWith(CollisionEvent* event)
 		{
 			SetState(BowserState::Walking);
 			isGrounded = true;
-
 		}
 		else if (event->normalizedDir.y > 0 && event->otherTile->IsBlocking())
 		{
@@ -351,5 +387,60 @@ void Bowser::OnCollisionWith(CollisionEvent* event)
 			if (state == BowserState::Jumping)
 				SetState(BowserState::Walking);
 		}
+	}
+	if (event->IsObjectCollision())
+	{
+		auto bridge = dynamic_cast<Bridge*>(event->otherObject);
+		if (bridge != nullptr)
+		{
+			if (event->normalizedDir.y < 0 && velocity.y >= 0.0f)
+			{
+				SetState(BowserState::Walking);
+				isGrounded = true;
+			}
+		}
+	}
+}
+bool Bowser::WillJumpOutsideArena(bool movingLeft)
+{
+	Rect bounds = GetBoundingBox();
+
+	float predictedDistance = 64.0f;
+
+	float predictedLeft =
+		movingLeft
+		? bounds.left - predictedDistance
+		: bounds.left + predictedDistance;
+
+	float predictedRight =
+		predictedLeft +
+		(bounds.right - bounds.left);
+
+	return predictedLeft < bowserArena.left + BOWSER_BOUND_PADDING || predictedRight > bowserArena.right - BOWSER_BOUND_PADDING;
+}
+void Bowser::ClampInsideArena()
+{
+	Rect bounds = GetBoundingBox();
+
+	// LEFT
+	if (bounds.left < bowserArena.left)
+	{
+		position.x += static_cast<float>(
+			bowserArena.left - bounds.left
+			);
+
+		moveLeft = false;
+		velocity.x = BOWSER_WALKING_SPEED;
+	}
+
+	// RIGHT
+	if (bounds.right > bowserArena.right)
+	{
+		position.x -= static_cast<float>(
+			bounds.right - bowserArena.right
+			);
+
+		moveLeft = true;
+		velocity.x = -BOWSER_WALKING_SPEED;
 	}
 }

@@ -5,6 +5,7 @@
 #include "Coin.h"
 #include "FireballTrap.h"
 #include "FlagPole.h"
+#include "Bridge.h"
 #include "Flower.h"
 #include "Goomba.h"
 #include "Bowser.h"
@@ -408,6 +409,33 @@ void Mario::OnCollisionWithFireballTrap(vector<GameObject*>& coObjects)
 	}
 }
 
+bool Mario ::OnCollisionWithBridge(const CollisionEvent* e)
+{
+	auto bridge = dynamic_cast<Bridge*>(e->otherObject);
+	if (bridge != nullptr)
+	{
+		if (e->normalizedDir.y == -1)
+		{
+			isGrounded = true;
+			enemySequenceKilledCount = 0; 
+			return true;
+		}
+	}
+		return false;
+}
+
+bool Mario::OnCollisionWithAxeBridge(const CollisionEvent* e)
+{
+	auto axeBridge = dynamic_cast<AxeBridge*>(e->otherObject);
+	if (axeBridge != nullptr)
+	{
+		axeBridge->SolveCollisionWithMario();
+		state = MarioState::StopToWaitBowser;
+		return true;
+	}
+	return false;
+}
+
 
 void Mario::OnCollisionWith(CollisionEvent* e)
 {
@@ -443,6 +471,8 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		if (OnCollisionWithMushroom(e)) return;
 		if (OnCollisionWithFlower(e)) return;
 		if (OnCollisionWithStar(e)) return;
+		if (OnCollisionWithBridge(e)) return;
+		if (OnCollisionWithAxeBridge(e)) return;
 		if (OnCollisionWithFlagPole(e)) return;
 		if (OnCollisionWithBowser(e)) return;
 		if (OnCollisionWithJetpack(e)) return;

@@ -359,6 +359,9 @@ constexpr int BRICK_EXPLODE_SPRITE_2 = 32702;
 constexpr int BRICK_EXPLODE_SPRITE_3 = 32703;
 constexpr int BRICK_EXPLODE_SPRITE_4 = 32704;
 
+// Bridge (T = 4) 
+constexpr int BRIDGE_ANIM_ID = 34100;
+constexpr int BRIDGE_SPRITE_1 = 34101;
 
 // ==========================================
 // ITEMS (E = 4)
@@ -403,6 +406,9 @@ constexpr int CROWN_IDLE_ANIM_ID = 46100;
 constexpr int CROWN_WEAR_ANIM_ID = 46110;
 constexpr int CROWN_BIG_SPRITE = 46101;
 constexpr int CROWN_SMALL_SPRITE = 46102;
+//Axe (T = 7) 
+constexpr int AXE_ANIM_ID = 47100;
+constexpr int AXE_SPRITE_1 = 47101;
 
 
 // ==========================================
@@ -485,7 +491,7 @@ constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_4 = 92204;
 
 
 // ==========================================
-// POINT POPUPS (E = 10)
+// POINT POPUPS (E = 10
 // ==========================================
 constexpr int POINTS_TEX_ID = 100000;
 

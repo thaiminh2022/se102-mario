@@ -99,7 +99,21 @@ void Mario::MarioWalkingToCastle(float dt, vector<GameObject*>& coObjects, Scene
 		isRendering = false;
 	}
 }
-
+void Mario::MarioWaitingToBowser(float dt)
+{
+	velocity.x = 0;
+	velocity.y = 0;
+	if (!waitToBowserTimer.IsTicking())
+	{
+		waitToBowserTimer.Start();
+	}
+	waitToBowserTimer.ProcessTimer(dt);
+	if (waitToBowserTimer.IsFinished())
+	{
+		waitToBowserTimer.SetIdle();
+		state = MarioState::Jumping;
+	}
+}
 void Mario::MarioEnteringPipe(float dt)
 {
 	isCollidable = false;

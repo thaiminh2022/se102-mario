@@ -60,6 +60,8 @@ int Mario::GetMarioAnimId() const
 			return MARIO_IDLE_ANIM_ID;
 		case MarioState::PullingFlag:
 			return MARIO_FLAG_PULL_ANIM_ID;
+		case MarioState::StopToWaitBowser:
+			return MARIO_JUMP_ANIM_ID;
 		default:
 			DebugOut(L"[WARNING] No handling for state: %d\n", state);
 		}

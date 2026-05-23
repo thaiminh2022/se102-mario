@@ -26,7 +26,8 @@ enum class MarioState : std::uint8_t
 	Dying,
 	Firing,
 	Growing,
-	Shrinking
+	Shrinking,
+	StopToWaitBowser,
 };
 
 enum class MarioPower
@@ -101,6 +102,8 @@ class Mario : public GameObject
 	PipeData pipeData;
 	MarioPipeCtx pipeExitingData;
 
+	// Bridge collapse timer
+	Timer waitToBowserTimer;
 
 	void OnMarioHit(bool force = false);
 	int GetMarioAnimId() const;
@@ -126,6 +129,8 @@ class Mario : public GameObject
 	bool OnCollisionWithFlower(CollisionEvent* e);
 	bool OnCollisionWithStar(const CollisionEvent* e);
 	bool OnCollisionWithFlagPole(const CollisionEvent* collisionEvent);
+	bool OnCollisionWithBridge(const CollisionEvent* e);
+	bool OnCollisionWithAxeBridge(const CollisionEvent* e);
 	bool OnCollisionWithJetpack(const CollisionEvent* e);
 
 
@@ -147,6 +152,7 @@ class Mario : public GameObject
 	// special states
 	void MarioDyingState(float dt);
 	void MarioPullingFlag(float dt);
+	void MarioWaitingToBowser(float dt);
 	void MarioWalkingToCastle(float dt, vector<GameObject*>& coObjects, SceneContext* ctx);
 	void MarioEnteringPipe(float dt);
 	void MarioExitingPipe(float dt);
