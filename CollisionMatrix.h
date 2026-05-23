@@ -1,6 +1,6 @@
 #pragma once
 #include <cinttypes>
-
+#include "Debug.h"
 
 typedef std::uint8_t matrixType;
 

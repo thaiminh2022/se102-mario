@@ -19,7 +19,7 @@
 
 using json = nlohmann::json;
 using namespace std;
-LevelLoader *LevelLoader::_instance = nullptr;
+LevelLoader* LevelLoader::_instance = nullptr;
 
 
 
@@ -34,14 +34,14 @@ const string DYNAMIC_LAYER = "Dynamic";
 
 // ENTITY
 const string PLAYER_START = "PlayerStart";
-const string GOOMBA_START= "GoombaStart";
-const string KOOPA_START= "KoopaStart";
+const string GOOMBA_START = "GoombaStart";
+const string KOOPA_START = "KoopaStart";
 const string CHEEP_CHEEPS_START = "FishStart";
 const string BLOOPER_START = "SquidStart";
 
 const string WINGED_KOOPA_START = "WingedKoopaStart";
-const string QUESTION_BLOCK= "QuestionBlock";
-const string BRICK_BLOCK= "EmptyBrickBlock";
+const string QUESTION_BLOCK = "QuestionBlock";
+const string BRICK_BLOCK = "EmptyBrickBlock";
 const string COIN = "Coin";
 const string FIREBALL_TRAP = "FireballTrap";
 const string FLAG_POLE = "FlagPole";
@@ -51,6 +51,7 @@ const string PIPE = "Pipe";
 const string TELEPORT_PIPE = "TeleportPipe";
 const string INSTANT_TELEPORT_PIPE = "InstantTeleportPipe";
 const string FIRE_SHOOTER = "FireShooter";
+const string BOWSER_ARENA = "BowserArena";
 
 // TRIGGERS
 const string CLRSCR_COLOR_TRIGGER = "ClearScreenColorTrigger";
@@ -80,10 +81,10 @@ Tilemap* LevelLoader::GetTilemapForLevel(const int level)
 void LevelLoader::Init()
 {
 	// world texture loading
-	
+
 	const auto t = Textures::GetInstance();
 	t->Add(-1, L"Assets/Sprites/tileset_overworld.png");
-	t->Add(-2, L"Assets/Sprites/tileset_underground.png"); 
+	t->Add(-2, L"Assets/Sprites/tileset_underground.png");
 	t->Add(-3, L"Assets/Sprites/tileset_castle.png");
 	t->Add(-4, L"Assets/Sprites/tileset_water.png");
 
@@ -114,7 +115,7 @@ void LevelLoader::Init()
 }
 
 
-Tilemap *LevelLoader::ParseLevel(int level)
+Tilemap* LevelLoader::ParseLevel(int level)
 {
 	if (!worldMap.hasValue)
 	{
@@ -125,7 +126,7 @@ Tilemap *LevelLoader::ParseLevel(int level)
 	auto& map = worldMap.value;
 	if (level >= map.levels.size())
 		return nullptr;
-	
+
 	auto& levelData = map.levels[level];
 	if (!levelData.layerInstances.hasValue)
 	{
@@ -145,7 +146,7 @@ Tilemap *LevelLoader::ParseLevel(int level)
 		renderLayers.push_back(r2.value);
 	}
 
-	
+
 	Optional<Color> bgColor;
 	if (!levelData.bgColor.empty())
 	{
@@ -160,10 +161,12 @@ Tilemap *LevelLoader::ParseLevel(int level)
 		if (biome == "Overworld")
 		{
 			levelBiome = BiomeType::Overworld;
-		}else if (biome == "Underground")
+		}
+		else if (biome == "Underground")
 		{
 			levelBiome = BiomeType::Underground;
-		}else if (biome == "Castle")
+		}
+		else if (biome == "Castle")
 		{
 			levelBiome = BiomeType::Castle;
 		}
@@ -216,7 +219,7 @@ CollisionLayer LevelLoader::ParseCollisionLayer(vector<LayerInstance>& v)
 
 	// parse collision
 	int i = 0;
-	for (const auto value: layerData->intGridCsv)
+	for (const auto value : layerData->intGridCsv)
 	{
 		CollisionTile t;
 		t.tileWidth = 16;
@@ -224,7 +227,7 @@ CollisionLayer LevelLoader::ParseCollisionLayer(vector<LayerInstance>& v)
 
 		t.worldX = i % layerData->cWid * 16;
 		t.worldY = i / layerData->cWid * 16;
-		
+
 		// danger, please make sure this match ldtk!
 		t.type = static_cast<CollisionTileType>(value);
 
@@ -244,7 +247,7 @@ RenderLayer LevelLoader::ParseBackgroundLayer(vector<LayerInstance>& v)
 
 	auto texturePath = layerData->tilesetRelPath;
 	wstring path;
-	
+
 	if (texturePath.hasValue)
 	{
 		path = wstring(texturePath.value.begin(), texturePath.value.end());
@@ -266,7 +269,7 @@ RenderLayer LevelLoader::ParseBackgroundLayer(vector<LayerInstance>& v)
 	{
 		RenderTile t;
 		t.worldX = l.px[0];
-		t.worldY= l.px[1];
+		t.worldY = l.px[1];
 		t.srcX = l.src[0];
 		t.srcY = l.src[1];
 
@@ -294,7 +297,8 @@ Optional<RenderLayer> LevelLoader::ParseAltLayer(vector<LayerInstance>& v)
 	if (texturePath.hasValue)
 	{
 		path = wstring(texturePath.value.begin(), texturePath.value.end());
-	}else
+	}
+	else
 	{
 		return {};
 	}
@@ -347,7 +351,7 @@ void LevelLoader::ParseGoombas(SceneEntityData& sceneEntities, vector<EntityInst
 {
 	// Goomba
 	const auto goombas = GetEntityDataWithIdentifier(entities, GOOMBA_START);
-	for (const auto& g: goombas)
+	for (const auto& g : goombas)
 	{
 		sceneEntities.goombaStarts.emplace_back(g->px[0], g->px[1]);
 	}
@@ -372,7 +376,7 @@ void LevelLoader::ParseCheepCheeps(SceneEntityData& sceneEntities, std::vector<E
 			continue;
 
 		sceneEntities.cheepCheeps.emplace_back(
-			Vector2Int(g->px[0], g->px[1]), 
+			Vector2Int(g->px[0], g->px[1]),
 			isRedJson.value.get<bool>());
 	}
 }
@@ -393,7 +397,7 @@ void LevelLoader::ParseBloopers(SceneEntityData& sceneEntities, std::vector<Enti
 		const auto highestLimit = highestLimitJson.value.get<LDTKPoint>();
 
 		sceneEntities.bloopers.emplace_back(
-			Vector2Int(lowestLimit.cx * 16, lowestLimit.cy * 16), 
+			Vector2Int(lowestLimit.cx * 16, lowestLimit.cy * 16),
 			Vector2Int(highestLimit.cx * 16, highestLimit.cy * 16));
 	}
 }
@@ -425,7 +429,7 @@ void LevelLoader::ParseBridge(SceneEntityData& sceneEntities, vector<EntityInsta
 	if (!bridge.empty())
 	{
 		const auto s = bridge[0]; // only 1 per level;
-		auto axePosJson = GetFieldValueWithIdentifier(s->fieldInstances, "");
+		auto axePosJson = GetFieldValueWithIdentifier(s->fieldInstances, "AxePosition");
 		if (axePosJson.hasValue)
 		{
 			const auto axePos = axePosJson.value.get<LDTKPoint>();
@@ -436,7 +440,7 @@ void LevelLoader::ParseBridge(SceneEntityData& sceneEntities, vector<EntityInsta
 			sceneEntities.bridge.Set(BridgeData{
 				bridgeRect,
 				Vector2Int(axePos.cx * 16, axePos.cy * 16),
-			});
+				});
 		}
 	}
 }
@@ -456,11 +460,13 @@ void LevelLoader::ParseQuestionBlock(SceneEntityData& sceneEntities, vector<Enti
 		{
 			blockDropValue = BlockDropType::Coin;
 
-		}else if (blockDrop == "JewDestroyer")
+		}
+		else if (blockDrop == "JewDestroyer")
 		{
 			blockDropValue = BlockDropType::JewDestroyer;
 
-		}else if (blockDrop == "Starman")
+		}
+		else if (blockDrop == "Starman")
 		{
 			blockDropValue = BlockDropType::Starman;
 
@@ -479,7 +485,7 @@ void LevelLoader::ParseQuestionBlock(SceneEntityData& sceneEntities, vector<Enti
 void LevelLoader::ParseBrickBlock(SceneEntityData& sceneEntities, vector<EntityInstance> entities)
 {
 	const auto eBlocks = GetEntityDataWithIdentifier(entities, BRICK_BLOCK);
-	for (const auto&g : eBlocks)
+	for (const auto& g : eBlocks)
 	{
 		auto blockDropJson = GetFieldValueWithIdentifier(g->fieldInstances, "BrickBlockDropType");
 		auto isHiddenJson = GetFieldValueWithIdentifier(g->fieldInstances, "is_hidden");
@@ -563,7 +569,7 @@ void LevelLoader::ParseBackgroundMusic(int level, SceneEntityData& sceneEntities
 	{
 		const auto audioJson = GetFieldValueWithIdentifier(bgMusic->fieldInstances, "Audio");
 		const auto isTriggerJson = GetFieldValueWithIdentifier(bgMusic->fieldInstances, "is_trigger");
-	
+
 		if (!audioJson.hasValue || !isTriggerJson.hasValue)
 		{
 			continue;
@@ -575,7 +581,7 @@ void LevelLoader::ParseBackgroundMusic(int level, SceneEntityData& sceneEntities
 		const auto utf16String = wstring(audioPath.begin(), audioPath.end());
 
 		auto idData = AudioManager::GetInstance()
-		->GetIdForWAVFile(utf16String.c_str());
+			->GetIdForWAVFile(utf16String.c_str());
 
 		if (isTrigger == false)
 		{
@@ -585,12 +591,12 @@ void LevelLoader::ParseBackgroundMusic(int level, SceneEntityData& sceneEntities
 		if (!idData.hasValue)
 			continue;
 		const auto rect = Rect::FromXYWH(bgMusic->px[0],
-			bgMusic->px[1], 
-			bgMusic->width, 
+			bgMusic->px[1],
+			bgMusic->width,
 			bgMusic->height
 		);
 
-		sceneEntities.musicTriggers.push_back({idData.value, rect});
+		sceneEntities.musicTriggers.push_back({ idData.value, rect });
 	}
 	sceneEntities.backgroundMusicID = bgMusicId;
 }
@@ -617,13 +623,13 @@ void LevelLoader::ParseFlagPole(SceneEntityData& sceneEntities, std::vector<Enti
 		if (moveTo.hasValue)
 		{
 			const auto moveToValue = moveTo.value.get<LDTKPoint>();
-			
-	
+
+
 
 			flagPoleData.Set(FlagPoleData{
 				Rect::FromXYWH(flagPole->px[0], flagPole->px[1], flagPole->width, flagPole->height),
 				Vector2Int(moveToValue.cx * 16, moveToValue.cy * 16),
-			});
+				});
 		}
 	}
 	sceneEntities.flagPole = flagPoleData;
@@ -642,7 +648,7 @@ void LevelLoader::ParsePipe(SceneEntityData& sceneEntities, std::vector<EntityIn
 
 		if (!isReturnJson.hasValue || !pipeDirectionJson.hasValue || !moveToJson.hasValue)
 			continue;
-		
+
 		auto zone = Rect::FromXYWH(p->px[0], p->px[1], p->width, p->height);
 		bool isReturnPipe = isReturnJson.value.get<bool>();
 		auto pipeDir = pipeDirectionJson.value.get<string>();
@@ -677,23 +683,23 @@ void LevelLoader::ParsePipe(SceneEntityData& sceneEntities, std::vector<EntityIn
 						PipeData::GetDirection(otherDirJson.value),
 						Rect::FromXYWH(otherPipe.px[0], otherPipe.px[1], otherPipe.width, otherPipe.height),
 						Vector2Int(otherMoveTo.cx * 16, otherMoveTo.cy * 16)
-					});
+						});
 				}
 			}
 		}
 
-		sceneEntities.pipes.push_back(PipeData(zone, 
-			nextLevel, 
-			returnPipeData, 
-			isReturnPipe, 
-			PipeData::GetDirection(pipeDir), 
-			Vector2Int(moveTo.cx * 16, moveTo.cy * 16), 
-			{}, 
+		sceneEntities.pipes.push_back(PipeData(zone,
+			nextLevel,
+			returnPipeData,
+			isReturnPipe,
+			PipeData::GetDirection(pipeDir),
+			Vector2Int(moveTo.cx * 16, moveTo.cy * 16),
+			{},
 			false));
 	}
 }
 
-void LevelLoader::ParseTeleportPipe(SceneEntityData& sceneEntities,  vector<EntityInstance>& entities)
+void LevelLoader::ParseTeleportPipe(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
 {
 	const auto pipes = GetEntityDataWithIdentifier(entities, TELEPORT_PIPE);
 	for (auto p : pipes)
@@ -787,7 +793,7 @@ void LevelLoader::ParseClearScreenColorTrigger(SceneEntityData& sceneEntities,
 		const auto& colorJson = GetFieldValueWithIdentifier(clrscrTrigger->fieldInstances, "color");
 		if (!colorJson.hasValue)
 			continue;
-	
+
 		const auto colorHex = colorJson.value.get<string>();
 		const auto zone = Rect::FromXYWH(clrscrTrigger->px[0], clrscrTrigger->px[1], clrscrTrigger->width, clrscrTrigger->height);
 		const auto color = Color(colorHex);
@@ -843,7 +849,7 @@ void LevelLoader::ParseEnterCastleTrigger(SceneEntityData& sceneEntities, vector
 
 	const auto flagMoveTo = flagMoveToData.value.get<LDTKPoint>();
 	data.flagMoveTo = Vector2Int(flagMoveTo.cx * 16, flagMoveTo.cy * 16);
-	
+
 	sceneEntities.enterCastleTrigger = data;
 
 }
@@ -862,13 +868,17 @@ void LevelLoader::ParseFireShooter(SceneEntityData& sceneEntities, vector<Entity
 		Vector2Int direction;
 		if (directionString == "Up") {
 			direction = Vector2Int::Up();
-		} else if (directionString == "Down") {
+		}
+		else if (directionString == "Down") {
 			direction = Vector2Int::Down();
-		} else if (directionString == "Left") {
+		}
+		else if (directionString == "Left") {
 			direction = Vector2Int::Left();
-		} else if (directionString == "Right") {
+		}
+		else if (directionString == "Right") {
 			direction = Vector2Int::Right();
-		} else {
+		}
+		else {
 			DebugOut(L"[Error] Invalid fire shooter direction");
 			direction = Vector2Int::Left();
 		}
@@ -876,11 +886,26 @@ void LevelLoader::ParseFireShooter(SceneEntityData& sceneEntities, vector<Entity
 		sceneEntities.fireShooters.emplace_back(position, direction);
 	}
 }
-  
+
+void LevelLoader::ParseBowserArena(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
+{
+	const auto bowserArenas = GetEntityDataWithIdentifier(entities, BOWSER_ARENA);
+	if (bowserArenas.empty())
+		return;
+	auto arena = bowserArenas[0];
+	Rect rect = Rect::FromXYWH(
+		arena->px[0],
+		arena->px[1],
+		arena->width,
+		arena->height
+	);
+	sceneEntities.bowserArenas = BowserArenaData(rect);
+}
+
 void LevelLoader::RebuildCacheForLevel(vector<EntityInstance>& entities)
 {
 	levelEntitiesCache.clear();
-	for (auto& e: entities)
+	for (auto& e : entities)
 	{
 		levelEntitiesCache[e.identifier].push_back(&e);
 	}
@@ -896,11 +921,11 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 		return sceneEntities;
 
 	RebuildCacheForLevel(entities);
-	
+
 	ParsePlayerStart(sceneEntities, entities);
 
 	// NOTE: emplace_back is push_back but takes in a constructor, so no temp object creation is needed
-	
+
 	// Entities
 	ParseGoombas(sceneEntities, entities);
 	ParseKoopas(sceneEntities, entities);
@@ -909,12 +934,12 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParseWingedKoopas(sceneEntities, entities);
 	ParseBowsers(sceneEntities, entities);
 	ParseFireballTrap(sceneEntities, entities);
-	
+
 	// collectables
 	ParseQuestionBlock(sceneEntities, entities);
 	ParseBrickBlock(sceneEntities, entities);
 	ParseCoin(sceneEntities, entities);
-	
+
 	// gameplay
 	ParseBridge(sceneEntities, entities);
 	ParseFlagPole(sceneEntities, entities);
@@ -922,6 +947,7 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParseTeleportPipe(sceneEntities, entities);
 	ParseInstantTeleportPipe(sceneEntities, entities);
 	ParseFireShooter(sceneEntities, entities);
+	ParseBowserArena(sceneEntities, entities);
 
 	// triggers
 	ParseNextLevelZone(sceneEntities, entities);
@@ -954,13 +980,13 @@ vector<EntityInstance*> LevelLoader::GetEntityDataWithIdentifier(vector<EntityIn
 Optional<json> LevelLoader::GetFieldValueWithIdentifier(const vector<FieldInstance>& v, const std::string& iden)
 {
 	Optional<json> returnVal;
-	for (auto &f : v)
+	for (auto& f : v)
 	{
 		if (f.identifier == iden)
 		{
 			returnVal.Set(f.value);
 			break;
-		} 
+		}
 	}
 	return returnVal;
 }
@@ -970,7 +996,7 @@ Optional<EntityInstance> LevelLoader::ParseEntityRef(const LDTKEntityRef& entity
 	if (!worldMap.hasValue)
 		return {};
 	auto worldMapValue = worldMap.value;
-	
+
 	for (auto& lvl : worldMapValue.levels)
 	{
 		if (lvl.iid != entityRef.levelIid)

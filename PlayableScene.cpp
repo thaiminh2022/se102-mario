@@ -16,6 +16,7 @@
 #include "Koopa.h"
 #include "NextLevelPortal.h"
 #include "Pipe.h"
+#include "Bridge.h"
 #include "QuestionBlock.h"
 #include "HUD.h"
 #include <queue>
@@ -181,20 +182,13 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(b);
 	}
 
-	// Bowser
-	if (config->entityData.bowserStart.hasValue)
-	{
-		const auto bowserStart = config->entityData.bowserStart.value;
-		const auto bowser = new Bowser(bowserStart.x, bowserStart.y, sceneContext->mario);
-		objects.push_back(bowser);
-	}
-
 	// FireShooter
 	for (const auto& fsPos : config->entityData.fireShooters)
 	{
 		const auto fs = new FireShooter(fsPos.position.x, fsPos.position.y, fsPos.shootDirection);
 		objects.push_back(fs);
 	}
+
 
 	// question
 	for (const auto& qbData : config->entityData.questionBlocks)
@@ -247,6 +241,27 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(pipe);
 	}
 
+	// bridge
+	if (config->entityData.bridge.hasValue)
+	{
+		const auto bridgeData = config->entityData.bridge.value;
+		const auto bridge = new Bridge(bridgeData);
+		objects.push_back(bridge);
+		const auto axe = new AxeBridge(bridgeData.axePosition, bridge);
+		objects.push_back(axe);
+	}
+	// Bowser
+	if (config->entityData.bowserStart.hasValue)
+	{
+		if (config->entityData.bowserArenas.hasValue) {
+			Rect bowserArena = config->entityData.bowserArenas.value.arenaZone;
+
+			const auto bowserStart = config->entityData.bowserStart.value;
+			const auto bowser = new Bowser(bowserStart.x, bowserStart.y, bowserArena, sceneContext->mario);
+			objects.push_back(bowser);
+		}
+	}
+
 	// background music
 	if (config->entityData.backgroundMusicID.hasValue)
 	{
@@ -257,7 +272,7 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 
 	// background color
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
-	
+
 	// triggers;
 	// clear screen color trigger
 	for (const auto& colorTriggerData : config->entityData.clearScreenColorTriggers)

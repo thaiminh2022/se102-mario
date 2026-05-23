@@ -137,6 +137,7 @@
     <ClCompile Include="BowserFireBullet.cpp" />
     <ClCompile Include="BowserHammer.cpp" />
     <ClCompile Include="BrickExplode.cpp" />
+    <ClCompile Include="Bridge.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheepCheeps.cpp" />
     <ClCompile Include="ClearScreenColorTrigger.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="BgMusicTrigger.h" />
     <ClInclude Include="Bloopers.h" />
     <ClInclude Include="BrickExplode.h" />
+    <ClInclude Include="Bridge.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheepCheeps.h" />
     <ClInclude Include="ClearScreenColorTrigger.h" />

@@ -65,6 +65,13 @@ struct BridgeData
 {
 	Rect zone;
 	Vector2Int axePosition;
+
+	BridgeData() = default;
+
+	BridgeData(const Rect& zone, const Vector2Int& axePosition)
+		: zone(zone), axePosition(axePosition)
+	{
+	}
 };
 
 struct ReturnPipeData
@@ -177,6 +184,15 @@ struct FireShooterData
 	{
 	}
 };
+struct BowserArenaData
+{
+	Rect arenaZone;
+	BowserArenaData(const Rect& arenaZone)
+		: arenaZone(arenaZone)
+	{
+	}
+	BowserArenaData() = default;
+};
 
 struct SceneEntityData
 {
@@ -197,6 +213,7 @@ struct SceneEntityData
 	vector<NextLevelData> nextLevelsData;
 	vector<Vector2Int> fireballTraps;
 	vector<FireShooterData> fireShooters;
+	Optional<BowserArenaData> bowserArenas;
 
 	Optional<Vector2Int> bowserStart;
 	
