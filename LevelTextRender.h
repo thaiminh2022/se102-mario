@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "SceneEntityData.h"
 class LevelTextRender :
     public GameObject
 {

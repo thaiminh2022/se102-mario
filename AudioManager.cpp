@@ -114,6 +114,7 @@ bool AudioManager::Init()
     {
         DebugOut(L"[ERROR] XAudio2Create failed\n");
         xAudio2.Reset();
+        Shutdown();
         return false;
     }
 
@@ -123,6 +124,7 @@ bool AudioManager::Init()
     {
         DebugOut(L"[ERROR] CreateMasteringVoice failed\n");
         xAudio2.Reset();
+        Shutdown();
         return false;
     }
     masteringVoice.reset(rawMasteringVoice);

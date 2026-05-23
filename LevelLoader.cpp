@@ -45,7 +45,6 @@ const string BRICK_BLOCK = "EmptyBrickBlock";
 const string COIN = "Coin";
 const string FIREBALL_TRAP = "FireballTrap";
 const string BOWSER_START = "BowserStart";
-const string FIRE_SHOOTER = "FireShooter";
 const string MARIO_JETPACK = "Jetpack";
 
 
@@ -431,22 +430,21 @@ void LevelLoader::ParseBowsers(SceneEntityData& sceneEntities, vector<EntityInst
 void LevelLoader::ParseBridge(SceneEntityData& sceneEntities, vector<EntityInstance> entities)
 {
 	const auto bridge = GetEntityDataWithIdentifier(entities, BRIDGE);
-	if (!bridge.empty())
-	{
-		const auto s = bridge[0]; // only 1 per level;
-		auto axePosJson = GetFieldValueWithIdentifier(s->fieldInstances, "");
-		if (axePosJson.has_value())
-		{
-			const auto axePos = axePosJson.value().get<LDTKPoint>();
+	if (bridge.empty())
+		return;
 
-			const auto bridgeRect = Rect::FromXYWH(
-				s->px[0], s->px[1], s->width, s->height
-			);
-			sceneEntities.bridge.emplace(BridgeData{
-				bridgeRect,
-				Vector2Int(axePos.cx * 16, axePos.cy * 16),
-				});
-		}
+	const auto s = bridge[0]; // only 1 per level;
+	auto axePosJson = GetFieldValueWithIdentifier(s->fieldInstances, "AxePosition");
+	if (axePosJson.has_value())
+	{
+		const auto axePos = axePosJson.value().get<LDTKPoint>();
+		const auto bridgeRect = Rect::FromXYWH(
+			s->px[0], s->px[1], s->width, s->height
+		);
+		sceneEntities.bridge.emplace(BridgeData{
+			bridgeRect,
+			Vector2Int(axePos.cx * 16, axePos.cy * 16),
+			});
 	}
 }
 
@@ -586,15 +584,18 @@ void LevelLoader::ParseBackgroundMusic(int level, SceneEntityData& sceneEntities
 		const auto utf16String = wstring(audioPath.begin(), audioPath.end());
 
 		auto idData = AudioManager::GetInstance()
-			->GetIdForWAVFile(utf16String.c_str());
+			->GetIdForWAVFile(utf16String);
+
+		
 
 		if (isTrigger == false)
 		{
-			bgMusicId = idData.value();
+			bgMusicId = idData;
 		}
 
 		if (!idData.has_value())
 			continue;
+
 		const auto rect = Rect::FromXYWH(bgMusic->px[0],
 			bgMusic->px[1],
 			bgMusic->width,

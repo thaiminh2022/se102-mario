@@ -1,7 +1,8 @@
 #include "LevelTextRender.h"
-
 #include "Game.h"
 #include "AssetIDs.h"
+#include "FontManager.h"
+#include "Color.h"
 
 Rect LevelTextRender::GetBoundingBox()
 {
