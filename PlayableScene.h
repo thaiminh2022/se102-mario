@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <queue>
 
 #include "Scene.h"
@@ -8,17 +9,18 @@
 #include "Timer.h"
 
 using std::vector;
+using std::unique_ptr;
 
 class PlayableScene :
 	public Scene
 {
-	std::queue<GameObject*> addPendingGos;
+	std::queue<unique_ptr<GameObject>> addPendingGos;
 
-	vector<GameObject*> objects;
-	SceneContext* sceneContext;
+	vector<unique_ptr<GameObject>> objects;
+	unique_ptr<SceneContext> sceneContext;
 	int level;
 
-	Timer* levelTimer;
+	unique_ptr<Timer> levelTimer;
 	float timeLeftForLevel = 160; //seconds, originally 400 frames w/ each frame ~0.4s
 
 public:
@@ -36,6 +38,7 @@ public:
 	void Render() override;
 	void CleanupDeletedObjects();
 	void AddObject(GameObject* go);
+	void AddObject(unique_ptr<GameObject> go);
 
 	int GetMaxFireballs() const {
 		return maxFireballs;
@@ -44,6 +47,6 @@ public:
 		return levelTimer->GetTimeLeft();
 	}
 	Timer* GetLevelTimer() {
-		return levelTimer;
+		return levelTimer.get();
 	}
 };

@@ -13,8 +13,7 @@ void Animation::Add(int spriteId, DWORD timeMs)
 	if (sprite == nullptr)
 		DebugOut(L"[ERROR] Sprite ID %d not found!\n", spriteId);
 
-	AnimationFrame *frame = new AnimationFrame(sprite, t);
-	frames.push_back(frame);
+	frames.emplace_back(sprite, t);
 }
 
 void Animation::Render(float x, float y, bool flipX, bool flipY, int startFrame)
@@ -32,7 +31,7 @@ void Animation::Render(float x, float y, bool flipX, bool flipY, int startFrame)
 	}
 	else
 	{
-		DWORD t = frames[currentFrame]->GetTime();
+		DWORD t = frames[currentFrame].GetTime();
 		if (now - lastFrameTime > t)
 		{
 			currentFrame++;
@@ -42,7 +41,7 @@ void Animation::Render(float x, float y, bool flipX, bool flipY, int startFrame)
 		}
 	}
 
-	frames[currentFrame]->GetSprite()->Draw(x, y, flipX, flipY);
+	frames[currentFrame].GetSprite()->Draw(x, y, flipX, flipY);
 }
 
 inline AnimationFrame::AnimationFrame(Sprite *sprite, int timeMs)

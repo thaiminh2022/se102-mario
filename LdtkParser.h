@@ -141,11 +141,11 @@ inline void ReadOptional(const json& j, const char* key, Optional<T>& out)
 	json::const_iterator it = j.find(key);
 	if (it == j.end() || it->is_null())
 	{
-		out.Reset();
+		out.reset();
 		return;
 	}
 
-	out.Set(it->get<T>());
+	out.emplace(it->get<T>());
 }
 
 template <typename T>

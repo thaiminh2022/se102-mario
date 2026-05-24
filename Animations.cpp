@@ -1,13 +1,19 @@
 #include "Animations.h"
+#include <utility>
 
 Animations *Animations::_instance = nullptr;
 
 void Animations::Add(int id, Animation *ani)
 {
+	Add(id, unique_ptr<Animation>(ani));
+}
+
+void Animations::Add(int id, unique_ptr<Animation> ani)
+{
 	if (animations.find(id) != animations.end())
 		return;
 
-	animations[id] = ani;
+	animations[id] = std::move(ani);
 }
 
 bool Animations::Contains(int id)
@@ -21,5 +27,5 @@ bool Animations::Contains(int id)
 
 Animation *Animations::Get(int id)
 {
-	return animations[id];
+	return animations[id].get();
 }

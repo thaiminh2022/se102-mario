@@ -88,8 +88,8 @@ void Bowser::SetState(BowserState newState)
 	switch (state)
 	{
 	case BowserState::Stop:
-		velocity.x = 0;
-		velocity.y = 0;
+		velocity.x = 0.0f;
+		velocity.y = 0.0f;
 		break;
 	case BowserState::Walking:
 		velocity.x = moveLeft ? -BOWSER_WALKING_SPEED : BOWSER_WALKING_SPEED;
@@ -106,8 +106,8 @@ void Bowser::SetState(BowserState newState)
 		deathTimer.Start();
 		break;
 	case BowserState::Falling:
-		velocity.x = 0;
-		velocity.y = 0;
+		velocity.x = 0.0f;
+		velocity.y = 0.0f;
 		isCollidable = false;
 		fallingTimer.Start();
 		break;
@@ -261,7 +261,7 @@ void Bowser::TimerHandler(float dt, SceneContext* ctx)
 			FireBreathAttack(ctx);
 
 			// Reset the cooldown timer for the NEXT attack
-			BOWSER_FIRE_BREATH_INTERVAL = 3 + rand() % 3;
+			BOWSER_FIRE_BREATH_INTERVAL = static_cast<float>(3 + rand() % 3);
 			nextFireBreathingTimer = Timer(BOWSER_FIRE_BREATH_INTERVAL);
 			nextFireBreathingTimer.Start();
 			if (isGrounded) SetState(BowserState::Walking);
@@ -344,8 +344,8 @@ void Bowser::HammerThrowAttack(SceneContext* ctx)
 	{
 		wait += index * 0.03f;
 
-		int spawnX = static_cast<int>(position.x);
-		int spawnY = static_cast<int>(position.y);
+		float spawnX = position.x;
+		float spawnY = position.y;
 		auto h = new BowserHammer(spawnX, spawnY, isFacingRight, wait);
 		ctx->addObject(h);
 	}
@@ -383,7 +383,7 @@ void Bowser::OnCollisionWith(CollisionEvent* event)
 		}
 		else if (event->normalizedDir.y > 0 && event->otherTile->IsBlocking())
 		{
-			position.y = event->otherTile->worldY + event->otherTile->tileHeight;
+			position.y = static_cast<float>(event->otherTile->worldY + event->otherTile->tileHeight);
 			if (state == BowserState::Jumping)
 				SetState(BowserState::Walking);
 		}

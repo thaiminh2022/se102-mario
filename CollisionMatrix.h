@@ -2,9 +2,9 @@
 #include <cinttypes>
 #include "Debug.h"
 
-typedef std::uint8_t matrixType;
+using MatrixType = std::uint8_t;
 
-enum class CollisionMatrixLayer : matrixType
+enum class CollisionMatrixLayer : MatrixType
 {
 	Default = 0,
 	EnemyProjectile,
@@ -45,8 +45,8 @@ class CollisionMatrix
 
 	void SetCollisionValue(CollisionMatrixLayer a, CollisionMatrixLayer b, const bool value)
 	{
-		matrix[static_cast<matrixType>(a)][static_cast<matrixType>(b)] = value;
-		matrix[static_cast<matrixType>(b)][static_cast<matrixType>(a)] = value;
+		matrix[static_cast<MatrixType>(a)][static_cast<MatrixType>(b)] = value;
+		matrix[static_cast<MatrixType>(b)][static_cast<MatrixType>(a)] = value;
 	}
 	static CollisionMatrix* GetInstance()
 	{
@@ -59,7 +59,7 @@ class CollisionMatrix
 public:
 	static bool IsLayerCollide(CollisionMatrixLayer a, CollisionMatrixLayer b)
 	{
-		return GetInstance()->matrix[static_cast<matrixType>(a)][static_cast<matrixType>(b)];
+		return GetInstance()->matrix[static_cast<MatrixType>(a)][static_cast<MatrixType>(b)];
 	}
 };
 

@@ -7,7 +7,7 @@ struct Vector2Int
 	int x;
 	int y;
 
-	explicit Vector2Int(const int x = 0, const int y = 0)
+	Vector2Int(const int x = 0, const int y = 0)
 	{
 		this->x = x;
 		this->y = y;

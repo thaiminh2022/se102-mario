@@ -37,7 +37,7 @@ class BowserFireBullet :public GameObject
 	bool isAlwaysActive; // even when off screen, the fire bullet will still update its position until it reaches the target height, after which it will only update when on screen
 	BowserFireBulletState state;
 public:
-	BowserFireBullet(int startX, int startY, bool isFacingRight, float targetHeight, bool heightReached, bool isAlwaysActive = false);
+	BowserFireBullet(float startX, float startY, bool isFacingRight, float targetHeight, bool heightReached, bool isAlwaysActive = false);
 	void SetRandomHeight();
 	void SetState(BowserFireBulletState newState);
 	BowserFireBulletState GetState() const { return state; }

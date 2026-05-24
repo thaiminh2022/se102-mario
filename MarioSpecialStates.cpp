@@ -125,14 +125,14 @@ void Mario::MarioEnteringPipe(float dt)
 	if (pipeData.enterDirection == Vector2Int::Up())
 	{
 		// snap x to middle of pipe
-		position.x = pipeRect.left + pipeRect.GetWidth() / 2 - 8.0f;
-		position.y = std::max<float>(position.y, pipeData.moveTo.y);
+		position.x = static_cast<float>(pipeRect.left) + static_cast<float>(pipeRect.GetWidth()) / 2.0f - 8.0f;
+		position.y = (std::max)(position.y, static_cast<float>(pipeData.moveTo.y));
 	}
 	if (pipeData.enterDirection == Vector2Int::Down())
 	{
 		// snap x to middle of pipe
-		position.x = pipeRect.left + pipeRect.GetWidth() / 2 - 8.0f;
-		position.y = std::min<float>(position.y, pipeData.moveTo.y);
+		position.x = static_cast<float>(pipeRect.left) + static_cast<float>(pipeRect.GetWidth()) / 2.0f - 8.0f;
+		position.y = (std::min)(position.y, static_cast<float>(pipeData.moveTo.y));
 	}
 	if (pipeData.enterDirection == Vector2Int::Left())
 	{
@@ -141,8 +141,8 @@ void Mario::MarioEnteringPipe(float dt)
 			isRendering = false;
 		}
 
-		position.x = std::max<float>(position.x, pipeData.moveTo.x);
-		position.y = pipeData.zone.bottom - GetBoundingBox().GetHeight();
+		position.x = (std::max)(position.x, static_cast<float>(pipeData.moveTo.x));
+		position.y = static_cast<float>(pipeData.zone.bottom - GetBoundingBox().GetHeight());
 
 	}
 	if (pipeData.enterDirection == Vector2Int::Right())
@@ -152,8 +152,8 @@ void Mario::MarioEnteringPipe(float dt)
 			isRendering = false;
 		}
 
-		position.x = std::min<float>(position.x, pipeData.moveTo.x);
-		position.y = pipeData.zone.bottom - GetBoundingBox().GetHeight();
+		position.x = (std::min)(position.x, static_cast<float>(pipeData.moveTo.x));
+		position.y = static_cast<float>(pipeData.zone.bottom - GetBoundingBox().GetHeight());
 
 	}
 	position += Vector2(pipeData.enterDirection) * 50.0f * dt;

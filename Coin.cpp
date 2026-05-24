@@ -60,22 +60,28 @@ Coin::Coin(Vector2Int startPos, BiomeType biome, const CoinState state) : GameOb
 		isCollidable = false;
 	}
 
-	auto t = Textures::GetInstance()->Get(ChooseItemsId(biome));
-	auto sp = Sprites::GetInstance();
+
 	auto anims = Animations::GetInstance();
 
-	sp->Add(COIN_SPIN_SPRITE_1, 0, 0, 15, 15, t);
-	sp->Add(COIN_SPIN_SPRITE_2, 16, 0, 31, 15, t);
-	sp->Add(COIN_SPIN_SPRITE_3, 32, 0, 47, 15, t);
-	sp->Add(COIN_SPIN_SPRITE_4, 48, 0, 63, 15, t);
+	if (!anims->Contains(COIN_SPIN_ANIM_ID))
+	{
+		auto t = Textures::GetInstance()->Get(ChooseItemsId(biome));
+		auto sp = Sprites::GetInstance();
+		sp->Add(COIN_SPIN_SPRITE_1, 0, 0, 15, 15, t);
+		sp->Add(COIN_SPIN_SPRITE_2, 16, 0, 31, 15, t);
+		sp->Add(COIN_SPIN_SPRITE_3, 32, 0, 47, 15, t);
+		sp->Add(COIN_SPIN_SPRITE_4, 48, 0, 63, 15, t);
 
-	auto anim = new Animation;
-	anim->Add(COIN_SPIN_SPRITE_1);
-	anim->Add(COIN_SPIN_SPRITE_2);
-	anim->Add(COIN_SPIN_SPRITE_3);
-	anim->Add(COIN_SPIN_SPRITE_4);
+		auto anim = new Animation;
+		anim->Add(COIN_SPIN_SPRITE_1);
+		anim->Add(COIN_SPIN_SPRITE_2);
+		anim->Add(COIN_SPIN_SPRITE_3);
+		anim->Add(COIN_SPIN_SPRITE_4);
 
-	anims->Add(COIN_SPIN_ANIM_ID, anim);
+		anims->Add(COIN_SPIN_ANIM_ID, anim);
+	}
+
+
 }
 
 Rect Coin::GetBoundingBox()

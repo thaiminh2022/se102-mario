@@ -43,8 +43,8 @@ void Game::Init(HWND hWnd)
 		0,
 		D3D10_SDK_VERSION,
 		&swapChainDesc,
-		&swapChain,
-		&device);
+		swapChain.ReleaseAndGetAddressOf(),
+		device.ReleaseAndGetAddressOf());
 
 	if (hr != S_OK)
 	{
@@ -53,8 +53,8 @@ void Game::Init(HWND hWnd)
 	}
 
 	// Get the back buffer from the swapchain
-	ID3D10Texture2D* pBackBuffer;
-	hr = swapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), (LPVOID*)&pBackBuffer);
+	ComPtr<ID3D10Texture2D> pBackBuffer;
+	hr = swapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), reinterpret_cast<void**>(pBackBuffer.GetAddressOf()));
 	if (hr != S_OK)
 	{
 		DebugOut(L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);
@@ -62,21 +62,20 @@ void Game::Init(HWND hWnd)
 	}
 
 	// create the render target view
-	hr = device->CreateRenderTargetView(pBackBuffer, NULL, &renderTargetView);
+	hr = device->CreateRenderTargetView(pBackBuffer.Get(), NULL, renderTargetView.ReleaseAndGetAddressOf());
 
 	D3D10_RASTERIZER_DESC rsDesc = {};
 	rsDesc.FillMode = D3D10_FILL_SOLID;
 	rsDesc.CullMode = D3D10_CULL_NONE;
 	rsDesc.FrontCounterClockwise = FALSE;
 	rsDesc.DepthClipEnable = TRUE;
-	hr = device->CreateRasterizerState(&rsDesc, &rasterizerState);
+	hr = device->CreateRasterizerState(&rsDesc, rasterizerState.ReleaseAndGetAddressOf());
 	if (FAILED(hr))
 	{
 		DebugOut(L"[Error] cannot init rasterizerState");
 	}
-	device->RSSetState(rasterizerState);
+	device->RSSetState(rasterizerState.Get());
 
-	pBackBuffer->Release();
 	if (hr != S_OK)
 	{
 		DebugOut(L"[ERROR] CreateRenderTargetView has failed %s %d", _W(__FILE__), __LINE__);
@@ -84,7 +83,8 @@ void Game::Init(HWND hWnd)
 	}
 
 	// set the render target
-	device->OMSetRenderTargets(1, &renderTargetView, NULL);
+	ID3D10RenderTargetView* targetView = renderTargetView.Get();
+	device->OMSetRenderTargets(1, &targetView, NULL);
 
 	// create and set the viewport
 	D3D10_VIEWPORT viewPort;
@@ -97,7 +97,7 @@ void Game::Init(HWND hWnd)
 	device->RSSetViewports(1, &viewPort);
 
 	// create the sprite object to handle sprite drawing
-	hr = D3DX10CreateSprite(device, 0, &spriteObject);
+	hr = D3DX10CreateSprite(device.Get(), 0, spriteObject.ReleaseAndGetAddressOf());
 
 	if (hr != S_OK)
 	{
@@ -129,7 +129,7 @@ void Game::Init(HWND hWnd)
 	StateDesc.DestBlendAlpha = D3D10_BLEND_ZERO;
 	StateDesc.BlendOpAlpha = D3D10_BLEND_OP_ADD;
 	StateDesc.RenderTargetWriteMask[0] = D3D10_COLOR_WRITE_ENABLE_ALL;
-	device->CreateBlendState(&StateDesc, &this->blendStateAlpha);
+	device->CreateBlendState(&StateDesc, blendStateAlpha.ReleaseAndGetAddressOf());
 
 
 	DebugOut(L"[INFO] InitDirectX has been successful\n");
@@ -235,13 +235,13 @@ void Game::FlushDebugRect()
 	// Backup old blend state if needed
 	float blendFactor[4] = { 0, 0, 0, 0 };
 	UINT sampleMask = 0xffffffff;
-	device->OMSetBlendState(blendStateAlpha, blendFactor, sampleMask);
+	device->OMSetBlendState(blendStateAlpha.Get(), blendFactor, sampleMask);
 
 	// We will draw using very small 1x1 white texture stretched up
 	static Texture* whiteTex = nullptr;
 	if (whiteTex == nullptr)
 	{
-		ID3D10Texture2D* tex = nullptr;
+		ComPtr<ID3D10Texture2D> tex;
 
 		D3D10_TEXTURE2D_DESC desc{};
 		desc.Width = 1;
@@ -259,18 +259,17 @@ void Game::FlushDebugRect()
 		initData.pSysMem = &pixel;
 		initData.SysMemPitch = sizeof(unsigned int);
 
-		HRESULT hr = device->CreateTexture2D(&desc, &initData, &tex);
+		HRESULT hr = device->CreateTexture2D(&desc, &initData, tex.ReleaseAndGetAddressOf());
 		if (FAILED(hr)) return;
 
-		ID3D10ShaderResourceView* srv = nullptr;
-		hr = device->CreateShaderResourceView(tex, nullptr, &srv);
+		ComPtr<ID3D10ShaderResourceView> srv;
+		hr = device->CreateShaderResourceView(tex.Get(), nullptr, srv.ReleaseAndGetAddressOf());
 		if (FAILED(hr))
 		{
-			tex->Release();
 			return;
 		}
 
-		whiteTex = new Texture(tex, srv);
+		whiteTex = new Texture(tex.Detach(), srv.Detach());
 	}
 
 	for (const auto& rectData : debugRects)
@@ -308,15 +307,15 @@ void Game::FlushDebugRect()
 
 Texture* Game::LoadTexture(LPCWSTR texturePath) const
 {
-	ID3D10Resource* pD3D10Resource = NULL;
-	ID3D10Texture2D* tex = NULL;
+	ComPtr<ID3D10Resource> pD3D10Resource;
+	ComPtr<ID3D10Texture2D> tex;
 
 	// Loads the texture into a temporary ID3D10Resource object
-	HRESULT hr = D3DX10CreateTextureFromFile(device,
+	HRESULT hr = D3DX10CreateTextureFromFile(device.Get(),
 		texturePath,
 		nullptr, //&info,
 		nullptr,
-		&pD3D10Resource,
+		pD3D10Resource.ReleaseAndGetAddressOf(),
 		nullptr);
 
 	// Make sure the texture was loaded successfully
@@ -327,8 +326,7 @@ Texture* Game::LoadTexture(LPCWSTR texturePath) const
 	}
 
 	// Translates the ID3D10Resource object into a ID3D10Texture2D object
-	auto _ = pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), (LPVOID*)&tex);
-	pD3D10Resource->Release();
+	auto _ = pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), reinterpret_cast<void**>(tex.GetAddressOf()));
 
 	if (!tex)
 	{
@@ -356,21 +354,21 @@ Texture* Game::LoadTexture(LPCWSTR texturePath) const
 	SRVDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
 	SRVDesc.Texture2D.MipLevels = desc.MipLevels;
 
-	ID3D10ShaderResourceView* gSpriteTextureRV = NULL;
+	ComPtr<ID3D10ShaderResourceView> gSpriteTextureRV;
 
-	device->CreateShaderResourceView(tex, &SRVDesc, &gSpriteTextureRV);
+	device->CreateShaderResourceView(tex.Get(), &SRVDesc, gSpriteTextureRV.ReleaseAndGetAddressOf());
 
 	DebugOut(L"[INFO] Texture loaded Ok from file: %s \n", texturePath);
 
-	return new Texture(tex, gSpriteTextureRV);
+	return new Texture(tex.Detach(), gSpriteTextureRV.Detach());
 }
 
 Optional<D3DXCOLOR> Game::GetBackgroundColor() const
 {
 	Optional<D3DXCOLOR> c;
-	if (bgColor.hasValue)
+	if (bgColor.has_value())
 	{
-		c.Set(bgColor.value.GetD3DXColor());
+		c.emplace(bgColor.value().GetD3DXColor());
 	}
 	return c;
 }
@@ -395,7 +393,7 @@ void Game::SwitchScene()
 
 
 	auto preferNextScene = nextSceneID;
-	auto useTransition = sceneSwitchCtx.hasValue && sceneSwitchCtx.value.useTransitionScene;
+	auto useTransition = sceneSwitchCtx.has_value() && sceneSwitchCtx.value().useTransitionScene;
 	
 	if (useTransition)
 	{
@@ -404,7 +402,7 @@ void Game::SwitchScene()
 
 
 	currentSceneID = nextSceneID;
-	auto targetScene = scenes[currentSceneID];
+	auto targetScene = scenes[currentSceneID].get();
 
 	if (useTransition)
 	{
@@ -439,10 +437,15 @@ void Game::LoadSceneAndEnterFirst()
 	
 void Game::AddScene(int id, Scene* scene)
 {
+	AddScene(id, unique_ptr<Scene>(scene));
+}
+
+void Game::AddScene(int id, unique_ptr<Scene> scene)
+{
 	if (scenes.find(id) != scenes.end())
 		return;
 
-	scenes[id] = scene;
+	scenes[id] = std::move(scene);
 }
 
 bool Game::HaveSceneWithID(const int id)
@@ -462,28 +465,15 @@ Game::~Game()
 	{
 		v.second->UnLoad();
 	}
-
-
-
 	/// ===============D3D10 DESTROYS==================
-	if (spriteObject) spriteObject->Release();
-	if (blendStateAlpha) blendStateAlpha->Release();
-	if (renderTargetView) renderTargetView->Release();
-	if (swapChain) swapChain->Release();
-	if (rasterizerState) rasterizerState->Release();
-
-	// Others need to be destroyed before device
-	if (device) device->Release();
+	spriteObject.Reset();
+	blendStateAlpha.Reset();
+	renderTargetView.Reset();
+	swapChain.Reset();
+	rasterizerState.Reset();
+	device.Reset();
 
 	
 	/// =================================================
-	delete camera;
-	camera = nullptr;
-
-	for (auto& v: scenes)
-	{
-		delete v.second;
-		v.second = nullptr;
-	}
 	scenes.clear();
 }

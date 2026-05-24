@@ -14,6 +14,7 @@ protected:
 	UINT alignment;
 public:
 	UIElement(Vector2 pos, Vector2 size, std::wstring text, int fontId, Color color = Colors::WHITE, UINT align = TextFormat::Left);
+	virtual ~UIElement() = default;
 	virtual void Update(float dt) {}
 	virtual void Render();
 	void SetText(std::wstring newText) { text = newText; }

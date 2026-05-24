@@ -5,7 +5,6 @@ Textures* Textures::_instance = nullptr;
 
 Textures::Textures()
 {
-	textures = {};
 }
 
 void Textures::Add(const int id, const LPCWSTR filePath)
@@ -13,7 +12,7 @@ void Textures::Add(const int id, const LPCWSTR filePath)
 	if (pathToTexture.find(filePath) == pathToTexture.end())
 	{
 		pathToTexture[filePath] = id;
-		textures[id] = Game::GetInstance()->LoadTexture(filePath);
+		textures[id] = unique_ptr<Texture>(Game::GetInstance()->LoadTexture(filePath));
 	}
 
 }

@@ -32,7 +32,7 @@ void LevelTransitionScene::Update(float dt)
 
 	if (transitionTimer.IsFinished())
 	{
-		const auto marioPowerValue = marioPower.hasValue ? marioPower.value : static_cast<MarioPower>(0);
+		const auto marioPowerValue = marioPower.has_value() ? marioPower.value() : static_cast<MarioPower>(0);
 
 		Game::GetInstance()
 		->IndicateSceneSwitch(targetLevelID, SceneSwitchContext::NoTransition(marioPowerValue));
@@ -48,7 +48,7 @@ void LevelTransitionScene::Render()
 
 	for (int i = 0; i < Texts.size(); i++)
 	{
-		float x = i * 150;
+		float x = static_cast<float>(i * 150);
 		float y = 0;
 		if (i == 1)
 		{
@@ -87,9 +87,9 @@ void LevelTransitionScene::Load(const Optional<SceneSwitchContext>& ctx)
 	transitionTimer = Timer(transitionDuration);
 	transitionTimer.Start();
 
-	if (ctx.hasValue)
+	if (ctx.has_value())
 	{
-		marioPower = ctx.value.marioPower;
+		marioPower = ctx.value().marioPower;
 	}else
 	{
 		marioPower = {};

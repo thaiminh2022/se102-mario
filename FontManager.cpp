@@ -29,7 +29,7 @@ void FontManager::AddFontLocal(int id, LPCWSTR faceName, FontData fontData)
 		return;
 	}
 
-	fonts[id] = font;
+	fonts[id] = unique_ptr<ID3DX10Font, FontReleaser>(font);
 }
 
 void FontManager::AddFontCustom(int id, LPCWSTR filePath, LPCWSTR faceName, FontData fontData)
@@ -62,7 +62,7 @@ void FontManager::AddFontCustom(int id, LPCWSTR filePath, LPCWSTR faceName, Font
 		return;
 	}
 
-	fonts[id] = font;
+	fonts[id] = unique_ptr<ID3DX10Font, FontReleaser>(font);
 }
 
 void FontManager::Draw(const int id, const FontDrawConfig& config)
@@ -115,10 +115,5 @@ Vector2 FontManager::MeasureString(int id, LPCWSTR message)
 
 FontManager::~FontManager()
 {
-	for (auto& it : fonts)
-	{
-		it.second->Release();
-		it.second = nullptr;
-	}
 	fonts.clear();
 }

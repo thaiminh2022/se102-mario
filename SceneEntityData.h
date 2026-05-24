@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Color.h"
+#include "FontManager.h"
 #include "OptionalType.h"
 #include "Rect.h"	
 
@@ -194,6 +195,15 @@ struct BowserArenaData
 	BowserArenaData() = default;
 };
 
+struct WorldTextData
+{
+	Rect zone;
+	std::wstring content;
+	TextFormat textFormat;
+	FontWeight fontWeight;
+	bool italic;
+};
+
 struct SceneEntityData
 {
 	// entities
@@ -216,6 +226,8 @@ struct SceneEntityData
 	Optional<BowserArenaData> bowserArenas;
 
 	Optional<Vector2Int> bowserStart;
+	vector<Vector2Int> jetpackStart;
+	vector<WorldTextData> worldTextData;
 	
 	// game play
 	Optional<int> backgroundMusicID;

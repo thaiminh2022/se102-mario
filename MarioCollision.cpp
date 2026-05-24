@@ -17,8 +17,8 @@
 #include "Star.h"
 #include "StatManager.h"
 #include "CollisionEvent.h"
-#include "PointPopup.h"
 #include "Game.h"
+#include "MarioJetPack.h"
 
 bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 {
@@ -344,9 +344,9 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 		return false;
 
 
-	float score = 0;
-	float bottom = flagPole->GetBoundingBox().bottom;
-	float touchingPoint = position.y + (power == MarioPower::Normal ? 16 : 32); // Mario's feet position
+	int score = 0;
+	float bottom = static_cast<float>(flagPole->GetBoundingBox().bottom);
+	float touchingPoint = position.y + (power == MarioPower::Normal ? 16.0f : 32.0f); // Mario's feet position
 	float touchingHeight = bottom - touchingPoint;
 
 	score = GetFlagBonusScore(touchingHeight);
@@ -359,7 +359,7 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 	AudioManager::GetInstance()->PlaySFX(FLAG_PULL);
 
 	// set state to flag sliding
-	velocity = Vector2(0, 0);
+	velocity = Vector2(0.0f, 0.0f);
 	state = MarioState::PullingFlag;
 	// make mario face right
 	isFacingRight = true;
@@ -369,12 +369,23 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 	// initiate sliding down
 	auto snapPosition = flagPole->GetSnapPosition();
 	position.x = snapPosition.x;
-	position.y = max(position.y, snapPosition.y);
+	position.y = max(position.y, static_cast<float>(snapPosition.y));
 
-	float offset = power == MarioPower::Normal ? 16 : 32;
+	float offset = power == MarioPower::Normal ? 16.0f : 32.0f;
 
-	slidingToYWinning = flagPole->GetBoundingBox().bottom - offset;
+	slidingToYWinning = static_cast<float>(flagPole->GetBoundingBox().bottom) - offset;
 	marioWinningMoveToPosition = flagPole->GetMoveToPosition();
+	return true;
+}
+
+bool Mario::OnCollisionWithJetpack(const CollisionEvent* e)
+{
+	const auto jp = dynamic_cast<MarioJetPack*>(e->otherObject);
+	if (jp == nullptr)
+		return false;
+
+	jp->SetState(MarioJetPackState::OnMario);
+	jetpack = jp;
 	return true;
 }
 
@@ -464,6 +475,8 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		if (OnCollisionWithAxeBridge(e)) return;
 		if (OnCollisionWithFlagPole(e)) return;
 		if (OnCollisionWithBowser(e)) return;
+		if (OnCollisionWithJetpack(e)) return;
+
 	}
 }
 

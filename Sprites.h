@@ -1,14 +1,16 @@
 #pragma once
 #include "Sprite.h"
 #include "Texture.h"
+#include <memory>
 #include <unordered_map>
 
 using std::unordered_map;
+using std::unique_ptr;
 
 class Sprites
 {
 	static Sprites* _instance;
-	unordered_map<int, Sprite*> sprites;
+	unordered_map<int, unique_ptr<Sprite>> sprites;
 
 public:
 	static Sprites* GetInstance() {
@@ -22,11 +24,6 @@ public:
 	Sprite* Get(int id);
 
 	void Clear() {
-		for (auto& v: sprites)
-		{
-			delete v.second;
-			v.second = nullptr;
-		}
 		sprites.clear();
 	}
 

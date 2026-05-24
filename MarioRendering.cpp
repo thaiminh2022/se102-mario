@@ -27,6 +27,11 @@ void Mario::Render()
 	Animations::GetInstance()
 		->Get(animId)
 		->Render(round(renderX), round(renderY), !isFacingRight, false);
+
+	if (jetpack != nullptr)
+	{
+		jetpack->RenderCrownAt(position);
+	}
 }
 
 

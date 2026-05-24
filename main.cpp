@@ -75,7 +75,7 @@ void Render()
 		Optional<D3DXCOLOR> clearColor = g->GetBackgroundColor();
 
 		// clear the background
-		pD3DDevice->ClearRenderTargetView(pRenderTargetView, clearColor.hasValue ? clearColor.value : BACKGROUND_COLOR);
+		pD3DDevice->ClearRenderTargetView(pRenderTargetView, clearColor.has_value() ? clearColor.value() : BACKGROUND_COLOR);
 
 		spriteHandler->Begin(D3DX10_SPRITE_SORT_TEXTURE);
 
@@ -210,6 +210,7 @@ static void LoadResource()
 	t->Add(UNDERGROUND_ITEMS_TEX_ID, L"Assets/Sprites/underground_items.png");
 	t->Add(CASTLE_ITEMS_TEX_ID, L"Assets/Sprites/castle_items.png");
 	t->Add(UNDERWATER_ITEMS_TEX_ID, L"Assets/Sprites/underwater_items.png");
+	t->Add(CROWN_TEX_ID, L"Assets/Sprites/mario_crown.png");
 
 	
 	t->Add(BOWSER_TEX_ID, L"Assets/Sprites/bowser_sprites.png");
@@ -252,6 +253,31 @@ static void LoadResource()
 		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
 		L"Super Mario Bros. NES",
 		FontData(10)
+	);
+
+	FontManager::GetInstance()->AddFontCustom(
+		WORLD_FONT,
+		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
+		L"Super Mario Bros. NES",
+		FontData(8)
+	);
+	FontManager::GetInstance()->AddFontCustom(
+		WORLD_FONT_BOLD,
+		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
+		L"Super Mario Bros. NES",
+		FontData(8, Bold)
+	);
+	FontManager::GetInstance()->AddFontCustom(
+		WORLD_FONT_ITALIC,
+		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
+		L"Super Mario Bros. NES",
+		FontData(8, Normal, true)
+	);
+	FontManager::GetInstance()->AddFontCustom(
+		WORLD_FONT_BOLD_ITALIC,
+		L"Assets\\Fonts\\super-mario-bros-nes.ttf",
+		L"Super Mario Bros. NES",
+		FontData(8, Bold, true)
 	);
 }
 

@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Animations.h"
+#include "MarioJetPack.h"
 #include "Sprites.h"
 #include "Timer.h"
 
@@ -88,7 +89,9 @@ class Mario : public GameObject
 
 	MarioState state;
 	MarioPower power;
-	MarioPower lastPower;// used to store power before transformation for correct animation during transformation
+	MarioPower lastPower; // used to store power before transformation for correct animation during transformation
+
+	MarioJetPack* jetpack = nullptr;
 
 	// flag pole interaction
 	Vector2 marioWinningMoveToPosition;
@@ -128,6 +131,7 @@ class Mario : public GameObject
 	bool OnCollisionWithFlagPole(const CollisionEvent* collisionEvent);
 	bool OnCollisionWithBridge(const CollisionEvent* e);
 	bool OnCollisionWithAxeBridge(const CollisionEvent* e);
+	bool OnCollisionWithJetpack(const CollisionEvent* e);
 
 
 	// update func
@@ -136,6 +140,7 @@ class Mario : public GameObject
 	void WhileGrounded(float dt);
 	void WhileOnAir(float dt);
 	void HandleJump(float dt);
+	void HandleJetpack(float dt);
 	void HandleShootFireball(float dt, const vector<GameObject*>& coObjects, const SceneContext* ctx);
 	void ApplyGravityAndClamp(float dt);
 	void UpdateFacingDirection();
