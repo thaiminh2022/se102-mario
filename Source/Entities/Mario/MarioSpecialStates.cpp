@@ -50,8 +50,12 @@ void Mario::MarioDyingState(float dt)
 	if (transformTimer.IsFinished()) {
 		transformTimer.SetIdle();
 
-		if (StatManager::GetInstance()->GetLife() == 0)
+		if (StatManager::GetInstance()->GetLife() <= 0)
 			Game::GetInstance()->IndicateSceneSwitch(GAME_OVER_SCENE, {});
+		else
+		{
+			Game::GetInstance()->ReloadCurrentScene();
+		}
 	}
 }
 
