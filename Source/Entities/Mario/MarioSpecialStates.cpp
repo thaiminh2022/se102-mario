@@ -5,6 +5,7 @@
 #include "Debug.h"
 #include "Game.h"
 #include "Mario.h"
+#include "StatManager.h"
 
 void Mario::HandleGrowing(const float dt)
 {
@@ -48,7 +49,9 @@ void Mario::MarioDyingState(float dt)
 
 	if (transformTimer.IsFinished()) {
 		transformTimer.SetIdle();
-		Game::GetInstance()->IndicateSceneSwitch(GAME_OVER_SCENE, {});
+
+		if (StatManager::GetInstance()->GetLife() == 0)
+			Game::GetInstance()->IndicateSceneSwitch(GAME_OVER_SCENE, {});
 	}
 }
 
