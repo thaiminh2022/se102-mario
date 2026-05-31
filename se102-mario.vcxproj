@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -85,7 +85,7 @@
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(ProjectDir)vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source\App;$(ProjectDir)Source\Collision;$(ProjectDir)Source\Core;$(ProjectDir)Source\Entities;$(ProjectDir)Source\Entities\Enemies;$(ProjectDir)Source\Entities\Items;$(ProjectDir)Source\Entities\Mario;$(ProjectDir)Source\Entities\Projectiles;$(ProjectDir)Source\Entities\Triggers;$(ProjectDir)Source\Managers;$(ProjectDir)Source\Rendering;$(ProjectDir)Source\Scenes;$(ProjectDir)Source\UI;$(ProjectDir)Source\World;$(ProjectDir)vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -97,7 +97,7 @@
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(ProjectDir)vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source\App;$(ProjectDir)Source\Collision;$(ProjectDir)Source\Core;$(ProjectDir)Source\Entities;$(ProjectDir)Source\Entities\Enemies;$(ProjectDir)Source\Entities\Items;$(ProjectDir)Source\Entities\Mario;$(ProjectDir)Source\Entities\Projectiles;$(ProjectDir)Source\Entities\Triggers;$(ProjectDir)Source\Managers;$(ProjectDir)Source\Rendering;$(ProjectDir)Source\Scenes;$(ProjectDir)Source\UI;$(ProjectDir)Source\World;$(ProjectDir)vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -110,7 +110,7 @@
     <ClCompile>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(ProjectDir)vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source\App;$(ProjectDir)Source\Collision;$(ProjectDir)Source\Core;$(ProjectDir)Source\Entities;$(ProjectDir)Source\Entities\Enemies;$(ProjectDir)Source\Entities\Items;$(ProjectDir)Source\Entities\Mario;$(ProjectDir)Source\Entities\Projectiles;$(ProjectDir)Source\Entities\Triggers;$(ProjectDir)Source\Managers;$(ProjectDir)Source\Rendering;$(ProjectDir)Source\Scenes;$(ProjectDir)Source\UI;$(ProjectDir)Source\World;$(ProjectDir)vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -125,7 +125,7 @@
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(ProjectDir)vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source\App;$(ProjectDir)Source\Collision;$(ProjectDir)Source\Core;$(ProjectDir)Source\Entities;$(ProjectDir)Source\Entities\Enemies;$(ProjectDir)Source\Entities\Items;$(ProjectDir)Source\Entities\Mario;$(ProjectDir)Source\Entities\Projectiles;$(ProjectDir)Source\Entities\Triggers;$(ProjectDir)Source\Managers;$(ProjectDir)Source\Rendering;$(ProjectDir)Source\Scenes;$(ProjectDir)Source\UI;$(ProjectDir)Source\World;$(ProjectDir)vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -137,134 +137,134 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="Animations.cpp" />
-    <ClCompile Include="AudioManager.cpp" />
-    <ClCompile Include="BgMusicTrigger.cpp" />
-    <ClCompile Include="Bloopers.cpp" />
-    <ClCompile Include="Bowser.cpp" />
-    <ClCompile Include="BowserFireBullet.cpp" />
-    <ClCompile Include="BowserHammer.cpp" />
-    <ClCompile Include="BrickExplode.cpp" />
-    <ClCompile Include="Bridge.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CheepCheeps.cpp" />
-    <ClCompile Include="ClearScreenColorTrigger.cpp" />
-    <ClCompile Include="Coin.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="CollisionMatrix.cpp" />
-    <ClCompile Include="Debug.cpp" />
-    <ClCompile Include="EnterCastleTrigger.cpp" />
-    <ClCompile Include="FireballTrap.cpp" />
-    <ClCompile Include="FireShooter.cpp" />
-    <ClCompile Include="FlagPole.cpp" />
-    <ClCompile Include="Flower.cpp" />
-    <ClCompile Include="Fireball.cpp" />
-    <ClCompile Include="FontManager.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Goomba.cpp" />
-    <ClCompile Include="HUD.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="InWaterTrigger.cpp" />
-    <ClCompile Include="Koopa.cpp" />
-    <ClCompile Include="LevelLoader.cpp" />
-    <ClCompile Include="LevelTextRender.cpp" />
-    <ClCompile Include="LevelTransitionScene.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="Mario.cpp" />
-    <ClCompile Include="MarioBreathBubble.cpp" />
-    <ClCompile Include="MarioCollision.cpp" />
-    <ClCompile Include="MarioInput.cpp" />
-    <ClCompile Include="MarioJetPack.cpp" />
-    <ClCompile Include="MarioLoader.cpp" />
-    <ClCompile Include="MarioRendering.cpp" />
-    <ClCompile Include="MarioSpecialStates.cpp" />
-    <ClCompile Include="Mushroom.cpp" />
-    <ClCompile Include="NextLevelPortal.cpp" />
-    <ClCompile Include="Pipe.cpp" />
-    <ClCompile Include="PlayableScene.cpp" />
-    <ClCompile Include="PointPopup.cpp" />
-    <ClCompile Include="QuestionBlock.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="Sprites.cpp" />
-    <ClCompile Include="Star.cpp" />
-    <ClCompile Include="StatManager.cpp" />
-    <ClCompile Include="Textures.cpp" />
-    <ClCompile Include="Tilemap.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="UIElement.cpp" />
-    <ClCompile Include="UILabel.cpp" />
+    <ClCompile Include="Source\Rendering\Animation.cpp" />
+    <ClCompile Include="Source\Rendering\Animations.cpp" />
+    <ClCompile Include="Source\Managers\AudioManager.cpp" />
+    <ClCompile Include="Source\Entities\Triggers\BgMusicTrigger.cpp" />
+    <ClCompile Include="Source\Entities\Enemies\Bloopers.cpp" />
+    <ClCompile Include="Source\Entities\Enemies\Bowser.cpp" />
+    <ClCompile Include="Source\Entities\Projectiles\BowserFireBullet.cpp" />
+    <ClCompile Include="Source\Entities\Projectiles\BowserHammer.cpp" />
+    <ClCompile Include="Source\Entities\Items\BrickExplode.cpp" />
+    <ClCompile Include="Source\World\Bridge.cpp" />
+    <ClCompile Include="Source\Core\Camera.cpp" />
+    <ClCompile Include="Source\Entities\Enemies\CheepCheeps.cpp" />
+    <ClCompile Include="Source\Entities\Triggers\ClearScreenColorTrigger.cpp" />
+    <ClCompile Include="Source\Entities\Items\Coin.cpp" />
+    <ClCompile Include="Source\Collision\Collision.cpp" />
+    <ClCompile Include="Source\World\CollisionMatrix.cpp" />
+    <ClCompile Include="Source\Core\Debug.cpp" />
+    <ClCompile Include="Source\Entities\Triggers\EnterCastleTrigger.cpp" />
+    <ClCompile Include="Source\Entities\Triggers\FireballTrap.cpp" />
+    <ClCompile Include="Source\Entities\Triggers\FireShooter.cpp" />
+    <ClCompile Include="Source\Entities\Triggers\FlagPole.cpp" />
+    <ClCompile Include="Source\Entities\Items\Flower.cpp" />
+    <ClCompile Include="Source\Entities\Items\Fireball.cpp" />
+    <ClCompile Include="Source\Rendering\FontManager.cpp" />
+    <ClCompile Include="Source\Core\Game.cpp" />
+    <ClCompile Include="Source\Entities\Enemies\Goomba.cpp" />
+    <ClCompile Include="Source\UI\HUD.cpp" />
+    <ClCompile Include="Source\Managers\InputManager.cpp" />
+    <ClCompile Include="Source\Entities\Triggers\InWaterTrigger.cpp" />
+    <ClCompile Include="Source\Entities\Enemies\Koopa.cpp" />
+    <ClCompile Include="Source\World\LevelLoader.cpp" />
+    <ClCompile Include="Source\Entities\Triggers\LevelTextRender.cpp" />
+    <ClCompile Include="Source\Scenes\LevelTransitionScene.cpp" />
+    <ClCompile Include="Source\App\main.cpp" />
+    <ClCompile Include="Source\Scenes\MainMenu.cpp" />
+    <ClCompile Include="Source\Entities\Mario\Mario.cpp" />
+    <ClCompile Include="Source\Entities\Mario\MarioBreathBubble.cpp" />
+    <ClCompile Include="Source\Entities\Mario\MarioCollision.cpp" />
+    <ClCompile Include="Source\Entities\Mario\MarioInput.cpp" />
+    <ClCompile Include="Source\Entities\Mario\MarioJetPack.cpp" />
+    <ClCompile Include="Source\Entities\Mario\MarioLoader.cpp" />
+    <ClCompile Include="Source\Entities\Mario\MarioRendering.cpp" />
+    <ClCompile Include="Source\Entities\Mario\MarioSpecialStates.cpp" />
+    <ClCompile Include="Source\Entities\Items\Mushroom.cpp" />
+    <ClCompile Include="Source\Entities\Triggers\NextLevelPortal.cpp" />
+    <ClCompile Include="Source\Entities\Triggers\Pipe.cpp" />
+    <ClCompile Include="Source\Scenes\PlayableScene.cpp" />
+    <ClCompile Include="Source\Entities\Items\PointPopup.cpp" />
+    <ClCompile Include="Source\Entities\Items\QuestionBlock.cpp" />
+    <ClCompile Include="Source\Rendering\Sprite.cpp" />
+    <ClCompile Include="Source\Rendering\Sprites.cpp" />
+    <ClCompile Include="Source\Entities\Items\Star.cpp" />
+    <ClCompile Include="Source\Managers\StatManager.cpp" />
+    <ClCompile Include="Source\Rendering\Textures.cpp" />
+    <ClCompile Include="Source\World\Tilemap.cpp" />
+    <ClCompile Include="Source\Core\Timer.cpp" />
+    <ClCompile Include="Source\UI\UIElement.cpp" />
+    <ClCompile Include="Source\UI\UILabel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="Animations.h" />
-    <ClInclude Include="AssetIDs.h" />
-    <ClInclude Include="AudioManager.h" />
-    <ClInclude Include="Bowser.h" />
-    <ClInclude Include="BowserFireBullet.h" />
-    <ClInclude Include="BowserHammer.h" />
-    <ClInclude Include="BgMusicTrigger.h" />
-    <ClInclude Include="Bloopers.h" />
-    <ClInclude Include="BrickExplode.h" />
-    <ClInclude Include="Bridge.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="CheepCheeps.h" />
-    <ClInclude Include="ClearScreenColorTrigger.h" />
-    <ClInclude Include="Coin.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="CollisionEvent.h" />
-    <ClInclude Include="CollisionMatrix.h" />
-    <ClInclude Include="Color.h" />
-    <ClInclude Include="Debug.h" />
-    <ClInclude Include="EnterCastleTrigger.h" />
-    <ClInclude Include="Event.h" />
-    <ClInclude Include="FireballTrap.h" />
-    <ClInclude Include="FireShooter.h" />
-    <ClInclude Include="FlagPole.h" />
-    <ClInclude Include="Flower.h" />
-    <ClInclude Include="Fireball.h" />
-    <ClInclude Include="FontManager.h" />
-    <ClInclude Include="Goomba.h" />
-    <ClInclude Include="Helper.h" />
-    <ClInclude Include="HUD.h" />
-    <ClInclude Include="InWaterTrigger.h" />
-    <ClInclude Include="Koopa.h" />
-    <ClInclude Include="LdtkParser.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="LevelLoader.h" />
-    <ClInclude Include="LevelTextRender.h" />
-    <ClInclude Include="LevelTransitionScene.h" />
-    <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="Mario.h" />
-    <ClInclude Include="MarioBreathBubble.h" />
-    <ClInclude Include="MarioJetPack.h" />
-    <ClInclude Include="Mushroom.h" />
-    <ClInclude Include="NextLevelPortal.h" />
-    <ClInclude Include="Pipe.h" />
-    <ClInclude Include="PlayableScene.h" />
-    <ClInclude Include="PointPopup.h" />
-    <ClInclude Include="QuestionBlock.h" />
-    <ClInclude Include="Rect.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneEntityData.h" />
-    <ClInclude Include="SceneSwitchContext.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="Sprites.h" />
-    <ClInclude Include="Star.h" />
-    <ClInclude Include="StatManager.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Textures.h" />
-    <ClInclude Include="Tile.h" />
-    <ClInclude Include="Tilemap.h" />
-    <ClInclude Include="TilemapConfig.h" />
-    <ClInclude Include="OptionalType.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="UIElement.h" />
-    <ClInclude Include="UILabel.h" />
-    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Source\Rendering\Animation.h" />
+    <ClInclude Include="Source\Rendering\Animations.h" />
+    <ClInclude Include="Source\Core\AssetIDs.h" />
+    <ClInclude Include="Source\Managers\AudioManager.h" />
+    <ClInclude Include="Source\Entities\Enemies\Bowser.h" />
+    <ClInclude Include="Source\Entities\Projectiles\BowserFireBullet.h" />
+    <ClInclude Include="Source\Entities\Projectiles\BowserHammer.h" />
+    <ClInclude Include="Source\Entities\Triggers\BgMusicTrigger.h" />
+    <ClInclude Include="Source\Entities\Enemies\Bloopers.h" />
+    <ClInclude Include="Source\Entities\Items\BrickExplode.h" />
+    <ClInclude Include="Source\World\Bridge.h" />
+    <ClInclude Include="Source\Core\Camera.h" />
+    <ClInclude Include="Source\Entities\Enemies\CheepCheeps.h" />
+    <ClInclude Include="Source\Entities\Triggers\ClearScreenColorTrigger.h" />
+    <ClInclude Include="Source\Entities\Items\Coin.h" />
+    <ClInclude Include="Source\Collision\Collision.h" />
+    <ClInclude Include="Source\Collision\CollisionEvent.h" />
+    <ClInclude Include="Source\World\CollisionMatrix.h" />
+    <ClInclude Include="Source\Core\Color.h" />
+    <ClInclude Include="Source\Core\Debug.h" />
+    <ClInclude Include="Source\Entities\Triggers\EnterCastleTrigger.h" />
+    <ClInclude Include="Source\Core\Event.h" />
+    <ClInclude Include="Source\Entities\Triggers\FireballTrap.h" />
+    <ClInclude Include="Source\Entities\Triggers\FireShooter.h" />
+    <ClInclude Include="Source\Entities\Triggers\FlagPole.h" />
+    <ClInclude Include="Source\Entities\Items\Flower.h" />
+    <ClInclude Include="Source\Entities\Items\Fireball.h" />
+    <ClInclude Include="Source\Rendering\FontManager.h" />
+    <ClInclude Include="Source\Entities\Enemies\Goomba.h" />
+    <ClInclude Include="Source\Core\Helper.h" />
+    <ClInclude Include="Source\UI\HUD.h" />
+    <ClInclude Include="Source\Entities\Triggers\InWaterTrigger.h" />
+    <ClInclude Include="Source\Entities\Enemies\Koopa.h" />
+    <ClInclude Include="Source\World\LdtkParser.h" />
+    <ClInclude Include="Source\Core\Game.h" />
+    <ClInclude Include="Source\Core\GameObject.h" />
+    <ClInclude Include="Source\Managers\InputManager.h" />
+    <ClInclude Include="Source\World\LevelLoader.h" />
+    <ClInclude Include="Source\Entities\Triggers\LevelTextRender.h" />
+    <ClInclude Include="Source\Scenes\LevelTransitionScene.h" />
+    <ClInclude Include="Source\Scenes\MainMenu.h" />
+    <ClInclude Include="Source\Entities\Mario\Mario.h" />
+    <ClInclude Include="Source\Entities\Mario\MarioBreathBubble.h" />
+    <ClInclude Include="Source\Entities\Mario\MarioJetPack.h" />
+    <ClInclude Include="Source\Entities\Items\Mushroom.h" />
+    <ClInclude Include="Source\Entities\Triggers\NextLevelPortal.h" />
+    <ClInclude Include="Source\Entities\Triggers\Pipe.h" />
+    <ClInclude Include="Source\Scenes\PlayableScene.h" />
+    <ClInclude Include="Source\Entities\Items\PointPopup.h" />
+    <ClInclude Include="Source\Entities\Items\QuestionBlock.h" />
+    <ClInclude Include="Source\Core\Rect.h" />
+    <ClInclude Include="Source\Core\Scene.h" />
+    <ClInclude Include="Source\World\SceneEntityData.h" />
+    <ClInclude Include="Source\Core\SceneSwitchContext.h" />
+    <ClInclude Include="Source\Rendering\Sprite.h" />
+    <ClInclude Include="Source\Rendering\Sprites.h" />
+    <ClInclude Include="Source\Entities\Items\Star.h" />
+    <ClInclude Include="Source\Managers\StatManager.h" />
+    <ClInclude Include="Source\Rendering\Texture.h" />
+    <ClInclude Include="Source\Rendering\Textures.h" />
+    <ClInclude Include="Source\World\Tile.h" />
+    <ClInclude Include="Source\World\Tilemap.h" />
+    <ClInclude Include="Source\World\TilemapConfig.h" />
+    <ClInclude Include="Source\Core\OptionalType.h" />
+    <ClInclude Include="Source\Core\Timer.h" />
+    <ClInclude Include="Source\UI\UIElement.h" />
+    <ClInclude Include="Source\UI\UILabel.h" />
+    <ClInclude Include="Source\Core\Vector2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
