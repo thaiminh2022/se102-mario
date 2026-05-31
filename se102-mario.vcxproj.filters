@@ -1,399 +1,432 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Source">
+      <UniqueIdentifier>{F147FDD7-CD23-4FC0-B8D4-CA75F11AA613}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="Source\App">
+      <UniqueIdentifier>{39824F17-0D31-46BE-943F-C7427ED8AD2E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    <Filter Include="Source\Collision">
+      <UniqueIdentifier>{520C11F0-90D4-47E3-BC41-B00AC8C9FC38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core">
+      <UniqueIdentifier>{CA91C843-F193-43D7-B2D9-40AEC1A9FB80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Entities">
+      <UniqueIdentifier>{655AB71B-311A-44D4-B9F2-27A28FBF90AA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Entities\Enemies">
+      <UniqueIdentifier>{A57111C4-50CB-4557-BEEB-26AC1363AFB7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Entities\Items">
+      <UniqueIdentifier>{887F8B11-8985-46FF-8A23-A657A7A7A099}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Entities\Mario">
+      <UniqueIdentifier>{509B99BF-9EFC-4BED-9453-012B8D35925A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Entities\Projectiles">
+      <UniqueIdentifier>{39C7D5F8-C635-4090-8B71-E9B1E07F2FB8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Entities\Triggers">
+      <UniqueIdentifier>{18D9D81B-8AF0-4395-B5CC-A7B5880B1CD0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Managers">
+      <UniqueIdentifier>{13DCBA7B-8810-4AA4-BF39-E29EC5563B31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Rendering">
+      <UniqueIdentifier>{5183034F-E01B-43C6-AE92-AFF1CCE67E16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scenes">
+      <UniqueIdentifier>{6E937AA3-B021-4F74-AF80-9FFC100BF5F5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\UI">
+      <UniqueIdentifier>{99B53E1B-97EC-4A4A-99FE-B74E04D58AE4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World">
+      <UniqueIdentifier>{21748DF1-F956-4437-8353-AFD21AF9E7C8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Rendering\Animation.cpp">
+      <Filter>Source\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Rendering\Animations.cpp">
+      <Filter>Source\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Textures.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Managers\AudioManager.cpp">
+      <Filter>Source\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="Debug.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Triggers\BgMusicTrigger.cpp">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Enemies\Bloopers.cpp">
+      <Filter>Source\Entities\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Animations.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Enemies\Bowser.cpp">
+      <Filter>Source\Entities\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Projectiles\BowserFireBullet.cpp">
+      <Filter>Source\Entities\Projectiles</Filter>
     </ClCompile>
-    <ClCompile Include="Sprites.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Projectiles\BowserHammer.cpp">
+      <Filter>Source\Entities\Projectiles</Filter>
     </ClCompile>
-    <ClCompile Include="LevelLoader.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Items\BrickExplode.cpp">
+      <Filter>Source\Entities\Items</Filter>
     </ClCompile>
-    <ClCompile Include="PlayableScene.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\World\Bridge.cpp">
+      <Filter>Source\World</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Core\Camera.cpp">
+      <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Mario.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Enemies\CheepCheeps.cpp">
+      <Filter>Source\Entities\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Tilemap.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Triggers\ClearScreenColorTrigger.cpp">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Items\Coin.cpp">
+      <Filter>Source\Entities\Items</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Collision\Collision.cpp">
+      <Filter>Source\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Goomba.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\World\CollisionMatrix.cpp">
+      <Filter>Source\World</Filter>
     </ClCompile>
-    <ClCompile Include="NextLevelPortal.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Core\Debug.cpp">
+      <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="AudioManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Triggers\EnterCastleTrigger.cpp">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClCompile>
-    <ClCompile Include="FontManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Triggers\FireballTrap.cpp">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClCompile>
-    <ClCompile Include="QuestionBlock.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Triggers\FireShooter.cpp">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClCompile>
-    <ClCompile Include="Coin.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Triggers\FlagPole.cpp">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Items\Flower.cpp">
+      <Filter>Source\Entities\Items</Filter>
     </ClCompile>
-    <ClCompile Include="Mushroom.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Items\Fireball.cpp">
+      <Filter>Source\Entities\Items</Filter>
     </ClCompile>
-    <ClCompile Include="Flower.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Rendering\FontManager.cpp">
+      <Filter>Source\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Star.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Core\Game.cpp">
+      <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Fireball.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Enemies\Goomba.cpp">
+      <Filter>Source\Entities\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="BrickExplode.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\UI\HUD.cpp">
+      <Filter>Source\UI</Filter>
     </ClCompile>
-    <ClCompile Include="FireballTrap.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Managers\InputManager.cpp">
+      <Filter>Source\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Triggers\InWaterTrigger.cpp">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClCompile>
-    <ClCompile Include="LevelTransitionScene.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Enemies\Koopa.cpp">
+      <Filter>Source\Entities\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="StatManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\World\LevelLoader.cpp">
+      <Filter>Source\World</Filter>
     </ClCompile>
-    <ClCompile Include="FlagPole.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Triggers\LevelTextRender.cpp">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClCompile>
-    <ClCompile Include="BrickExplode.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Scenes\LevelTransitionScene.cpp">
+      <Filter>Source\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Koopa.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\App\main.cpp">
+      <Filter>Source\App</Filter>
     </ClCompile>
-    <ClCompile Include="Bowser.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Scenes\MainMenu.cpp">
+      <Filter>Source\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="BowserFireBullet.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Mario\Mario.cpp">
+      <Filter>Source\Entities\Mario</Filter>
     </ClCompile>
-    <ClCompile Include="BowserHammer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Mario\MarioBreathBubble.cpp">
+      <Filter>Source\Entities\Mario</Filter>
     </ClCompile>
-    <ClCompile Include="UIElement.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Mario\MarioCollision.cpp">
+      <Filter>Source\Entities\Mario</Filter>
     </ClCompile>
-    <ClCompile Include="HUD.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Mario\MarioInput.cpp">
+      <Filter>Source\Entities\Mario</Filter>
     </ClCompile>
-    <ClCompile Include="UILabel.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Mario\MarioJetPack.cpp">
+      <Filter>Source\Entities\Mario</Filter>
     </ClCompile>
-    <ClCompile Include="Pipe.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Mario\MarioLoader.cpp">
+      <Filter>Source\Entities\Mario</Filter>
     </ClCompile>
-    <ClCompile Include="MarioCollision.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Mario\MarioRendering.cpp">
+      <Filter>Source\Entities\Mario</Filter>
     </ClCompile>
-    <ClCompile Include="MarioInput.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Mario\MarioSpecialStates.cpp">
+      <Filter>Source\Entities\Mario</Filter>
     </ClCompile>
-    <ClCompile Include="MarioLoader.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Items\Mushroom.cpp">
+      <Filter>Source\Entities\Items</Filter>
     </ClCompile>
-    <ClCompile Include="MarioRendering.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Triggers\NextLevelPortal.cpp">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClCompile>
-    <ClCompile Include="MarioSpecialStates.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Triggers\Pipe.cpp">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClCompile>
-    <ClCompile Include="BgMusicTrigger.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Scenes\PlayableScene.cpp">
+      <Filter>Source\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Bloopers.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Items\PointPopup.cpp">
+      <Filter>Source\Entities\Items</Filter>
     </ClCompile>
-    <ClCompile Include="ClearScreenColorTrigger.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Items\QuestionBlock.cpp">
+      <Filter>Source\Entities\Items</Filter>
     </ClCompile>
-    <ClCompile Include="CheepCheeps.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Rendering\Sprite.cpp">
+      <Filter>Source\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionMatrix.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Rendering\Sprites.cpp">
+      <Filter>Source\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="InWaterTrigger.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Entities\Items\Star.cpp">
+      <Filter>Source\Entities\Items</Filter>
     </ClCompile>
-    <ClCompile Include="PointPopup.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Managers\StatManager.cpp">
+      <Filter>Source\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="FireShooter.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Rendering\Textures.cpp">
+      <Filter>Source\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="EnterCastleTrigger.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\World\Tilemap.cpp">
+      <Filter>Source\World</Filter>
     </ClCompile>
-    <ClCompile Include="MarioBreathBubble.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Core\Timer.cpp">
+      <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="MarioJetPack.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\UI\UIElement.cpp">
+      <Filter>Source\UI</Filter>
     </ClCompile>
-    <ClCompile Include="LevelTextRender.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\UI\UILabel.cpp">
+      <Filter>Source\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Rendering\Animation.h">
+      <Filter>Source\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Rendering\Animations.h">
+      <Filter>Source\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Textures.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\AssetIDs.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Debug.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Managers\AudioManager.h">
+      <Filter>Source\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Enemies\Bowser.h">
+      <Filter>Source\Entities\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Animations.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Projectiles\BowserFireBullet.h">
+      <Filter>Source\Entities\Projectiles</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Projectiles\BowserHammer.h">
+      <Filter>Source\Entities\Projectiles</Filter>
     </ClInclude>
-    <ClInclude Include="Sprites.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Triggers\BgMusicTrigger.h">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Enemies\Bloopers.h">
+      <Filter>Source\Entities\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Items\BrickExplode.h">
+      <Filter>Source\Entities\Items</Filter>
     </ClInclude>
-    <ClInclude Include="LevelLoader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\World\Bridge.h">
+      <Filter>Source\World</Filter>
     </ClInclude>
-    <ClInclude Include="PlayableScene.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Camera.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="LdtkParser.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Enemies\CheepCheeps.h">
+      <Filter>Source\Entities\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Triggers\ClearScreenColorTrigger.h">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
-    <ClInclude Include="Mario.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Items\Coin.h">
+      <Filter>Source\Entities\Items</Filter>
     </ClInclude>
-    <ClInclude Include="AssetIDs.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Collision\Collision.h">
+      <Filter>Source\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Tilemap.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Collision\CollisionEvent.h">
+      <Filter>Source\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\World\CollisionMatrix.h">
+      <Filter>Source\World</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Color.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Debug.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Rect.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Triggers\EnterCastleTrigger.h">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
-    <ClInclude Include="Tile.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Event.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Goomba.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Triggers\FireballTrap.h">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
-    <ClInclude Include="SceneEntityData.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Triggers\FireShooter.h">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
-    <ClInclude Include="TilemapConfig.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Triggers\FlagPole.h">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
-    <ClInclude Include="NextLevelPortal.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Items\Flower.h">
+      <Filter>Source\Entities\Items</Filter>
     </ClInclude>
-    <ClInclude Include="OptionalType.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Items\Fireball.h">
+      <Filter>Source\Entities\Items</Filter>
     </ClInclude>
-    <ClInclude Include="AudioManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Rendering\FontManager.h">
+      <Filter>Source\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="FontManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Enemies\Goomba.h">
+      <Filter>Source\Entities\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="QuestionBlock.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Helper.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Coin.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\UI\HUD.h">
+      <Filter>Source\UI</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionEvent.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Triggers\InWaterTrigger.h">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Enemies\Koopa.h">
+      <Filter>Source\Entities\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Mushroom.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\World\LdtkParser.h">
+      <Filter>Source\World</Filter>
     </ClInclude>
-    <ClInclude Include="Flower.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Game.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Star.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\GameObject.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Fireball.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Managers\InputManager.h">
+      <Filter>Source\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="BrickExplode.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\World\LevelLoader.h">
+      <Filter>Source\World</Filter>
     </ClInclude>
-    <ClInclude Include="FireballTrap.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Triggers\LevelTextRender.h">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenu.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Scenes\LevelTransitionScene.h">
+      <Filter>Source\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Color.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Scenes\MainMenu.h">
+      <Filter>Source\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="LevelTransitionScene.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Mario\Mario.h">
+      <Filter>Source\Entities\Mario</Filter>
     </ClInclude>
-    <ClInclude Include="StatManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Mario\MarioBreathBubble.h">
+      <Filter>Source\Entities\Mario</Filter>
     </ClInclude>
-    <ClInclude Include="FlagPole.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Mario\MarioJetPack.h">
+      <Filter>Source\Entities\Mario</Filter>
     </ClInclude>
-    <ClInclude Include="BrickExplode.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Items\Mushroom.h">
+      <Filter>Source\Entities\Items</Filter>
     </ClInclude>
-    <ClInclude Include="Koopa.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Triggers\NextLevelPortal.h">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
-    <ClInclude Include="Bowser.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Triggers\Pipe.h">
+      <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
-    <ClInclude Include="BowserFireBullet.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Scenes\PlayableScene.h">
+      <Filter>Source\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="BowserHammer.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Items\PointPopup.h">
+      <Filter>Source\Entities\Items</Filter>
     </ClInclude>
-    <ClInclude Include="UIElement.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Items\QuestionBlock.h">
+      <Filter>Source\Entities\Items</Filter>
     </ClInclude>
-    <ClInclude Include="HUD.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Rect.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="UILabel.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Scene.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="SceneSwitchContext.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\World\SceneEntityData.h">
+      <Filter>Source\World</Filter>
     </ClInclude>
-    <ClInclude Include="Pipe.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\SceneSwitchContext.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="BgMusicTrigger.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Rendering\Sprite.h">
+      <Filter>Source\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Bloopers.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Rendering\Sprites.h">
+      <Filter>Source\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="ClearScreenColorTrigger.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Entities\Items\Star.h">
+      <Filter>Source\Entities\Items</Filter>
     </ClInclude>
-    <ClInclude Include="CheepCheeps.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Managers\StatManager.h">
+      <Filter>Source\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionMatrix.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Rendering\Texture.h">
+      <Filter>Source\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="InWaterTrigger.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Rendering\Textures.h">
+      <Filter>Source\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="PointPopup.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\World\Tile.h">
+      <Filter>Source\World</Filter>
     </ClInclude>
-    <ClInclude Include="FireShooter.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\World\Tilemap.h">
+      <Filter>Source\World</Filter>
     </ClInclude>
-    <ClInclude Include="EnterCastleTrigger.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\World\TilemapConfig.h">
+      <Filter>Source\World</Filter>
     </ClInclude>
-    <ClInclude Include="Helper.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\OptionalType.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="MarioBreathBubble.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Timer.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="MarioJetPack.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\UI\UIElement.h">
+      <Filter>Source\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\UI\UILabel.h">
+      <Filter>Source\UI</Filter>
     </ClInclude>
-    <ClInclude Include="LevelTextRender.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Vector2.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
