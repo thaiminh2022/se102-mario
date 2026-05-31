@@ -72,6 +72,11 @@ struct Rect
 		return r;
 	}
 
+	Rect Offset(int dx, int dy) const
+	{
+		return Rect{ left + dx, top + dy, right + dx, bottom + dy };
+	}
+
 	bool IsColliding(const Rect& other) const
 	{
 		return (other.left <= right &&

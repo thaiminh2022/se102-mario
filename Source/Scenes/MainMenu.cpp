@@ -97,12 +97,12 @@ void MainMenu::DrawTitle() const
 {
 	const auto f = FontManager::GetInstance();
 	const auto g = Game::GetInstance();
-	const Rect titleBounds = Rect::FromXYWH(0, 27, g->GetBackBufferWidth(), 34);
+	const Rect titleBounds = Rect::FromXYWH(0, 20, g->GetBackBufferWidth(), 34);
 
-	f->Draw(FONTS::STATS_FONT, FontDrawConfig(Rect::FromXYWH(3, 30, g->GetBackBufferWidth(), 34), L"MARIO NES", MENU_SHADOW, Center | VerticalCenter));
-	f->Draw(FONTS::STATS_FONT, FontDrawConfig(Rect::FromXYWH(1, 28, g->GetBackBufferWidth(), 34), L"MARIO NES", Colors::WHITE, Center | VerticalCenter));
+	f->Draw(FONTS::STATS_FONT, FontDrawConfig(titleBounds.Offset(3, 3), L"MARIO NES", MENU_SHADOW, Center | VerticalCenter));
+	f->Draw(FONTS::STATS_FONT, FontDrawConfig(titleBounds.Offset(1, 1), L"MARIO NES", Colors::WHITE, Center | VerticalCenter));
 	f->Draw(FONTS::STATS_FONT, FontDrawConfig(titleBounds, L"MARIO NES", TITLE_RED, Center | VerticalCenter));
-	f->Draw(FONTS::WORLD_FONT_BOLD, FontDrawConfig(Rect::FromXYWH(0, 58, g->GetBackBufferWidth(), 14), L"SE102 EDITION", TITLE_GOLD, Center | VerticalCenter));
+	f->Draw(FONTS::WORLD_FONT_BOLD, FontDrawConfig(Rect::FromXYWH(0, 50, g->GetBackBufferWidth(), 14), L"SE102 EDITION", TITLE_GOLD, Center | VerticalCenter));
 }
 
 void MainMenu::DrawScenery() const
