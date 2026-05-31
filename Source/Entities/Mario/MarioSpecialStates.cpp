@@ -48,7 +48,7 @@ void Mario::MarioDyingState(float dt)
 
 	if (transformTimer.IsFinished()) {
 		transformTimer.SetIdle();
-		Game::GetInstance()->ReloadCurrentScene();
+		Game::GetInstance()->IndicateSceneSwitch(GAME_OVER_SCENE, {});
 	}
 }
 

@@ -239,7 +239,7 @@ static void LoadResource()
 	audioManager->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
 	audioManager->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
 	audioManager->LoadWAV(FIREWORK, L"Assets\\Audio\\SFX\\fireworks.wav");
-
+	audioManager->LoadWAV(GAMEOVER, L"Assets\\Audio\\Soundtracks\\09.GameOverTheme.wav");
 
 	// Fonts
 	FontManager::GetInstance()->AddFontCustom(

@@ -538,6 +538,7 @@ constexpr int ONEUP_SPRITE_1 = 111101;
 enum NonPlayableScene : std::int8_t
 {
     MAIN_MENU = 1,
+    GAME_OVER_SCENE = 2,
     LEVEL_TRANSITION = 99,
 };
 
@@ -548,6 +549,7 @@ enum AUDIOS : std::int8_t
     UNDERGROUND_THEME = -2,
     CASTLE_THEME = -1,
     UNDERWATER_THEME = 0,
+
 
     // SFX 
     MARIO_JUMP_SMALL = 1,
@@ -565,6 +567,7 @@ enum AUDIOS : std::int8_t
     FLAG_PULL = 13,
     STAGE_CLEAR = 14,
     FIREWORK = 15,
+    GAMEOVER = 16,
 };
 
 /// FONT
