@@ -48,6 +48,8 @@ void StatManager::Reset()
 	coinCount = 0;
 	score = 0;
 	lifeCount = 3; // Starting lives
+	currentLevel = 0;
+	lastLevel = 0;
 }
 
 void StatManager::AddScore(int addingScore, Vector2 pos)
@@ -126,18 +128,21 @@ void StatManager::StartRecordingValues()
 {
 	lastCoinCount = coinCount;
 	lastScoreCount = score;
+	lastLevel = currentLevel;
 }
 
 void StatManager::CommitValues()
 {
 	lastCoinCount = coinCount;
 	lastScoreCount = score;
+	lastLevel = currentLevel;
 }
 
 void StatManager::UndoValues()
 {
 	coinCount = lastCoinCount;
 	score = lastScoreCount;
+	currentLevel = lastLevel;
 }
 
 int StatManager::GetScore() const

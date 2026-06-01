@@ -123,6 +123,8 @@ void PlayableScene::Update(float dt)
 
 void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 {
+	StatManager::GetInstance()->SetLevel(level);
+
 	if (sceneContext == nullptr)
 	{
 		sceneContext = std::make_unique<SceneContext>();
@@ -309,7 +311,6 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
 	StatManager::GetInstance()->StartRecordingValues();
-
 }
 
 void PlayableScene::UnLoad()

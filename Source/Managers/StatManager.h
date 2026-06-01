@@ -10,6 +10,7 @@ private:
 
 	int lastCoinCount;
 	int lastScoreCount;
+	int lastLevel;
 
 
 	int enemyKillScoreList[10];
