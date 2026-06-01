@@ -64,6 +64,7 @@ public:
 	virtual void SetActive(bool newActive) { isActive = newActive; }
 	virtual bool IsFacingRight() const { return isFacingRight; }
 
+	virtual void ResetCollisionContacts() {}
 	virtual void OnNoCollision(float dt) {} // Call every collision check but returns no collision
 	virtual void OnCollisionWith(CollisionEvent* event) {} // Call every collision check with collision data
 	virtual Rect GetBoundingBox() = 0;

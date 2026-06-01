@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Scenes\AboutScene.cpp" />
     <ClCompile Include="Source\Scenes\GameOverScene.cpp" />
     <ClCompile Include="Source\Rendering\Animation.cpp" />
     <ClCompile Include="Source\Rendering\Animations.cpp" />
@@ -198,6 +199,7 @@
     <ClCompile Include="Source\UI\UILabel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Scenes\AboutScene.h" />
     <ClInclude Include="Source\Scenes\GameOverScene.h" />
     <ClInclude Include="Source\Rendering\Animation.h" />
     <ClInclude Include="Source\Rendering\Animations.h" />

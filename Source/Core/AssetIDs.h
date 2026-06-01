@@ -539,6 +539,7 @@ enum NonPlayableScene : std::int8_t
 {
     MAIN_MENU = 1,
     GAME_OVER_SCENE = 2,
+    ABOUT_SCENE = 3,
     LEVEL_TRANSITION = 99,
 };
 

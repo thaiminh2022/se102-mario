@@ -510,6 +510,10 @@ void Mario::Die()
 void Mario::OnNoCollision(float dt)
 {
 	position += velocity * dt;
+}
+
+void Mario::ResetCollisionContacts()
+{
 	isGrounded = false;
 }
 void Mario::OnMarioHit(const bool force)

@@ -8,16 +8,18 @@
 #include "FontManager.h"
 #include "Mario.h"
 #include "StatManager.h"
+#include <iomanip>
+#include <sstream>
 
 namespace
 {
 	constexpr Color ACCENT_RED{ 236.0f / 255.0f, 72.0f / 255.0f, 48.0f / 255.0f, 1.0f };
 	constexpr Color ACCENT_GOLD{ 1.0f, 216.0f / 255.0f, 72.0f / 255.0f, 1.0f };
 	constexpr Color SHADOW{ 28.0f / 255.0f, 28.0f / 255.0f, 28.0f / 255.0f, 1.0f };
-	constexpr float COIN_X = 124.0f;
-	constexpr float COIN_Y = 17.0f;
-	constexpr float MARIO_X = 119.0f;
-	constexpr float MARIO_Y = 143.0f;
+	constexpr float COIN_X = 132.0f;
+	constexpr float COIN_Y = 18.0f;
+	constexpr float MARIO_X = 123.0f;
+	constexpr float MARIO_Y = 139.0f;
 }
 
 LevelTransitionScene::LevelTransitionScene(float transitionDuration)
@@ -40,7 +42,10 @@ int LevelTransitionScene::ToLevelIndex(int sceneId)
 void LevelTransitionScene::RefreshTexts()
 {
 	const auto statManager = StatManager::GetInstance();
-	scoreText = L"MARIO\n" + std::to_wstring(statManager->GetScore());
+	std::wstringstream scoreStream;
+	scoreStream << std::setfill(L'0') << std::setw(6) << statManager->GetScore();
+
+	scoreText = L"MARIO\n" + scoreStream.str();
 	coinText = L"x " + std::to_wstring(statManager->GetCoin());
 	worldText = L"WORLD\n1-" + std::to_wstring(renderLevel + 1);
 	lifeText = L"x " + std::to_wstring(statManager->GetLife());
@@ -81,32 +86,32 @@ void LevelTransitionScene::Render()
 
 	DrawTextWithShadow(
 		FONTS::HUD_FONT,
-		Rect::FromXYWH(14, 10, 96, 36),
+		Rect::FromXYWH(16, 10, 84, 34),
 		scoreText,
 		Colors::WHITE,
-		Left | Top
+		Center | VerticalCenter
 	);
 
 	sprites->Get(HUDCOIN_SPRITE_ID)->Draw(COIN_X, COIN_Y, false, false);
 	DrawTextWithShadow(
 		FONTS::HUD_FONT,
-		Rect::FromXYWH(144, 10, 56, 36),
+		Rect::FromXYWH(151, 10, 48, 34),
 		coinText,
 		Colors::WHITE,
-		Left | VerticalCenter
+		Center | VerticalCenter
 	);
 
 	DrawTextWithShadow(
 		FONTS::HUD_FONT,
-		Rect::FromXYWH(230, 10, 76, 36),
-		L"TIME",
+		Rect::FromXYWH(232, 10, 72, 34),
+		L"TIME\n000",
 		Colors::WHITE,
-		Center | Top
+		Center | VerticalCenter
 	);
 
 	DrawTextWithShadow(
 		FONTS::STATS_FONT,
-		Rect::FromXYWH(0, 76, g->GetBackBufferWidth(), 44),
+		Rect::FromXYWH(0, 76, g->GetBackBufferWidth(), 48),
 		worldText,
 		ACCENT_GOLD,
 		Center | VerticalCenter
@@ -114,8 +119,8 @@ void LevelTransitionScene::Render()
 
 	sprites->Get(HUDMARIO_SPRITE_ID)->Draw(MARIO_X, MARIO_Y, false, false);
 	DrawTextWithShadow(
-		FONTS::STATS_FONT,
-		Rect::FromXYWH(148, 141, 70, 24),
+		FONTS::HUD_FONT,
+		Rect::FromXYWH(148, 136, 64, 28),
 		lifeText,
 		ACCENT_RED,
 		Left | VerticalCenter

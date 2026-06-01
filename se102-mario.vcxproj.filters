@@ -48,6 +48,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Scenes\AboutScene.cpp">
+      <Filter>Source\Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Rendering\Animation.cpp">
       <Filter>Source\Rendering</Filter>
     </ClCompile>
@@ -227,6 +230,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Scenes\AboutScene.h">
+      <Filter>Source\Scenes</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Rendering\Animation.h">
       <Filter>Source\Rendering</Filter>
     </ClInclude>
