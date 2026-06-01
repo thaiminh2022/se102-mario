@@ -114,6 +114,9 @@
     <ClCompile Include="Source\Entities\Triggers\FlagPole.cpp">
       <Filter>Source\Entities\Triggers</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Entities\Triggers\ForceVelocityTrigger.cpp">
+      <Filter>Source\Entities\Triggers</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Entities\Items\Flower.cpp">
       <Filter>Source\Entities\Items</Filter>
     </ClCompile>
@@ -306,6 +309,9 @@
       <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Entities\Triggers\FlagPole.h">
+      <Filter>Source\Entities\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Entities\Triggers\ForceVelocityTrigger.h">
       <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Entities\Items\Flower.h">

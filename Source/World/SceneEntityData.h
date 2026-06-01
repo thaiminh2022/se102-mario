@@ -217,6 +217,12 @@ struct WorldTextData
 	bool italic;
 };
 
+struct ForceVelocityTriggerData
+{
+	Rect zone;
+	Vector2Int moveTo;
+};
+
 struct SceneEntityData
 {
 	// entities
@@ -249,6 +255,7 @@ struct SceneEntityData
 	vector<MusicTriggerData> musicTriggers;
 	vector<ClearScreenColorTriggerData> clearScreenColorTriggers;
 	Optional<EnterCastleTriggerData> enterCastleTrigger;
+	vector<ForceVelocityTriggerData> forceVelocityTriggers;
 
 };
 

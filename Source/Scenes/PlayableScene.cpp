@@ -27,6 +27,7 @@
 #include "CheepCheeps.h"
 #include "ClearScreenColorTrigger.h"
 #include "EnterCastleTrigger.h"
+#include "ForceVelocityTrigger.h"
 #include "InWaterTrigger.h"
 #include "FireShooter.h"
 #include "LevelTextRender.h"
@@ -303,6 +304,12 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		const auto& data = config->entityData.enterCastleTrigger.value();
 		objects.push_back(std::make_unique<EnterCastleTrigger>(data, config->biome));
+	}
+
+	// force vels triggers
+	for (const auto& velocityTrigger : config->entityData.forceVelocityTriggers)
+	{
+		objects.push_back(std::make_unique<ForceVelocityTrigger>(velocityTrigger));
 	}
 
 	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);

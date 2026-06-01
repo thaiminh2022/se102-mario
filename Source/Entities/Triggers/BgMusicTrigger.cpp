@@ -23,8 +23,8 @@ void BgMusicTrigger::Update(float dt, vector<GameObject*>& coObjects, SceneConte
 
 	if (ctx->mario->GetBoundingBox().IsColliding(GetBoundingBox()))
 	{
-		AudioManager::GetInstance()
-		->PlayMusic(musicId);
+		AudioManager::GetInstance()->StopAll();
+		AudioManager::GetInstance()->PlayMusic(musicId);
 		triggered = true;
 
 		// delete this cuz this only get use once lol

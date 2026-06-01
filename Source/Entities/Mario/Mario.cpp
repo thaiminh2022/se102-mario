@@ -201,6 +201,9 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	case MarioState::StopToWaitBowser:
 		MarioWaitingToBowser(dt);
 		return;
+	case MarioState::ForceMoving:
+		MarioForceMoving(dt, coObjects, ctx);
+		return;
 	case MarioState::Idle:
 	case MarioState::Walking:
 	case MarioState::Running:

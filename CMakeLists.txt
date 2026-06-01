@@ -137,6 +137,8 @@ set(SOURCES
     Source/World/Tilemap.cpp
     Source/World/Tilemap.h
     Source/World/TilemapConfig.h
+        Source/Entities/Triggers/ForceVelocityTrigger.cpp
+        Source/Entities/Triggers/ForceVelocityTrigger.h
 )
 
 add_executable(se102-mario WIN32 ${SOURCES})

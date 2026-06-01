@@ -10096,29 +10096,6 @@
 							"fieldInstances": []
 						},
 						{
-							"__identifier": "BackgroundMusic",
-							"__grid": [143,6],
-							"__pivot": [0,0],
-							"__tags": ["trigger"],
-							"__tile": { "tilesetUid": 49, "x": 240, "y": 48, "w": 16, "h": 16 },
-							"__smartColor": "#A200FF",
-							"iid": "3b08cf70-48b0-11f1-ac30-7f39d54c9491",
-							"width": 16,
-							"height": 48,
-							"defUid": 47,
-							"px": [2288,96],
-							"fieldInstances": [
-								{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/Soundtracks/11.SavedthePrincess(NES).wav", "__tile": null, "defUid": 48, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["Assets/Audio/Soundtracks/11.SavedthePrincess(NES).wav"]
-								}] },
-								{ "__identifier": "is_trigger", "__type": "Bool", "__value": true, "__tile": null, "defUid": 260, "realEditorValues": [{
-									"id": "V_Bool",
-									"params": [ true ]
-								}] }
-							]
-						},
-						{
 							"__identifier": "NextLevel",
 							"__grid": [148,10],
 							"__pivot": [0,0],
@@ -10137,20 +10114,20 @@
 						},
 						{
 							"__identifier": "TextRender",
-							"__grid": [146,4],
+							"__grid": [146,5],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": { "tilesetUid": 49, "x": 160, "y": 16, "w": 16, "h": 16 },
 							"__smartColor": "#0099DB",
 							"iid": "6f48aa30-48b0-11f1-ac30-83b195b9681e",
 							"width": 192,
-							"height": 80,
+							"height": 16,
 							"defUid": 291,
-							"px": [2336,64],
+							"px": [2336,80],
 							"fieldInstances": [
-								{ "__identifier": "Content", "__type": "String", "__value": "Thank you Mario, but the princess is not here", "__tile": null, "defUid": 292, "realEditorValues": [{
+								{ "__identifier": "Content", "__type": "String", "__value": "Thank you Mario.", "__tile": null, "defUid": 292, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["Thank you Mario, but the princess is not here"]
+									"params": ["Thank you Mario."]
 								}] },
 								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 294, "realEditorValues": [{
 									"id": "V_String",
@@ -10173,13 +10150,65 @@
 							"__smartColor": "#2CE8F5",
 							"iid": "cfcc4e70-48b0-11f1-ac30-6fd351f55ecb",
 							"width": 32,
-							"height": 48,
+							"height": 80,
 							"defUid": 299,
 							"px": [2288,96],
 							"fieldInstances": [{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 151, "cy": 12 }, "__tile": null, "defUid": 300, "realEditorValues": [{
 								"id": "V_String",
 								"params": ["151,12"]
 							}] }]
+						},
+						{
+							"__identifier": "TextRender",
+							"__grid": [146,6],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 49, "x": 160, "y": 16, "w": 16, "h": 16 },
+							"__smartColor": "#0099DB",
+							"iid": "aa1bd2e0-48b0-11f1-8122-3bf2f457832d",
+							"width": 192,
+							"height": 48,
+							"defUid": 291,
+							"px": [2336,96],
+							"fieldInstances": [
+								{ "__identifier": "Content", "__type": "String", "__value": "But the princess is not here", "__tile": null, "defUid": 292, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["But the princess is not here"]
+								}] },
+								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 294, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 295, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "italic", "__type": "Bool", "__value": false, "__tile": null, "defUid": 296, "realEditorValues": [] },
+								{ "__identifier": "bold", "__type": "Bool", "__value": false, "__tile": null, "defUid": 297, "realEditorValues": [] }
+							]
+						},
+						{
+							"__identifier": "BackgroundMusic",
+							"__grid": [143,6],
+							"__pivot": [0,0],
+							"__tags": ["trigger"],
+							"__tile": { "tilesetUid": 49, "x": 240, "y": 48, "w": 16, "h": 16 },
+							"__smartColor": "#A200FF",
+							"iid": "705ab570-48b0-11f1-8122-4b25e8c6992d",
+							"width": 32,
+							"height": 48,
+							"defUid": 47,
+							"px": [2288,96],
+							"fieldInstances": [
+								{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/SFX/world_clear.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Assets/Audio/SFX/world_clear.wav"]
+								}] },
+								{ "__identifier": "is_trigger", "__type": "Bool", "__value": true, "__tile": null, "defUid": 260, "realEditorValues": [{
+									"id": "V_Bool",
+									"params": [ true ]
+								}] }
+							]
 						}
 					]
 				},
@@ -10215,7 +10244,7 @@
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,
 						1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,
@@ -10453,7 +10482,6 @@
 						{ "px": [2384,32], "src": [0,48], "f": 0, "t": 27, "d": [469], "a": 1 },
 						{ "px": [2400,32], "src": [0,48], "f": 0, "t": 27, "d": [470], "a": 1 },
 						{ "px": [2416,32], "src": [0,48], "f": 0, "t": 27, "d": [471], "a": 1 },
-						{ "px": [2432,32], "src": [0,48], "f": 0, "t": 27, "d": [472], "a": 1 },
 						{ "px": [2448,32], "src": [0,48], "f": 0, "t": 27, "d": [473], "a": 1 },
 						{ "px": [2464,32], "src": [0,48], "f": 0, "t": 27, "d": [474], "a": 1 },
 						{ "px": [2480,32], "src": [0,48], "f": 0, "t": 27, "d": [475], "a": 1 },

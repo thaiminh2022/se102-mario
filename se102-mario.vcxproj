@@ -160,6 +160,7 @@
     <ClCompile Include="Source\Entities\Triggers\FireballTrap.cpp" />
     <ClCompile Include="Source\Entities\Triggers\FireShooter.cpp" />
     <ClCompile Include="Source\Entities\Triggers\FlagPole.cpp" />
+    <ClCompile Include="Source\Entities\Triggers\ForceVelocityTrigger.cpp" />
     <ClCompile Include="Source\Entities\Items\Flower.cpp" />
     <ClCompile Include="Source\Entities\Items\Fireball.cpp" />
     <ClCompile Include="Source\Rendering\FontManager.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="Source\Entities\Triggers\FireballTrap.h" />
     <ClInclude Include="Source\Entities\Triggers\FireShooter.h" />
     <ClInclude Include="Source\Entities\Triggers\FlagPole.h" />
+    <ClInclude Include="Source\Entities\Triggers\ForceVelocityTrigger.h" />
     <ClInclude Include="Source\Entities\Items\Flower.h" />
     <ClInclude Include="Source\Entities\Items\Fireball.h" />
     <ClInclude Include="Source\Rendering\FontManager.h" />

@@ -546,7 +546,8 @@ enum NonPlayableScene : std::int8_t
 // ALL BACKGROUND MUSIC WILL BE MANAGED BY NEGATIVE VALUE AND 0
 enum AUDIOS : std::int8_t
 {
-    GROUND_THEME = -3,
+    WORLD_CLEAR = -4,
+	GROUND_THEME = -3,
     UNDERGROUND_THEME = -2,
     CASTLE_THEME = -1,
     UNDERWATER_THEME = 0,

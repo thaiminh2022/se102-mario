@@ -50,7 +50,7 @@ class LevelLoader
 	void ParseJetpack(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseTextRender(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 
-	void ParseBowserArena(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
+
 
 	// triggers
 	void ParseNextLevelZone(SceneEntityData& sceneEntities, std::vector<EntityInstance> entities);
@@ -58,6 +58,8 @@ class LevelLoader
 	void ParseClearScreenColorTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseInWaterTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseEnterCastleTrigger(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
+	void ParseForceVelocity(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
+
 
 	// helper
 	void RebuildCacheForLevel(vector<EntityInstance>& entities);

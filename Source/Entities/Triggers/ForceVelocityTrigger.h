@@ -1,13 +1,16 @@
-﻿//
-// Created by Thaiminh2022 on 6/1/2026.
-//
+﻿#pragma once
+#include "GameObject.h"
 
-#ifndef SE102_MARIO_FORCEVELOCITYTRIGGER_H
-#define SE102_MARIO_FORCEVELOCITYTRIGGER_H
-
-
-class ForceVelocityTrigger {
+class ForceVelocityTrigger : public GameObject{
+    ForceVelocityTriggerData data;
+    bool triggered = false;
+public:
+    explicit ForceVelocityTrigger(ForceVelocityTriggerData data);
+    void Update(float dt, vector<GameObject *> &coObjects, SceneContext *ctx) override;
+    Rect GetBoundingBox() override;
+    Vector2Int GetMoveTo();
+	bool IsCollidable() override { return false; }
+    bool IsBlocking() override {return false;}
 };
 
 
-#endif //SE102_MARIO_FORCEVELOCITYTRIGGER_H
