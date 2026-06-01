@@ -1,8 +1,18 @@
 #include "Bowser.h"
+
+#include "Animation.h"
+#include "Animations.h"
+#include "AssetIDs.h"
+#include "BowserFireBullet.h"
+#include "BowserHammer.h"
 #include "StatManager.h"
 #include "Bridge.h"
+#include "Collision.h"
+#include "Mario.h"
+#include "Sprites.h"
+#include "Textures.h"
 
-Bowser::Bowser(int startX, int startY, Rect arena, Mario* mario) : GameObject(startX, startY), bowserArena(arena)
+Bowser::Bowser(Vector2Int start, Rect arena, Mario* mario) : GameObject(start), bowserArena(arena)
 {
 	auto t = Textures::GetInstance()->Get(BOWSER_TEX_ID);
 	auto sp = Sprites::GetInstance();
@@ -95,6 +105,7 @@ void Bowser::SetState(BowserState newState)
 		velocity.x = moveLeft ? -BOWSER_WALKING_SPEED : BOWSER_WALKING_SPEED;
 		break;
 	case BowserState::Jumping:
+		isGrounded = false;
 		velocity.y = -BOWSER_JUMPING_SPEED;
 		velocity.x = moveLeft ? -BOWSER_WALKING_SPEED : BOWSER_WALKING_SPEED;
 		break;
@@ -354,10 +365,13 @@ void Bowser::HammerThrowAttack(SceneContext* ctx)
 void Bowser::OnNoCollision(float dt)
 {
 	position += velocity * dt;
+}
+
+void Bowser::ResetCollisionContacts()
+{
 	if (state != BowserState::Dead && state != BowserState::Falling)
 	{
 		isGrounded = false;
-		state = BowserState::Jumping;
 	}
 }
 

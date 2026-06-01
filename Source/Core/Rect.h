@@ -29,6 +29,13 @@ struct Rect
 		this->bottom = bottom;
 		this->top = top;
 	}
+	explicit Rect(Vector2Int leftTop, Vector2Int rightBottom)
+	{
+		this->left = leftTop.x;
+		this->top = leftTop.y;
+		this->right = rightBottom.x;
+		this->bottom = rightBottom.y;
+	}
 
 	static Rect FromXYWH(int left, int top, int width, int height)
 	{

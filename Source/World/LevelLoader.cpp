@@ -420,8 +420,25 @@ void LevelLoader::ParseBowsers(SceneEntityData& sceneEntities, vector<EntityInst
 	const auto bowserStart = GetEntityDataWithIdentifier(entities, BOWSER_START);
 	if (!bowserStart.empty())
 	{
-		const auto s = bowserStart[0]; // only 1 per level;
-		sceneEntities.bowserStart.emplace(Vector2Int(s->px[0], s->px[1]));
+		const auto bowser = bowserStart[0]; // only 1 per level;
+
+		auto containerStartJson = GetFieldValueWithIdentifier(bowser->fieldInstances, "container_start");
+		auto containerEndJson = GetFieldValueWithIdentifier(bowser->fieldInstances, "container_end");
+
+		if (!containerStartJson.has_value() || !containerEndJson.has_value())
+			return;
+
+		auto cStartLdtk = containerStartJson.value().get<LDTKPoint>();
+		auto cEndLdtk = containerEndJson.value().get<LDTKPoint>();
+
+		auto cStart = Vector2Int(cStartLdtk.cx * 16, cStartLdtk.cy * 16);
+		auto cEnd = Vector2Int(cStartLdtk.cx * 16, cEndLdtk.cy * 16);
+
+
+		sceneEntities.bowserData = BowserEntityData(
+			Rect(cStart, cEnd), 
+			Vector2Int(bowser->px[0], bowser->px[1])
+		);
 	}
 }
 

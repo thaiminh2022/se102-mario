@@ -81,7 +81,7 @@ void MainMenu::Update(float dt)
 		if (currentFocus == PlayButton)
 		{
 			// 0 is first playable level
-			Game::GetInstance()->IndicateSceneSwitch(0, SceneSwitchContext::NormalTransition());
+			Game::GetInstance()->IndicateSceneSwitch(-4, SceneSwitchContext::NormalTransition());
 		}
 		else if (currentFocus == AboutButton)
 		{

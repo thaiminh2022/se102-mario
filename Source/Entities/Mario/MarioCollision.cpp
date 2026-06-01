@@ -9,6 +9,8 @@
 #include "Flower.h"
 #include "Goomba.h"
 #include "Bowser.h"
+#include "BowserFireBullet.h"
+#include "BowserHammer.h"
 #include "Koopa.h"
 #include "Mario.h"
 #include "Mushroom.h"

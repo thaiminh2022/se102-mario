@@ -263,15 +263,11 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		);
 	}
 	// Bowser
-	if (config->entityData.bowserStart.has_value())
+	if (config->entityData.bowserData.has_value())
 	{
-		if (config->entityData.bowserArenas.has_value()) {
-			Rect bowserArena = config->entityData.bowserArenas.value().arenaZone;
-
-			const auto bowserStart = config->entityData.bowserStart.value();
-			auto bowser = std::make_unique<Bowser>(bowserStart.x, bowserStart.y, bowserArena, sceneContext->mario);
+		auto bowserData = config->entityData.bowserData.value();
+		auto bowser = std::make_unique<Bowser>(bowserData.start, bowserData.container, sceneContext->mario);
 			objects.push_back(std::move(bowser));
-		}
 	}
 
 	// background music
