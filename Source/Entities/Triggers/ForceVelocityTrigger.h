@@ -1,0 +1,13 @@
+﻿//
+// Created by Thaiminh2022 on 6/1/2026.
+//
+
+#ifndef SE102_MARIO_FORCEVELOCITYTRIGGER_H
+#define SE102_MARIO_FORCEVELOCITYTRIGGER_H
+
+
+class ForceVelocityTrigger {
+};
+
+
+#endif //SE102_MARIO_FORCEVELOCITYTRIGGER_H
