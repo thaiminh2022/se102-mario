@@ -29,7 +29,19 @@ void NextLevelPortal::Update(float dt, vector<GameObject*>& coObjects, SceneCont
 
 	if (timeBeforeLoad <= 0)
 	{
-		Game::GetInstance()->IndicateSceneSwitch(levelToLoad, SceneSwitchContext::NormalTransition(ctx->mario->GetPowerLevel()));
+
+		auto power = ctx->mario->GetPowerLevel();
+		if (power == MarioPower::StarmanBig)
+		{
+			power = MarioPower::Big;
+		}
+		else if (power == MarioPower::StarmanSmall)
+		{
+			power = MarioPower::Normal;
+		}
+
+		auto sceneCtx = SceneSwitchContext::NormalTransition(power);
+		Game::GetInstance()->IndicateSceneSwitch(levelToLoad, sceneCtx);
 	}
 }
 

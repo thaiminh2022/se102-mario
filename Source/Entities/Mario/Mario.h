@@ -160,7 +160,7 @@ class Mario : public GameObject
 
 public:
 	Mario(int startX, int startY);
-
+	bool IsInStarman() const;
 	MarioPower GetPowerLevel() const { return power; }
 	void SetPowerLevel(const MarioPower newPower) { power = newPower; }
 	

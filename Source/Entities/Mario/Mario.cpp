@@ -56,6 +56,11 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	LoadSpriteAndAnimation();
 }
 
+bool Mario::IsInStarman() const
+{
+	return power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig;
+}
+
 void Mario::SetEnterPipe(const PipeData& pipe)
 {
 	state = MarioState::EnteringPipe;
