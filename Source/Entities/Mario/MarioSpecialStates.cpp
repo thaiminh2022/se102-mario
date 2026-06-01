@@ -54,6 +54,7 @@ void Mario::MarioDyingState(float dt)
 			Game::GetInstance()->IndicateSceneSwitch(GAME_OVER_SCENE, {});
 		else
 		{
+			StatManager::GetInstance()->UndoValues();
 			Game::GetInstance()->ReloadCurrentScene();
 		}
 	}

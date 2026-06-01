@@ -31,6 +31,7 @@
 #include "FireShooter.h"
 #include "LevelTextRender.h"
 #include "MarioJetPack.h"
+#include "StatManager.h"
 
 
 using std::priority_queue;
@@ -279,8 +280,6 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	levelTimer = std::make_unique<Timer>(timeLeftForLevel);
 	levelTimer->Start();
 
-	// background color
-	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
 
 	// triggers;
 	// clear screen color trigger
@@ -307,6 +306,10 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		const auto& data = config->entityData.enterCastleTrigger.value();
 		objects.push_back(std::make_unique<EnterCastleTrigger>(data, config->biome));
 	}
+
+	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
+	StatManager::GetInstance()->StartRecordingValues();
+
 }
 
 void PlayableScene::UnLoad()

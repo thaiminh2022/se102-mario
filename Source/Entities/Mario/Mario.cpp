@@ -9,7 +9,6 @@
 #include "Scene.h"
 #include <vector>
 #include "AudioManager.h"
-#include "FontManager.h"
 #include "Fireball.h"
 
 int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const

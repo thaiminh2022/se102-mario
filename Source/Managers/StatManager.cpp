@@ -80,7 +80,7 @@ void StatManager::SetLevel(int newLevel)
 	currentLevel = newLevel;
 }
 
-int StatManager::GetLevel()
+int StatManager::GetLevel() const
 {
 	return currentLevel;
 }
@@ -122,17 +122,35 @@ void StatManager::AddShellKickScore(int sequenceCount, Vector2 pos)
 	}
 }
 
-int StatManager::GetScore()
+void StatManager::StartRecordingValues()
+{
+	lastCoinCount = coinCount;
+	lastScoreCount = score;
+}
+
+void StatManager::CommitValues()
+{
+	lastCoinCount = coinCount;
+	lastScoreCount = score;
+}
+
+void StatManager::UndoValues()
+{
+	coinCount = lastCoinCount;
+	score = lastScoreCount;
+}
+
+int StatManager::GetScore() const
 {
 	return score;
 }
 
-int StatManager::GetCoin()
+int StatManager::GetCoin() const
 {
 	return coinCount;
 }
 
-int StatManager::GetLife()
+int StatManager::GetLife() const
 {
 	return lifeCount;
 }

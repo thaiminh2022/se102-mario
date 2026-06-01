@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "InputManager.h"
 #include "Mario.h"
+#include "StatManager.h"
 
 Pipe::Pipe(const PipeData& pData)
 {
@@ -66,6 +67,8 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 				return;
 
 			auto marioPower = ctx->mario->GetPowerLevel();
+			StatManager::GetInstance()->CommitValues();
+
 			if (marioPower == MarioPower::StarmanBig)
 			{
 				marioPower = MarioPower::Big;

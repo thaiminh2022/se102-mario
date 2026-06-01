@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "Mario.h"
+#include "StatManager.h"
 
 
 NextLevelPortal::NextLevelPortal(Rect zone, int levelToLoad, float timeBeforeLoad)
@@ -29,7 +30,7 @@ void NextLevelPortal::Update(float dt, vector<GameObject*>& coObjects, SceneCont
 
 	if (timeBeforeLoad <= 0)
 	{
-
+		StatManager::GetInstance()->CommitValues();
 		auto power = ctx->mario->GetPowerLevel();
 		if (power == MarioPower::StarmanBig)
 		{
