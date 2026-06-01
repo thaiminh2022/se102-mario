@@ -315,6 +315,12 @@ bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 	{
 		star->SetState(CollectableItemState::Collected);
 		auto audio = AudioManager::GetInstance();
+		
+		if (power == MarioPower::StarmanBig || power == MarioPower::StarmanSmall)
+		{
+			return true;
+		}
+		
 		lastPower = power;
 		if (power == MarioPower::Normal)
 			power = MarioPower::StarmanSmall;

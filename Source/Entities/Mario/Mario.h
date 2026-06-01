@@ -4,9 +4,7 @@
 #include "Scene.h"
 #include <vector>
 
-#include "Animations.h"
 #include "MarioJetPack.h"
-#include "Sprites.h"
 #include "Timer.h"
 
 class Bowser;
