@@ -77,7 +77,8 @@ void Render()
 		// clear the background
 		pD3DDevice->ClearRenderTargetView(pRenderTargetView, clearColor.has_value() ? clearColor.value() : BACKGROUND_COLOR);
 
-		spriteHandler->Begin(D3DX10_SPRITE_SORT_TEXTURE);
+		// Preserve submission order so layered font draws render deterministically.
+		spriteHandler->Begin(0);
 
 		// Use Alpha blending for transparent sprites
 		FLOAT NewBlendFactor[4] = { 0, 0, 0, 0 };
@@ -238,7 +239,7 @@ static void LoadResource()
 	audioManager->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
 	audioManager->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
 	audioManager->LoadWAV(FIREWORK, L"Assets\\Audio\\SFX\\fireworks.wav");
-
+	audioManager->LoadWAV(GAMEOVER, L"Assets\\Audio\\Soundtracks\\09.GameOverTheme.wav");
 
 	// Fonts
 	FontManager::GetInstance()->AddFontCustom(

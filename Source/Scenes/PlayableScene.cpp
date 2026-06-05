@@ -27,10 +27,12 @@
 #include "CheepCheeps.h"
 #include "ClearScreenColorTrigger.h"
 #include "EnterCastleTrigger.h"
+#include "ForceVelocityTrigger.h"
 #include "InWaterTrigger.h"
 #include "FireShooter.h"
 #include "LevelTextRender.h"
 #include "MarioJetPack.h"
+#include "StatManager.h"
 
 
 using std::priority_queue;
@@ -122,6 +124,8 @@ void PlayableScene::Update(float dt)
 
 void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 {
+	StatManager::GetInstance()->SetLevel(level);
+
 	if (sceneContext == nullptr)
 	{
 		sceneContext = std::make_unique<SceneContext>();
@@ -260,15 +264,11 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		);
 	}
 	// Bowser
-	if (config->entityData.bowserStart.has_value())
+	if (config->entityData.bowserData.has_value())
 	{
-		if (config->entityData.bowserArenas.has_value()) {
-			Rect bowserArena = config->entityData.bowserArenas.value().arenaZone;
-
-			const auto bowserStart = config->entityData.bowserStart.value();
-			auto bowser = std::make_unique<Bowser>(bowserStart.x, bowserStart.y, bowserArena, sceneContext->mario);
+		auto bowserData = config->entityData.bowserData.value();
+		auto bowser = std::make_unique<Bowser>(bowserData.start, bowserData.container, sceneContext->mario);
 			objects.push_back(std::move(bowser));
-		}
 	}
 
 	// background music
@@ -279,8 +279,6 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	levelTimer = std::make_unique<Timer>(timeLeftForLevel);
 	levelTimer->Start();
 
-	// background color
-	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
 
 	// triggers;
 	// clear screen color trigger
@@ -307,6 +305,15 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		const auto& data = config->entityData.enterCastleTrigger.value();
 		objects.push_back(std::make_unique<EnterCastleTrigger>(data, config->biome));
 	}
+
+	// force vels triggers
+	for (const auto& velocityTrigger : config->entityData.forceVelocityTriggers)
+	{
+		objects.push_back(std::make_unique<ForceVelocityTrigger>(velocityTrigger));
+	}
+
+	Game::GetInstance()->SetBackgroundColor(config->backgroundColor);
+	StatManager::GetInstance()->StartRecordingValues();
 }
 
 void PlayableScene::UnLoad()

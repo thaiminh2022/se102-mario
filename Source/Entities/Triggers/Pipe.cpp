@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "InputManager.h"
 #include "Mario.h"
+#include "StatManager.h"
 
 Pipe::Pipe(const PipeData& pData)
 {
@@ -65,23 +66,36 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			if (!pipeData.nextLevelToLoad.has_value())
 				return;
 
+			auto marioPower = ctx->mario->GetPowerLevel();
+			StatManager::GetInstance()->CommitValues();
+
+			if (marioPower == MarioPower::StarmanBig)
+			{
+				marioPower = MarioPower::Big;
+			}
+			else if (marioPower == MarioPower::StarmanSmall)
+			{
+				marioPower = MarioPower::Normal;
+			}
+
 			if (pipeData.returnPipeData.has_value())
 			{
 				auto returnData = pipeData.returnPipeData.value();
 				auto marioPipeCtx = MarioPipeCtx{
-					returnData.returnDirection,
-					returnData.returnRect,
-					returnData.moveTo,
+					.dir = returnData.returnDirection,
+					.returnZone = returnData.returnRect,
+					.moveTo = returnData.moveTo,
 				};
-				Optional<SceneSwitchContext> switchCtx = SceneSwitchContext::PipeTransition(marioPipeCtx, ctx->mario->GetPowerLevel());
+				Optional switchCtx = SceneSwitchContext::PipeTransition(marioPipeCtx, marioPower);
 
 				Game::GetInstance()
 					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value(), switchCtx);
 			}
 			else
 			{
+				auto switchCtx = SceneSwitchContext::NormalTransition(marioPower);
 				Game::GetInstance()
-					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value(), SceneSwitchContext::NormalTransition(ctx->mario->GetPowerLevel()));
+					->IndicateSceneSwitch(pipeData.nextLevelToLoad.value(), switchCtx);
 			}
 		}else
 		{
@@ -97,9 +111,9 @@ void Pipe::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			{
 				auto returnData = pipeData.returnPipeData.value();
 				auto marioPipeCtx = MarioPipeCtx{
-					returnData.returnDirection,
-					returnData.returnRect,
-					returnData.moveTo,
+					.dir = returnData.returnDirection,
+					.returnZone = returnData.returnRect,
+					.moveTo = returnData.moveTo,
 				};
 
 				ctx->mario->SetExitPipe(marioPipeCtx);

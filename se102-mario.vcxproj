@@ -137,6 +137,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Scenes\AboutScene.cpp" />
+    <ClCompile Include="Source\Scenes\GameOverScene.cpp" />
     <ClCompile Include="Source\Rendering\Animation.cpp" />
     <ClCompile Include="Source\Rendering\Animations.cpp" />
     <ClCompile Include="Source\Managers\AudioManager.cpp" />
@@ -158,6 +160,7 @@
     <ClCompile Include="Source\Entities\Triggers\FireballTrap.cpp" />
     <ClCompile Include="Source\Entities\Triggers\FireShooter.cpp" />
     <ClCompile Include="Source\Entities\Triggers\FlagPole.cpp" />
+    <ClCompile Include="Source\Entities\Triggers\ForceVelocityTrigger.cpp" />
     <ClCompile Include="Source\Entities\Items\Flower.cpp" />
     <ClCompile Include="Source\Entities\Items\Fireball.cpp" />
     <ClCompile Include="Source\Rendering\FontManager.cpp" />
@@ -197,6 +200,8 @@
     <ClCompile Include="Source\UI\UILabel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Scenes\AboutScene.h" />
+    <ClInclude Include="Source\Scenes\GameOverScene.h" />
     <ClInclude Include="Source\Rendering\Animation.h" />
     <ClInclude Include="Source\Rendering\Animations.h" />
     <ClInclude Include="Source\Core\AssetIDs.h" />
@@ -222,6 +227,7 @@
     <ClInclude Include="Source\Entities\Triggers\FireballTrap.h" />
     <ClInclude Include="Source\Entities\Triggers\FireShooter.h" />
     <ClInclude Include="Source\Entities\Triggers\FlagPole.h" />
+    <ClInclude Include="Source\Entities\Triggers\ForceVelocityTrigger.h" />
     <ClInclude Include="Source\Entities\Items\Flower.h" />
     <ClInclude Include="Source\Entities\Items\Fireball.h" />
     <ClInclude Include="Source\Rendering\FontManager.h" />

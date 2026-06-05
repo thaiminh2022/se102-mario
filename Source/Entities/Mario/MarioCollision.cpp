@@ -9,6 +9,8 @@
 #include "Flower.h"
 #include "Goomba.h"
 #include "Bowser.h"
+#include "BowserFireBullet.h"
+#include "BowserHammer.h"
 #include "Koopa.h"
 #include "Mario.h"
 #include "Mushroom.h"
@@ -315,6 +317,12 @@ bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 	{
 		star->SetState(CollectableItemState::Collected);
 		auto audio = AudioManager::GetInstance();
+		
+		if (power == MarioPower::StarmanBig || power == MarioPower::StarmanSmall)
+		{
+			return true;
+		}
+		
 		lastPower = power;
 		if (power == MarioPower::Normal)
 			power = MarioPower::StarmanSmall;
@@ -504,6 +512,10 @@ void Mario::Die()
 void Mario::OnNoCollision(float dt)
 {
 	position += velocity * dt;
+}
+
+void Mario::ResetCollisionContacts()
+{
 	isGrounded = false;
 }
 void Mario::OnMarioHit(const bool force)

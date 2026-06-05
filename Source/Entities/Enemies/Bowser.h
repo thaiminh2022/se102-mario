@@ -4,24 +4,11 @@
 #include "Scene.h"
 #include <vector>
 #include "Timer.h"
-#include "Collision.h"
-#include "GameObject.h"
-#include "Scene.h"
-#include "Mario.h"
-#include "BowserFireBullet.h"
-#include "BowserHammer.h"
-#include <vector>
 
-#include "Animation.h"
-#include "Animations.h"
-
-#include "AssetIDs.h"
 #include "Game.h"
-#include "Sprites.h"
-#include "Textures.h"
+
 #include <cmath>
 
-#include "Debug.h"
 
 constexpr float BOWSER_WALKING_SPEED = 15.0f;
 constexpr float BOWSER_JUMPING_SPEED = 240.0f;
@@ -57,7 +44,7 @@ class Bowser :public GameObject
 	float BOWSER_HAMMERTHROW_INTERVAL;
 	Rect bowserArena;
 public:
-	Bowser(int startX, int startY, Rect arena, Mario* mario);
+	Bowser(Vector2Int start, Rect arena, Mario* mario);
 	void SetState(BowserState newState);
 	BowserState GetState() const { return state;}
 	int GetHealth() const { return health; }
@@ -69,6 +56,7 @@ public:
 	void TimerHandler(float dt, SceneContext* ctx);
 	void FireBreathAttack( SceneContext* ctx);
 	void HammerThrowAttack(SceneContext* ctx);
+	void ResetCollisionContacts() override;
 	void OnNoCollision(float dt) override;
 	bool WillJumpOutsideArena(bool movingLeft);
 	void ClampInsideArena();

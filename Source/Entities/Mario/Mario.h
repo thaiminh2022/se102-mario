@@ -4,9 +4,7 @@
 #include "Scene.h"
 #include <vector>
 
-#include "Animations.h"
 #include "MarioJetPack.h"
-#include "Sprites.h"
 #include "Timer.h"
 
 class Bowser;
@@ -28,6 +26,7 @@ enum class MarioState : std::uint8_t
 	Growing,
 	Shrinking,
 	StopToWaitBowser,
+	ForceMoving,
 };
 
 enum class MarioPower
@@ -104,6 +103,7 @@ class Mario : public GameObject
 
 	// Bridge collapse timer
 	Timer waitToBowserTimer;
+	Vector2 forceMoveToPosition;
 
 	void OnMarioHit(bool force = false);
 	int GetMarioAnimId() const;
@@ -153,6 +153,7 @@ class Mario : public GameObject
 	void MarioDyingState(float dt);
 	void MarioPullingFlag(float dt);
 	void MarioWaitingToBowser(float dt);
+	void MarioForceMoving(float dt, vector<GameObject*>& coObjects, SceneContext* ctx);
 	void MarioWalkingToCastle(float dt, vector<GameObject*>& coObjects, SceneContext* ctx);
 	void MarioEnteringPipe(float dt);
 	void MarioExitingPipe(float dt);
@@ -162,12 +163,13 @@ class Mario : public GameObject
 
 public:
 	Mario(int startX, int startY);
-
+	bool IsInStarman() const;
 	MarioPower GetPowerLevel() const { return power; }
 	void SetPowerLevel(const MarioPower newPower) { power = newPower; }
 	
 	void SetEnterPipe(const PipeData& pipe);
 	void SetExitPipe(const MarioPipeCtx& returnPipeData);
+	void SetForceMove(const Vector2Int& moveTo);
 	void SetIsInWater(bool newIsInWater);
 	void SetPosition(const Vector2 newPosition) {
 		position = newPosition;
@@ -178,6 +180,7 @@ public:
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
 	Rect GetBoundingBox() override;
+	void ResetCollisionContacts() override;
 	void OnNoCollision(float dt) override;
 	void OnCollisionWith(CollisionEvent* event) override;
 	bool IsBlocking() override { return true; }

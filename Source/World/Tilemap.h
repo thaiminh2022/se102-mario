@@ -14,7 +14,8 @@ class Tilemap
 	unique_ptr<TilemapConfig> config;
 
 public:
-	explicit Tilemap(unique_ptr<TilemapConfig> conf)
+
+	explicit Tilemap(unique_ptr<TilemapConfig> conf, const int forWorld = 0)
 		: config(std::move(conf))
 	{
 	}

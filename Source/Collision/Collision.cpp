@@ -246,6 +246,8 @@ void Collision::GetObjectEvents(vector<CollisionEvent>& events, GameObject* go, 
 
 void Collision::ProcessCollision(GameObject* go, const vector<GameObject*>& coObjects, const Tilemap* tilemap, float dt)
 {
+	go->ResetCollisionContacts();
+
 	if (!go->IsCollidable() )
 	{
 		go->OnNoCollision(dt);

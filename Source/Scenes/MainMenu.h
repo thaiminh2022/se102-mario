@@ -14,7 +14,11 @@ class MainMenu : public Scene
 
 	Vector2 buttonStartPosition;
 	SceneElement currentFocus;
-	std::wstring GetSceneElementString(SceneElement el);
+	float elapsedTime = 0.0f;
+	std::wstring GetSceneElementString(SceneElement el) const;
+	void DrawTitle() const;
+	void DrawScenery() const;
+	void DrawMenuOptions() const;
 
 public:
 	MainMenu();

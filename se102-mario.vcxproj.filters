@@ -48,6 +48,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Scenes\AboutScene.cpp">
+      <Filter>Source\Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Rendering\Animation.cpp">
       <Filter>Source\Rendering</Filter>
     </ClCompile>
@@ -111,6 +114,9 @@
     <ClCompile Include="Source\Entities\Triggers\FlagPole.cpp">
       <Filter>Source\Entities\Triggers</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Entities\Triggers\ForceVelocityTrigger.cpp">
+      <Filter>Source\Entities\Triggers</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Entities\Items\Flower.cpp">
       <Filter>Source\Entities\Items</Filter>
     </ClCompile>
@@ -145,6 +151,9 @@
       <Filter>Source\Entities\Triggers</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\LevelTransitionScene.cpp">
+      <Filter>Source\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\GameOverScene.cpp">
       <Filter>Source\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\App\main.cpp">
@@ -224,6 +233,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Scenes\AboutScene.h">
+      <Filter>Source\Scenes</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Rendering\Animation.h">
       <Filter>Source\Rendering</Filter>
     </ClInclude>
@@ -299,6 +311,9 @@
     <ClInclude Include="Source\Entities\Triggers\FlagPole.h">
       <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Entities\Triggers\ForceVelocityTrigger.h">
+      <Filter>Source\Entities\Triggers</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Entities\Items\Flower.h">
       <Filter>Source\Entities\Items</Filter>
     </ClInclude>
@@ -342,6 +357,9 @@
       <Filter>Source\Entities\Triggers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\LevelTransitionScene.h">
+      <Filter>Source\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\GameOverScene.h">
       <Filter>Source\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\MainMenu.h">

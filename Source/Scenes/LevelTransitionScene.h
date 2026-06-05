@@ -2,23 +2,27 @@
 #include "Scene.h"
 #include "Timer.h"
 #include <string>
-#include <vector>
 class LevelTransitionScene : public Scene
 {
-	std::vector <std::wstring> Texts = {
-		L"MARIO\n12345",
-		L"x21",
-		L"WORLD\n1-2",
-		L"TIME"
-	};
+	static constexpr float DEFAULT_TRANSITION_DURATION = 2.0f;
 
-	Optional<MarioPower> marioPower;
-	int targetLevelID;
-	float transitionDuration;
-	Timer transitionTimer;
+	Optional<MarioPower> marioPower{};
+	int targetLevelID = 0;
+	int renderLevel = 0;
+	float transitionDuration = DEFAULT_TRANSITION_DURATION;
+	Timer transitionTimer{};
+
+	std::wstring scoreText{};
+	std::wstring coinText{};
+	std::wstring worldText{};
+	std::wstring lifeText{};
+
+	static int ToLevelIndex(int sceneId);
+	void RefreshTexts();
+	void DrawTextWithShadow(int fontId, const Rect& bounds, const std::wstring& text, Color color, UINT format) const;
 public:
-	LevelTransitionScene();
-	LevelTransitionScene(float transitionDuration);
+	LevelTransitionScene() = default;
+	explicit LevelTransitionScene(float transitionDuration);
 	void SetTargetLevelID(int targetLevelId);
 	void Update(float dt) override;
 	void Render() override;

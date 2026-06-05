@@ -3,6 +3,8 @@
 #include "Sprites.h"
 #include "Animations.h"
 #include "AssetIDs.h"
+#include "AboutScene.h"
+#include "GameOverScene.h"
 #include "MainMenu.h"
 #include "LevelTransitionScene.h"
 #include "Mario.h"
@@ -428,6 +430,8 @@ void Game::IndicateSceneSwitch(int newID, const Optional<SceneSwitchContext>& ct
 void Game::LoadSceneAndEnterFirst()
 {
 	AddScene(MAIN_MENU, new MainMenu());
+	AddScene(GAME_OVER_SCENE, new GameOverScene());
+	AddScene(ABOUT_SCENE, new AboutScene());
 	AddScene(LEVEL_TRANSITION, new LevelTransitionScene());
 
 	IndicateSceneSwitch(MAIN_MENU, {});

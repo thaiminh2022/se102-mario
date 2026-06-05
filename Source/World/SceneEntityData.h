@@ -195,6 +195,19 @@ struct BowserArenaData
 	BowserArenaData() = default;
 };
 
+struct BowserEntityData
+{
+	Rect container;
+	Vector2Int start;
+
+
+	BowserEntityData(Rect container, Vector2Int start)
+	{
+		this->container = container;
+		this->start = start;
+	}
+};
+
 struct WorldTextData
 {
 	Rect zone;
@@ -202,6 +215,12 @@ struct WorldTextData
 	TextFormat textFormat;
 	FontWeight fontWeight;
 	bool italic;
+};
+
+struct ForceVelocityTriggerData
+{
+	Rect zone;
+	Vector2Int moveTo;
 };
 
 struct SceneEntityData
@@ -216,18 +235,16 @@ struct SceneEntityData
 	vector<BloopersStartData> bloopers;
 	vector<InWaterTriggerData> waterTriggers;
 	vector<Vector2Int> WingedKoopaStarts;
-	vector<Vector2Int> bowserStarts;
 	vector<QuestionBlockData> questionBlocks;
 	vector<BrickBlockData> brickBlocks;
 	vector<Vector2Int> coins;
 	vector<NextLevelData> nextLevelsData;
 	vector<Vector2Int> fireballTraps;
 	vector<FireShooterData> fireShooters;
-	Optional<BowserArenaData> bowserArenas;
 
-	Optional<Vector2Int> bowserStart;
 	vector<Vector2Int> jetpackStart;
 	vector<WorldTextData> worldTextData;
+	Optional<BowserEntityData> bowserData;
 	
 	// game play
 	Optional<int> backgroundMusicID;
@@ -238,6 +255,7 @@ struct SceneEntityData
 	vector<MusicTriggerData> musicTriggers;
 	vector<ClearScreenColorTriggerData> clearScreenColorTriggers;
 	Optional<EnterCastleTriggerData> enterCastleTrigger;
+	vector<ForceVelocityTriggerData> forceVelocityTriggers;
 
 };
 

@@ -9,7 +9,6 @@
 #include "Scene.h"
 #include <vector>
 #include "AudioManager.h"
-#include "FontManager.h"
 #include "Fireball.h"
 
 int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
@@ -54,6 +53,11 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	breathingTimer = Timer(2.5);
 	waitToBowserTimer = Timer(2.0f);
 	LoadSpriteAndAnimation();
+}
+
+bool Mario::IsInStarman() const
+{
+	return power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig;
 }
 
 void Mario::SetEnterPipe(const PipeData& pipe)
@@ -196,6 +200,9 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		return;
 	case MarioState::StopToWaitBowser:
 		MarioWaitingToBowser(dt);
+		return;
+	case MarioState::ForceMoving:
+		MarioForceMoving(dt, coObjects, ctx);
 		return;
 	case MarioState::Idle:
 	case MarioState::Walking:

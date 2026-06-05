@@ -11,7 +11,7 @@
 	"iid": "542e4d40-21a0-11f1-b547-3f7639dce03c",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 299,
+	"nextUid": 303,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "LinearVertical",
@@ -1021,7 +1021,82 @@
 			"limitBehavior": "PreventAdding",
 			"pivotX": 0,
 			"pivotY": 0,
-			"fieldDefs": []
+			"fieldDefs": [
+				{
+					"identifier": "container_start",
+					"doc": null,
+					"__type": "Point",
+					"uid": 301,
+					"type": "F_Point",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "PointPath",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "container_end",
+					"doc": null,
+					"__type": "Point",
+					"uid": 302,
+					"type": "F_Point",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "PointPath",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				}
+			]
 		},
 		{
 			"identifier": "Bridge",
@@ -2331,9 +2406,9 @@
 			]
 		},
 		{
-			"identifier": "BowserArena",
-			"uid": 298,
-			"tags": ["gameplay"],
+			"identifier": "ForceVelocityTrigger",
+			"uid": 299,
+			"tags": ["trigger"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": null,
@@ -2347,10 +2422,10 @@
 			"maxHeight": null,
 			"keepAspectRatio": false,
 			"tileOpacity": 1,
-			"fillOpacity": 0,
+			"fillOpacity": 0.57,
 			"lineOpacity": 1,
-			"hollow": true,
-			"color": "#F52C2C",
+			"hollow": false,
+			"color": "#2CE8F5",
 			"renderMode": "Rectangle",
 			"showName": true,
 			"tilesetId": null,
@@ -2358,12 +2433,50 @@
 			"tileRect": null,
 			"uiTileRect": null,
 			"nineSliceBorders": [],
-			"maxCount": 1,
+			"maxCount": 0,
 			"limitScope": "PerLevel",
-			"limitBehavior": "PreventAdding",
+			"limitBehavior": "MoveLastOne",
 			"pivotX": 0,
 			"pivotY": 0,
-			"fieldDefs": []
+			"fieldDefs": [
+				{
+					"identifier": "move_to",
+					"doc": null,
+					"__type": "Point",
+					"uid": 300,
+					"type": "F_Point",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "PointPath",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				}
+			]
 		}
 	], "tilesets": [
 		{
@@ -9906,7 +10019,16 @@
 							"height": 16,
 							"defUid": 213,
 							"px": [2192,112],
-							"fieldInstances": []
+							"fieldInstances": [
+								{ "__identifier": "container_start", "__type": "Point", "__value": { "cx": 128, "cy": 5 }, "__tile": null, "defUid": 301, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["128,5"]
+								}] },
+								{ "__identifier": "container_end", "__type": "Point", "__value": { "cx": 140, "cy": 9 }, "__tile": null, "defUid": 302, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["140,9"]
+								}] }
+							]
 						},
 						{
 							"__identifier": "Bridge",
@@ -9920,9 +10042,9 @@
 							"height": 16,
 							"defUid": 214,
 							"px": [2048,160],
-							"fieldInstances": [{ "__identifier": "AxePosition", "__type": "Point", "__value": { "cx": 141, "cy": 8 }, "__tile": null, "defUid": 215, "realEditorValues": [{
+							"fieldInstances": [{ "__identifier": "AxePosition", "__type": "Point", "__value": { "cx": 142, "cy": 8 }, "__tile": null, "defUid": 215, "realEditorValues": [{
 								"id": "V_String",
-								"params": ["141,8"]
+								"params": ["142,8"]
 							}] }]
 						},
 						{
@@ -9974,18 +10096,119 @@
 							"fieldInstances": []
 						},
 						{
-							"__identifier": "BowserArena",
-							"__grid": [128,5],
+							"__identifier": "NextLevel",
+							"__grid": [148,10],
 							"__pivot": [0,0],
-							"__tags": ["gameplay"],
+							"__tags": ["trigger"],
 							"__tile": null,
-							"__smartColor": "#F52C2C",
-							"iid": "3d783040-48b0-11f1-9a40-6113b03a63c0",
-							"width": 208,
+							"__smartColor": "#BE4A2F",
+							"iid": "49d08840-48b0-11f1-ac30-6d3b7df0a7c2",
+							"width": 112,
+							"height": 48,
+							"defUid": 41,
+							"px": [2368,160],
+							"fieldInstances": [
+								{ "__identifier": "level_to_load", "__type": "Int", "__value": 5, "__tile": null, "defUid": 227, "realEditorValues": [{ "id": "V_Int", "params": [5] }] },
+								{ "__identifier": "load_delay", "__type": "Float", "__value": 5, "__tile": null, "defUid": 226, "realEditorValues": [{ "id": "V_Float", "params": [5] }] }
+							]
+						},
+						{
+							"__identifier": "TextRender",
+							"__grid": [146,5],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 49, "x": 160, "y": 16, "w": 16, "h": 16 },
+							"__smartColor": "#0099DB",
+							"iid": "6f48aa30-48b0-11f1-ac30-83b195b9681e",
+							"width": 192,
+							"height": 16,
+							"defUid": 291,
+							"px": [2336,80],
+							"fieldInstances": [
+								{ "__identifier": "Content", "__type": "String", "__value": "Thank you Mario.", "__tile": null, "defUid": 292, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Thank you Mario."]
+								}] },
+								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 294, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 295, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "italic", "__type": "Bool", "__value": false, "__tile": null, "defUid": 296, "realEditorValues": [] },
+								{ "__identifier": "bold", "__type": "Bool", "__value": false, "__tile": null, "defUid": 297, "realEditorValues": [] }
+							]
+						},
+						{
+							"__identifier": "ForceVelocityTrigger",
+							"__grid": [143,6],
+							"__pivot": [0,0],
+							"__tags": ["trigger"],
+							"__tile": null,
+							"__smartColor": "#2CE8F5",
+							"iid": "cfcc4e70-48b0-11f1-ac30-6fd351f55ecb",
+							"width": 32,
 							"height": 80,
-							"defUid": 298,
-							"px": [2048,80],
-							"fieldInstances": []
+							"defUid": 299,
+							"px": [2288,96],
+							"fieldInstances": [{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 151, "cy": 12 }, "__tile": null, "defUid": 300, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["151,12"]
+							}] }]
+						},
+						{
+							"__identifier": "TextRender",
+							"__grid": [146,6],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 49, "x": 160, "y": 16, "w": 16, "h": 16 },
+							"__smartColor": "#0099DB",
+							"iid": "aa1bd2e0-48b0-11f1-8122-3bf2f457832d",
+							"width": 192,
+							"height": 48,
+							"defUid": 291,
+							"px": [2336,96],
+							"fieldInstances": [
+								{ "__identifier": "Content", "__type": "String", "__value": "But the princess is not here", "__tile": null, "defUid": 292, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["But the princess is not here"]
+								}] },
+								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 294, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 295, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "italic", "__type": "Bool", "__value": false, "__tile": null, "defUid": 296, "realEditorValues": [] },
+								{ "__identifier": "bold", "__type": "Bool", "__value": false, "__tile": null, "defUid": 297, "realEditorValues": [] }
+							]
+						},
+						{
+							"__identifier": "BackgroundMusic",
+							"__grid": [143,6],
+							"__pivot": [0,0],
+							"__tags": ["trigger"],
+							"__tile": { "tilesetUid": 49, "x": 240, "y": 48, "w": 16, "h": 16 },
+							"__smartColor": "#A200FF",
+							"iid": "705ab570-48b0-11f1-8122-4b25e8c6992d",
+							"width": 32,
+							"height": 48,
+							"defUid": 47,
+							"px": [2288,96],
+							"fieldInstances": [
+								{ "__identifier": "Audio", "__type": "FilePath", "__value": "Assets/Audio/SFX/world_clear.wav", "__tile": null, "defUid": 48, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Assets/Audio/SFX/world_clear.wav"]
+								}] },
+								{ "__identifier": "is_trigger", "__type": "Bool", "__value": true, "__tile": null, "defUid": 260, "realEditorValues": [{
+									"id": "V_Bool",
+									"params": [ true ]
+								}] }
+							]
 						}
 					]
 				},
@@ -10021,7 +10244,7 @@
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,
 						1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,
 						1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,
@@ -10259,7 +10482,6 @@
 						{ "px": [2384,32], "src": [0,48], "f": 0, "t": 27, "d": [469], "a": 1 },
 						{ "px": [2400,32], "src": [0,48], "f": 0, "t": 27, "d": [470], "a": 1 },
 						{ "px": [2416,32], "src": [0,48], "f": 0, "t": 27, "d": [471], "a": 1 },
-						{ "px": [2432,32], "src": [0,48], "f": 0, "t": 27, "d": [472], "a": 1 },
 						{ "px": [2448,32], "src": [0,48], "f": 0, "t": 27, "d": [473], "a": 1 },
 						{ "px": [2464,32], "src": [0,48], "f": 0, "t": 27, "d": [474], "a": 1 },
 						{ "px": [2480,32], "src": [0,48], "f": 0, "t": 27, "d": [475], "a": 1 },

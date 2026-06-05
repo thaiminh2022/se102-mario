@@ -65,6 +65,7 @@ const string IN_WATER_TRIGGER = "WaterTrigger";
 const string NEXT_LEVEL_ZONE = "NextLevel";
 const string BACKGROUND_MUSIC = "BackgroundMusic";
 const string ENTER_CASTLE_TRIGGER = "EnterCastleTrigger";
+const string FORCE_VELOCITY_TRIGGER = "ForceVelocityTrigger";
 
 
 /// Return the tilemap object for [level]. Value will be cached if new
@@ -101,6 +102,8 @@ void LevelLoader::Init()
 	audio->LoadWAV(UNDERGROUND_THEME, L"Assets/Audio/Soundtracks/02.UndergroundTheme.wav");
 	audio->LoadWAV(UNDERWATER_THEME, L"Assets/Audio/Soundtracks/03.UnderwaterTheme.wav");
 	audio->LoadWAV(CASTLE_THEME, L"Assets/Audio/Soundtracks/04.CastleTheme.wav");
+	audio->LoadWAV(WORLD_CLEAR, L"Assets/Audio/SFX/world_clear.wav");
+
 
 
 	ifstream f(WORLD_PATH);
@@ -420,8 +423,25 @@ void LevelLoader::ParseBowsers(SceneEntityData& sceneEntities, vector<EntityInst
 	const auto bowserStart = GetEntityDataWithIdentifier(entities, BOWSER_START);
 	if (!bowserStart.empty())
 	{
-		const auto s = bowserStart[0]; // only 1 per level;
-		sceneEntities.bowserStart.emplace(Vector2Int(s->px[0], s->px[1]));
+		const auto bowser = bowserStart[0]; // only 1 per level;
+
+		auto containerStartJson = GetFieldValueWithIdentifier(bowser->fieldInstances, "container_start");
+		auto containerEndJson = GetFieldValueWithIdentifier(bowser->fieldInstances, "container_end");
+
+		if (!containerStartJson.has_value() || !containerEndJson.has_value())
+			return;
+
+		auto cStartLdtk = containerStartJson.value().get<LDTKPoint>();
+		auto cEndLdtk = containerEndJson.value().get<LDTKPoint>();
+
+		auto cStart = Vector2Int(cStartLdtk.cx * 16, cStartLdtk.cy * 16);
+		auto cEnd = Vector2Int(cEndLdtk.cx * 16, cEndLdtk.cy * 16);
+
+
+		sceneEntities.bowserData = BowserEntityData(
+			Rect(cStart, cEnd), 
+			Vector2Int(bowser->px[0], bowser->px[1])
+		);
 	}
 }
 
@@ -860,6 +880,25 @@ void LevelLoader::ParseEnterCastleTrigger(SceneEntityData& sceneEntities, vector
 
 }
 
+void LevelLoader::ParseForceVelocity(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
+{
+	const auto forceVelocities = GetEntityDataWithIdentifier(entities, FORCE_VELOCITY_TRIGGER);
+	for (const auto forceVelocity : forceVelocities)
+	{
+		auto moveToJson = GetFieldValueWithIdentifier(forceVelocity->fieldInstances, "move_to");
+
+		if (!moveToJson.has_value())
+			continue;
+
+		auto [cx, cy] = moveToJson->get<LDTKPoint>(); // <--- c++ 20 syntax lol
+		
+		ForceVelocityTriggerData data;
+		data.moveTo = Vector2Int(cx * 16, cy * 16);
+		data.zone = Rect::FromXYWH(forceVelocity->px[0], forceVelocity->px[1], forceVelocity->width, forceVelocity->height);
+		sceneEntities.forceVelocityTriggers.push_back(data);
+	}
+}
+
 void LevelLoader::ParseFireShooter(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
 {
 	const auto fireShooters = GetEntityDataWithIdentifier(entities, FIRE_SHOOTER);
@@ -893,20 +932,6 @@ void LevelLoader::ParseFireShooter(SceneEntityData& sceneEntities, vector<Entity
 	}
 }
 
-void LevelLoader::ParseBowserArena(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
-{
-	const auto bowserArenas = GetEntityDataWithIdentifier(entities, BOWSER_ARENA);
-	if (bowserArenas.empty())
-		return;
-	auto arena = bowserArenas[0];
-	Rect rect = Rect::FromXYWH(
-		arena->px[0],
-		arena->px[1],
-		arena->width,
-		arena->height
-	);
-	sceneEntities.bowserArenas = BowserArenaData(rect);
-}
 
 void LevelLoader::ParseJetpack(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
 {
@@ -1033,7 +1058,6 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParseTeleportPipe(sceneEntities, entities);
 	ParseInstantTeleportPipe(sceneEntities, entities);
 	ParseFireShooter(sceneEntities, entities);
-	ParseBowserArena(sceneEntities, entities);
 	ParseTextRender(sceneEntities, entities);
 
 
@@ -1043,6 +1067,7 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParseClearScreenColorTrigger(sceneEntities, entities);
 	ParseInWaterTrigger(sceneEntities, entities);
 	ParseEnterCastleTrigger(sceneEntities, entities);
+	ParseForceVelocity(sceneEntities, entities);
 
 	return sceneEntities;
 }

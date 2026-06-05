@@ -5,6 +5,7 @@
 #include "Debug.h"
 #include "Game.h"
 #include "Mario.h"
+#include "StatManager.h"
 
 void Mario::HandleGrowing(const float dt)
 {
@@ -48,7 +49,14 @@ void Mario::MarioDyingState(float dt)
 
 	if (transformTimer.IsFinished()) {
 		transformTimer.SetIdle();
-		Game::GetInstance()->ReloadCurrentScene();
+
+		if (StatManager::GetInstance()->GetLife() <= 0)
+			Game::GetInstance()->IndicateSceneSwitch(GAME_OVER_SCENE, {});
+		else
+		{
+			StatManager::GetInstance()->UndoValues();
+			Game::GetInstance()->ReloadCurrentScene();
+		}
 	}
 }
 
@@ -114,6 +122,33 @@ void Mario::MarioWaitingToBowser(float dt)
 		state = MarioState::Jumping;
 	}
 }
+
+void Mario::MarioForceMoving(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
+{
+	constexpr float FORCE_MOVE_SPEED = 80.0f;
+	const auto toTarget = forceMoveToPosition - position;
+	const auto moveDistance = FORCE_MOVE_SPEED * dt;
+
+	if (toTarget.Length() <= moveDistance)
+	{
+		position = forceMoveToPosition;
+		ResetState();
+		return;
+	}
+
+	velocity.x = toTarget.Normalized().x * FORCE_MOVE_SPEED;
+	velocity.y += 900.0f * dt;
+	isFacingRight = velocity.x >= 0.0f;
+	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
+}
+
+void Mario::SetForceMove(const Vector2Int& moveTo)
+{
+	forceMoveToPosition = Vector2(moveTo);
+	state = MarioState::ForceMoving;
+	velocity = Vector2::Zero();
+}
+
 void Mario::MarioEnteringPipe(float dt)
 {
 	isCollidable = false;

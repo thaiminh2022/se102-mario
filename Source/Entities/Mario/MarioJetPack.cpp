@@ -9,6 +9,9 @@
 #include "Textures.h"
 #include <format>
 
+#include "Animations.h"
+#include "Sprites.h"
+
 const float PMETER_MAX = 100.0f;
 const float PMETER_CHARGE_RATE = 100.0f;
 const float PMETER_DECAY_RATE = 55.0f;
