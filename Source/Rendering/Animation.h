@@ -3,7 +3,8 @@
 #include <Windows.h>
 #include <vector>
 #include "Sprite.h"
-
+constexpr float ANIMATION_DEFAULT_FRAMETIME = 50.0f; //ms per frame
+constexpr float ANIMATION_FAST_FRAMETIME = 33.0f; //ms per frame
 using std::vector;
 class AnimationFrame {
 	Sprite* sprite;

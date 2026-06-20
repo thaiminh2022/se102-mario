@@ -26,11 +26,11 @@ constexpr int MARIO_TEX_ID = 10000;
 // Idle (A = 100)
 constexpr int MARIO_IDLE_ANIM_ID = 11100;
 constexpr int MARIO_IDLE_SPRITE_1 = 11101;
-// Moving (A = 200)
-constexpr int MARIO_RUN_ANIM_ID = 11200;
-constexpr int MARIO_RUN_SPRITE_1 = 11201;
-constexpr int MARIO_RUN_SPRITE_2 = 11202;
-constexpr int MARIO_RUN_SPRITE_3 = 11203;
+// Walking (A = 200)
+constexpr int MARIO_WALK_ANIM_ID = 11200;
+constexpr int MARIO_WALK_SPRITE_1 = 11201;
+constexpr int MARIO_WALK_SPRITE_2 = 11202;
+constexpr int MARIO_WALK_SPRITE_3 = 11203;
 // Skidding (A = 300)
 constexpr int MARIO_SKID_ANIM_ID = 11300;
 constexpr int MARIO_SKID_SPRITE_1 = 11301;
@@ -53,6 +53,9 @@ constexpr int MARIO_SWIM_SPRITE_3 = 11903;
 constexpr int MARIO_SWIM_SPRITE_4 = 11904;
 constexpr int MARIO_BREATH_BUBBLE = 11905;
 
+// Running (A = 500)
+constexpr int MARIO_RUN_ANIM_ID = 11500; //reusing the same sprites but shorter deltatime
+
 
 
 // ---------------------------------
@@ -61,11 +64,11 @@ constexpr int MARIO_BREATH_BUBBLE = 11905;
 // Idle (A = 100)
 constexpr int MARIO_BIG_IDLE_ANIM_ID = 12100;
 constexpr int MARIO_BIG_IDLE_SPRITE_1 = 12101;
-// Moving (A = 200)
-constexpr int MARIO_BIG_RUN_ANIM_ID = 12200;
-constexpr int MARIO_BIG_RUN_SPRITE_1 = 12201;
-constexpr int MARIO_BIG_RUN_SPRITE_2 = 12202;
-constexpr int MARIO_BIG_RUN_SPRITE_3 = 12203;
+// Walking (A = 200)
+constexpr int MARIO_BIG_WALK_ANIM_ID = 12200;
+constexpr int MARIO_BIG_WALK_SPRITE_1 = 12201;
+constexpr int MARIO_BIG_WALK_SPRITE_2 = 12202;
+constexpr int MARIO_BIG_WALK_SPRITE_3 = 12203;
 // Skidding (A = 300)
 constexpr int MARIO_BIG_SKID_ANIM_ID = 12300;
 constexpr int MARIO_BIG_SKID_SPRITE_1 = 12301;
@@ -75,11 +78,12 @@ constexpr int MARIO_BIG_JUMP_SPRITE_1 = 12401;
 // Ducking (A = 500)
 constexpr int MARIO_BIG_DUCK_ANIM_ID = 12500;
 constexpr int MARIO_BIG_DUCK_SPRITE_1 = 12501;
+// Running (A = 600)
+constexpr int MARIO_BIG_RUN_ANIM_ID = 12600; //reusing the same sprites but shorter deltatime
 // Flag pulling (A = 800)
 constexpr int MARIO_BIG_FLAG_PULL_ANIM_ID = 12800;
 constexpr int MARIO_BIG_FLAG_PULL_SPRITE_1 = 12801;
 constexpr int MARIO_BIG_FLAG_PULL_SPRITE_2 = 12802;
-
 // Swimming (A = 900)
 constexpr int MARIO_BIG_SWIM_ANIM_ID = 12900;
 constexpr int MARIO_BIG_SWIM_SPRITE_1 = 12901;
@@ -93,11 +97,11 @@ constexpr int MARIO_BIG_SWIM_SPRITE_4 = 12904;
 // Idle (A = 100)
 constexpr int MARIO_FIRE_IDLE_ANIM_ID = 13100;
 constexpr int MARIO_FIRE_IDLE_SPRITE_1 = 13101;
-// Moving (A = 200)
-constexpr int MARIO_FIRE_RUN_ANIM_ID = 13200;
-constexpr int MARIO_FIRE_RUN_SPRITE_1 = 13201;
-constexpr int MARIO_FIRE_RUN_SPRITE_2 = 13202;
-constexpr int MARIO_FIRE_RUN_SPRITE_3 = 13203;
+// Walking (A = 200)
+constexpr int MARIO_FIRE_WALK_ANIM_ID = 13200;
+constexpr int MARIO_FIRE_WALK_SPRITE_1 = 13201;
+constexpr int MARIO_FIRE_WALK_SPRITE_2 = 13202;
+constexpr int MARIO_FIRE_WALK_SPRITE_3 = 13203;
 // Skidding (A = 300)
 constexpr int MARIO_FIRE_SKID_ANIM_ID = 13300;
 constexpr int MARIO_FIRE_SKID_SPRITE_1 = 13301;
@@ -114,7 +118,8 @@ constexpr int MARIO_FIRE_FIRE_SPRITE_1 = 13601;
 constexpr int MARIO_FIRE_FLAG_PULL_ANIM_ID = 13800;
 constexpr int MARIO_FIRE_FLAG_PULL_SPRITE_1 = 13801;
 constexpr int MARIO_FIRE_FLAG_PULL_SPRITE_2 = 13802;
-
+// Running (A = 700)
+constexpr int MARIO_FIRE_RUN_ANIM_ID = 13700; //reusing the same sprites but shorter deltatime
 // Swimming (A = 900)
 constexpr int MARIO_FIRE_SWIM_ANIM_ID = 13900;
 constexpr int MARIO_FIRE_SWIM_SPRITE_1 = 13901;
@@ -146,11 +151,11 @@ constexpr int MARIO_SHRINK_SPRITE_3 = 15903;
 // Idle (A = 100)
 constexpr int STARMAN_SMALL1_IDLE_ANIM_ID = 16100;
 constexpr int STARMAN_SMALL1_IDLE_SPRITE_1 = 16101;
-// Moving (A = 200)
-constexpr int STARMAN_SMALL1_RUN_ANIM_ID = 16200;
-constexpr int STARMAN_SMALL1_RUN_SPRITE_1 = 16201;
-constexpr int STARMAN_SMALL1_RUN_SPRITE_2 = 16202;
-constexpr int STARMAN_SMALL1_RUN_SPRITE_3 = 16203;
+// Walking (A = 200)
+constexpr int STARMAN_SMALL1_WALK_ANIM_ID = 16200;
+constexpr int STARMAN_SMALL1_WALK_SPRITE_1 = 16201;
+constexpr int STARMAN_SMALL1_WALK_SPRITE_2 = 16202;
+constexpr int STARMAN_SMALL1_WALK_SPRITE_3 = 16203;
 // Skidding (A = 300)
 constexpr int STARMAN_SMALL1_SKID_ANIM_ID = 16300;
 constexpr int STARMAN_SMALL1_SKID_SPRITE_1 = 16301;
@@ -167,6 +172,8 @@ constexpr int STARMAN_SMALL1_SWIM_SPRITE_1 = 16901;
 constexpr int STARMAN_SMALL1_SWIM_SPRITE_2 = 16902;
 constexpr int STARMAN_SMALL1_SWIM_SPRITE_3 = 16903;
 constexpr int STARMAN_SMALL1_SWIM_SPRITE_4 = 16904;
+// Running (A = 500)
+constexpr int STARMAN_SMALL1_RUN_ANIM_ID = 16500; //reusing the same sprites but shorter deltatime
 
 // ---------------------------------
 // BIG STARMAN 1 (T = 7)
@@ -174,11 +181,11 @@ constexpr int STARMAN_SMALL1_SWIM_SPRITE_4 = 16904;
 // Idle (A = 100)
 constexpr int STARMAN_BIG1_IDLE_ANIM_ID = 17100;
 constexpr int STARMAN_BIG1_IDLE_SPRITE_1 = 17101;
-// Moving (A = 200)
-constexpr int STARMAN_BIG1_RUN_ANIM_ID = 17200;
-constexpr int STARMAN_BIG1_RUN_SPRITE_1 = 17201;
-constexpr int STARMAN_BIG1_RUN_SPRITE_2 = 17202;
-constexpr int STARMAN_BIG1_RUN_SPRITE_3 = 17203;
+// Walking (A = 200)
+constexpr int STARMAN_BIG1_WALK_ANIM_ID = 17200;
+constexpr int STARMAN_BIG1_WALK_SPRITE_1 = 17201;
+constexpr int STARMAN_BIG1_WALK_SPRITE_2 = 17202;
+constexpr int STARMAN_BIG1_WALK_SPRITE_3 = 17203;
 // Skidding (A = 300)
 constexpr int STARMAN_BIG1_SKID_ANIM_ID = 17300;
 constexpr int STARMAN_BIG1_SKID_SPRITE_1 = 17301;
@@ -198,6 +205,8 @@ constexpr int STARMAN_BIG1_SWIM_SPRITE_1 = 17901;
 constexpr int STARMAN_BIG1_SWIM_SPRITE_2 = 17902;
 constexpr int STARMAN_BIG1_SWIM_SPRITE_3 = 17903;
 constexpr int STARMAN_BIG1_SWIM_SPRITE_4 = 17904;
+// Running (A = 500)
+constexpr int STARMAN_BIG1_RUN_ANIM_ID = 17500; //reusing the same sprites but shorter deltatime
 
 // =================================================================
 // PALETTE 2 (OFFSET +30)
@@ -209,10 +218,10 @@ constexpr int STARMAN_BIG1_SWIM_SPRITE_4 = 17904;
 constexpr int STARMAN_SMALL2_IDLE_ANIM_ID = 16130;
 constexpr int STARMAN_SMALL2_IDLE_SPRITE_1 = 16131;
 
-constexpr int STARMAN_SMALL2_RUN_ANIM_ID = 16230;
-constexpr int STARMAN_SMALL2_RUN_SPRITE_1 = 16231;
-constexpr int STARMAN_SMALL2_RUN_SPRITE_2 = 16232;
-constexpr int STARMAN_SMALL2_RUN_SPRITE_3 = 16233;
+constexpr int STARMAN_SMALL2_WALK_ANIM_ID = 16230;
+constexpr int STARMAN_SMALL2_WALK_SPRITE_1 = 16231;
+constexpr int STARMAN_SMALL2_WALK_SPRITE_2 = 16232;
+constexpr int STARMAN_SMALL2_WALK_SPRITE_3 = 16233;
 
 constexpr int STARMAN_SMALL2_SKID_ANIM_ID = 16330;
 constexpr int STARMAN_SMALL2_SKID_SPRITE_1 = 16331;
@@ -229,6 +238,8 @@ constexpr int STARMAN_SMALL2_SWIM_SPRITE_1 = 16931;
 constexpr int STARMAN_SMALL2_SWIM_SPRITE_2 = 16932;
 constexpr int STARMAN_SMALL2_SWIM_SPRITE_3 = 16933;
 constexpr int STARMAN_SMALL2_SWIM_SPRITE_4 = 16934;
+// Running (A = 500)
+constexpr int STARMAN_SMALL2_RUN_ANIM_ID = 16530; //reusing the same sprites but shorter deltatime
 
 // ---------------------------------
 // BIG STARMAN 2 (T = 7)
@@ -236,10 +247,10 @@ constexpr int STARMAN_SMALL2_SWIM_SPRITE_4 = 16934;
 constexpr int STARMAN_BIG2_IDLE_ANIM_ID = 17130;
 constexpr int STARMAN_BIG2_IDLE_SPRITE_1 = 17131;
 
-constexpr int STARMAN_BIG2_RUN_ANIM_ID = 17230;
-constexpr int STARMAN_BIG2_RUN_SPRITE_1 = 17231;
-constexpr int STARMAN_BIG2_RUN_SPRITE_2 = 17232;
-constexpr int STARMAN_BIG2_RUN_SPRITE_3 = 17233;
+constexpr int STARMAN_BIG2_WALK_ANIM_ID = 17230;
+constexpr int STARMAN_BIG2_WALK_SPRITE_1 = 17231;
+constexpr int STARMAN_BIG2_WALK_SPRITE_2 = 17232;
+constexpr int STARMAN_BIG2_WALK_SPRITE_3 = 17233;
 
 constexpr int STARMAN_BIG2_SKID_ANIM_ID = 17330;
 constexpr int STARMAN_BIG2_SKID_SPRITE_1 = 17331;
@@ -259,6 +270,8 @@ constexpr int STARMAN_BIG2_SWIM_SPRITE_1 = 17931;
 constexpr int STARMAN_BIG2_SWIM_SPRITE_2 = 17932;
 constexpr int STARMAN_BIG2_SWIM_SPRITE_3 = 17933;
 constexpr int STARMAN_BIG2_SWIM_SPRITE_4 = 17934;
+// Running (A = 500)
+constexpr int STARMAN_BIG2_RUN_ANIM_ID = 17530; //reusing the same sprites but shorter deltatime
 
 
 // =================================================================
@@ -271,10 +284,10 @@ constexpr int STARMAN_BIG2_SWIM_SPRITE_4 = 17934;
 constexpr int STARMAN_SMALL3_IDLE_ANIM_ID = 16160;
 constexpr int STARMAN_SMALL3_IDLE_SPRITE_1 = 16161;
 
-constexpr int STARMAN_SMALL3_RUN_ANIM_ID = 16260;
-constexpr int STARMAN_SMALL3_RUN_SPRITE_1 = 16261;
-constexpr int STARMAN_SMALL3_RUN_SPRITE_2 = 16262;
-constexpr int STARMAN_SMALL3_RUN_SPRITE_3 = 16263;
+constexpr int STARMAN_SMALL3_WALK_ANIM_ID = 16260;
+constexpr int STARMAN_SMALL3_WALK_SPRITE_1 = 16261;
+constexpr int STARMAN_SMALL3_WALK_SPRITE_2 = 16262;
+constexpr int STARMAN_SMALL3_WALK_SPRITE_3 = 16263;
 
 constexpr int STARMAN_SMALL3_SKID_ANIM_ID = 16360;
 constexpr int STARMAN_SMALL3_SKID_SPRITE_1 = 16361;
@@ -291,6 +304,8 @@ constexpr int STARMAN_SMALL3_SWIM_SPRITE_1 = 16961;
 constexpr int STARMAN_SMALL3_SWIM_SPRITE_2 = 16962;
 constexpr int STARMAN_SMALL3_SWIM_SPRITE_3 = 16963;
 constexpr int STARMAN_SMALL3_SWIM_SPRITE_4 = 16964;
+// Running (A = 500)
+constexpr int STARMAN_SMALL3_RUN_ANIM_ID = 16560; //reusing the same sprites but shorter deltatime
 
 // ---------------------------------
 // BIG STARMAN 3 (T = 7)
@@ -298,10 +313,10 @@ constexpr int STARMAN_SMALL3_SWIM_SPRITE_4 = 16964;
 constexpr int STARMAN_BIG3_IDLE_ANIM_ID = 17160;
 constexpr int STARMAN_BIG3_IDLE_SPRITE_1 = 17161;
 
-constexpr int STARMAN_BIG3_RUN_ANIM_ID = 17260;
-constexpr int STARMAN_BIG3_RUN_SPRITE_1 = 17261;
-constexpr int STARMAN_BIG3_RUN_SPRITE_2 = 17262;
-constexpr int STARMAN_BIG3_RUN_SPRITE_3 = 17263;
+constexpr int STARMAN_BIG3_WALK_ANIM_ID = 17260;
+constexpr int STARMAN_BIG3_WALK_SPRITE_1 = 17261;
+constexpr int STARMAN_BIG3_WALK_SPRITE_2 = 17262;
+constexpr int STARMAN_BIG3_WALK_SPRITE_3 = 17263;
 
 constexpr int STARMAN_BIG3_SKID_ANIM_ID = 17360;
 constexpr int STARMAN_BIG3_SKID_SPRITE_1 = 17361;
@@ -321,6 +336,8 @@ constexpr int STARMAN_BIG3_SWIM_SPRITE_1 = 17961;
 constexpr int STARMAN_BIG3_SWIM_SPRITE_2 = 17962;
 constexpr int STARMAN_BIG3_SWIM_SPRITE_3 = 17963;
 constexpr int STARMAN_BIG3_SWIM_SPRITE_4 = 17964;
+// Running (A = 500)
+constexpr int STARMAN_BIG3_RUN_ANIM_ID = 17560; //reusing the same sprites but shorter deltatime
 
 // ==========================================
 // ENEMIES (E = 2)
@@ -333,7 +350,7 @@ constexpr int UNDERWATER_ENEMY_TEX_ID = 20003;
 // ---------------------------------
 // GOOMBA (T = 1)
 // ---------------------------------
-// Moving (A = 200)
+// Walking (A = 200)
 constexpr int GOOMBA_WALK_ANIM_ID = 21200;
 constexpr int GOOMBA_WALK_SPRITE_1 = 21201;
 constexpr int GOOMBA_WALK_SPRITE_2 = 21202;
@@ -345,7 +362,7 @@ constexpr int GOOMBA_DEAD_SPRITE_1 = 21701;
 // ---------------------------------
 // KOOPA (T = 2)
 // ---------------------------------
-// Moving (A = 200)
+// Walking (A = 200)
 constexpr int KOOPA_WALK_ANIM_ID = 22200;
 constexpr int KOOPA_WALK_SPRITE_1 = 22201;
 constexpr int KOOPA_WALK_SPRITE_2 = 22202;
@@ -353,7 +370,7 @@ constexpr int KOOPA_WALK_SPRITE_2 = 22202;
 // ---------------------------------
 // WINGED KOOPA (T = 3)
 // ---------------------------------
-// Moving/Flying (A = 200)
+// Walking/Flying (A = 200)
 constexpr int WINGED_KOOPA_FLY_ANIM_ID = 23200;
 constexpr int WINGED_KOOPA_FLY_SPRITE_1 = 23201;
 constexpr int WINGED_KOOPA_FLY_SPRITE_2 = 23202;
@@ -365,7 +382,7 @@ constexpr int WINGED_KOOPA_FLY_SPRITE_2 = 23202;
 constexpr int HIDING_KOOPA_HIDE_ANIM_ID = 24100;
 constexpr int HIDING_KOOPA_HIDE_SPRITE = 24101;
 
-// Moving/Spinning (A = 200)
+// Walking/Spinning (A = 200)
 constexpr int HIDING_KOOPA_SPIN_ANIM_ID = 24200;
 constexpr int HIDING_KOOPA_SPIN_SPRITE_1 = 24201;
 constexpr int HIDING_KOOPA_SPIN_SPRITE_2 = 24202;
@@ -445,14 +462,14 @@ constexpr int UNDERGROUND_ITEMS_TEX_ID = 40001;
 constexpr int CASTLE_ITEMS_TEX_ID = 40002;
 constexpr int UNDERWATER_ITEMS_TEX_ID = 40003;
 
-// Coin (T = 1) -> Moving/Spinning (A = 200)
+// Coin (T = 1) -> Walking/Spinning (A = 200)
 constexpr int COIN_SPIN_ANIM_ID = 41200;
 constexpr int COIN_SPIN_SPRITE_1 = 41201;
 constexpr int COIN_SPIN_SPRITE_2 = 41202;
 constexpr int COIN_SPIN_SPRITE_3 = 41203;
 constexpr int COIN_SPIN_SPRITE_4 = 41204;
 
-// Mushroom (T = 2) -> Moving (A = 200)
+// Mushroom (T = 2) -> Walking (A = 200)
 constexpr int MUSHROOM_ANIM_ID = 42200;
 constexpr int MUSHROOM_SPRITE_1 = 42201;
 
@@ -498,7 +515,7 @@ constexpr int HUDMARIO_SPRITE_ID = 52101;
 // ==========================================
 constexpr int FIREBALL_TEX_ID = 60000;
 
-// Moving/Bouncing (A = 200)
+// Walking/Bouncing (A = 200)
 constexpr int FIREBALL_BOUNCE_ANIM_ID = 61200;
 constexpr int FIREBALL_BOUNCE_SPRITE_1 = 61201;
 constexpr int FIREBALL_BOUNCE_SPRITE_2 = 61202;
@@ -551,12 +568,12 @@ constexpr int BOWSER_FALL_SPRITE_3 = 81603;
 // ==========================================
 constexpr int BOWSER_ITEM_BULLET_TEX_ID = 90000;
 
-// Fire breath (T = 1) -> Moving (A = 200)
+// Fire breath (T = 1) -> Walking (A = 200)
 constexpr int BOWSER_ITEM_BULLET_FIRE_ANIM_ID = 91200;
 constexpr int BOWSER_ITEM_BULLET_FIRE_SPRITE_1 = 91201;
 constexpr int BOWSER_ITEM_BULLET_FIRE_SPRITE_2 = 91202;
 
-// Hammer (T = 2) -> Moving (A = 200)
+// Hammer (T = 2) -> Walking (A = 200)
 constexpr int BOWSER_ITEM_BULLET_HAMMER_ANIM_ID = 92200;
 constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_1 = 92201;
 constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_2 = 92202;

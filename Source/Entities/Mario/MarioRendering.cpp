@@ -47,10 +47,11 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Growing:
 			return MARIO_GROWBIG_ANIM_ID;
 		case MarioState::Walking:
-		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
 		case MarioState::ForceMoving:
+			return MARIO_WALK_ANIM_ID;
+		case MarioState::Running:
 			return MARIO_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return MARIO_SKID_ANIM_ID;
@@ -73,13 +74,13 @@ int Mario::GetMarioAnimId() const
 		switch (state)
 		{
 		case MarioState::Walking:
-		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
 		case MarioState::ForceMoving:
+			return MARIO_BIG_WALK_ANIM_ID;
+		case MarioState::Running:
 			return MARIO_BIG_RUN_ANIM_ID;
 		case MarioState::Skidding:
-
 			return MARIO_BIG_SKID_ANIM_ID;
 		case MarioState::Idle:
 			return MARIO_BIG_IDLE_ANIM_ID;
@@ -100,10 +101,11 @@ int Mario::GetMarioAnimId() const
 		switch (state)
 		{
 		case MarioState::Walking:
-		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
 		case MarioState::ForceMoving:
+			return MARIO_FIRE_WALK_ANIM_ID;
+		case MarioState::Running:
 			return MARIO_FIRE_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return MARIO_FIRE_SKID_ANIM_ID;
@@ -127,10 +129,11 @@ int Mario::GetMarioAnimId() const
 		switch (state)
 		{
 		case MarioState::Walking:
-		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
 		case MarioState::ForceMoving:
+			return STARMAN_BIG1_WALK_ANIM_ID;
+		case MarioState::Running:
 			return STARMAN_BIG1_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return STARMAN_BIG1_SKID_ANIM_ID;
@@ -150,10 +153,11 @@ int Mario::GetMarioAnimId() const
 		switch (state)
 		{
 		case MarioState::Walking:
-		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
 		case MarioState::ForceMoving:
+			return STARMAN_SMALL1_WALK_ANIM_ID;
+		case MarioState::Running:
 			return STARMAN_SMALL1_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return STARMAN_SMALL1_SKID_ANIM_ID;
