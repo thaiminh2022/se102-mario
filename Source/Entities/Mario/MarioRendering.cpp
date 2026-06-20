@@ -185,7 +185,7 @@ void Mario::RouteAnimationState()
 	}
 	else
 	{
-		if ((power == MarioPower::Big || power == MarioPower::Fire) && input->IsKeyDown('S'))
+		if ((power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanBig) && input->IsKeyDown('S'))
 		{
 			lastState = state;
 			state = MarioState::Ducking;

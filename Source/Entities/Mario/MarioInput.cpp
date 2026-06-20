@@ -19,7 +19,7 @@ const float JETPACK_MAX_FALL = 120.0f;
 void Mario::WhileGrounded(float dt)
 {
 	const auto input = InputManager::GetInstance();
-	if (input->IsKeyDown('S') && (power == MarioPower::Big || power == MarioPower::Fire))
+	if (input->IsKeyDown('S') && (power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanBig))
 	{
 		state = MarioState::Ducking;
 		if (velocity.x > 0) velocity.x -= DEC_SKID * dt; // Decelerate to a stop if ducking while moving right

@@ -490,25 +490,25 @@ void Mario::LoadBigStarman()
 	// =========================================================
 
 	// --- Idle ---
-	sprites->Add(STARMAN_BIG1_IDLE_SPRITE_1, 0, 112, 15, 127, marioTex);
+	sprites->Add(STARMAN_BIG1_IDLE_SPRITE_1, 0, 128, 15, 159, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG1_IDLE_SPRITE_1);
 	starmanBlueprints[0][STARMAN_BIG1_IDLE_ANIM_ID] = anim;
 
-	sprites->Add(STARMAN_BIG2_IDLE_SPRITE_1, 0, 160, 15, 175, marioTex);
+	sprites->Add(STARMAN_BIG2_IDLE_SPRITE_1, 0, 176, 15, 207, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG2_IDLE_SPRITE_1);
 	starmanBlueprints[1][STARMAN_BIG2_IDLE_ANIM_ID] = anim;
 
-	sprites->Add(STARMAN_BIG3_IDLE_SPRITE_1, 0, 208, 15, 223, marioTex);
+	sprites->Add(STARMAN_BIG3_IDLE_SPRITE_1, 0, 224, 15, 255, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG3_IDLE_SPRITE_1);
 	starmanBlueprints[2][STARMAN_BIG3_IDLE_ANIM_ID] = anim;
 
 	// --- Walk ---
-	sprites->Add(STARMAN_BIG1_WALK_SPRITE_1, 16, 112, 31, 127, marioTex);
-	sprites->Add(STARMAN_BIG1_WALK_SPRITE_2, 32, 112, 47, 127, marioTex);
-	sprites->Add(STARMAN_BIG1_WALK_SPRITE_3, 48, 112, 63, 127, marioTex);
+	sprites->Add(STARMAN_BIG1_WALK_SPRITE_1, 16, 128, 31, 159, marioTex);
+	sprites->Add(STARMAN_BIG1_WALK_SPRITE_2, 32, 128, 47, 159, marioTex);
+	sprites->Add(STARMAN_BIG1_WALK_SPRITE_3, 48, 128, 63, 159, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG1_WALK_SPRITE_1);
 	anim->Add(STARMAN_BIG1_WALK_SPRITE_2);
@@ -516,18 +516,18 @@ void Mario::LoadBigStarman()
 	starmanBlueprints[0][STARMAN_BIG1_WALK_ANIM_ID] = anim;
 
 
-	sprites->Add(STARMAN_BIG2_WALK_SPRITE_1, 16, 160, 31, 175, marioTex);
-	sprites->Add(STARMAN_BIG2_WALK_SPRITE_2, 32, 160, 47, 175, marioTex);
-	sprites->Add(STARMAN_BIG2_WALK_SPRITE_3, 48, 160, 63, 175, marioTex);
+	sprites->Add(STARMAN_BIG2_WALK_SPRITE_1, 16, 176, 31, 207, marioTex);
+	sprites->Add(STARMAN_BIG2_WALK_SPRITE_2, 32, 176, 47, 207, marioTex);
+	sprites->Add(STARMAN_BIG2_WALK_SPRITE_3, 48, 176, 63, 207, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG2_WALK_SPRITE_1);
 	anim->Add(STARMAN_BIG2_WALK_SPRITE_2);
 	anim->Add(STARMAN_BIG2_WALK_SPRITE_3);
 	starmanBlueprints[1][STARMAN_BIG2_WALK_ANIM_ID] = anim;
 
-	sprites->Add(STARMAN_BIG3_WALK_SPRITE_1, 16, 208, 31, 223, marioTex);
-	sprites->Add(STARMAN_BIG3_WALK_SPRITE_2, 32, 208, 47, 223, marioTex);
-	sprites->Add(STARMAN_BIG3_WALK_SPRITE_3, 48, 208, 63, 223, marioTex);
+	sprites->Add(STARMAN_BIG3_WALK_SPRITE_1, 16, 224, 31, 255, marioTex);
+	sprites->Add(STARMAN_BIG3_WALK_SPRITE_2, 32, 224, 47, 255, marioTex);
+	sprites->Add(STARMAN_BIG3_WALK_SPRITE_3, 48, 224, 63, 255, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG3_WALK_SPRITE_1);
 	anim->Add(STARMAN_BIG3_WALK_SPRITE_2);
@@ -535,33 +535,33 @@ void Mario::LoadBigStarman()
 	starmanBlueprints[2][STARMAN_BIG3_WALK_ANIM_ID] = anim;
 
 	// --- Skid ---
-	sprites->Add(STARMAN_BIG1_SKID_SPRITE_1, 64, 112, 79, 127, marioTex);
+	sprites->Add(STARMAN_BIG1_SKID_SPRITE_1, 64, 128, 79, 159, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG1_SKID_SPRITE_1);
 	starmanBlueprints[0][STARMAN_BIG1_SKID_ANIM_ID] = anim;
 
-	sprites->Add(STARMAN_BIG2_SKID_SPRITE_1, 64, 160, 79, 175, marioTex);
+	sprites->Add(STARMAN_BIG2_SKID_SPRITE_1, 64, 176, 79, 207, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG2_SKID_SPRITE_1);
 	starmanBlueprints[1][STARMAN_BIG2_SKID_ANIM_ID] = anim;
 
-	sprites->Add(STARMAN_BIG3_SKID_SPRITE_1, 64, 208, 79, 223, marioTex);
+	sprites->Add(STARMAN_BIG3_SKID_SPRITE_1, 64, 224, 79, 255, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG3_SKID_SPRITE_1);
 	starmanBlueprints[2][STARMAN_BIG3_SKID_ANIM_ID] = anim;
 
 	// --- Jump ---
-	sprites->Add(STARMAN_BIG1_JUMP_SPRITE_1, 80, 112, 95, 127, marioTex);
+	sprites->Add(STARMAN_BIG1_JUMP_SPRITE_1, 80, 128, 95, 159, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG1_JUMP_SPRITE_1);
 	starmanBlueprints[0][STARMAN_BIG1_JUMP_ANIM_ID] = anim;
 
-	sprites->Add(STARMAN_BIG2_JUMP_SPRITE_1, 80, 160, 95, 175, marioTex);
+	sprites->Add(STARMAN_BIG2_JUMP_SPRITE_1, 80, 176, 95, 207, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG2_JUMP_SPRITE_1);
 	starmanBlueprints[1][STARMAN_BIG2_JUMP_ANIM_ID] = anim;
 
-	sprites->Add(STARMAN_BIG3_JUMP_SPRITE_1, 80, 208, 95, 223, marioTex);
+	sprites->Add(STARMAN_BIG3_JUMP_SPRITE_1, 80, 224, 95, 255, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG3_JUMP_SPRITE_1);
 	starmanBlueprints[2][STARMAN_BIG3_JUMP_ANIM_ID] = anim;
@@ -585,23 +585,23 @@ void Mario::LoadBigStarman()
 	starmanBlueprints[2][STARMAN_BIG3_DUCK_ANIM_ID] = anim;
 
 	// --- Flag Pull ---
-	sprites->Add(STARMAN_BIG1_FLAG_PULL_SPRITE_1, 112, 112, 127, 127, marioTex);
-	sprites->Add(STARMAN_BIG1_FLAG_PULL_SPRITE_2, 112, 160, 127, 175, marioTex);
+	sprites->Add(STARMAN_BIG1_FLAG_PULL_SPRITE_1, 112, 128, 127, 159, marioTex);
+	sprites->Add(STARMAN_BIG1_FLAG_PULL_SPRITE_2, 128, 128, 143, 159, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG1_FLAG_PULL_SPRITE_1);
 	anim->Add(STARMAN_BIG1_FLAG_PULL_SPRITE_2);
 	starmanBlueprints[0][STARMAN_BIG1_FLAG_PULL_ANIM_ID] = anim;
 
-	sprites->Add(STARMAN_BIG2_FLAG_PULL_SPRITE_1, 112, 208, 127, 223, marioTex);
-	sprites->Add(STARMAN_BIG2_FLAG_PULL_SPRITE_2, 128, 112, 143, 127, marioTex);
+	sprites->Add(STARMAN_BIG2_FLAG_PULL_SPRITE_1, 112, 176, 127, 207, marioTex);
+	sprites->Add(STARMAN_BIG2_FLAG_PULL_SPRITE_2, 128, 176, 143, 207, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG2_FLAG_PULL_SPRITE_1);
 	anim->Add(STARMAN_BIG2_FLAG_PULL_SPRITE_2);
 	starmanBlueprints[1][STARMAN_BIG2_FLAG_PULL_ANIM_ID] = anim;
 
 
-	sprites->Add(STARMAN_BIG3_FLAG_PULL_SPRITE_1, 128, 160, 143, 175, marioTex);
-	sprites->Add(STARMAN_BIG3_FLAG_PULL_SPRITE_2, 128, 208, 143, 223, marioTex);
+	sprites->Add(STARMAN_BIG3_FLAG_PULL_SPRITE_1, 112, 224, 127, 255, marioTex);
+	sprites->Add(STARMAN_BIG3_FLAG_PULL_SPRITE_2, 128, 224, 143, 255, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG3_FLAG_PULL_SPRITE_1);
 	anim->Add(STARMAN_BIG3_FLAG_PULL_SPRITE_2);
@@ -615,7 +615,7 @@ void Mario::LoadBigStarman()
 		STARMAN_BIG1_SWIM_SPRITE_3,
 		STARMAN_BIG1_SWIM_SPRITE_4,
 	};
-	LoadHorizontalSheet(swimIdsBatch1, 4, 160, 112, 16, 16, marioTex);
+	LoadHorizontalSheet(swimIdsBatch1, 4, 160, 128, 16, 32, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG1_SWIM_SPRITE_1);
 	anim->Add(STARMAN_BIG1_SWIM_SPRITE_2);
@@ -630,7 +630,7 @@ void Mario::LoadBigStarman()
 		STARMAN_BIG2_SWIM_SPRITE_3,
 		STARMAN_BIG2_SWIM_SPRITE_4,
 	};
-	LoadHorizontalSheet(swimIdsBatch2, 4, 160, 160, 16, 16, marioTex);
+	LoadHorizontalSheet(swimIdsBatch2, 4, 160, 176, 16, 32, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG2_SWIM_SPRITE_1);
 	anim->Add(STARMAN_BIG2_SWIM_SPRITE_2);
@@ -644,7 +644,7 @@ void Mario::LoadBigStarman()
 		STARMAN_BIG3_SWIM_SPRITE_3,
 		STARMAN_BIG3_SWIM_SPRITE_4,
 	};
-	LoadHorizontalSheet(swimIdsBatch3, 4, 160, 208, 16, 16, marioTex);
+	LoadHorizontalSheet(swimIdsBatch3, 4, 160, 224, 16, 32, marioTex);
 	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 	anim->Add(STARMAN_BIG3_SWIM_SPRITE_1);
 	anim->Add(STARMAN_BIG3_SWIM_SPRITE_2);
