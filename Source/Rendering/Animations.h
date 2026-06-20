@@ -27,5 +27,7 @@ public:
 	void Clear() {
 		animations.clear();
 	}
+	void Replace(int id, Animation* ani);
+	void Replace(int id, unique_ptr<Animation> ani);
 };
 

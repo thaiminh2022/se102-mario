@@ -27,5 +27,6 @@ class Sprite
 public:
 	Sprite(int id, int left, int top, int right, int bottom, Texture* tex);
 	void Draw(float x, float y, bool flipX, bool flipY);
+	int GetId() const { return id; }
 };
 

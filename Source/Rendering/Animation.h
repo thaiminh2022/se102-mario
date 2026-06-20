@@ -36,5 +36,12 @@ public:
 	}
 	void Add(int spriteId, DWORD timeMs = 0);
 	void Render(float x, float y, bool flipX, bool flipY, int startFrame = -1);
+
+	int GetCurrentFrame() const { return currentFrame; }
+	void SetCurrentFrame(int frame) { currentFrame = frame; }
+
+	ULONGLONG GetLastFrameTime() const { return lastFrameTime; }
+	void SetLastFrameTime(ULONGLONG time) { lastFrameTime = time; }
+	Animation* Clone();
 };
 

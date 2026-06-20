@@ -49,6 +49,7 @@ bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 			sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 
 			velocity.y = -240.0f;
+			lastState = state;
 			state = MarioState::Jumping;
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
 		}
@@ -143,6 +144,7 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 		{
 			// jump on head
 			velocity.y = -240.0f;
+			lastState = state;
 			state = MarioState::Jumping;
 			if (koopa->GetForm() == KoopaForm::Winged)
 			{
@@ -272,6 +274,7 @@ bool Mario::OnCollisionWithMushroom(const CollisionEvent* e)
 
 		if (power == MarioPower::Normal)
 		{
+			lastState = state;
 			state = MarioState::Growing;
 			transformTimer = Timer(MARIO_GROW_TIME);
 			StatManager::GetInstance()->AddScore(1000, this->position);
@@ -291,6 +294,7 @@ bool Mario::OnCollisionWithFlower(CollisionEvent* e)
 	{
 		if (power == MarioPower::Normal)
 		{
+			lastState = state;
 			state = MarioState::Growing; // If collect a flower while small, grow to big
 			transformTimer = Timer(MARIO_GROW_TIME);
 			transformTimer.Start();
@@ -333,6 +337,8 @@ bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 		}
 		starmanTimer = Timer(STARMAN_INVINCIBLE_TIME);
 		starmanTimer.Start();
+		starmanPaletteSwapTimer = Timer(STARMAN_PALETTE_SWAP_TIME);
+		starmanPaletteSwapTimer.Start();
 
 		audio->PauseMusic();
 		audio->PlaySFX(MARIO_POWERUP);
@@ -368,6 +374,7 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 
 	// set state to flag sliding
 	velocity = Vector2(0.0f, 0.0f);
+	lastState = state;
 	state = MarioState::PullingFlag;
 	// make mario face right
 	isFacingRight = true;
@@ -438,6 +445,7 @@ bool Mario::OnCollisionWithAxeBridge(const CollisionEvent* e)
 	if (axeBridge != nullptr)
 	{
 		axeBridge->SolveCollisionWithMario();
+		lastState = state;
 		state = MarioState::StopToWaitBowser;
 		return true;
 	}
@@ -495,6 +503,7 @@ int Mario::GetEnemyKilledOnSequenceCount() const
 
 void Mario::Die()
 {
+	lastState = state;
 	state = MarioState::Dying;
 	isCollidable = false; // Turn off hitboxes
 	velocity.x = 0;
@@ -524,6 +533,7 @@ void Mario::OnMarioHit(const bool force)
 	{
 		if (power == MarioPower::Big || power == MarioPower::Fire)
 		{
+			lastState = state;
 			state = MarioState::Shrinking;
 			AudioManager::GetInstance()->PlaySFX(PIPE_ENTER); // Original used pipe sound for power down
 			isInvincible = true;

@@ -6,6 +6,7 @@
 
 #include "MarioJetPack.h"
 #include "Timer.h"
+#include "Animation.h"
 
 class Bowser;
 
@@ -43,6 +44,7 @@ const float MARIO_GROW_TIME = 0.7f;
 const float MARIO_SHRINK_TIME = 0.75f;
 const float MARIO_INVINCIBLE_TIME = 2.0f;
 const float STARMAN_INVINCIBLE_TIME = 12.0f;
+const float STARMAN_PALETTE_SWAP_TIME = 0.1f;
 
 const float MIN_WALK = 4.453125f; // Minimum speed to be considered walking, otherwise it's idle
 const float MAX_WALK = 93.75f;
@@ -86,7 +88,10 @@ class Mario : public GameObject
 	Timer transformTimer; //used for growing and shrinking
 	Timer breathingTimer;
 
+	
+
 	MarioState state;
+	MarioState lastState;
 	MarioPower power;
 	MarioPower lastPower; // used to store power before transformation for correct animation during transformation
 
@@ -105,6 +110,12 @@ class Mario : public GameObject
 	Timer waitToBowserTimer;
 	Vector2 forceMoveToPosition;
 
+	Timer starmanPaletteSwapTimer;
+	int currentStarmanAnimPalette = 0;
+	
+	std::unordered_map<int, Animation*> starmanBlueprints[3];
+
+
 	void OnMarioHit(bool force = false);
 	int GetMarioAnimId() const;
 	
@@ -112,6 +123,7 @@ class Mario : public GameObject
 	void LoadSmallNormalMario();
 	void LoadBigNormalMario();
 	void LoadFireMario();
+	void LoadStarmanPalette(int idx);
 	void LoadSmallStarman();
 	void LoadBigStarman();
 	void LoadSpriteAndAnimation();
@@ -175,7 +187,7 @@ public:
 		position = newPosition;
 	}
 	void ResetRender() { renderIndex = 0; isRendering = true; }
-	void ResetState() { state = MarioState::Idle; isCollidable = true; velocity = Vector2::Zero(); }
+	void ResetState() { lastState = state; state = MarioState::Idle; isCollidable = true; velocity = Vector2::Zero(); }
 
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;

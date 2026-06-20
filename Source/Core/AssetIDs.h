@@ -136,117 +136,191 @@ constexpr int MARIO_SHRINK_SPRITE_1 = 15901;
 constexpr int MARIO_SHRINK_SPRITE_2 = 15902;
 constexpr int MARIO_SHRINK_SPRITE_3 = 15903;
 
+// =================================================================
+// PALETTE 1 (OFFSET +00)
+// =================================================================
+
 // ---------------------------------
-// SMALL STARMAN (T = 6)
+// SMALL STARMAN 1 (T = 6)
 // ---------------------------------
 // Idle (A = 100)
-constexpr int STARMAN_SMALL_IDLE_ANIM_ID = 16100;
-constexpr int STARMAN_SMALL_IDLE_SPRITE_1 = 16101;
-constexpr int STARMAN_SMALL_IDLE_SPRITE_2 = 16102;
-constexpr int STARMAN_SMALL_IDLE_SPRITE_3 = 16103;
+constexpr int STARMAN_SMALL1_IDLE_ANIM_ID = 16100;
+constexpr int STARMAN_SMALL1_IDLE_SPRITE_1 = 16101;
 // Moving (A = 200)
-constexpr int STARMAN_SMALL_RUN_ANIM_ID = 16200;
-constexpr int STARMAN_SMALL_RUN_SPRITE_1 = 16201;
-constexpr int STARMAN_SMALL_RUN_SPRITE_2 = 16202;
-constexpr int STARMAN_SMALL_RUN_SPRITE_3 = 16203;
-constexpr int STARMAN_SMALL_RUN_SPRITE_4 = 16204;
-constexpr int STARMAN_SMALL_RUN_SPRITE_5 = 16205;
-constexpr int STARMAN_SMALL_RUN_SPRITE_6 = 16206;
-constexpr int STARMAN_SMALL_RUN_SPRITE_7 = 16207;
-constexpr int STARMAN_SMALL_RUN_SPRITE_8 = 16208;
-constexpr int STARMAN_SMALL_RUN_SPRITE_9 = 16209;
+constexpr int STARMAN_SMALL1_RUN_ANIM_ID = 16200;
+constexpr int STARMAN_SMALL1_RUN_SPRITE_1 = 16201;
+constexpr int STARMAN_SMALL1_RUN_SPRITE_2 = 16202;
+constexpr int STARMAN_SMALL1_RUN_SPRITE_3 = 16203;
 // Skidding (A = 300)
-constexpr int STARMAN_SMALL_SKID_ANIM_ID = 16300;
-constexpr int STARMAN_SMALL_SKID_SPRITE_1 = 16301;
-constexpr int STARMAN_SMALL_SKID_SPRITE_2 = 16302;
-constexpr int STARMAN_SMALL_SKID_SPRITE_3 = 16303;
+constexpr int STARMAN_SMALL1_SKID_ANIM_ID = 16300;
+constexpr int STARMAN_SMALL1_SKID_SPRITE_1 = 16301;
 // Jumping (A = 400)
-constexpr int STARMAN_SMALL_JUMP_ANIM_ID = 16400;
-constexpr int STARMAN_SMALL_JUMP_SPRITE_1 = 16401;
-constexpr int STARMAN_SMALL_JUMP_SPRITE_2 = 16402;
-constexpr int STARMAN_SMALL_JUMP_SPRITE_3 = 16403;
+constexpr int STARMAN_SMALL1_JUMP_ANIM_ID = 16400;
+constexpr int STARMAN_SMALL1_JUMP_SPRITE_1 = 16401;
 // Flag pulling (A = 800)
-constexpr int STARMAN_SMALL_FLAG_PULL_ANIM_ID = 16800;
-constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_1 = 16801;
-constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_2 = 16802;
-constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_3 = 16803;
-constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_4 = 16804;
-constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_5 = 16805;
-constexpr int STARMAN_SMALL_FLAG_PULL_SPRITE_6 = 16806;
-
+constexpr int STARMAN_SMALL1_FLAG_PULL_ANIM_ID = 16800;
+constexpr int STARMAN_SMALL1_FLAG_PULL_SPRITE_1 = 16801;
+constexpr int STARMAN_SMALL1_FLAG_PULL_SPRITE_2 = 16802;
 // Swimming (A = 900)
-constexpr int STARMAN_SWIM_ANIM_ID = 16900;
-constexpr int STARMAN_SWIM_SPRITE_1 = 16901;
-constexpr int STARMAN_SWIM_SPRITE_2 = 16902;
-constexpr int STARMAN_SWIM_SPRITE_3 = 16903;
-constexpr int STARMAN_SWIM_SPRITE_4 = 16904;
-constexpr int STARMAN_SWIM_SPRITE_5 = 16905;
-constexpr int STARMAN_SWIM_SPRITE_6 = 16906;
-constexpr int STARMAN_SWIM_SPRITE_7 = 16907;
-constexpr int STARMAN_SWIM_SPRITE_8 = 16908;
-constexpr int STARMAN_SWIM_SPRITE_9 = 16909;
-constexpr int STARMAN_SWIM_SPRITE_10 = 16910;
-constexpr int STARMAN_SWIM_SPRITE_11 = 16911;
-constexpr int STARMAN_SWIM_SPRITE_12 = 16912;
-
+constexpr int STARMAN_SMALL1_SWIM_ANIM_ID = 16900;
+constexpr int STARMAN_SMALL1_SWIM_SPRITE_1 = 16901;
+constexpr int STARMAN_SMALL1_SWIM_SPRITE_2 = 16902;
+constexpr int STARMAN_SMALL1_SWIM_SPRITE_3 = 16903;
+constexpr int STARMAN_SMALL1_SWIM_SPRITE_4 = 16904;
 
 // ---------------------------------
-// BIG STARMAN (T = 7)
+// BIG STARMAN 1 (T = 7)
 // ---------------------------------
 // Idle (A = 100)
-constexpr int STARMAN_BIG_IDLE_ANIM_ID = 17100;
-constexpr int STARMAN_BIG_IDLE_SPRITE_1 = 17101;
-constexpr int STARMAN_BIG_IDLE_SPRITE_2 = 17102;
-constexpr int STARMAN_BIG_IDLE_SPRITE_3 = 17103;
+constexpr int STARMAN_BIG1_IDLE_ANIM_ID = 17100;
+constexpr int STARMAN_BIG1_IDLE_SPRITE_1 = 17101;
 // Moving (A = 200)
-constexpr int STARMAN_BIG_RUN_ANIM_ID = 17200;
-constexpr int STARMAN_BIG_RUN_SPRITE_1 = 17201;
-constexpr int STARMAN_BIG_RUN_SPRITE_2 = 17202;
-constexpr int STARMAN_BIG_RUN_SPRITE_3 = 17203;
-constexpr int STARMAN_BIG_RUN_SPRITE_4 = 17204;
-constexpr int STARMAN_BIG_RUN_SPRITE_5 = 17205;
-constexpr int STARMAN_BIG_RUN_SPRITE_6 = 17206;
-constexpr int STARMAN_BIG_RUN_SPRITE_7 = 17207;
-constexpr int STARMAN_BIG_RUN_SPRITE_8 = 17208;
-constexpr int STARMAN_BIG_RUN_SPRITE_9 = 17209;
+constexpr int STARMAN_BIG1_RUN_ANIM_ID = 17200;
+constexpr int STARMAN_BIG1_RUN_SPRITE_1 = 17201;
+constexpr int STARMAN_BIG1_RUN_SPRITE_2 = 17202;
+constexpr int STARMAN_BIG1_RUN_SPRITE_3 = 17203;
 // Skidding (A = 300)
-constexpr int STARMAN_BIG_SKID_ANIM_ID = 17300;
-constexpr int STARMAN_BIG_SKID_SPRITE_1 = 17301;
-constexpr int STARMAN_BIG_SKID_SPRITE_2 = 17302;
-constexpr int STARMAN_BIG_SKID_SPRITE_3 = 17303;
+constexpr int STARMAN_BIG1_SKID_ANIM_ID = 17300;
+constexpr int STARMAN_BIG1_SKID_SPRITE_1 = 17301;
 // Jumping (A = 400)
-constexpr int STARMAN_BIG_JUMP_ANIM_ID = 17400;
-constexpr int STARMAN_BIG_JUMP_SPRITE_1 = 17401;
-constexpr int STARMAN_BIG_JUMP_SPRITE_2 = 17402;
-constexpr int STARMAN_BIG_JUMP_SPRITE_3 = 17403;
+constexpr int STARMAN_BIG1_JUMP_ANIM_ID = 17400;
+constexpr int STARMAN_BIG1_JUMP_SPRITE_1 = 17401;
 // Ducking (A = 500)
-constexpr int STARMAN_BIG_DUCK_ANIM_ID = 17500;
-constexpr int STARMAN_BIG_DUCK_SPRITE_1 = 17501;
-constexpr int STARMAN_BIG_DUCK_SPRITE_2 = 17502;
-constexpr int STARMAN_BIG_DUCK_SPRITE_3 = 17503;
+constexpr int STARMAN_BIG1_DUCK_ANIM_ID = 17500;
+constexpr int STARMAN_BIG1_DUCK_SPRITE_1 = 17501;
 // Flag pulling (A = 800)
-constexpr int STARMAN_BIG_FLAG_PULL_ANIM_ID = 17800;
-constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_1 = 17801;
-constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_2 = 17802;
-constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_3 = 17803;
-constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_4 = 17804;
-constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_5 = 17805;
-constexpr int STARMAN_BIG_FLAG_PULL_SPRITE_6 = 17806;
-
+constexpr int STARMAN_BIG1_FLAG_PULL_ANIM_ID = 17800;
+constexpr int STARMAN_BIG1_FLAG_PULL_SPRITE_1 = 17801;
+constexpr int STARMAN_BIG1_FLAG_PULL_SPRITE_2 = 17802;
 // Swimming (A = 900)
-constexpr int STARMAN_BIG_SWIM_ANIM_ID = 17900;
-constexpr int STARMAN_BIG_SWIM_SPRITE_1 = 17901;
-constexpr int STARMAN_BIG_SWIM_SPRITE_2 = 17902;
-constexpr int STARMAN_BIG_SWIM_SPRITE_3 = 17903;
-constexpr int STARMAN_BIG_SWIM_SPRITE_4 = 17904;
-constexpr int STARMAN_BIG_SWIM_SPRITE_5 = 17905;
-constexpr int STARMAN_BIG_SWIM_SPRITE_6 = 17906;
-constexpr int STARMAN_BIG_SWIM_SPRITE_7 = 17907;
-constexpr int STARMAN_BIG_SWIM_SPRITE_8 = 17908;
-constexpr int STARMAN_BIG_SWIM_SPRITE_9 = 17909;
-constexpr int STARMAN_BIG_SWIM_SPRITE_10 = 17910;
-constexpr int STARMAN_BIG_SWIM_SPRITE_11 = 17911;
-constexpr int STARMAN_BIG_SWIM_SPRITE_12 = 17912;
+constexpr int STARMAN_BIG1_SWIM_ANIM_ID = 17900;
+constexpr int STARMAN_BIG1_SWIM_SPRITE_1 = 17901;
+constexpr int STARMAN_BIG1_SWIM_SPRITE_2 = 17902;
+constexpr int STARMAN_BIG1_SWIM_SPRITE_3 = 17903;
+constexpr int STARMAN_BIG1_SWIM_SPRITE_4 = 17904;
+
+// =================================================================
+// PALETTE 2 (OFFSET +30)
+// =================================================================
+
+// ---------------------------------
+// SMALL STARMAN 2 (T = 6)
+// ---------------------------------
+constexpr int STARMAN_SMALL2_IDLE_ANIM_ID = 16130;
+constexpr int STARMAN_SMALL2_IDLE_SPRITE_1 = 16131;
+
+constexpr int STARMAN_SMALL2_RUN_ANIM_ID = 16230;
+constexpr int STARMAN_SMALL2_RUN_SPRITE_1 = 16231;
+constexpr int STARMAN_SMALL2_RUN_SPRITE_2 = 16232;
+constexpr int STARMAN_SMALL2_RUN_SPRITE_3 = 16233;
+
+constexpr int STARMAN_SMALL2_SKID_ANIM_ID = 16330;
+constexpr int STARMAN_SMALL2_SKID_SPRITE_1 = 16331;
+
+constexpr int STARMAN_SMALL2_JUMP_ANIM_ID = 16430;
+constexpr int STARMAN_SMALL2_JUMP_SPRITE_1 = 16431;
+
+constexpr int STARMAN_SMALL2_FLAG_PULL_ANIM_ID = 16830;
+constexpr int STARMAN_SMALL2_FLAG_PULL_SPRITE_1 = 16831;
+constexpr int STARMAN_SMALL2_FLAG_PULL_SPRITE_2 = 16832;
+
+constexpr int STARMAN_SMALL2_SWIM_ANIM_ID = 16930;
+constexpr int STARMAN_SMALL2_SWIM_SPRITE_1 = 16931;
+constexpr int STARMAN_SMALL2_SWIM_SPRITE_2 = 16932;
+constexpr int STARMAN_SMALL2_SWIM_SPRITE_3 = 16933;
+constexpr int STARMAN_SMALL2_SWIM_SPRITE_4 = 16934;
+
+// ---------------------------------
+// BIG STARMAN 2 (T = 7)
+// ---------------------------------
+constexpr int STARMAN_BIG2_IDLE_ANIM_ID = 17130;
+constexpr int STARMAN_BIG2_IDLE_SPRITE_1 = 17131;
+
+constexpr int STARMAN_BIG2_RUN_ANIM_ID = 17230;
+constexpr int STARMAN_BIG2_RUN_SPRITE_1 = 17231;
+constexpr int STARMAN_BIG2_RUN_SPRITE_2 = 17232;
+constexpr int STARMAN_BIG2_RUN_SPRITE_3 = 17233;
+
+constexpr int STARMAN_BIG2_SKID_ANIM_ID = 17330;
+constexpr int STARMAN_BIG2_SKID_SPRITE_1 = 17331;
+
+constexpr int STARMAN_BIG2_JUMP_ANIM_ID = 17430;
+constexpr int STARMAN_BIG2_JUMP_SPRITE_1 = 17431;
+
+constexpr int STARMAN_BIG2_DUCK_ANIM_ID = 17530;
+constexpr int STARMAN_BIG2_DUCK_SPRITE_1 = 17531;
+
+constexpr int STARMAN_BIG2_FLAG_PULL_ANIM_ID = 17830;
+constexpr int STARMAN_BIG2_FLAG_PULL_SPRITE_1 = 17831;
+constexpr int STARMAN_BIG2_FLAG_PULL_SPRITE_2 = 17832;
+
+constexpr int STARMAN_BIG2_SWIM_ANIM_ID = 17930;
+constexpr int STARMAN_BIG2_SWIM_SPRITE_1 = 17931;
+constexpr int STARMAN_BIG2_SWIM_SPRITE_2 = 17932;
+constexpr int STARMAN_BIG2_SWIM_SPRITE_3 = 17933;
+constexpr int STARMAN_BIG2_SWIM_SPRITE_4 = 17934;
+
+
+// =================================================================
+// PALETTE 3 (OFFSET +60)
+// =================================================================
+
+// ---------------------------------
+// SMALL STARMAN 3 (T = 6)
+// ---------------------------------
+constexpr int STARMAN_SMALL3_IDLE_ANIM_ID = 16160;
+constexpr int STARMAN_SMALL3_IDLE_SPRITE_1 = 16161;
+
+constexpr int STARMAN_SMALL3_RUN_ANIM_ID = 16260;
+constexpr int STARMAN_SMALL3_RUN_SPRITE_1 = 16261;
+constexpr int STARMAN_SMALL3_RUN_SPRITE_2 = 16262;
+constexpr int STARMAN_SMALL3_RUN_SPRITE_3 = 16263;
+
+constexpr int STARMAN_SMALL3_SKID_ANIM_ID = 16360;
+constexpr int STARMAN_SMALL3_SKID_SPRITE_1 = 16361;
+
+constexpr int STARMAN_SMALL3_JUMP_ANIM_ID = 16460;
+constexpr int STARMAN_SMALL3_JUMP_SPRITE_1 = 16461;
+
+constexpr int STARMAN_SMALL3_FLAG_PULL_ANIM_ID = 16860;
+constexpr int STARMAN_SMALL3_FLAG_PULL_SPRITE_1 = 16861;
+constexpr int STARMAN_SMALL3_FLAG_PULL_SPRITE_2 = 16862;
+
+constexpr int STARMAN_SMALL3_SWIM_ANIM_ID = 16960;
+constexpr int STARMAN_SMALL3_SWIM_SPRITE_1 = 16961;
+constexpr int STARMAN_SMALL3_SWIM_SPRITE_2 = 16962;
+constexpr int STARMAN_SMALL3_SWIM_SPRITE_3 = 16963;
+constexpr int STARMAN_SMALL3_SWIM_SPRITE_4 = 16964;
+
+// ---------------------------------
+// BIG STARMAN 3 (T = 7)
+// ---------------------------------
+constexpr int STARMAN_BIG3_IDLE_ANIM_ID = 17160;
+constexpr int STARMAN_BIG3_IDLE_SPRITE_1 = 17161;
+
+constexpr int STARMAN_BIG3_RUN_ANIM_ID = 17260;
+constexpr int STARMAN_BIG3_RUN_SPRITE_1 = 17261;
+constexpr int STARMAN_BIG3_RUN_SPRITE_2 = 17262;
+constexpr int STARMAN_BIG3_RUN_SPRITE_3 = 17263;
+
+constexpr int STARMAN_BIG3_SKID_ANIM_ID = 17360;
+constexpr int STARMAN_BIG3_SKID_SPRITE_1 = 17361;
+
+constexpr int STARMAN_BIG3_JUMP_ANIM_ID = 17460;
+constexpr int STARMAN_BIG3_JUMP_SPRITE_1 = 17461;
+
+constexpr int STARMAN_BIG3_DUCK_ANIM_ID = 17560;
+constexpr int STARMAN_BIG3_DUCK_SPRITE_1 = 17561;
+
+constexpr int STARMAN_BIG3_FLAG_PULL_ANIM_ID = 17860;
+constexpr int STARMAN_BIG3_FLAG_PULL_SPRITE_1 = 17861;
+constexpr int STARMAN_BIG3_FLAG_PULL_SPRITE_2 = 17862;
+
+constexpr int STARMAN_BIG3_SWIM_ANIM_ID = 17960;
+constexpr int STARMAN_BIG3_SWIM_SPRITE_1 = 17961;
+constexpr int STARMAN_BIG3_SWIM_SPRITE_2 = 17962;
+constexpr int STARMAN_BIG3_SWIM_SPRITE_3 = 17963;
+constexpr int STARMAN_BIG3_SWIM_SPRITE_4 = 17964;
 
 // ==========================================
 // ENEMIES (E = 2)
