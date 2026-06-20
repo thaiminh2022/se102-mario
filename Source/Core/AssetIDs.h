@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "AssetID.h"
 
 // [NOTE]: Negative values are reserved for playable scenes and scene backgrounds.
 
@@ -22,120 +23,120 @@
 // ---------------------------------
 // SMALL MARIO (T = 1)
 // ---------------------------------
-constexpr int MARIO_TEX_ID = 10000;
+constexpr AssetID MARIO_TEX_ID = AssetID("MARIO_TEX_ID");
 // Running (A = 000)
-constexpr int MARIO_RUN_ANIM_ID = 11000; //reusing the same sprites but shorter deltatime
+constexpr AssetID MARIO_RUN_ANIM_ID = AssetID("MARIO_RUN_ANIM_ID"); //reusing the same sprites but shorter deltatime
 // Idle (A = 100)
-constexpr int MARIO_IDLE_ANIM_ID = 11100;
-constexpr int MARIO_IDLE_SPRITE_1 = 11101;
+constexpr AssetID MARIO_IDLE_ANIM_ID = AssetID("MARIO_IDLE_ANIM_ID");
+constexpr AssetID MARIO_IDLE_SPRITE_1 = AssetID("MARIO_IDLE_SPRITE_1");
 // Walking (A = 200)
-constexpr int MARIO_WALK_ANIM_ID = 11200;
-constexpr int MARIO_WALK_SPRITE_1 = 11201;
-constexpr int MARIO_WALK_SPRITE_2 = 11202;
-constexpr int MARIO_WALK_SPRITE_3 = 11203;
+constexpr AssetID MARIO_WALK_ANIM_ID = AssetID("MARIO_WALK_ANIM_ID");
+constexpr AssetID MARIO_WALK_SPRITE_1 = AssetID("MARIO_WALK_SPRITE_1");
+constexpr AssetID MARIO_WALK_SPRITE_2 = AssetID("MARIO_WALK_SPRITE_2");
+constexpr AssetID MARIO_WALK_SPRITE_3 = AssetID("MARIO_WALK_SPRITE_3");
 // Skidding (A = 300)
-constexpr int MARIO_SKID_ANIM_ID = 11300;
-constexpr int MARIO_SKID_SPRITE_1 = 11301;
+constexpr AssetID MARIO_SKID_ANIM_ID = AssetID("MARIO_SKID_ANIM_ID");
+constexpr AssetID MARIO_SKID_SPRITE_1 = AssetID("MARIO_SKID_SPRITE_1");
 // Jumping (A = 400)
-constexpr int MARIO_JUMP_ANIM_ID = 11400;
-constexpr int MARIO_JUMP_SPRITE_1 = 11401;
+constexpr AssetID MARIO_JUMP_ANIM_ID = AssetID("MARIO_JUMP_ANIM_ID");
+constexpr AssetID MARIO_JUMP_SPRITE_1 = AssetID("MARIO_JUMP_SPRITE_1");
 // Dying (A = 700)
-constexpr int MARIO_DEATH_ANIM_ID = 11700;
-constexpr int MARIO_DEATH_SPRITE_1 = 11701;
+constexpr AssetID MARIO_DEATH_ANIM_ID = AssetID("MARIO_DEATH_ANIM_ID");
+constexpr AssetID MARIO_DEATH_SPRITE_1 = AssetID("MARIO_DEATH_SPRITE_1");
 // Flag pulling (A = 800)
-constexpr int MARIO_FLAG_PULL_ANIM_ID = 11800;
-constexpr int MARIO_FLAG_PULL_SPRITE_1 = 11801;
-constexpr int MARIO_FLAG_PULL_SPRITE_2 = 11802;
+constexpr AssetID MARIO_FLAG_PULL_ANIM_ID = AssetID("MARIO_FLAG_PULL_ANIM_ID");
+constexpr AssetID MARIO_FLAG_PULL_SPRITE_1 = AssetID("MARIO_FLAG_PULL_SPRITE_1");
+constexpr AssetID MARIO_FLAG_PULL_SPRITE_2 = AssetID("MARIO_FLAG_PULL_SPRITE_2");
 // Swimming (A = 900)
-constexpr int MARIO_SWIM_ANIM_ID = 11900;
-constexpr int MARIO_SWIM_SPRITE_1 = 11901;
-constexpr int MARIO_SWIM_SPRITE_2 = 11902;
-constexpr int MARIO_SWIM_SPRITE_3 = 11903;
-constexpr int MARIO_SWIM_SPRITE_4 = 11904;
-constexpr int MARIO_BREATH_BUBBLE = 11905;
+constexpr AssetID MARIO_SWIM_ANIM_ID = AssetID("MARIO_SWIM_ANIM_ID");
+constexpr AssetID MARIO_SWIM_SPRITE_1 = AssetID("MARIO_SWIM_SPRITE_1");
+constexpr AssetID MARIO_SWIM_SPRITE_2 = AssetID("MARIO_SWIM_SPRITE_2");
+constexpr AssetID MARIO_SWIM_SPRITE_3 = AssetID("MARIO_SWIM_SPRITE_3");
+constexpr AssetID MARIO_SWIM_SPRITE_4 = AssetID("MARIO_SWIM_SPRITE_4");
+constexpr AssetID MARIO_BREATH_BUBBLE = AssetID("MARIO_BREATH_BUBBLE");
 
 // ---------------------------------
 // BIG MARIO (T = 2)
 // ---------------------------------
 // Running (A = 000)
-constexpr int MARIO_BIG_RUN_ANIM_ID = 12000; //reusing the same sprites but shorter deltatime
+constexpr AssetID MARIO_BIG_RUN_ANIM_ID = AssetID("MARIO_BIG_RUN_ANIM_ID"); //reusing the same sprites but shorter deltatime
 // Idle (A = 100)
-constexpr int MARIO_BIG_IDLE_ANIM_ID = 12100;
-constexpr int MARIO_BIG_IDLE_SPRITE_1 = 12101;
+constexpr AssetID MARIO_BIG_IDLE_ANIM_ID = AssetID("MARIO_BIG_IDLE_ANIM_ID");
+constexpr AssetID MARIO_BIG_IDLE_SPRITE_1 = AssetID("MARIO_BIG_IDLE_SPRITE_1");
 // Walking (A = 200)
-constexpr int MARIO_BIG_WALK_ANIM_ID = 12200;
-constexpr int MARIO_BIG_WALK_SPRITE_1 = 12201;
-constexpr int MARIO_BIG_WALK_SPRITE_2 = 12202;
-constexpr int MARIO_BIG_WALK_SPRITE_3 = 12203;
+constexpr AssetID MARIO_BIG_WALK_ANIM_ID = AssetID("MARIO_BIG_WALK_ANIM_ID");
+constexpr AssetID MARIO_BIG_WALK_SPRITE_1 = AssetID("MARIO_BIG_WALK_SPRITE_1");
+constexpr AssetID MARIO_BIG_WALK_SPRITE_2 = AssetID("MARIO_BIG_WALK_SPRITE_2");
+constexpr AssetID MARIO_BIG_WALK_SPRITE_3 = AssetID("MARIO_BIG_WALK_SPRITE_3");
 // Skidding (A = 300)
-constexpr int MARIO_BIG_SKID_ANIM_ID = 12300;
-constexpr int MARIO_BIG_SKID_SPRITE_1 = 12301;
+constexpr AssetID MARIO_BIG_SKID_ANIM_ID = AssetID("MARIO_BIG_SKID_ANIM_ID");
+constexpr AssetID MARIO_BIG_SKID_SPRITE_1 = AssetID("MARIO_BIG_SKID_SPRITE_1");
 // Jumping (A = 400)
-constexpr int MARIO_BIG_JUMP_ANIM_ID = 12400;
-constexpr int MARIO_BIG_JUMP_SPRITE_1 = 12401;
+constexpr AssetID MARIO_BIG_JUMP_ANIM_ID = AssetID("MARIO_BIG_JUMP_ANIM_ID");
+constexpr AssetID MARIO_BIG_JUMP_SPRITE_1 = AssetID("MARIO_BIG_JUMP_SPRITE_1");
 // Ducking (A = 500)
-constexpr int MARIO_BIG_DUCK_ANIM_ID = 12500;
-constexpr int MARIO_BIG_DUCK_SPRITE_1 = 12501;
+constexpr AssetID MARIO_BIG_DUCK_ANIM_ID = AssetID("MARIO_BIG_DUCK_ANIM_ID");
+constexpr AssetID MARIO_BIG_DUCK_SPRITE_1 = AssetID("MARIO_BIG_DUCK_SPRITE_1");
 // Flag pulling (A = 800)
-constexpr int MARIO_BIG_FLAG_PULL_ANIM_ID = 12800;
-constexpr int MARIO_BIG_FLAG_PULL_SPRITE_1 = 12801;
-constexpr int MARIO_BIG_FLAG_PULL_SPRITE_2 = 12802;
+constexpr AssetID MARIO_BIG_FLAG_PULL_ANIM_ID = AssetID("MARIO_BIG_FLAG_PULL_ANIM_ID");
+constexpr AssetID MARIO_BIG_FLAG_PULL_SPRITE_1 = AssetID("MARIO_BIG_FLAG_PULL_SPRITE_1");
+constexpr AssetID MARIO_BIG_FLAG_PULL_SPRITE_2 = AssetID("MARIO_BIG_FLAG_PULL_SPRITE_2");
 // Swimming (A = 900)
-constexpr int MARIO_BIG_SWIM_ANIM_ID = 12900;
-constexpr int MARIO_BIG_SWIM_SPRITE_1 = 12901;
-constexpr int MARIO_BIG_SWIM_SPRITE_2 = 12902;
-constexpr int MARIO_BIG_SWIM_SPRITE_3 = 12903;
-constexpr int MARIO_BIG_SWIM_SPRITE_4 = 12904;
+constexpr AssetID MARIO_BIG_SWIM_ANIM_ID = AssetID("MARIO_BIG_SWIM_ANIM_ID");
+constexpr AssetID MARIO_BIG_SWIM_SPRITE_1 = AssetID("MARIO_BIG_SWIM_SPRITE_1");
+constexpr AssetID MARIO_BIG_SWIM_SPRITE_2 = AssetID("MARIO_BIG_SWIM_SPRITE_2");
+constexpr AssetID MARIO_BIG_SWIM_SPRITE_3 = AssetID("MARIO_BIG_SWIM_SPRITE_3");
+constexpr AssetID MARIO_BIG_SWIM_SPRITE_4 = AssetID("MARIO_BIG_SWIM_SPRITE_4");
 
 // ---------------------------------
 // FIRE MARIO (T = 3)
 // ---------------------------------
 // Running (A = 000)
-constexpr int MARIO_FIRE_RUN_ANIM_ID = 13000; //reusing the same sprites but shorter deltatime
+constexpr AssetID MARIO_FIRE_RUN_ANIM_ID = AssetID("MARIO_FIRE_RUN_ANIM_ID"); //reusing the same sprites but shorter deltatime
 // Idle (A = 100)
-constexpr int MARIO_FIRE_IDLE_ANIM_ID = 13100;
-constexpr int MARIO_FIRE_IDLE_SPRITE_1 = 13101;
+constexpr AssetID MARIO_FIRE_IDLE_ANIM_ID = AssetID("MARIO_FIRE_IDLE_ANIM_ID");
+constexpr AssetID MARIO_FIRE_IDLE_SPRITE_1 = AssetID("MARIO_FIRE_IDLE_SPRITE_1");
 // Walking (A = 200)
-constexpr int MARIO_FIRE_WALK_ANIM_ID = 13200;
-constexpr int MARIO_FIRE_WALK_SPRITE_1 = 13201;
-constexpr int MARIO_FIRE_WALK_SPRITE_2 = 13202;
-constexpr int MARIO_FIRE_WALK_SPRITE_3 = 13203;
+constexpr AssetID MARIO_FIRE_WALK_ANIM_ID = AssetID("MARIO_FIRE_WALK_ANIM_ID");
+constexpr AssetID MARIO_FIRE_WALK_SPRITE_1 = AssetID("MARIO_FIRE_WALK_SPRITE_1");
+constexpr AssetID MARIO_FIRE_WALK_SPRITE_2 = AssetID("MARIO_FIRE_WALK_SPRITE_2");
+constexpr AssetID MARIO_FIRE_WALK_SPRITE_3 = AssetID("MARIO_FIRE_WALK_SPRITE_3");
 // Skidding (A = 300)
-constexpr int MARIO_FIRE_SKID_ANIM_ID = 13300;
-constexpr int MARIO_FIRE_SKID_SPRITE_1 = 13301;
+constexpr AssetID MARIO_FIRE_SKID_ANIM_ID = AssetID("MARIO_FIRE_SKID_ANIM_ID");
+constexpr AssetID MARIO_FIRE_SKID_SPRITE_1 = AssetID("MARIO_FIRE_SKID_SPRITE_1");
 // Jumping (A = 400)
-constexpr int MARIO_FIRE_JUMP_ANIM_ID = 13400;
-constexpr int MARIO_FIRE_JUMP_SPRITE_1 = 13401;
+constexpr AssetID MARIO_FIRE_JUMP_ANIM_ID = AssetID("MARIO_FIRE_JUMP_ANIM_ID");
+constexpr AssetID MARIO_FIRE_JUMP_SPRITE_1 = AssetID("MARIO_FIRE_JUMP_SPRITE_1");
 // Ducking (A = 500)
-constexpr int MARIO_FIRE_DUCK_ANIM_ID = 13500;
-constexpr int MARIO_FIRE_DUCK_SPRITE_1 = 13501;
+constexpr AssetID MARIO_FIRE_DUCK_ANIM_ID = AssetID("MARIO_FIRE_DUCK_ANIM_ID");
+constexpr AssetID MARIO_FIRE_DUCK_SPRITE_1 = AssetID("MARIO_FIRE_DUCK_SPRITE_1");
 // Firing (A = 600)
-constexpr int MARIO_FIRE_FIRE_ANIM_ID = 13600;
-constexpr int MARIO_FIRE_FIRE_SPRITE_1 = 13601;
+constexpr AssetID MARIO_FIRE_FIRE_ANIM_ID = AssetID("MARIO_FIRE_FIRE_ANIM_ID");
+constexpr AssetID MARIO_FIRE_FIRE_SPRITE_1 = AssetID("MARIO_FIRE_FIRE_SPRITE_1");
 // Flag pulling (A = 800)
-constexpr int MARIO_FIRE_FLAG_PULL_ANIM_ID = 13800;
-constexpr int MARIO_FIRE_FLAG_PULL_SPRITE_1 = 13801;
-constexpr int MARIO_FIRE_FLAG_PULL_SPRITE_2 = 13802;
+constexpr AssetID MARIO_FIRE_FLAG_PULL_ANIM_ID = AssetID("MARIO_FIRE_FLAG_PULL_ANIM_ID");
+constexpr AssetID MARIO_FIRE_FLAG_PULL_SPRITE_1 = AssetID("MARIO_FIRE_FLAG_PULL_SPRITE_1");
+constexpr AssetID MARIO_FIRE_FLAG_PULL_SPRITE_2 = AssetID("MARIO_FIRE_FLAG_PULL_SPRITE_2");
 // Swimming (A = 900)
-constexpr int MARIO_FIRE_SWIM_ANIM_ID = 13900;
-constexpr int MARIO_FIRE_SWIM_SPRITE_1 = 13901;
-constexpr int MARIO_FIRE_SWIM_SPRITE_2 = 13902;
-constexpr int MARIO_FIRE_SWIM_SPRITE_3 = 13903;
-constexpr int MARIO_FIRE_SWIM_SPRITE_4 = 13904;
+constexpr AssetID MARIO_FIRE_SWIM_ANIM_ID = AssetID("MARIO_FIRE_SWIM_ANIM_ID");
+constexpr AssetID MARIO_FIRE_SWIM_SPRITE_1 = AssetID("MARIO_FIRE_SWIM_SPRITE_1");
+constexpr AssetID MARIO_FIRE_SWIM_SPRITE_2 = AssetID("MARIO_FIRE_SWIM_SPRITE_2");
+constexpr AssetID MARIO_FIRE_SWIM_SPRITE_3 = AssetID("MARIO_FIRE_SWIM_SPRITE_3");
+constexpr AssetID MARIO_FIRE_SWIM_SPRITE_4 = AssetID("MARIO_FIRE_SWIM_SPRITE_4");
 
 // ---------------------------------
 // TRANSITION STATES (T = 4 and T = 5)
 // ---------------------------------
 // Growing (Small -> Big) (T = 4, A = 900)
-constexpr int MARIO_GROWBIG_ANIM_ID = 14900;
-constexpr int MARIO_GROWBIG_SPRITE_1 = 14901;
-constexpr int MARIO_GROWBIG_SPRITE_2 = 14902;
-constexpr int MARIO_GROWBIG_SPRITE_3 = 14903;
+constexpr AssetID MARIO_GROWBIG_ANIM_ID = AssetID("MARIO_GROWBIG_ANIM_ID");
+constexpr AssetID MARIO_GROWBIG_SPRITE_1 = AssetID("MARIO_GROWBIG_SPRITE_1");
+constexpr AssetID MARIO_GROWBIG_SPRITE_2 = AssetID("MARIO_GROWBIG_SPRITE_2");
+constexpr AssetID MARIO_GROWBIG_SPRITE_3 = AssetID("MARIO_GROWBIG_SPRITE_3");
 // Shrinking (Big -> Small) (T = 5, A = 900)
-constexpr int MARIO_SHRINK_ANIM_ID = 15900;
-constexpr int MARIO_SHRINK_SPRITE_1 = 15901;
-constexpr int MARIO_SHRINK_SPRITE_2 = 15902;
-constexpr int MARIO_SHRINK_SPRITE_3 = 15903;
+constexpr AssetID MARIO_SHRINK_ANIM_ID = AssetID("MARIO_SHRINK_ANIM_ID");
+constexpr AssetID MARIO_SHRINK_SPRITE_1 = AssetID("MARIO_SHRINK_SPRITE_1");
+constexpr AssetID MARIO_SHRINK_SPRITE_2 = AssetID("MARIO_SHRINK_SPRITE_2");
+constexpr AssetID MARIO_SHRINK_SPRITE_3 = AssetID("MARIO_SHRINK_SPRITE_3");
 
 // =================================================================
 // PALETTE 1 (OFFSET +00)
@@ -145,64 +146,64 @@ constexpr int MARIO_SHRINK_SPRITE_3 = 15903;
 // SMALL STARMAN 1 (T = 6)
 // ---------------------------------
 // Running (A = 000)
-constexpr int STARMAN_SMALL1_RUN_ANIM_ID = 16000; //reusing the same sprites but shorter deltatime
+constexpr AssetID STARMAN_SMALL1_RUN_ANIM_ID = AssetID("STARMAN_SMALL1_RUN_ANIM_ID"); //reusing the same sprites but shorter deltatime
 // Idle (A = 100)
-constexpr int STARMAN_SMALL1_IDLE_ANIM_ID = 16100;
-constexpr int STARMAN_SMALL1_IDLE_SPRITE_1 = 16101;
+constexpr AssetID STARMAN_SMALL1_IDLE_ANIM_ID = AssetID("STARMAN_SMALL1_IDLE_ANIM_ID");
+constexpr AssetID STARMAN_SMALL1_IDLE_SPRITE_1 = AssetID("STARMAN_SMALL1_IDLE_SPRITE_1");
 // Walking (A = 200)
-constexpr int STARMAN_SMALL1_WALK_ANIM_ID = 16200;
-constexpr int STARMAN_SMALL1_WALK_SPRITE_1 = 16201;
-constexpr int STARMAN_SMALL1_WALK_SPRITE_2 = 16202;
-constexpr int STARMAN_SMALL1_WALK_SPRITE_3 = 16203;
+constexpr AssetID STARMAN_SMALL1_WALK_ANIM_ID = AssetID("STARMAN_SMALL1_WALK_ANIM_ID");
+constexpr AssetID STARMAN_SMALL1_WALK_SPRITE_1 = AssetID("STARMAN_SMALL1_WALK_SPRITE_1");
+constexpr AssetID STARMAN_SMALL1_WALK_SPRITE_2 = AssetID("STARMAN_SMALL1_WALK_SPRITE_2");
+constexpr AssetID STARMAN_SMALL1_WALK_SPRITE_3 = AssetID("STARMAN_SMALL1_WALK_SPRITE_3");
 // Skidding (A = 300)
-constexpr int STARMAN_SMALL1_SKID_ANIM_ID = 16300;
-constexpr int STARMAN_SMALL1_SKID_SPRITE_1 = 16301;
+constexpr AssetID STARMAN_SMALL1_SKID_ANIM_ID = AssetID("STARMAN_SMALL1_SKID_ANIM_ID");
+constexpr AssetID STARMAN_SMALL1_SKID_SPRITE_1 = AssetID("STARMAN_SMALL1_SKID_SPRITE_1");
 // Jumping (A = 400)
-constexpr int STARMAN_SMALL1_JUMP_ANIM_ID = 16400;
-constexpr int STARMAN_SMALL1_JUMP_SPRITE_1 = 16401;
+constexpr AssetID STARMAN_SMALL1_JUMP_ANIM_ID = AssetID("STARMAN_SMALL1_JUMP_ANIM_ID");
+constexpr AssetID STARMAN_SMALL1_JUMP_SPRITE_1 = AssetID("STARMAN_SMALL1_JUMP_SPRITE_1");
 // Flag pulling (A = 800)
-constexpr int STARMAN_SMALL1_FLAG_PULL_ANIM_ID = 16800;
-constexpr int STARMAN_SMALL1_FLAG_PULL_SPRITE_1 = 16801;
-constexpr int STARMAN_SMALL1_FLAG_PULL_SPRITE_2 = 16802;
+constexpr AssetID STARMAN_SMALL1_FLAG_PULL_ANIM_ID = AssetID("STARMAN_SMALL1_FLAG_PULL_ANIM_ID");
+constexpr AssetID STARMAN_SMALL1_FLAG_PULL_SPRITE_1 = AssetID("STARMAN_SMALL1_FLAG_PULL_SPRITE_1");
+constexpr AssetID STARMAN_SMALL1_FLAG_PULL_SPRITE_2 = AssetID("STARMAN_SMALL1_FLAG_PULL_SPRITE_2");
 // Swimming (A = 900)
-constexpr int STARMAN_SMALL1_SWIM_ANIM_ID = 16900;
-constexpr int STARMAN_SMALL1_SWIM_SPRITE_1 = 16901;
-constexpr int STARMAN_SMALL1_SWIM_SPRITE_2 = 16902;
-constexpr int STARMAN_SMALL1_SWIM_SPRITE_3 = 16903;
-constexpr int STARMAN_SMALL1_SWIM_SPRITE_4 = 16904;
+constexpr AssetID STARMAN_SMALL1_SWIM_ANIM_ID = AssetID("STARMAN_SMALL1_SWIM_ANIM_ID");
+constexpr AssetID STARMAN_SMALL1_SWIM_SPRITE_1 = AssetID("STARMAN_SMALL1_SWIM_SPRITE_1");
+constexpr AssetID STARMAN_SMALL1_SWIM_SPRITE_2 = AssetID("STARMAN_SMALL1_SWIM_SPRITE_2");
+constexpr AssetID STARMAN_SMALL1_SWIM_SPRITE_3 = AssetID("STARMAN_SMALL1_SWIM_SPRITE_3");
+constexpr AssetID STARMAN_SMALL1_SWIM_SPRITE_4 = AssetID("STARMAN_SMALL1_SWIM_SPRITE_4");
 
 // ---------------------------------
 // BIG STARMAN 1 (T = 7)
 // ---------------------------------
 // Running (A = 000)
-constexpr int STARMAN_BIG1_RUN_ANIM_ID = 17000; //reusing the same sprites but shorter deltatime
+constexpr AssetID STARMAN_BIG1_RUN_ANIM_ID = AssetID("STARMAN_BIG1_RUN_ANIM_ID"); //reusing the same sprites but shorter deltatime
 // Idle (A = 100)
-constexpr int STARMAN_BIG1_IDLE_ANIM_ID = 17100;
-constexpr int STARMAN_BIG1_IDLE_SPRITE_1 = 17101;
+constexpr AssetID STARMAN_BIG1_IDLE_ANIM_ID = AssetID("STARMAN_BIG1_IDLE_ANIM_ID");
+constexpr AssetID STARMAN_BIG1_IDLE_SPRITE_1 = AssetID("STARMAN_BIG1_IDLE_SPRITE_1");
 // Walking (A = 200)
-constexpr int STARMAN_BIG1_WALK_ANIM_ID = 17200;
-constexpr int STARMAN_BIG1_WALK_SPRITE_1 = 17201;
-constexpr int STARMAN_BIG1_WALK_SPRITE_2 = 17202;
-constexpr int STARMAN_BIG1_WALK_SPRITE_3 = 17203;
+constexpr AssetID STARMAN_BIG1_WALK_ANIM_ID = AssetID("STARMAN_BIG1_WALK_ANIM_ID");
+constexpr AssetID STARMAN_BIG1_WALK_SPRITE_1 = AssetID("STARMAN_BIG1_WALK_SPRITE_1");
+constexpr AssetID STARMAN_BIG1_WALK_SPRITE_2 = AssetID("STARMAN_BIG1_WALK_SPRITE_2");
+constexpr AssetID STARMAN_BIG1_WALK_SPRITE_3 = AssetID("STARMAN_BIG1_WALK_SPRITE_3");
 // Skidding (A = 300)
-constexpr int STARMAN_BIG1_SKID_ANIM_ID = 17300;
-constexpr int STARMAN_BIG1_SKID_SPRITE_1 = 17301;
+constexpr AssetID STARMAN_BIG1_SKID_ANIM_ID = AssetID("STARMAN_BIG1_SKID_ANIM_ID");
+constexpr AssetID STARMAN_BIG1_SKID_SPRITE_1 = AssetID("STARMAN_BIG1_SKID_SPRITE_1");
 // Jumping (A = 400)
-constexpr int STARMAN_BIG1_JUMP_ANIM_ID = 17400;
-constexpr int STARMAN_BIG1_JUMP_SPRITE_1 = 17401;
+constexpr AssetID STARMAN_BIG1_JUMP_ANIM_ID = AssetID("STARMAN_BIG1_JUMP_ANIM_ID");
+constexpr AssetID STARMAN_BIG1_JUMP_SPRITE_1 = AssetID("STARMAN_BIG1_JUMP_SPRITE_1");
 // Ducking (A = 500)
-constexpr int STARMAN_BIG1_DUCK_ANIM_ID = 17500;
-constexpr int STARMAN_BIG1_DUCK_SPRITE_1 = 17501;
+constexpr AssetID STARMAN_BIG1_DUCK_ANIM_ID = AssetID("STARMAN_BIG1_DUCK_ANIM_ID");
+constexpr AssetID STARMAN_BIG1_DUCK_SPRITE_1 = AssetID("STARMAN_BIG1_DUCK_SPRITE_1");
 // Flag pulling (A = 800)
-constexpr int STARMAN_BIG1_FLAG_PULL_ANIM_ID = 17800;
-constexpr int STARMAN_BIG1_FLAG_PULL_SPRITE_1 = 17801;
-constexpr int STARMAN_BIG1_FLAG_PULL_SPRITE_2 = 17802;
+constexpr AssetID STARMAN_BIG1_FLAG_PULL_ANIM_ID = AssetID("STARMAN_BIG1_FLAG_PULL_ANIM_ID");
+constexpr AssetID STARMAN_BIG1_FLAG_PULL_SPRITE_1 = AssetID("STARMAN_BIG1_FLAG_PULL_SPRITE_1");
+constexpr AssetID STARMAN_BIG1_FLAG_PULL_SPRITE_2 = AssetID("STARMAN_BIG1_FLAG_PULL_SPRITE_2");
 // Swimming (A = 900)
-constexpr int STARMAN_BIG1_SWIM_ANIM_ID = 17900;
-constexpr int STARMAN_BIG1_SWIM_SPRITE_1 = 17901;
-constexpr int STARMAN_BIG1_SWIM_SPRITE_2 = 17902;
-constexpr int STARMAN_BIG1_SWIM_SPRITE_3 = 17903;
-constexpr int STARMAN_BIG1_SWIM_SPRITE_4 = 17904;
+constexpr AssetID STARMAN_BIG1_SWIM_ANIM_ID = AssetID("STARMAN_BIG1_SWIM_ANIM_ID");
+constexpr AssetID STARMAN_BIG1_SWIM_SPRITE_1 = AssetID("STARMAN_BIG1_SWIM_SPRITE_1");
+constexpr AssetID STARMAN_BIG1_SWIM_SPRITE_2 = AssetID("STARMAN_BIG1_SWIM_SPRITE_2");
+constexpr AssetID STARMAN_BIG1_SWIM_SPRITE_3 = AssetID("STARMAN_BIG1_SWIM_SPRITE_3");
+constexpr AssetID STARMAN_BIG1_SWIM_SPRITE_4 = AssetID("STARMAN_BIG1_SWIM_SPRITE_4");
 
 // =================================================================
 // PALETTE 2 (OFFSET +30)
@@ -211,63 +212,48 @@ constexpr int STARMAN_BIG1_SWIM_SPRITE_4 = 17904;
 // ---------------------------------
 // SMALL STARMAN 2 (T = 6)
 // ---------------------------------
-constexpr int STARMAN_SMALL2_RUN_ANIM_ID = 16030;
 
-constexpr int STARMAN_SMALL2_IDLE_ANIM_ID = 16130;
-constexpr int STARMAN_SMALL2_IDLE_SPRITE_1 = 16131;
+constexpr AssetID STARMAN_SMALL2_IDLE_SPRITE_1 = AssetID("STARMAN_SMALL2_IDLE_SPRITE_1");
 
-constexpr int STARMAN_SMALL2_WALK_ANIM_ID = 16230;
-constexpr int STARMAN_SMALL2_WALK_SPRITE_1 = 16231;
-constexpr int STARMAN_SMALL2_WALK_SPRITE_2 = 16232;
-constexpr int STARMAN_SMALL2_WALK_SPRITE_3 = 16233;
+constexpr AssetID STARMAN_SMALL2_WALK_SPRITE_1 = AssetID("STARMAN_SMALL2_WALK_SPRITE_1");
+constexpr AssetID STARMAN_SMALL2_WALK_SPRITE_2 = AssetID("STARMAN_SMALL2_WALK_SPRITE_2");
+constexpr AssetID STARMAN_SMALL2_WALK_SPRITE_3 = AssetID("STARMAN_SMALL2_WALK_SPRITE_3");
 
-constexpr int STARMAN_SMALL2_SKID_ANIM_ID = 16330;
-constexpr int STARMAN_SMALL2_SKID_SPRITE_1 = 16331;
+constexpr AssetID STARMAN_SMALL2_SKID_SPRITE_1 = AssetID("STARMAN_SMALL2_SKID_SPRITE_1");
 
-constexpr int STARMAN_SMALL2_JUMP_ANIM_ID = 16430;
-constexpr int STARMAN_SMALL2_JUMP_SPRITE_1 = 16431;
+constexpr AssetID STARMAN_SMALL2_JUMP_SPRITE_1 = AssetID("STARMAN_SMALL2_JUMP_SPRITE_1");
 
-constexpr int STARMAN_SMALL2_FLAG_PULL_ANIM_ID = 16830;
-constexpr int STARMAN_SMALL2_FLAG_PULL_SPRITE_1 = 16831;
-constexpr int STARMAN_SMALL2_FLAG_PULL_SPRITE_2 = 16832;
+constexpr AssetID STARMAN_SMALL2_FLAG_PULL_SPRITE_1 = AssetID("STARMAN_SMALL2_FLAG_PULL_SPRITE_1");
+constexpr AssetID STARMAN_SMALL2_FLAG_PULL_SPRITE_2 = AssetID("STARMAN_SMALL2_FLAG_PULL_SPRITE_2");
 
-constexpr int STARMAN_SMALL2_SWIM_ANIM_ID = 16930;
-constexpr int STARMAN_SMALL2_SWIM_SPRITE_1 = 16931;
-constexpr int STARMAN_SMALL2_SWIM_SPRITE_2 = 16932;
-constexpr int STARMAN_SMALL2_SWIM_SPRITE_3 = 16933;
-constexpr int STARMAN_SMALL2_SWIM_SPRITE_4 = 16934;
+constexpr AssetID STARMAN_SMALL2_SWIM_SPRITE_1 = AssetID("STARMAN_SMALL2_SWIM_SPRITE_1");
+constexpr AssetID STARMAN_SMALL2_SWIM_SPRITE_2 = AssetID("STARMAN_SMALL2_SWIM_SPRITE_2");
+constexpr AssetID STARMAN_SMALL2_SWIM_SPRITE_3 = AssetID("STARMAN_SMALL2_SWIM_SPRITE_3");
+constexpr AssetID STARMAN_SMALL2_SWIM_SPRITE_4 = AssetID("STARMAN_SMALL2_SWIM_SPRITE_4");
 
 // ---------------------------------
 // BIG STARMAN 2 (T = 7)
 // ---------------------------------
-constexpr int STARMAN_BIG2_RUN_ANIM_ID = 17030;
 
-constexpr int STARMAN_BIG2_IDLE_ANIM_ID = 17130;
-constexpr int STARMAN_BIG2_IDLE_SPRITE_1 = 17131;
+constexpr AssetID STARMAN_BIG2_IDLE_SPRITE_1 = AssetID("STARMAN_BIG2_IDLE_SPRITE_1");
 
-constexpr int STARMAN_BIG2_WALK_ANIM_ID = 17230;
-constexpr int STARMAN_BIG2_WALK_SPRITE_1 = 17231;
-constexpr int STARMAN_BIG2_WALK_SPRITE_2 = 17232;
-constexpr int STARMAN_BIG2_WALK_SPRITE_3 = 17233;
+constexpr AssetID STARMAN_BIG2_WALK_SPRITE_1 = AssetID("STARMAN_BIG2_WALK_SPRITE_1");
+constexpr AssetID STARMAN_BIG2_WALK_SPRITE_2 = AssetID("STARMAN_BIG2_WALK_SPRITE_2");
+constexpr AssetID STARMAN_BIG2_WALK_SPRITE_3 = AssetID("STARMAN_BIG2_WALK_SPRITE_3");
 
-constexpr int STARMAN_BIG2_SKID_ANIM_ID = 17330;
-constexpr int STARMAN_BIG2_SKID_SPRITE_1 = 17331;
+constexpr AssetID STARMAN_BIG2_SKID_SPRITE_1 = AssetID("STARMAN_BIG2_SKID_SPRITE_1");
 
-constexpr int STARMAN_BIG2_JUMP_ANIM_ID = 17430;
-constexpr int STARMAN_BIG2_JUMP_SPRITE_1 = 17431;
+constexpr AssetID STARMAN_BIG2_JUMP_SPRITE_1 = AssetID("STARMAN_BIG2_JUMP_SPRITE_1");
 
-constexpr int STARMAN_BIG2_DUCK_ANIM_ID = 17530;
-constexpr int STARMAN_BIG2_DUCK_SPRITE_1 = 17531;
+constexpr AssetID STARMAN_BIG2_DUCK_SPRITE_1 = AssetID("STARMAN_BIG2_DUCK_SPRITE_1");
 
-constexpr int STARMAN_BIG2_FLAG_PULL_ANIM_ID = 17830;
-constexpr int STARMAN_BIG2_FLAG_PULL_SPRITE_1 = 17831;
-constexpr int STARMAN_BIG2_FLAG_PULL_SPRITE_2 = 17832;
+constexpr AssetID STARMAN_BIG2_FLAG_PULL_SPRITE_1 = AssetID("STARMAN_BIG2_FLAG_PULL_SPRITE_1");
+constexpr AssetID STARMAN_BIG2_FLAG_PULL_SPRITE_2 = AssetID("STARMAN_BIG2_FLAG_PULL_SPRITE_2");
 
-constexpr int STARMAN_BIG2_SWIM_ANIM_ID = 17930;
-constexpr int STARMAN_BIG2_SWIM_SPRITE_1 = 17931;
-constexpr int STARMAN_BIG2_SWIM_SPRITE_2 = 17932;
-constexpr int STARMAN_BIG2_SWIM_SPRITE_3 = 17933;
-constexpr int STARMAN_BIG2_SWIM_SPRITE_4 = 17934;
+constexpr AssetID STARMAN_BIG2_SWIM_SPRITE_1 = AssetID("STARMAN_BIG2_SWIM_SPRITE_1");
+constexpr AssetID STARMAN_BIG2_SWIM_SPRITE_2 = AssetID("STARMAN_BIG2_SWIM_SPRITE_2");
+constexpr AssetID STARMAN_BIG2_SWIM_SPRITE_3 = AssetID("STARMAN_BIG2_SWIM_SPRITE_3");
+constexpr AssetID STARMAN_BIG2_SWIM_SPRITE_4 = AssetID("STARMAN_BIG2_SWIM_SPRITE_4");
 
 
 // =================================================================
@@ -277,344 +263,330 @@ constexpr int STARMAN_BIG2_SWIM_SPRITE_4 = 17934;
 // ---------------------------------
 // SMALL STARMAN 3 (T = 6)
 // ---------------------------------
-constexpr int STARMAN_SMALL3_RUN_ANIM_ID = 16060;
 
-constexpr int STARMAN_SMALL3_IDLE_ANIM_ID = 16160;
-constexpr int STARMAN_SMALL3_IDLE_SPRITE_1 = 16161;
 
-constexpr int STARMAN_SMALL3_WALK_ANIM_ID = 16260;
-constexpr int STARMAN_SMALL3_WALK_SPRITE_1 = 16261;
-constexpr int STARMAN_SMALL3_WALK_SPRITE_2 = 16262;
-constexpr int STARMAN_SMALL3_WALK_SPRITE_3 = 16263;
+constexpr AssetID STARMAN_SMALL3_IDLE_SPRITE_1 = AssetID("STARMAN_SMALL3_IDLE_SPRITE_1");
 
-constexpr int STARMAN_SMALL3_SKID_ANIM_ID = 16360;
-constexpr int STARMAN_SMALL3_SKID_SPRITE_1 = 16361;
+constexpr AssetID STARMAN_SMALL3_WALK_SPRITE_1 = AssetID("STARMAN_SMALL3_WALK_SPRITE_1");
+constexpr AssetID STARMAN_SMALL3_WALK_SPRITE_2 = AssetID("STARMAN_SMALL3_WALK_SPRITE_2");
+constexpr AssetID STARMAN_SMALL3_WALK_SPRITE_3 = AssetID("STARMAN_SMALL3_WALK_SPRITE_3");
 
-constexpr int STARMAN_SMALL3_JUMP_ANIM_ID = 16460;
-constexpr int STARMAN_SMALL3_JUMP_SPRITE_1 = 16461;
+constexpr AssetID STARMAN_SMALL3_SKID_SPRITE_1 = AssetID("STARMAN_SMALL3_SKID_SPRITE_1");
 
-constexpr int STARMAN_SMALL3_FLAG_PULL_ANIM_ID = 16860;
-constexpr int STARMAN_SMALL3_FLAG_PULL_SPRITE_1 = 16861;
-constexpr int STARMAN_SMALL3_FLAG_PULL_SPRITE_2 = 16862;
+constexpr AssetID STARMAN_SMALL3_JUMP_SPRITE_1 = AssetID("STARMAN_SMALL3_JUMP_SPRITE_1");
 
-constexpr int STARMAN_SMALL3_SWIM_ANIM_ID = 16960;
-constexpr int STARMAN_SMALL3_SWIM_SPRITE_1 = 16961;
-constexpr int STARMAN_SMALL3_SWIM_SPRITE_2 = 16962;
-constexpr int STARMAN_SMALL3_SWIM_SPRITE_3 = 16963;
-constexpr int STARMAN_SMALL3_SWIM_SPRITE_4 = 16964;
+constexpr AssetID STARMAN_SMALL3_FLAG_PULL_SPRITE_1 = AssetID("STARMAN_SMALL3_FLAG_PULL_SPRITE_1");
+constexpr AssetID STARMAN_SMALL3_FLAG_PULL_SPRITE_2 = AssetID("STARMAN_SMALL3_FLAG_PULL_SPRITE_2");
+
+constexpr AssetID STARMAN_SMALL3_SWIM_SPRITE_1 = AssetID("STARMAN_SMALL3_SWIM_SPRITE_1");
+constexpr AssetID STARMAN_SMALL3_SWIM_SPRITE_2 = AssetID("STARMAN_SMALL3_SWIM_SPRITE_2");
+constexpr AssetID STARMAN_SMALL3_SWIM_SPRITE_3 = AssetID("STARMAN_SMALL3_SWIM_SPRITE_3");
+constexpr AssetID STARMAN_SMALL3_SWIM_SPRITE_4 = AssetID("STARMAN_SMALL3_SWIM_SPRITE_4");
 
 // ---------------------------------
 // BIG STARMAN 3 (T = 7)
 // ---------------------------------
-constexpr int STARMAN_BIG3_RUN_ANIM_ID = 17060;
 
-constexpr int STARMAN_BIG3_IDLE_ANIM_ID = 17160;
-constexpr int STARMAN_BIG3_IDLE_SPRITE_1 = 17161;
+constexpr AssetID STARMAN_BIG3_IDLE_SPRITE_1 = AssetID("STARMAN_BIG3_IDLE_SPRITE_1");
 
-constexpr int STARMAN_BIG3_WALK_ANIM_ID = 17260;
-constexpr int STARMAN_BIG3_WALK_SPRITE_1 = 17261;
-constexpr int STARMAN_BIG3_WALK_SPRITE_2 = 17262;
-constexpr int STARMAN_BIG3_WALK_SPRITE_3 = 17263;
+constexpr AssetID STARMAN_BIG3_WALK_SPRITE_1 = AssetID("STARMAN_BIG3_WALK_SPRITE_1");
+constexpr AssetID STARMAN_BIG3_WALK_SPRITE_2 = AssetID("STARMAN_BIG3_WALK_SPRITE_2");
+constexpr AssetID STARMAN_BIG3_WALK_SPRITE_3 = AssetID("STARMAN_BIG3_WALK_SPRITE_3");
 
-constexpr int STARMAN_BIG3_SKID_ANIM_ID = 17360;
-constexpr int STARMAN_BIG3_SKID_SPRITE_1 = 17361;
+constexpr AssetID STARMAN_BIG3_SKID_SPRITE_1 = AssetID("STARMAN_BIG3_SKID_SPRITE_1");
 
-constexpr int STARMAN_BIG3_JUMP_ANIM_ID = 17460;
-constexpr int STARMAN_BIG3_JUMP_SPRITE_1 = 17461;
+constexpr AssetID STARMAN_BIG3_JUMP_SPRITE_1 = AssetID("STARMAN_BIG3_JUMP_SPRITE_1");
 
-constexpr int STARMAN_BIG3_DUCK_ANIM_ID = 17560;
-constexpr int STARMAN_BIG3_DUCK_SPRITE_1 = 17561;
+constexpr AssetID STARMAN_BIG3_DUCK_SPRITE_1 = AssetID("STARMAN_BIG3_DUCK_SPRITE_1");
 
-constexpr int STARMAN_BIG3_FLAG_PULL_ANIM_ID = 17860;
-constexpr int STARMAN_BIG3_FLAG_PULL_SPRITE_1 = 17861;
-constexpr int STARMAN_BIG3_FLAG_PULL_SPRITE_2 = 17862;
+constexpr AssetID STARMAN_BIG3_FLAG_PULL_SPRITE_1 = AssetID("STARMAN_BIG3_FLAG_PULL_SPRITE_1");
+constexpr AssetID STARMAN_BIG3_FLAG_PULL_SPRITE_2 = AssetID("STARMAN_BIG3_FLAG_PULL_SPRITE_2");
 
-constexpr int STARMAN_BIG3_SWIM_ANIM_ID = 17960;
-constexpr int STARMAN_BIG3_SWIM_SPRITE_1 = 17961;
-constexpr int STARMAN_BIG3_SWIM_SPRITE_2 = 17962;
-constexpr int STARMAN_BIG3_SWIM_SPRITE_3 = 17963;
-constexpr int STARMAN_BIG3_SWIM_SPRITE_4 = 17964;
+constexpr AssetID STARMAN_BIG3_SWIM_SPRITE_1 = AssetID("STARMAN_BIG3_SWIM_SPRITE_1");
+constexpr AssetID STARMAN_BIG3_SWIM_SPRITE_2 = AssetID("STARMAN_BIG3_SWIM_SPRITE_2");
+constexpr AssetID STARMAN_BIG3_SWIM_SPRITE_3 = AssetID("STARMAN_BIG3_SWIM_SPRITE_3");
+constexpr AssetID STARMAN_BIG3_SWIM_SPRITE_4 = AssetID("STARMAN_BIG3_SWIM_SPRITE_4");
 
 // ==========================================
 // ENEMIES (E = 2)
 // ==========================================
-constexpr int OVERWORLD_ENEMY_TEX_ID = 20000;
-constexpr int UNDERGROUND_ENEMY_TEX_ID = 20001;
-constexpr int CASTLE_ENEMY_TEX_ID = 20002;
-constexpr int UNDERWATER_ENEMY_TEX_ID = 20003;
+constexpr AssetID OVERWORLD_ENEMY_TEX_ID = AssetID("OVERWORLD_ENEMY_TEX_ID");
+constexpr AssetID UNDERGROUND_ENEMY_TEX_ID = AssetID("UNDERGROUND_ENEMY_TEX_ID");
+constexpr AssetID CASTLE_ENEMY_TEX_ID = AssetID("CASTLE_ENEMY_TEX_ID");
+constexpr AssetID UNDERWATER_ENEMY_TEX_ID = AssetID("UNDERWATER_ENEMY_TEX_ID");
 
 // ---------------------------------
 // GOOMBA (T = 1)
 // ---------------------------------
 // Walking (A = 200)
-constexpr int GOOMBA_WALK_ANIM_ID = 21200;
-constexpr int GOOMBA_WALK_SPRITE_1 = 21201;
-constexpr int GOOMBA_WALK_SPRITE_2 = 21202;
+constexpr AssetID GOOMBA_WALK_ANIM_ID = AssetID("GOOMBA_WALK_ANIM_ID");
+constexpr AssetID GOOMBA_WALK_SPRITE_1 = AssetID("GOOMBA_WALK_SPRITE_1");
+constexpr AssetID GOOMBA_WALK_SPRITE_2 = AssetID("GOOMBA_WALK_SPRITE_2");
 
 // Dead (A = 700)
-constexpr int GOOMBA_DEAD_ANIM_ID = 21700;
-constexpr int GOOMBA_DEAD_SPRITE_1 = 21701;
+constexpr AssetID GOOMBA_DEAD_ANIM_ID = AssetID("GOOMBA_DEAD_ANIM_ID");
+constexpr AssetID GOOMBA_DEAD_SPRITE_1 = AssetID("GOOMBA_DEAD_SPRITE_1");
 
 // ---------------------------------
 // KOOPA (T = 2)
 // ---------------------------------
 // Walking (A = 200)
-constexpr int KOOPA_WALK_ANIM_ID = 22200;
-constexpr int KOOPA_WALK_SPRITE_1 = 22201;
-constexpr int KOOPA_WALK_SPRITE_2 = 22202;
+constexpr AssetID KOOPA_WALK_ANIM_ID = AssetID("KOOPA_WALK_ANIM_ID");
+constexpr AssetID KOOPA_WALK_SPRITE_1 = AssetID("KOOPA_WALK_SPRITE_1");
+constexpr AssetID KOOPA_WALK_SPRITE_2 = AssetID("KOOPA_WALK_SPRITE_2");
 
 // ---------------------------------
 // WINGED KOOPA (T = 3)
 // ---------------------------------
 // Walking/Flying (A = 200)
-constexpr int WINGED_KOOPA_FLY_ANIM_ID = 23200;
-constexpr int WINGED_KOOPA_FLY_SPRITE_1 = 23201;
-constexpr int WINGED_KOOPA_FLY_SPRITE_2 = 23202;
+constexpr AssetID WINGED_KOOPA_FLY_ANIM_ID = AssetID("WINGED_KOOPA_FLY_ANIM_ID");
+constexpr AssetID WINGED_KOOPA_FLY_SPRITE_1 = AssetID("WINGED_KOOPA_FLY_SPRITE_1");
+constexpr AssetID WINGED_KOOPA_FLY_SPRITE_2 = AssetID("WINGED_KOOPA_FLY_SPRITE_2");
 
 // ---------------------------------
 // HIDING KOOPA (T = 4)
 // ---------------------------------
 // Idle/Hiding (A = 100)
-constexpr int HIDING_KOOPA_HIDE_ANIM_ID = 24100;
-constexpr int HIDING_KOOPA_HIDE_SPRITE = 24101;
+constexpr AssetID HIDING_KOOPA_HIDE_ANIM_ID = AssetID("HIDING_KOOPA_HIDE_ANIM_ID");
+constexpr AssetID HIDING_KOOPA_HIDE_SPRITE = AssetID("HIDING_KOOPA_HIDE_SPRITE");
 
 // Walking/Spinning (A = 200)
-constexpr int HIDING_KOOPA_SPIN_ANIM_ID = 24200;
-constexpr int HIDING_KOOPA_SPIN_SPRITE_1 = 24201;
-constexpr int HIDING_KOOPA_SPIN_SPRITE_2 = 24202;
+constexpr AssetID HIDING_KOOPA_SPIN_ANIM_ID = AssetID("HIDING_KOOPA_SPIN_ANIM_ID");
+constexpr AssetID HIDING_KOOPA_SPIN_SPRITE_1 = AssetID("HIDING_KOOPA_SPIN_SPRITE_1");
+constexpr AssetID HIDING_KOOPA_SPIN_SPRITE_2 = AssetID("HIDING_KOOPA_SPIN_SPRITE_2");
 
 // Dead (A = 700)
-constexpr int KOOPA_DEAD_ANIM_ID = 24700;
-constexpr int KOOPA_DEAD_SPRITE = 24701;
+constexpr AssetID KOOPA_DEAD_ANIM_ID = AssetID("KOOPA_DEAD_ANIM_ID");
+constexpr AssetID KOOPA_DEAD_SPRITE = AssetID("KOOPA_DEAD_SPRITE");
 
 // ---------------------------------
 // CHEEP CHEEPS (T = 5)
 // ---------------------------------
 // Red (A = 100)
-constexpr int RED_CHEEP_ANIM = 25100;
-constexpr int RED_CHEEP_SPRITE_1 = 25101;
-constexpr int RED_CHEEP_SPRITE_2 = 25102;
+constexpr AssetID RED_CHEEP_ANIM = AssetID("RED_CHEEP_ANIM");
+constexpr AssetID RED_CHEEP_SPRITE_1 = AssetID("RED_CHEEP_SPRITE_1");
+constexpr AssetID RED_CHEEP_SPRITE_2 = AssetID("RED_CHEEP_SPRITE_2");
 
 // Water (A = 200)
-constexpr int WATER_CHEEP_ANIM = 25200;
-constexpr int WATER_CHEEP_SPRITE_1 = 25201;
-constexpr int WATER_CHEEP_SPRITE_2 = 25202;
+constexpr AssetID WATER_CHEEP_ANIM = AssetID("WATER_CHEEP_ANIM");
+constexpr AssetID WATER_CHEEP_SPRITE_1 = AssetID("WATER_CHEEP_SPRITE_1");
+constexpr AssetID WATER_CHEEP_SPRITE_2 = AssetID("WATER_CHEEP_SPRITE_2");
 
 // ---------------------------------
 // BLOOPERS (T = 6)
 // ---------------------------------
 // Swim (A = 100)
-constexpr int WATER_BLOOPER_SWIM_ANIM = 26100;
-constexpr int WATER_BLOOPER_SWIM_SPRITE_1 = 26101;
+constexpr AssetID WATER_BLOOPER_SWIM_ANIM = AssetID("WATER_BLOOPER_SWIM_ANIM");
+constexpr AssetID WATER_BLOOPER_SWIM_SPRITE_1 = AssetID("WATER_BLOOPER_SWIM_SPRITE_1");
 
 // Idle (A = 200)
-constexpr int WATER_BLOOPER_IDLE_ANIM = 26200;
-constexpr int WATER_BLOOPER_IDLE_SPRITE_1 = 26201;
+constexpr AssetID WATER_BLOOPER_IDLE_ANIM = AssetID("WATER_BLOOPER_IDLE_ANIM");
+constexpr AssetID WATER_BLOOPER_IDLE_SPRITE_1 = AssetID("WATER_BLOOPER_IDLE_SPRITE_1");
 
 
 // ==========================================
 // BLOCKS (E = 3)
 // ==========================================
-constexpr int BLOCKS_OVERWORLD_TEX_ID = 30000;
-constexpr int BLOCKS_UNDERGROUND_TEX_ID = 30001;
-constexpr int BLOCKS_CASTLE_TEX_ID = 30002;
-constexpr int BLOCKS_UNDERWATER_TEX_ID = 30003;
+constexpr AssetID BLOCKS_OVERWORLD_TEX_ID = AssetID("BLOCKS_OVERWORLD_TEX_ID");
+constexpr AssetID BLOCKS_UNDERGROUND_TEX_ID = AssetID("BLOCKS_UNDERGROUND_TEX_ID");
+constexpr AssetID BLOCKS_CASTLE_TEX_ID = AssetID("BLOCKS_CASTLE_TEX_ID");
+constexpr AssetID BLOCKS_UNDERWATER_TEX_ID = AssetID("BLOCKS_UNDERWATER_TEX_ID");
 
 // ---------------------------------
 // QUESTION BLOCK (T = 1)
 // ---------------------------------
 // Idle (A = 100)
-constexpr int QUESTION_BLOCK_IDLE_ANIM_ID = 31100;
-constexpr int QUESTION_BLOCK_IDLE_SPRITE_1 = 31101;
-constexpr int QUESTION_BLOCK_IDLE_SPRITE_2 = 31102;
-constexpr int QUESTION_BLOCK_IDLE_SPRITE_3 = 31103;
+constexpr AssetID QUESTION_BLOCK_IDLE_ANIM_ID = AssetID("QUESTION_BLOCK_IDLE_ANIM_ID");
+constexpr AssetID QUESTION_BLOCK_IDLE_SPRITE_1 = AssetID("QUESTION_BLOCK_IDLE_SPRITE_1");
+constexpr AssetID QUESTION_BLOCK_IDLE_SPRITE_2 = AssetID("QUESTION_BLOCK_IDLE_SPRITE_2");
+constexpr AssetID QUESTION_BLOCK_IDLE_SPRITE_3 = AssetID("QUESTION_BLOCK_IDLE_SPRITE_3");
 
 // Blocked/Empty (A = 700)
-constexpr int BLOCK_EMPTY_ANIM_ID = 31700;
-constexpr int BLOCK_EMPTY_SPRITE_1 = 31701;
+constexpr AssetID BLOCK_EMPTY_ANIM_ID = AssetID("BLOCK_EMPTY_ANIM_ID");
+constexpr AssetID BLOCK_EMPTY_SPRITE_1 = AssetID("BLOCK_EMPTY_SPRITE_1");
 
 // ---------------------------------
 // BRICK (T = 2)
 // ---------------------------------
 // Idle (A = 100)
-constexpr int BRICK_IDLE_ANIM_ID = 32100;
-constexpr int BRICK_IDLE_SPRITE_1 = 32101;
+constexpr AssetID BRICK_IDLE_ANIM_ID = AssetID("BRICK_IDLE_ANIM_ID");
+constexpr AssetID BRICK_IDLE_SPRITE_1 = AssetID("BRICK_IDLE_SPRITE_1");
 
 // Explode (A = 700)
-constexpr int BRICK_EXPLODE_SPRITE_1 = 32701;
-constexpr int BRICK_EXPLODE_SPRITE_2 = 32702;
-constexpr int BRICK_EXPLODE_SPRITE_3 = 32703;
-constexpr int BRICK_EXPLODE_SPRITE_4 = 32704;
+constexpr AssetID BRICK_EXPLODE_SPRITE_1 = AssetID("BRICK_EXPLODE_SPRITE_1");
+constexpr AssetID BRICK_EXPLODE_SPRITE_2 = AssetID("BRICK_EXPLODE_SPRITE_2");
+constexpr AssetID BRICK_EXPLODE_SPRITE_3 = AssetID("BRICK_EXPLODE_SPRITE_3");
+constexpr AssetID BRICK_EXPLODE_SPRITE_4 = AssetID("BRICK_EXPLODE_SPRITE_4");
 
 // Bridge (T = 4) 
-constexpr int BRIDGE_ANIM_ID = 34100;
-constexpr int BRIDGE_SPRITE_1 = 34101;
+constexpr AssetID BRIDGE_ANIM_ID = AssetID("BRIDGE_ANIM_ID");
+constexpr AssetID BRIDGE_SPRITE_1 = AssetID("BRIDGE_SPRITE_1");
 
 // ==========================================
 // ITEMS (E = 4)
 // ==========================================
-constexpr int OVERWORLD_ITEMS_TEX_ID = 40000;
-constexpr int UNDERGROUND_ITEMS_TEX_ID = 40001;
-constexpr int CASTLE_ITEMS_TEX_ID = 40002;
-constexpr int UNDERWATER_ITEMS_TEX_ID = 40003;
+constexpr AssetID OVERWORLD_ITEMS_TEX_ID = AssetID("OVERWORLD_ITEMS_TEX_ID");
+constexpr AssetID UNDERGROUND_ITEMS_TEX_ID = AssetID("UNDERGROUND_ITEMS_TEX_ID");
+constexpr AssetID CASTLE_ITEMS_TEX_ID = AssetID("CASTLE_ITEMS_TEX_ID");
+constexpr AssetID UNDERWATER_ITEMS_TEX_ID = AssetID("UNDERWATER_ITEMS_TEX_ID");
 
 // Coin (T = 1) -> Walking/Spinning (A = 200)
-constexpr int COIN_SPIN_ANIM_ID = 41200;
-constexpr int COIN_SPIN_SPRITE_1 = 41201;
-constexpr int COIN_SPIN_SPRITE_2 = 41202;
-constexpr int COIN_SPIN_SPRITE_3 = 41203;
-constexpr int COIN_SPIN_SPRITE_4 = 41204;
+constexpr AssetID COIN_SPIN_ANIM_ID = AssetID("COIN_SPIN_ANIM_ID");
+constexpr AssetID COIN_SPIN_SPRITE_1 = AssetID("COIN_SPIN_SPRITE_1");
+constexpr AssetID COIN_SPIN_SPRITE_2 = AssetID("COIN_SPIN_SPRITE_2");
+constexpr AssetID COIN_SPIN_SPRITE_3 = AssetID("COIN_SPIN_SPRITE_3");
+constexpr AssetID COIN_SPIN_SPRITE_4 = AssetID("COIN_SPIN_SPRITE_4");
 
 // Mushroom (T = 2) -> Walking (A = 200)
-constexpr int MUSHROOM_ANIM_ID = 42200;
-constexpr int MUSHROOM_SPRITE_1 = 42201;
+constexpr AssetID MUSHROOM_ANIM_ID = AssetID("MUSHROOM_ANIM_ID");
+constexpr AssetID MUSHROOM_SPRITE_1 = AssetID("MUSHROOM_SPRITE_1");
 
 // Flower (T = 3) -> Idle (A = 100)
-constexpr int FLOWER_IDLE_ANIM_ID = 43100;
-constexpr int FLOWER_IDLE_SPRITE_1 = 43101;
-constexpr int FLOWER_IDLE_SPRITE_2 = 43102;
-constexpr int FLOWER_IDLE_SPRITE_3 = 43103;
-constexpr int FLOWER_IDLE_SPRITE_4 = 43104;
+constexpr AssetID FLOWER_IDLE_ANIM_ID = AssetID("FLOWER_IDLE_ANIM_ID");
+constexpr AssetID FLOWER_IDLE_SPRITE_1 = AssetID("FLOWER_IDLE_SPRITE_1");
+constexpr AssetID FLOWER_IDLE_SPRITE_2 = AssetID("FLOWER_IDLE_SPRITE_2");
+constexpr AssetID FLOWER_IDLE_SPRITE_3 = AssetID("FLOWER_IDLE_SPRITE_3");
+constexpr AssetID FLOWER_IDLE_SPRITE_4 = AssetID("FLOWER_IDLE_SPRITE_4");
 
 // Star (T = 4) -> Idle (A = 100)
-constexpr int STAR_IDLE_ANIM_ID = 44100;
-constexpr int STAR_IDLE_SPRITE_1 = 44101;
-constexpr int STAR_IDLE_SPRITE_2 = 44102;
-constexpr int STAR_IDLE_SPRITE_3 = 44103;
-constexpr int STAR_IDLE_SPRITE_4 = 44104;
+constexpr AssetID STAR_IDLE_ANIM_ID = AssetID("STAR_IDLE_ANIM_ID");
+constexpr AssetID STAR_IDLE_SPRITE_1 = AssetID("STAR_IDLE_SPRITE_1");
+constexpr AssetID STAR_IDLE_SPRITE_2 = AssetID("STAR_IDLE_SPRITE_2");
+constexpr AssetID STAR_IDLE_SPRITE_3 = AssetID("STAR_IDLE_SPRITE_3");
+constexpr AssetID STAR_IDLE_SPRITE_4 = AssetID("STAR_IDLE_SPRITE_4");
 
 // Flag (T = 5) -> Idle (A = 100)
-constexpr int FLAG_IDLE_ANIM_ID = 45100;
-constexpr int FLAG_IDLE_SPRITE_1 = 45101;
+constexpr AssetID FLAG_IDLE_ANIM_ID = AssetID("FLAG_IDLE_ANIM_ID");
+constexpr AssetID FLAG_IDLE_SPRITE_1 = AssetID("FLAG_IDLE_SPRITE_1");
 
 // Crown / Jetpack (T = 6) -> Idle (A = 100)
-constexpr int CROWN_TEX_ID = 46000;
-constexpr int CROWN_IDLE_ANIM_ID = 46100;
-constexpr int CROWN_WEAR_ANIM_ID = 46110;
-constexpr int CROWN_BIG_SPRITE = 46101;
-constexpr int CROWN_SMALL_SPRITE = 46102;
+constexpr AssetID CROWN_TEX_ID = AssetID("CROWN_TEX_ID");
+constexpr AssetID CROWN_IDLE_ANIM_ID = AssetID("CROWN_IDLE_ANIM_ID");
+constexpr AssetID CROWN_WEAR_ANIM_ID = AssetID("CROWN_WEAR_ANIM_ID");
+constexpr AssetID CROWN_BIG_SPRITE = AssetID("CROWN_BIG_SPRITE");
+constexpr AssetID CROWN_SMALL_SPRITE = AssetID("CROWN_SMALL_SPRITE");
 //Axe (T = 7) 
-constexpr int AXE_ANIM_ID = 47100;
-constexpr int AXE_SPRITE_1 = 47101;
+constexpr AssetID AXE_ANIM_ID = AssetID("AXE_ANIM_ID");
+constexpr AssetID AXE_SPRITE_1 = AssetID("AXE_SPRITE_1");
 
 
 // ==========================================
 // HUD ELEMENTS (E = 5)
 // ==========================================
-constexpr int HUDCOIN_TEX_ID = 50000;
-constexpr int HUDCOIN_SPRITE_ID = 51101;
-constexpr int HUDMARIO_SPRITE_ID = 52101;
+constexpr AssetID HUDCOIN_TEX_ID = AssetID("HUDCOIN_TEX_ID");
+constexpr AssetID HUDCOIN_SPRITE_ID = AssetID("HUDCOIN_SPRITE_ID");
+constexpr AssetID HUDMARIO_SPRITE_ID = AssetID("HUDMARIO_SPRITE_ID");
 
 
 // ==========================================
 // FIREBALL (E = 6)
 // ==========================================
-constexpr int FIREBALL_TEX_ID = 60000;
+constexpr AssetID FIREBALL_TEX_ID = AssetID("FIREBALL_TEX_ID");
 
 // Walking/Bouncing (A = 200)
-constexpr int FIREBALL_BOUNCE_ANIM_ID = 61200;
-constexpr int FIREBALL_BOUNCE_SPRITE_1 = 61201;
-constexpr int FIREBALL_BOUNCE_SPRITE_2 = 61202;
-constexpr int FIREBALL_BOUNCE_SPRITE_3 = 61203;
-constexpr int FIREBALL_BOUNCE_SPRITE_4 = 61204;
+constexpr AssetID FIREBALL_BOUNCE_ANIM_ID = AssetID("FIREBALL_BOUNCE_ANIM_ID");
+constexpr AssetID FIREBALL_BOUNCE_SPRITE_1 = AssetID("FIREBALL_BOUNCE_SPRITE_1");
+constexpr AssetID FIREBALL_BOUNCE_SPRITE_2 = AssetID("FIREBALL_BOUNCE_SPRITE_2");
+constexpr AssetID FIREBALL_BOUNCE_SPRITE_3 = AssetID("FIREBALL_BOUNCE_SPRITE_3");
+constexpr AssetID FIREBALL_BOUNCE_SPRITE_4 = AssetID("FIREBALL_BOUNCE_SPRITE_4");
 
 // Collision/Explode (A = 300)
-constexpr int FIREBALL_COLLIDE_ANIM_ID = 61300;
-constexpr int FIREBALL_COLLIDE_SPRITE_1 = 61301;
-constexpr int FIREBALL_COLLIDE_SPRITE_2 = 61302;
-constexpr int FIREBALL_COLLIDE_SPRITE_3 = 61303;
+constexpr AssetID FIREBALL_COLLIDE_ANIM_ID = AssetID("FIREBALL_COLLIDE_ANIM_ID");
+constexpr AssetID FIREBALL_COLLIDE_SPRITE_1 = AssetID("FIREBALL_COLLIDE_SPRITE_1");
+constexpr AssetID FIREBALL_COLLIDE_SPRITE_2 = AssetID("FIREBALL_COLLIDE_SPRITE_2");
+constexpr AssetID FIREBALL_COLLIDE_SPRITE_3 = AssetID("FIREBALL_COLLIDE_SPRITE_3");
 
 // Castle FLAG
-constexpr int CASTLE_FLAG_SPRITE_1 = 61401;
+constexpr AssetID CASTLE_FLAG_SPRITE_1 = AssetID("CASTLE_FLAG_SPRITE_1");
 
 
 
 // ==========================================
 // BOWSER (E = 8)
 // ==========================================
-constexpr int BOWSER_TEX_ID = 80000; // Fixed from 81000 to prevent internal overlap
+constexpr AssetID BOWSER_TEX_ID = AssetID("BOWSER_TEX_ID"); // Fixed from 81000 to prevent internal overlap
 
 // WALKING (A = 100)
-constexpr int BOWSER_WALK_ANIM_ID = 81100;
-constexpr int BOWSER_WALK_SPRITE_1 = 81101;
-constexpr int BOWSER_WALK_SPRITE_2 = 81102;
+constexpr AssetID BOWSER_WALK_ANIM_ID = AssetID("BOWSER_WALK_ANIM_ID");
+constexpr AssetID BOWSER_WALK_SPRITE_1 = AssetID("BOWSER_WALK_SPRITE_1");
+constexpr AssetID BOWSER_WALK_SPRITE_2 = AssetID("BOWSER_WALK_SPRITE_2");
 
 // FIRE BREATHING (A = 300)
-constexpr int BOWSER_FIRE_BREATH_ANIM_ID = 81300;
-constexpr int BOWSER_FIRE_BREATH_SPRITE_1 = 81301;
-constexpr int BOWSER_FIRE_BREATH_SPRITE_2 = 81302;
+constexpr AssetID BOWSER_FIRE_BREATH_ANIM_ID = AssetID("BOWSER_FIRE_BREATH_ANIM_ID");
+constexpr AssetID BOWSER_FIRE_BREATH_SPRITE_1 = AssetID("BOWSER_FIRE_BREATH_SPRITE_1");
+constexpr AssetID BOWSER_FIRE_BREATH_SPRITE_2 = AssetID("BOWSER_FIRE_BREATH_SPRITE_2");
 
 // HAMMER THROWING (A = 400)
-constexpr int BOWSER_HAMMER_THROW_ANIM_ID = 81410;
-constexpr int BOWSER_HAMMER_THROW_SPRITE = 81411;
+constexpr AssetID BOWSER_HAMMER_THROW_ANIM_ID = AssetID("BOWSER_HAMMER_THROW_ANIM_ID");
+constexpr AssetID BOWSER_HAMMER_THROW_SPRITE = AssetID("BOWSER_HAMMER_THROW_SPRITE");
 
 //DYING (A = 500)
-constexpr int BOWSER_DEATH_ANIM_ID = 81500;
-constexpr int BOWSER_DEATH_SPRITE_1 = 81501;
+constexpr AssetID BOWSER_DEATH_ANIM_ID = AssetID("BOWSER_DEATH_ANIM_ID");
+constexpr AssetID BOWSER_DEATH_SPRITE_1 = AssetID("BOWSER_DEATH_SPRITE_1");
 
 // FALLING (A = 600)
-constexpr int BOWSER_FALL_ANIM_ID = 81600;
-constexpr int BOWSER_FALL_SPRITE_1 = 81601;
-constexpr int BOWSER_FALL_SPRITE_2 = 81602;
-constexpr int BOWSER_FALL_SPRITE_3 = 81603;
+constexpr AssetID BOWSER_FALL_ANIM_ID = AssetID("BOWSER_FALL_ANIM_ID");
+constexpr AssetID BOWSER_FALL_SPRITE_1 = AssetID("BOWSER_FALL_SPRITE_1");
+constexpr AssetID BOWSER_FALL_SPRITE_2 = AssetID("BOWSER_FALL_SPRITE_2");
+constexpr AssetID BOWSER_FALL_SPRITE_3 = AssetID("BOWSER_FALL_SPRITE_3");
 
 
 // ==========================================
 // BOWSER ITEM BULLET (E = 9)  <-- FIXED from 100000 to prevent overlap with Points
 // ==========================================
-constexpr int BOWSER_ITEM_BULLET_TEX_ID = 90000;
+constexpr AssetID BOWSER_ITEM_BULLET_TEX_ID = AssetID("BOWSER_ITEM_BULLET_TEX_ID");
 
 // Fire breath (T = 1) -> Walking (A = 200)
-constexpr int BOWSER_ITEM_BULLET_FIRE_ANIM_ID = 91200;
-constexpr int BOWSER_ITEM_BULLET_FIRE_SPRITE_1 = 91201;
-constexpr int BOWSER_ITEM_BULLET_FIRE_SPRITE_2 = 91202;
+constexpr AssetID BOWSER_ITEM_BULLET_FIRE_ANIM_ID = AssetID("BOWSER_ITEM_BULLET_FIRE_ANIM_ID");
+constexpr AssetID BOWSER_ITEM_BULLET_FIRE_SPRITE_1 = AssetID("BOWSER_ITEM_BULLET_FIRE_SPRITE_1");
+constexpr AssetID BOWSER_ITEM_BULLET_FIRE_SPRITE_2 = AssetID("BOWSER_ITEM_BULLET_FIRE_SPRITE_2");
 
 // Hammer (T = 2) -> Walking (A = 200)
-constexpr int BOWSER_ITEM_BULLET_HAMMER_ANIM_ID = 92200;
-constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_1 = 92201;
-constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_2 = 92202;
-constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_3 = 92203;
-constexpr int BOWSER_ITEM_BULLET_HAMMER_SPRITE_4 = 92204;
+constexpr AssetID BOWSER_ITEM_BULLET_HAMMER_ANIM_ID = AssetID("BOWSER_ITEM_BULLET_HAMMER_ANIM_ID");
+constexpr AssetID BOWSER_ITEM_BULLET_HAMMER_SPRITE_1 = AssetID("BOWSER_ITEM_BULLET_HAMMER_SPRITE_1");
+constexpr AssetID BOWSER_ITEM_BULLET_HAMMER_SPRITE_2 = AssetID("BOWSER_ITEM_BULLET_HAMMER_SPRITE_2");
+constexpr AssetID BOWSER_ITEM_BULLET_HAMMER_SPRITE_3 = AssetID("BOWSER_ITEM_BULLET_HAMMER_SPRITE_3");
+constexpr AssetID BOWSER_ITEM_BULLET_HAMMER_SPRITE_4 = AssetID("BOWSER_ITEM_BULLET_HAMMER_SPRITE_4");
 
 
 // ==========================================
 // POINT POPUPS (E = 10
 // ==========================================
-constexpr int POINTS_TEX_ID = 100000;
+constexpr AssetID POINTS_TEX_ID = AssetID("POINTS_TEX_ID");
 
-constexpr int POINT_100_ANIM_ID = 101100;
-constexpr int POINT_100_SPRITE_1 = 101101;
+constexpr AssetID POINT_100_ANIM_ID = AssetID("POINT_100_ANIM_ID");
+constexpr AssetID POINT_100_SPRITE_1 = AssetID("POINT_100_SPRITE_1");
 
-constexpr int POINT_200_ANIM_ID = 102100;
-constexpr int POINT_200_SPRITE_1 = 102101;
+constexpr AssetID POINT_200_ANIM_ID = AssetID("POINT_200_ANIM_ID");
+constexpr AssetID POINT_200_SPRITE_1 = AssetID("POINT_200_SPRITE_1");
 
-constexpr int POINT_400_ANIM_ID = 103100;
-constexpr int POINT_400_SPRITE_1 = 103101;
+constexpr AssetID POINT_400_ANIM_ID = AssetID("POINT_400_ANIM_ID");
+constexpr AssetID POINT_400_SPRITE_1 = AssetID("POINT_400_SPRITE_1");
 
-constexpr int POINT_500_ANIM_ID = 104100;
-constexpr int POINT_500_SPRITE_1 = 104101;
+constexpr AssetID POINT_500_ANIM_ID = AssetID("POINT_500_ANIM_ID");
+constexpr AssetID POINT_500_SPRITE_1 = AssetID("POINT_500_SPRITE_1");
 
-constexpr int POINT_800_ANIM_ID = 105100;
-constexpr int POINT_800_SPRITE_1 = 105101;
+constexpr AssetID POINT_800_ANIM_ID = AssetID("POINT_800_ANIM_ID");
+constexpr AssetID POINT_800_SPRITE_1 = AssetID("POINT_800_SPRITE_1");
 
-constexpr int POINT_1000_ANIM_ID = 106100;
-constexpr int POINT_1000_SPRITE_1 = 106101;
+constexpr AssetID POINT_1000_ANIM_ID = AssetID("POINT_1000_ANIM_ID");
+constexpr AssetID POINT_1000_SPRITE_1 = AssetID("POINT_1000_SPRITE_1");
 
-constexpr int POINT_2000_ANIM_ID = 107100;
-constexpr int POINT_2000_SPRITE_1 = 107101;
+constexpr AssetID POINT_2000_ANIM_ID = AssetID("POINT_2000_ANIM_ID");
+constexpr AssetID POINT_2000_SPRITE_1 = AssetID("POINT_2000_SPRITE_1");
 
-constexpr int POINT_4000_ANIM_ID = 108100;
-constexpr int POINT_4000_SPRITE_1 = 108101;
+constexpr AssetID POINT_4000_ANIM_ID = AssetID("POINT_4000_ANIM_ID");
+constexpr AssetID POINT_4000_SPRITE_1 = AssetID("POINT_4000_SPRITE_1");
 
-constexpr int POINT_5000_ANIM_ID = 109100;
-constexpr int POINT_5000_SPRITE_1 = 109101;
+constexpr AssetID POINT_5000_ANIM_ID = AssetID("POINT_5000_ANIM_ID");
+constexpr AssetID POINT_5000_SPRITE_1 = AssetID("POINT_5000_SPRITE_1");
 
-constexpr int POINT_8000_ANIM_ID = 110100;
-constexpr int POINT_8000_SPRITE_1 = 110101;
+constexpr AssetID POINT_8000_ANIM_ID = AssetID("POINT_8000_ANIM_ID");
+constexpr AssetID POINT_8000_SPRITE_1 = AssetID("POINT_8000_SPRITE_1");
 
 // 1-UP takes next entity slot natively in format (E = 11)
-constexpr int ONEUP_ANIM_ID = 111100;
-constexpr int ONEUP_SPRITE_1 = 111101;
+constexpr AssetID ONEUP_ANIM_ID = AssetID("ONEUP_ANIM_ID");
+constexpr AssetID ONEUP_SPRITE_1 = AssetID("ONEUP_SPRITE_1");
 
 
 // ==========================================
