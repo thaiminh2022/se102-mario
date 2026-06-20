@@ -147,7 +147,7 @@ void Bowser::HandleHeathDecrease(int amount)
 		{
 			SetState(BowserState::Dead);
 			auto sm = StatManager::GetInstance();
-			sm->AddScore(5000, position); //only award points if Bowser died of fireballs
+			sm->AddScoreWithPopup(5000, position); //only award points if Bowser died of fireballs
 		}
 	}
 }
