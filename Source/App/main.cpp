@@ -211,7 +211,6 @@ static void LoadResource()
 	t->Add(UNDERGROUND_ITEMS_TEX_ID, L"Assets/Sprites/underground_items.png");
 	t->Add(CASTLE_ITEMS_TEX_ID, L"Assets/Sprites/castle_items.png");
 	t->Add(UNDERWATER_ITEMS_TEX_ID, L"Assets/Sprites/underwater_items.png");
-	t->Add(CROWN_TEX_ID, L"Assets/Sprites/mario_crown.png");
 
 	
 	t->Add(BOWSER_TEX_ID, L"Assets/Sprites/bowser_sprites.png");
@@ -240,6 +239,7 @@ static void LoadResource()
 	audioManager->LoadWAV(FIREBALL, L"Assets\\Audio\\SFX\\fireball.wav");
 	audioManager->LoadWAV(FIREWORK, L"Assets\\Audio\\SFX\\fireworks.wav");
 	audioManager->LoadWAV(GAMEOVER, L"Assets\\Audio\\Soundtracks\\09.GameOverTheme.wav");
+	audioManager->LoadWAV(TWIRL, L"Assets\\Audio\\SFX\\twirl.wav");
 
 	// Fonts
 	FontManager::GetInstance()->AddFontCustom(

@@ -4,7 +4,7 @@
 #include "Scene.h"
 #include <vector>
 
-#include "MarioJetPack.h"
+#include "RaccoonSuit.h"
 #include "Timer.h"
 #include "Animation.h"
 
@@ -28,6 +28,7 @@ enum class MarioState : std::uint8_t
 	Shrinking,
 	StopToWaitBowser,
 	ForceMoving,
+	Flying, // raccoon flying state
 };
 
 enum class MarioPower
@@ -36,7 +37,8 @@ enum class MarioPower
 	Big,
 	Fire,
 	StarmanSmall,
-	StarmanBig
+	StarmanBig,
+	Raccoon //flying
 };
 
 const float MARIO_FIRE_INTERVAL = 0.15f;
@@ -72,6 +74,21 @@ const float RUN_FALL_A = 562.5f;
 const float MAX_FALL = 270.0f;
 const int MAX_FIREBALL_COUNT = 2;
 
+const float SWIM_UP_SPEED = -150.0f;   // Upward impulse/speed when pressing swim
+const float WATER_GRAVITY = 180.0f;    // Slow underwater downward acceleration
+const float WATER_MAX_FALL = 90.0f;    // Slow sinking cap
+const float MAX_SWIM = 100.0f;         // horizontal cap
+
+// Having raccoon suit = lower gravity, or falling slower
+// Full P meter raccoon suit mean being able to fly
+const float PMETER_MIN_RUN_SPEED = MAX_WALK;
+const float RACCOON_MAX_FALL = 120.0f; // Maximum falling speed with raccoon suit (when holding jump or flying), should be lower than normal max fall to give player more control
+const float RACCOON_MAX_RISE = -240.0f; // Maximum rising speed with raccoon suit (when holding jump), should be same as normal jump speed to allow player to reach same height, but with more control
+const float RACCOON_LIFT_ACCELERATION = 4000.0f;
+const float RACCOON_WAG_VELOCITY = 60.0f;
+const float TWIRL_SFX_INTERVAL = 0.1f; //how often the twirl sfx can be played when flying with raccoon suit
+const float RACCOON_FLYING_TIME_LIMIT = 4.5f;
+
 class Mario : public GameObject
 {
 	bool isGrounded;
@@ -88,14 +105,14 @@ class Mario : public GameObject
 	Timer transformTimer; //used for growing and shrinking
 	Timer breathingTimer;
 
-	
+	Timer twirlSFXTimer;
 
 	MarioState state;
 	MarioState lastState;
 	MarioPower power;
 	MarioPower lastPower; // used to store power before transformation for correct animation during transformation
 
-	MarioJetPack* jetpack = nullptr;
+	RaccoonSuit* raccoonSuit = nullptr;
 
 	// flag pole interaction
 	Vector2 marioWinningMoveToPosition;
@@ -112,7 +129,7 @@ class Mario : public GameObject
 
 	Timer starmanPaletteSwapTimer;
 	int currentStarmanAnimPalette = 0;
-	
+	Timer raccoonFlyingTimer;
 	std::unordered_map<int, Animation*> starmanBlueprints[3];
 
 
@@ -127,6 +144,7 @@ class Mario : public GameObject
 	void LoadSmallStarman();
 	void LoadBigStarman();
 	void LoadSpriteAndAnimation();
+	void LoadRaccoonMario();
 
 	// on collision with
 	bool OnCollisionWithGoomba(const CollisionEvent* e);
@@ -143,7 +161,7 @@ class Mario : public GameObject
 	bool OnCollisionWithFlagPole(const CollisionEvent* collisionEvent);
 	bool OnCollisionWithBridge(const CollisionEvent* e);
 	bool OnCollisionWithAxeBridge(const CollisionEvent* e);
-	bool OnCollisionWithJetpack(const CollisionEvent* e);
+	bool OnCollisionWithRaccoonSuit(const CollisionEvent* e);
 
 
 	// update func
@@ -152,7 +170,7 @@ class Mario : public GameObject
 	void WhileGrounded(float dt);
 	void WhileOnAir(float dt);
 	void HandleJump(float dt);
-	void HandleJetpack(float dt);
+	void HandleRaccoonSuit(float dt);
 	void HandleShootFireball(float dt, const vector<GameObject*>& coObjects, const SceneContext* ctx);
 	void ApplyGravityAndClamp(float dt);
 	void UpdateFacingDirection();
@@ -171,8 +189,6 @@ class Mario : public GameObject
 	void MarioExitingPipe(float dt);
 	void ClampMario();
 	void HandleSwim(float dt, const SceneContext* ctx);
-
-
 public:
 	Mario(int startX, int startY);
 	bool IsInStarman() const;
@@ -197,6 +213,7 @@ public:
 	void OnCollisionWith(CollisionEvent* event) override;
 	bool IsBlocking() override { return true; }
 	bool IsActive() override { return true; }
+	bool IsFlying() const;
 	MarioState GetState() const { return state; }
 	int GetEnemyKilledOnSequenceCount() const;
 	void Die();

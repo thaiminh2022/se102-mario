@@ -6,20 +6,12 @@
 #include "Mario.h"
 #include "MarioBreathBubble.h"
 
-const float SWIM_UP_SPEED = -150.0f;   // Upward impulse/speed when pressing swim
-const float WATER_GRAVITY = 180.0f;    // Slow underwater downward acceleration
-const float WATER_MAX_FALL = 90.0f;    // Slow sinking cap
-const float MAX_SWIM = 100.0f;         // horizontal cap
-const float PMETER_MIN_RUN_SPEED = MAX_WALK;
-const float JETPACK_FLY_GRAVITY = 220.0f;
-const float JETPACK_LIFT_ACCELERATION = 520.0f;
-const float JETPACK_MAX_RISE = -110.0f;
-const float JETPACK_MAX_FALL = 120.0f;
+
 
 void Mario::WhileGrounded(float dt)
 {
 	const auto input = InputManager::GetInstance();
-	if (input->IsKeyDown('S') && (power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanBig))
+	if (input->IsKeyDown('S') && (power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanBig || power == MarioPower::Raccoon))
 	{
 		state = MarioState::Ducking;
 		if (velocity.x > 0) velocity.x -= DEC_SKID * dt; // Decelerate to a stop if ducking while moving right
@@ -86,14 +78,27 @@ void Mario::WhileOnAir(float dt)
 	// Preserve momentum, only change if input is detected
 	if (input->IsKeyDown('A'))
 	{
-		velocity.x -= (abs(velocity.x) > MAX_WALK ? ACC_RUN : ACC_WALK) * dt;
+		if (power == MarioPower::Raccoon && raccoonSuit) {
+			velocity.x -= ACC_RUN * dt; //faster acceleration in air for raccoon mario with raccoon suit
+
+		}
+		else {
+			// normal jumping
+			velocity.x -= (abs(velocity.x) > MAX_WALK ? ACC_RUN : ACC_WALK) * dt;
+		}
 	}
 	else if (input->IsKeyDown('D'))
 	{
-		velocity.x += (abs(velocity.x) > MAX_WALK ? ACC_RUN : ACC_WALK) * dt;
-	}
-	
 
+		if (power == MarioPower::Raccoon && raccoonSuit) {
+			velocity.x += ACC_RUN * dt; //faster acceleration in air for raccoon mario with raccoon suit
+		}
+		else {
+			// normal jumping
+			velocity.x += (abs(velocity.x) > MAX_WALK ? ACC_RUN : ACC_WALK) * dt;
+		}
+	}
+	//facing directon when flying will be handled in UpdateFacingDirection()
 }
 
 void Mario::HandleSwim(float dt, const SceneContext* ctx)
@@ -163,9 +168,9 @@ void Mario::HandleJump(float dt)
 	}
 }
 
-void Mario::HandleJetpack(float dt)
+void Mario::HandleRaccoonSuit(float dt)
 {
-	if (jetpack == nullptr || isInWater)
+	if (raccoonSuit == nullptr || isInWater)
 		return;
 
 	const auto input = InputManager::GetInstance();
@@ -179,20 +184,46 @@ void Mario::HandleJetpack(float dt)
 		movingWithInput &&
 		abs(velocity.x) >= PMETER_MIN_RUN_SPEED;
 
-	if (isGrounded || !jetpack->ReadyToFly())
+	if (isGrounded)
 	{
-		jetpack->UpdateMeter(dt, canCharge);
+		raccoonSuit->UpdateMeter(dt, canCharge);
+		return;
 	}
 
-	if (!jetpack->ReadyToFly() || isGrounded)
-		return;
-
-	fallAcc = JETPACK_FLY_GRAVITY;
-	if (input->IsKeyDown('W'))
+	if (raccoonSuit->ReadyToFly())
 	{
-		velocity.y -= JETPACK_LIFT_ACCELERATION * dt;
-		velocity.y = max(velocity.y, JETPACK_MAX_RISE);
-		jetpack->DrainFlight(dt);
+		state = MarioState::Flying;
+
+		if (input->IsKeyDown('W')) {
+			velocity.y -= RACCOON_LIFT_ACCELERATION * dt;
+			//SFX
+			if (!twirlSFXTimer.IsTicking() || twirlSFXTimer.IsFinished()) {
+				AudioManager::GetInstance()->PlaySFX(TWIRL);
+				twirlSFXTimer = Timer(TWIRL_SFX_INTERVAL);
+				twirlSFXTimer.Start();
+			}
+			else {
+				twirlSFXTimer.ProcessTimer(dt);
+			}
+		}
+	}
+	else if (velocity.y > 0.0f) {
+		if (input->IsKeyDown('W'))
+		{
+			velocity.y = RACCOON_WAG_VELOCITY;
+			//SFX
+			if (!twirlSFXTimer.IsTicking() || twirlSFXTimer.IsFinished()) {
+				AudioManager::GetInstance()->PlaySFX(TWIRL);
+				twirlSFXTimer = Timer(TWIRL_SFX_INTERVAL);
+				twirlSFXTimer.Start();
+			}
+			else {
+				twirlSFXTimer.ProcessTimer(dt);
+			}
+		}
+		if (input->IsKeyPressed('W')) {
+			velocity.y = RACCOON_WAG_VELOCITY;
+		}
 	}
 }
 
@@ -225,11 +256,11 @@ void Mario::HandleShootFireball(const float dt, const vector<GameObject*>& coObj
 void Mario::UpdateFacingDirection()
 {
 	const auto input = InputManager::GetInstance();
-	if (input->IsKeyDown('A') && !input->IsKeyDown('D') && (isGrounded || isInWater) && state != MarioState::Ducking)
+	if (input->IsKeyDown('A') && !input->IsKeyDown('D') && (isGrounded || isInWater || (power == MarioPower::Raccoon && raccoonSuit)) && state != MarioState::Ducking)
 	{
 		isFacingRight = false;
 	}
-	else if (input->IsKeyDown('D') && !input->IsKeyDown('A') && (isGrounded || isInWater) && state != MarioState::Ducking)
+	else if (input->IsKeyDown('D') && !input->IsKeyDown('A') && (isGrounded || isInWater || (power == MarioPower::Raccoon && raccoonSuit)) && state != MarioState::Ducking)
 	{
 		isFacingRight = true;
 	}
@@ -240,20 +271,37 @@ void Mario::ApplyGravityAndClamp(float dt)
 
 	velocity.y += fallAcc * dt;
 
-	
+
 	if (isInWater)
 	{
 		velocity.x = min(velocity.x, MAX_SWIM);
 		velocity.x = max(velocity.x, -MAX_SWIM);
 		velocity.y = min(velocity.y, WATER_MAX_FALL);
 		velocity.y = max(velocity.y, SWIM_UP_SPEED);
-	}else
+	}
+	else
 	{
 		velocity.x = min(velocity.x, MAX_RUN);
 		velocity.x = max(velocity.x, -MAX_RUN);
-		const bool isJetpackFlying = jetpack != nullptr && jetpack->ReadyToFly();
-		velocity.y = min(velocity.y, isJetpackFlying ? JETPACK_MAX_FALL : MAX_FALL);
-		velocity.y = max(velocity.y, isJetpackFlying ? JETPACK_MAX_RISE : -MAX_FALL);
+
+		const bool hasRaccoonSuit = (raccoonSuit != nullptr);
+		const bool isFlying = hasRaccoonSuit && raccoonSuit->ReadyToFly();
+
+		float currentMaxFall = MAX_FALL;
+		
+		if (hasRaccoonSuit && InputManager::GetInstance()->IsKeyDown('W') && velocity.y > 0.0f)
+		{
+			currentMaxFall = RACCOON_MAX_FALL;
+		}
+
+		velocity.y = min(velocity.y, currentMaxFall);
+		
+		if (isFlying) {
+			velocity.y = max(velocity.y, RACCOON_MAX_RISE);
+		}
+		else {
+			velocity.y = max(velocity.y, -MAX_FALL);
+		}
 	}
 
 

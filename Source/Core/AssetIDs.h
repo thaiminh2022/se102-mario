@@ -307,6 +307,44 @@ constexpr AssetID STARMAN_BIG3_SWIM_SPRITE_2 = AssetID("STARMAN_BIG3_SWIM_SPRITE
 constexpr AssetID STARMAN_BIG3_SWIM_SPRITE_3 = AssetID("STARMAN_BIG3_SWIM_SPRITE_3");
 constexpr AssetID STARMAN_BIG3_SWIM_SPRITE_4 = AssetID("STARMAN_BIG3_SWIM_SPRITE_4");
 
+// ---------------------------------
+// RACCOON MARIO
+// ---------------------------------
+constexpr AssetID RACCOON_IDLE_ANIM_ID = AssetID("RACCOON_IDLE_ANIM_ID");
+constexpr AssetID RACCOON_IDLE_SPRITE_1 = AssetID("RACCOON_IDLE_SPRITE_1");
+constexpr AssetID RACCOON_IDLE_SPRITE_2 = AssetID("RACCOON_IDLE_SPRITE_2");
+constexpr AssetID RACCOON_IDLE_SPRITE_3 = AssetID("RACCOON_IDLE_SPRITE_3");
+
+constexpr AssetID RACCOON_WALK_ANIM_ID = AssetID("RACCOON_WALK_ANIM_ID");
+constexpr AssetID RACCOON_WALK_SPRITE_1 = AssetID("RACCOON_WALK_SPRITE_1");
+constexpr AssetID RACCOON_WALK_SPRITE_2 = AssetID("RACCOON_WALK_SPRITE_2");
+constexpr AssetID RACCOON_WALK_SPRITE_3 = AssetID("RACCOON_WALK_SPRITE_3");
+
+constexpr AssetID RACCOON_RUN_ANIM_ID = AssetID("RACCOON_RUN_ANIM_ID");
+
+constexpr AssetID RACCOON_JUMP_ANIM_ID = AssetID("RACCOON_JUMP_ANIM_ID");
+constexpr AssetID RACCOON_JUMP_SPRITE_1 = AssetID("RACCOON_JUMP_SPRITE_1");
+
+constexpr AssetID RACCOON_SKID_ANIM_ID = AssetID("RACCOON_SKID_ANIM_ID");
+constexpr AssetID RACCOON_SKID_SPRITE_1 = AssetID("RACCOON_SKID_SPRITE_1");
+
+constexpr AssetID RACCOON_DUCK_ANIM_ID = AssetID("RACCOON_DUCK_ANIM_ID");
+constexpr AssetID RACCOON_DUCK_SPRITE_1 = AssetID("RACCOON_DUCK_SPRITE_1");
+
+constexpr AssetID RACCOON_FLY_ANIM_ID = AssetID("RACCOON_FLY_ANIM_ID");
+constexpr AssetID RACCOON_FLY_SPRITE_1 = AssetID("RACCOON_FLY_SPRITE_1");
+constexpr AssetID RACCOON_FLY_SPRITE_2 = AssetID("RACCOON_FLY_SPRITE_2");
+constexpr AssetID RACCOON_FLY_SPRITE_3 = AssetID("RACCOON_FLY_SPRITE_3");
+
+constexpr AssetID RACCOON_PREFLY_ANIM_ID = AssetID("RACCOON_PREFLY_ANIM_ID");
+constexpr AssetID RACCOON_PREFLY_SPRITE_1 = AssetID("RACCOON_PREFLY_SPRITE_1");
+constexpr AssetID RACCOON_PREFLY_SPRITE_2 = AssetID("RACCOON_PREFLY_SPRITE_2");
+constexpr AssetID RACCOON_PREFLY_SPRITE_3 = AssetID("RACCOON_PREFLY_SPRITE_3");
+
+constexpr AssetID RACCOON_FLAGPULL_ANIM_ID = AssetID("RACCOON_FLAGPULL_ANIM_ID");
+constexpr AssetID RACCOON_FLAGPULL_SPRITE_1 = AssetID("RACCOON_FLAGPULL_SPRITE_1");
+constexpr AssetID RACCOON_FLAGPULL_SPRITE_2 = AssetID("RACCOON_FLAGPULL_SPRITE_2");
+
 // ==========================================
 // ENEMIES (E = 2)
 // ==========================================
@@ -459,12 +497,9 @@ constexpr AssetID STAR_IDLE_SPRITE_4 = AssetID("STAR_IDLE_SPRITE_4");
 constexpr AssetID FLAG_IDLE_ANIM_ID = AssetID("FLAG_IDLE_ANIM_ID");
 constexpr AssetID FLAG_IDLE_SPRITE_1 = AssetID("FLAG_IDLE_SPRITE_1");
 
-// Crown / Jetpack (T = 6) -> Idle (A = 100)
-constexpr AssetID CROWN_TEX_ID = AssetID("CROWN_TEX_ID");
-constexpr AssetID CROWN_IDLE_ANIM_ID = AssetID("CROWN_IDLE_ANIM_ID");
-constexpr AssetID CROWN_WEAR_ANIM_ID = AssetID("CROWN_WEAR_ANIM_ID");
-constexpr AssetID CROWN_BIG_SPRITE = AssetID("CROWN_BIG_SPRITE");
-constexpr AssetID CROWN_SMALL_SPRITE = AssetID("CROWN_SMALL_SPRITE");
+// Superleaf/ Raccoon suit (T = 6) -> Idle (A = 100)
+constexpr AssetID SUPERLEAF_IDLE_ANIM_ID = AssetID("SUPERLEAF_IDLE_ANIM_ID");
+constexpr AssetID SUPERLEAF_IDLE_SPRITE_1 = AssetID("SUPERLEAF_IDLE_SPRITE_1");
 //Axe (T = 7) 
 constexpr AssetID AXE_ANIM_ID = AssetID("AXE_ANIM_ID");
 constexpr AssetID AXE_SPRITE_1 = AssetID("AXE_SPRITE_1");
@@ -629,6 +664,7 @@ enum AUDIOS : std::int8_t
     STAGE_CLEAR = 14,
     FIREWORK = 15,
     GAMEOVER = 16,
+	TWIRL = 17,
 };
 
 /// FONT
