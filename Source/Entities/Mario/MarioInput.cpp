@@ -193,8 +193,25 @@ void Mario::HandleRaccoonSuit(float dt)
 	if (raccoonSuit->ReadyToFly())
 	{
 		state = MarioState::Flying;
-
+		
 		if (input->IsKeyDown('W')) {
+			if (!raccoonFlyingTimer.IsTicking())
+			{
+				raccoonFlyingTimer = Timer(RACCOON_FLYING_TIME_LIMIT);
+				raccoonFlyingTimer.Start();
+			}
+			else {
+				raccoonFlyingTimer.ProcessTimer(dt);
+				if (raccoonFlyingTimer.IsFinished())
+				{
+					raccoonFlyingTimer.SetIdle();
+					power = (lastPower == MarioPower::StarmanBig || lastPower == MarioPower::StarmanSmall) ?
+						MarioPower::Normal : lastPower;
+					raccoonSuit = nullptr;
+					velocity.y = 0;
+				}
+			}
+			
 			velocity.y -= RACCOON_LIFT_ACCELERATION * dt;
 			//SFX
 			if (!twirlSFXTimer.IsTicking() || twirlSFXTimer.IsFinished()) {

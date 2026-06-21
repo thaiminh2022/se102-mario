@@ -15,6 +15,7 @@ set(SOURCES
     Source/Collision/Collision.cpp
     Source/Collision/Collision.h
     Source/Collision/CollisionEvent.h
+    Source/Core/AssetID.h
     Source/Core/AssetIDs.h
     Source/Core/Camera.cpp
     Source/Core/Camera.h
@@ -65,8 +66,8 @@ set(SOURCES
     Source/Entities/Mario/MarioBreathBubble.h
     Source/Entities/Mario/MarioCollision.cpp
     Source/Entities/Mario/MarioInput.cpp
-    Source/Entities/Mario/MarioJetPack.cpp
-    Source/Entities/Mario/MarioJetPack.h
+    Source/Entities/Mario/RaccoonSuit.cpp
+    Source/Entities/Mario/RaccoonSuit.h
     Source/Entities/Mario/MarioLoader.cpp
     Source/Entities/Mario/MarioRendering.cpp
     Source/Entities/Mario/MarioSpecialStates.cpp

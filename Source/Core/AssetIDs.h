@@ -645,6 +645,7 @@ enum AUDIOS : std::int8_t
     UNDERGROUND_THEME = -2,
     CASTLE_THEME = -1,
     UNDERWATER_THEME = 0,
+    SMB3_WORLD1 = -5,
 
 
     // SFX 

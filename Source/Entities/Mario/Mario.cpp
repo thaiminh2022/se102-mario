@@ -53,7 +53,6 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	breathingTimer = Timer(2.5);
 	waitToBowserTimer = Timer(2.0f);
 	twirlSFXTimer = Timer(TWIRL_SFX_INTERVAL);
-	raccoonFlyingTimer = Timer(RACCOON_FLYING_TIME_LIMIT);
 	LoadSpriteAndAnimation();
 
 	starmanPaletteSwapTimer = Timer(STARMAN_PALETTE_SWAP_TIME);

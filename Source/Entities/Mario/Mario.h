@@ -87,7 +87,6 @@ const float RACCOON_MAX_RISE = -240.0f; // Maximum rising speed with raccoon sui
 const float RACCOON_LIFT_ACCELERATION = 4000.0f;
 const float RACCOON_WAG_VELOCITY = 60.0f;
 const float TWIRL_SFX_INTERVAL = 0.1f; //how often the twirl sfx can be played when flying with raccoon suit
-const float RACCOON_FLYING_TIME_LIMIT = 4.5f;
 
 class Mario : public GameObject
 {
