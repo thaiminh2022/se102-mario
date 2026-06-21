@@ -1,4 +1,4 @@
-#include "MarioJetPack.h"
+#include "SuperLeaf.h"
 
 #include <algorithm>
 
@@ -12,20 +12,17 @@
 #include "Animations.h"
 #include "Sprites.h"
 
-const float PMETER_MAX = 100.0f;
-const float PMETER_CHARGE_RATE = 100.0f;
-const float PMETER_DECAY_RATE = 55.0f;
-const float PMETER_FLIGHT_DRAIN_RATE = 5.0f;
 
-Rect MarioJetPack::GetBoundingBox()
+
+Rect RaccoonSuit::GetBoundingBox()
 {
 	return Rect::FromXYWH(position.x, position.y, 16, 16);
 }
 
-MarioJetPack::MarioJetPack(Vector2Int startPos) : GameObject(startPos)
+RaccoonSuit::RaccoonSuit(Vector2Int startPos) : GameObject(startPos)
 {
 	auto anims = Animations::GetInstance();
-	state = MarioJetPackState::Idle;
+	state = RaccoonSuitState::Idle;
 
 	if (!anims->Contains(CROWN_IDLE_ANIM_ID))
 	{
@@ -44,9 +41,9 @@ MarioJetPack::MarioJetPack(Vector2Int startPos) : GameObject(startPos)
 	}
 }
 
-void MarioJetPack::UpdateMeter(float dt, bool canCharge)
+void RaccoonSuit::UpdateMeter(float dt, bool canCharge)
 {
-	if (state != MarioJetPackState::OnMario)
+	if (state != RaccoonSuitState::OnMario)
 		return;
 
 	if (canCharge)
@@ -59,45 +56,46 @@ void MarioJetPack::UpdateMeter(float dt, bool canCharge)
 		}
 		return;
 	}
-
+	//lower the p-meter when not charging
 	pMeter -= PMETER_DECAY_RATE * dt;
 	pMeter = std::clamp(pMeter, 0.0f, PMETER_MAX);
-	if (pMeter <= 0.0f)
+	if (pMeter < PMETER_MAX)
 	{
 		readyToFly = false;
 	}
 }
 
-void MarioJetPack::DrainFlight(float dt)
+void RaccoonSuit::DrainFlight(float dt)
 {
-	if (state != MarioJetPackState::OnMario || !readyToFly)
+	//used to lower the p-meter when FLYING
+	if (state != RaccoonSuitState::OnMario || !readyToFly)
 		return;
 
 	pMeter -= PMETER_FLIGHT_DRAIN_RATE * dt;
 	pMeter = std::clamp(pMeter, 0.0f, PMETER_MAX);
-	if (pMeter <= 0.0f)
+	if (pMeter < PMETER_MAX)
 	{
 		readyToFly = false;
 	}
 }
 
-void MarioJetPack::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
+void RaccoonSuit::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
-	if (state == MarioJetPackState::Removed)
+	if (state == RaccoonSuitState::Removed)
 	{
 		isDeleted = true;
 	}
-
 }
-void MarioJetPack::SetState(MarioJetPackState s)
+
+void RaccoonSuit::SetState(RaccoonSuitState s)
 {
 	state = s;
-	isCollidable = state == MarioJetPackState::Idle;
+	isCollidable = state == RaccoonSuitState::Idle;
 }
 
-void MarioJetPack::Render()
+void RaccoonSuit::Render()
 {
-	if (state == MarioJetPackState::Idle)
+	if (state == RaccoonSuitState::Idle)
 	{
 		float  renderX, renderY;
 		Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
@@ -106,7 +104,7 @@ void MarioJetPack::Render()
 	}
 
 
-	if (state != MarioJetPackState::OnMario)
+	if (state != RaccoonSuitState::OnMario)
 		return;
 
 	// draw p-meter
@@ -116,15 +114,14 @@ void MarioJetPack::Render()
 	FontManager::GetInstance()->Draw(STATS_FONT, Vector2Int(0, drawY), str.c_str() , Colors::WHITE);
 }
 
-void MarioJetPack::RenderCrownAt(const Vector2& marioPosition) const
+void RaccoonSuit::RenderCrownAt(const Vector2& marioPosition) const
 {
 	float renderX, renderY;
 	Game::GetInstance()->GetCamera()->WorldToScreen(marioPosition.x, marioPosition.y - 12.0f, renderX, renderY);
 	Animations::GetInstance()->Get(CROWN_WEAR_ANIM_ID)->Render(round(renderX), round(renderY), false, false);
 }
 
-
-bool MarioJetPack::IsBlocking()
+bool RaccoonSuit::IsBlocking()
 {
 	return false;
 }

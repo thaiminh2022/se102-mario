@@ -20,7 +20,7 @@
 #include "StatManager.h"
 #include "CollisionEvent.h"
 #include "Game.h"
-#include "MarioJetPack.h"
+#include "RaccoonSuit.h"
 
 bool Mario::OnCollisionWithGoomba(const CollisionEvent* e)
 {
@@ -131,7 +131,7 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 			if (e->normalizedDir.x == 1)
 			{
 				koopa->SetMoveDir(true);
-				
+
 			}
 			else
 			{
@@ -173,7 +173,8 @@ bool Mario::OnCollisionWithKoopa(const CollisionEvent* e)
 				}
 			}
 			AudioManager::GetInstance()->PlaySFX(AUDIOS::GOOMBA_STOMP);
-		}else
+		}
+		else
 		{
 			OnMarioHit();
 		}
@@ -321,12 +322,14 @@ bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 	{
 		star->SetState(CollectableItemState::Collected);
 		auto audio = AudioManager::GetInstance();
-		
+
 		if (power == MarioPower::StarmanBig || power == MarioPower::StarmanSmall)
 		{
 			return true;
 		}
-		
+		if (lastPower != MarioPower::StarmanBig && lastPower != MarioPower::StarmanSmall) {
+			lastPower = MarioPower::Normal;
+		}
 		lastPower = power;
 		if (power == MarioPower::Normal)
 			power = MarioPower::StarmanSmall;
@@ -393,14 +396,19 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 	return true;
 }
 
-bool Mario::OnCollisionWithJetpack(const CollisionEvent* e)
+bool Mario::OnCollisionWithRaccoonSuit(const CollisionEvent* e)
 {
-	const auto jp = dynamic_cast<MarioJetPack*>(e->otherObject);
+	const auto jp = dynamic_cast<RaccoonSuit*>(e->otherObject);
 	if (jp == nullptr)
 		return false;
 
-	jp->SetState(MarioJetPackState::OnMario);
-	jetpack = jp;
+	jp->SetState(RaccoonSuitState::OnMario);
+	raccoonSuit = jp;
+	power = MarioPower::Raccoon;
+	if (power != MarioPower::Big && power != MarioPower::Fire && power != MarioPower::StarmanBig) {
+		position.y -= 17; // add some pushback so player won't fall off the ground
+	}
+
 	return true;
 }
 
@@ -424,7 +432,7 @@ void Mario::OnCollisionWithFireballTrap(vector<GameObject*>& coObjects)
 	}
 }
 
-bool Mario ::OnCollisionWithBridge(const CollisionEvent* e)
+bool Mario::OnCollisionWithBridge(const CollisionEvent* e)
 {
 	auto bridge = dynamic_cast<Bridge*>(e->otherObject);
 	if (bridge != nullptr)
@@ -432,11 +440,11 @@ bool Mario ::OnCollisionWithBridge(const CollisionEvent* e)
 		if (e->normalizedDir.y == -1)
 		{
 			isGrounded = true;
-			enemySequenceKilledCount = 0; 
+			enemySequenceKilledCount = 0;
 			return true;
 		}
 	}
-		return false;
+	return false;
 }
 
 bool Mario::OnCollisionWithAxeBridge(const CollisionEvent* e)
@@ -491,7 +499,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		if (OnCollisionWithAxeBridge(e)) return;
 		if (OnCollisionWithFlagPole(e)) return;
 		if (OnCollisionWithBowser(e)) return;
-		if (OnCollisionWithJetpack(e)) return;
+		if (OnCollisionWithRaccoonSuit(e)) return;
 
 	}
 }
@@ -531,10 +539,14 @@ void Mario::OnMarioHit(const bool force)
 {
 	if (!isInvincible || force)
 	{
-		if (power == MarioPower::Big || power == MarioPower::Fire)
+		if (power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::Raccoon)
 		{
 			lastState = state;
 			state = MarioState::Shrinking;
+			if (raccoonSuit != nullptr) {
+				raccoonSuit->SetState(RaccoonSuitState::Removed);
+				raccoonSuit = nullptr;
+			}
 			AudioManager::GetInstance()->PlaySFX(PIPE_ENTER); // Original used pipe sound for power down
 			isInvincible = true;
 			transformTimer = Timer(MARIO_SHRINK_TIME);

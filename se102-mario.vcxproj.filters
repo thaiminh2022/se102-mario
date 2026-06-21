@@ -174,7 +174,7 @@
     <ClCompile Include="Source\Entities\Mario\MarioInput.cpp">
       <Filter>Source\Entities\Mario</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Entities\Mario\MarioJetPack.cpp">
+    <ClCompile Include="Source\Entities\Mario\RaccoonSuit.cpp">
       <Filter>Source\Entities\Mario</Filter>
     </ClCompile>
     <ClCompile Include="Source\Entities\Mario\MarioLoader.cpp">
@@ -371,7 +371,7 @@
     <ClInclude Include="Source\Entities\Mario\MarioBreathBubble.h">
       <Filter>Source\Entities\Mario</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Entities\Mario\MarioJetPack.h">
+    <ClInclude Include="Source\Entities\Mario\RaccoonSuit.h">
       <Filter>Source\Entities\Mario</Filter>
     </ClInclude>
     <ClInclude Include="Source\Entities\Items\Mushroom.h">

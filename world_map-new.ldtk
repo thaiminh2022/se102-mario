@@ -4124,6 +4124,20 @@
 									"params": [ true ]
 								}] }
 							]
+						},
+						{
+							"__identifier": "Jetpack",
+							"__grid": [5,11],
+							"__pivot": [0,0],
+							"__tags": ["entity"],
+							"__tile": { "tilesetUid": 49, "x": 128, "y": 192, "w": 16, "h": 16 },
+							"__smartColor": "#124E89",
+							"iid": "34f25980-48b0-11f1-badc-4bf4c85361bf",
+							"width": 16,
+							"height": 16,
+							"defUid": 290,
+							"px": [80,176],
+							"fieldInstances": []
 						}
 					]
 				},

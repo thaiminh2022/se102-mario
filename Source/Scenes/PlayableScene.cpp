@@ -215,7 +215,7 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	// jetpack
 	for (const auto& cPos : config->entityData.jetpackStart)
 	{
-		objects.push_back(std::make_unique<MarioJetPack>(cPos));
+		objects.push_back(std::make_unique<RaccoonSuit>(cPos));
 	}
 
 	// next level portal

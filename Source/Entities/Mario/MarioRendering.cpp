@@ -29,9 +29,9 @@ void Mario::Render()
 		->Get(animId)
 		->Render(round(renderX), round(renderY), !isFacingRight, false);
 
-	if (jetpack != nullptr)
+	if (raccoonSuit != nullptr)
 	{
-		jetpack->RenderCrownAt(position);
+		raccoonSuit->RenderCrownAt(position);
 	}
 }
 
@@ -171,6 +171,31 @@ int Mario::GetMarioAnimId() const
 			DebugOut(L"[Error] No handling for state: %d\n", state);
 		}
 	}
+	else if (power == MarioPower::Raccoon)
+	{
+		switch (state)
+		{
+			case MarioState::Walking:
+			case MarioState::WalkingToCastle:
+			case MarioState::EnteringPipe:
+			case MarioState::ForceMoving:
+				return RACCOON_WALK_ANIM_ID;
+			case MarioState::Running:
+				return RACCOON_RUN_ANIM_ID;
+			case MarioState::Skidding:
+				return RACCOON_SKID_ANIM_ID;
+			case MarioState::Idle:
+				return RACCOON_IDLE_ANIM_ID;
+			case MarioState::Jumping:
+				return isInWater ? MARIO_BIG_SWIM_ANIM_ID : RACCOON_JUMP_ANIM_ID;
+			case MarioState::Ducking:
+				return RACCOON_DUCK_ANIM_ID;
+			case MarioState::Flying:
+				return RACCOON_FLY_ANIM_ID;
+			default:
+				DebugOut(L"[Error] No handling for state: %d\n", state);
+		}
+	}
 	return MARIO_IDLE_ANIM_ID;
 }
 
@@ -181,11 +206,16 @@ void Mario::RouteAnimationState()
 	if (!isGrounded)
 	{
 		lastState = state;
-		state = MarioState::Jumping;
+		if (raccoonSuit != nullptr && raccoonSuit->ReadyToFly() )
+		{
+			state = MarioState::Flying;
+		}
+		else
+			state = MarioState::Jumping;
 	}
 	else
 	{
-		if ((power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanBig) && input->IsKeyDown('S'))
+		if ((power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanBig || power == MarioPower::Raccoon) && input->IsKeyDown('S'))
 		{
 			lastState = state;
 			state = MarioState::Ducking;

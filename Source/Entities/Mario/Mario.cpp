@@ -52,6 +52,8 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	enemySequenceKilledCount = 0;
 	breathingTimer = Timer(2.5);
 	waitToBowserTimer = Timer(2.0f);
+	twirlSFXTimer = Timer(TWIRL_SFX_INTERVAL);
+	raccoonFlyingTimer = Timer(RACCOON_FLYING_TIME_LIMIT);
 	LoadSpriteAndAnimation();
 
 	starmanPaletteSwapTimer = Timer(STARMAN_PALETTE_SWAP_TIME);
@@ -236,7 +238,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		{
 			starmanTimer.SetIdle();
 			starmanPaletteSwapTimer.SetIdle();
-			power = lastPower;//currently reset to normal. Will change later
+			power = (lastPower == MarioPower::StarmanBig || lastPower == MarioPower::StarmanSmall)? 
+				MarioPower::Normal : lastPower;
 		}
 	}
 	if (starmanPaletteSwapTimer.IsTicking())
@@ -249,7 +252,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			starmanPaletteSwapTimer.Start();
 		}
 	}
-
+	
 	auto input = InputManager::GetInstance();
 	if (isGrounded)
 	{
@@ -263,10 +266,23 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	// orders matters
 	HandleSwim(dt, ctx);
 	HandleJump(dt);
-	HandleJetpack(dt);
+	HandleRaccoonSuit(dt);
 	HandleShootFireball(dt, coObjects, ctx);
 	ApplyGravityAndClamp(dt);
 	UpdateFacingDirection();
+
+	if (power == MarioPower::Raccoon && state == MarioState::Flying)
+	{
+		raccoonFlyingTimer.ProcessTimer(dt);
+		if (raccoonFlyingTimer.IsFinished())
+		{
+			raccoonFlyingTimer.SetIdle();
+			power = (lastPower == MarioPower::StarmanBig || lastPower == MarioPower::StarmanSmall) ?
+				MarioPower::Normal : lastPower;
+			raccoonSuit = nullptr;
+			velocity.y = 0;
+		}
+	}
 
 	ClampMario();
 	RouteAnimationState();
@@ -324,7 +340,7 @@ Rect Mario::GetBoundingBox()
 		r.bottom = position.y + 16;
 		r.right = position.x + 14;
 	}
-	else if (power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanBig)
+	else if (power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanBig || power == MarioPower::Raccoon)
 	{
 		r.top = position.y;
 		r.left = position.x + 2;

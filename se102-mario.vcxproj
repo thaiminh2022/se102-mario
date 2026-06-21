@@ -179,7 +179,7 @@
     <ClCompile Include="Source\Entities\Mario\MarioBreathBubble.cpp" />
     <ClCompile Include="Source\Entities\Mario\MarioCollision.cpp" />
     <ClCompile Include="Source\Entities\Mario\MarioInput.cpp" />
-    <ClCompile Include="Source\Entities\Mario\MarioJetPack.cpp" />
+    <ClCompile Include="Source\Entities\Mario\RaccoonSuit.cpp" />
     <ClCompile Include="Source\Entities\Mario\MarioLoader.cpp" />
     <ClCompile Include="Source\Entities\Mario\MarioRendering.cpp" />
     <ClCompile Include="Source\Entities\Mario\MarioSpecialStates.cpp" />
@@ -247,7 +247,7 @@
     <ClInclude Include="Source\Scenes\MainMenu.h" />
     <ClInclude Include="Source\Entities\Mario\Mario.h" />
     <ClInclude Include="Source\Entities\Mario\MarioBreathBubble.h" />
-    <ClInclude Include="Source\Entities\Mario\MarioJetPack.h" />
+    <ClInclude Include="Source\Entities\Mario\RaccoonSuit.h" />
     <ClInclude Include="Source\Entities\Items\Mushroom.h" />
     <ClInclude Include="Source\Entities\Triggers\NextLevelPortal.h" />
     <ClInclude Include="Source\Entities\Triggers\Pipe.h" />

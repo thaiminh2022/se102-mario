@@ -275,6 +275,7 @@ void Mario::LoadFireMario()
 	anim->Add(MARIO_FIRE_WALK_SPRITE_3);
 	anims->Add(MARIO_FIRE_RUN_ANIM_ID, anim);
 }
+
 void Mario::LoadStarmanPalette(int idx)
 {
 	if (idx < 0 || idx > 2) idx = 0;
@@ -304,6 +305,7 @@ void Mario::LoadStarmanPalette(int idx)
 	anims->Replace(STARMAN_BIG1_SWIM_ANIM_ID, starmanBlueprints[idx][STARMAN_BIG1_SWIM_ANIM_ID]->Clone());
 	anims->Replace(STARMAN_BIG1_RUN_ANIM_ID, starmanBlueprints[idx][STARMAN_BIG1_RUN_ANIM_ID]->Clone());
 }
+
 void Mario::LoadSmallStarman()
 {
 	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
@@ -477,6 +479,7 @@ void Mario::LoadSmallStarman()
 	anim->Add(STARMAN_SMALL3_WALK_SPRITE_3);
 	starmanBlueprints[2][STARMAN_SMALL1_RUN_ANIM_ID] = anim;
 }
+
 void Mario::LoadBigStarman()
 {
 	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
@@ -677,7 +680,78 @@ void Mario::LoadSpriteAndAnimation()
 	LoadFireMario();
 	LoadSmallStarman();
 	LoadBigStarman();
+	LoadRaccoonMario();
 	LoadStarmanPalette(currentStarmanAnimPalette);
 }
 
+void Mario::LoadRaccoonMario()
+{
+	auto marioTex = Textures::GetInstance()->Get(MARIO_TEX_ID);
+	auto anims = Animations::GetInstance();
+	auto sprites = Sprites::GetInstance();
+	Animation* anim = nullptr;
+	
+	sprites->Add(RACCOON_IDLE_SPRITE_1, 8, 256, 31, 287, marioTex);
+	sprites->Add(RACCOON_IDLE_SPRITE_2, 40, 256, 63, 287, marioTex);
+	sprites->Add(RACCOON_IDLE_SPRITE_3, 72, 256, 95, 287, marioTex);
+	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
+	anim->Add(RACCOON_IDLE_SPRITE_1);
+	anim->Add(RACCOON_IDLE_SPRITE_2);
+	anim->Add(RACCOON_IDLE_SPRITE_3);
+	anims->Add(RACCOON_IDLE_ANIM_ID, anim);
 
+	sprites->Add(RACCOON_WALK_SPRITE_1, 104, 256, 127, 287, marioTex);
+	sprites->Add(RACCOON_WALK_SPRITE_2, 136, 256, 159, 287, marioTex);
+	sprites->Add(RACCOON_WALK_SPRITE_3, 168, 256, 191, 287, marioTex);
+	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
+	anim->Add(RACCOON_WALK_SPRITE_1);
+	anim->Add(RACCOON_WALK_SPRITE_2);
+	anim->Add(RACCOON_WALK_SPRITE_3);
+	anims->Add(RACCOON_WALK_ANIM_ID, anim);
+
+	anim = new Animation(ANIMATION_FAST_FRAMETIME);
+	anim->Add(RACCOON_WALK_SPRITE_1);
+	anim->Add(RACCOON_WALK_SPRITE_2);
+	anim->Add(RACCOON_WALK_SPRITE_3);
+	anims->Add(RACCOON_RUN_ANIM_ID, anim);
+
+	sprites->Add(RACCOON_JUMP_SPRITE_1, 200, 256, 223, 287, marioTex);
+	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
+	anim->Add(RACCOON_JUMP_SPRITE_1);
+	anims->Add(RACCOON_JUMP_ANIM_ID, anim);
+
+	sprites->Add(RACCOON_SKID_SPRITE_1, 16, 288, 39, 319, marioTex);
+	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
+	anim->Add(RACCOON_SKID_SPRITE_1);
+	anims->Add(RACCOON_SKID_ANIM_ID, anim);
+
+	sprites->Add(RACCOON_DUCK_SPRITE_1, 40, 288, 63, 319, marioTex);
+	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
+	anim->Add(RACCOON_DUCK_SPRITE_1);
+	anims->Add(RACCOON_DUCK_ANIM_ID, anim);
+
+	sprites->Add(RACCOON_PREFLY_SPRITE_1, 8, 320, 31, 351, marioTex);
+	sprites->Add(RACCOON_PREFLY_SPRITE_2, 40, 320, 63, 351, marioTex);
+	sprites->Add(RACCOON_PREFLY_SPRITE_3, 72, 320, 95, 351, marioTex);
+	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
+	anim->Add(RACCOON_PREFLY_SPRITE_1);
+	anim->Add(RACCOON_PREFLY_SPRITE_2);
+	anim->Add(RACCOON_PREFLY_SPRITE_3);
+	anims->Add(RACCOON_PREFLY_ANIM_ID, anim);
+
+	sprites->Add(RACCOON_FLY_SPRITE_1, 72, 288, 95, 319, marioTex);
+	sprites->Add(RACCOON_FLY_SPRITE_2, 104, 288, 127, 319, marioTex);
+	sprites->Add(RACCOON_FLY_SPRITE_3, 136, 288, 159, 319, marioTex);
+	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
+	anim->Add(RACCOON_FLY_SPRITE_1);
+	anim->Add(RACCOON_FLY_SPRITE_2);
+	anim->Add(RACCOON_FLY_SPRITE_3);
+	anims->Add(RACCOON_FLY_ANIM_ID, anim);
+
+	sprites->Add(RACCOON_FLAGPULL_SPRITE_1, 168, 288, 191, 319, marioTex);
+	sprites->Add(RACCOON_FLAGPULL_SPRITE_2, 200, 256, 223, 287, marioTex);
+	anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
+	anim->Add(RACCOON_FLAGPULL_SPRITE_1);
+	anim->Add(RACCOON_FLAGPULL_SPRITE_2);
+	anims->Add(RACCOON_FLAGPULL_ANIM_ID, anim);
+}
