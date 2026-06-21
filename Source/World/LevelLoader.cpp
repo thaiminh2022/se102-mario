@@ -45,7 +45,7 @@ const string BRICK_BLOCK = "EmptyBrickBlock";
 const string COIN = "Coin";
 const string FIREBALL_TRAP = "FireballTrap";
 const string BOWSER_START = "BowserStart";
-const string MARIO_JETPACK = "Jetpack";
+const string MARIO_SUPERLEAF = "SuperLeaf";
 
 
 // Gameplay
@@ -933,15 +933,15 @@ void LevelLoader::ParseFireShooter(SceneEntityData& sceneEntities, vector<Entity
 }
 
 
-void LevelLoader::ParseJetpack(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
+void LevelLoader::ParseSuperLeaf(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
 {
-	const auto data = GetEntityDataWithIdentifier(entities, MARIO_JETPACK);
+	const auto data = GetEntityDataWithIdentifier(entities, MARIO_SUPERLEAF);
 	if (data.empty())
 		return;
 
 	for (const auto& d: data)
 	{
-		sceneEntities.jetpackStart.emplace_back(d->px[0], d->px[1]);
+		sceneEntities.superLeafStart.emplace_back(d->px[0], d->px[1]);
 	}
 }
 
@@ -1043,7 +1043,7 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParseWingedKoopas(sceneEntities, entities);
 	ParseBowsers(sceneEntities, entities);
 	ParseFireballTrap(sceneEntities, entities);
-	ParseJetpack(sceneEntities, entities);
+	ParseSuperLeaf(sceneEntities, entities);
 
 	
 	// collectables

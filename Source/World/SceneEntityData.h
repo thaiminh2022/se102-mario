@@ -242,7 +242,7 @@ struct SceneEntityData
 	vector<Vector2Int> fireballTraps;
 	vector<FireShooterData> fireShooters;
 
-	vector<Vector2Int> jetpackStart;
+	vector<Vector2Int> superLeafStart;
 	vector<WorldTextData> worldTextData;
 	Optional<BowserEntityData> bowserData;
 	

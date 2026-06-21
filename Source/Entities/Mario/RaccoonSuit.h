@@ -33,7 +33,6 @@ public:
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void SetState(RaccoonSuitState s);
 	void Render() override;
-	void RenderCrownAt(const Vector2& marioPosition) const;
 	bool IsBlocking() override;
 	bool IsActive() override { return true; }
 };

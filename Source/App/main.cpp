@@ -211,7 +211,6 @@ static void LoadResource()
 	t->Add(UNDERGROUND_ITEMS_TEX_ID, L"Assets/Sprites/underground_items.png");
 	t->Add(CASTLE_ITEMS_TEX_ID, L"Assets/Sprites/castle_items.png");
 	t->Add(UNDERWATER_ITEMS_TEX_ID, L"Assets/Sprites/underwater_items.png");
-	t->Add(CROWN_TEX_ID, L"Assets/Sprites/mario_crown.png");
 
 	
 	t->Add(BOWSER_TEX_ID, L"Assets/Sprites/bowser_sprites.png");

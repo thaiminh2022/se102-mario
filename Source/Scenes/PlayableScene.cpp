@@ -31,7 +31,7 @@
 #include "InWaterTrigger.h"
 #include "FireShooter.h"
 #include "LevelTextRender.h"
-#include "MarioJetPack.h"
+#include "RaccoonSuit.h"
 #include "StatManager.h"
 
 
@@ -212,8 +212,8 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 		objects.push_back(std::make_unique<Coin>(cPos, config->biome));
 	}
 
-	// jetpack
-	for (const auto& cPos : config->entityData.jetpackStart)
+	// super leaf
+	for (const auto& cPos : config->entityData.superLeafStart)
 	{
 		objects.push_back(std::make_unique<RaccoonSuit>(cPos));
 	}

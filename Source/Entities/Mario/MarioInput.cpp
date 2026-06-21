@@ -79,7 +79,7 @@ void Mario::WhileOnAir(float dt)
 	if (input->IsKeyDown('A'))
 	{
 		if (power == MarioPower::Raccoon && raccoonSuit) {
-			velocity.x -= ACC_RUN * dt; //faster acceleration in air for raccoon mario with jetpack
+			velocity.x -= ACC_RUN * dt; //faster acceleration in air for raccoon mario with raccoon suit
 
 		}
 		else {
@@ -91,7 +91,7 @@ void Mario::WhileOnAir(float dt)
 	{
 
 		if (power == MarioPower::Raccoon && raccoonSuit) {
-			velocity.x += ACC_RUN * dt; //faster acceleration in air for raccoon mario with jetpack
+			velocity.x += ACC_RUN * dt; //faster acceleration in air for raccoon mario with raccoon suit
 		}
 		else {
 			// normal jumping
@@ -195,7 +195,7 @@ void Mario::HandleRaccoonSuit(float dt)
 		state = MarioState::Flying;
 
 		if (input->IsKeyDown('W')) {
-			velocity.y -= JETPACK_LIFT_ACCELERATION * dt;
+			velocity.y -= RACCOON_LIFT_ACCELERATION * dt;
 			//SFX
 			if (!twirlSFXTimer.IsTicking() || twirlSFXTimer.IsFinished()) {
 				AudioManager::GetInstance()->PlaySFX(TWIRL);
@@ -210,7 +210,7 @@ void Mario::HandleRaccoonSuit(float dt)
 	else if (velocity.y > 0.0f) {
 		if (input->IsKeyDown('W'))
 		{
-			velocity.y = JETPACK_WAG_VELOCITY;
+			velocity.y = RACCOON_WAG_VELOCITY;
 			//SFX
 			if (!twirlSFXTimer.IsTicking() || twirlSFXTimer.IsFinished()) {
 				AudioManager::GetInstance()->PlaySFX(TWIRL);
@@ -222,7 +222,7 @@ void Mario::HandleRaccoonSuit(float dt)
 			}
 		}
 		if (input->IsKeyPressed('W')) {
-			velocity.y = JETPACK_WAG_VELOCITY;
+			velocity.y = RACCOON_WAG_VELOCITY;
 		}
 	}
 }
@@ -284,12 +284,12 @@ void Mario::ApplyGravityAndClamp(float dt)
 		velocity.x = min(velocity.x, MAX_RUN);
 		velocity.x = max(velocity.x, -MAX_RUN);
 
-		const bool hasJetpack = (raccoonSuit != nullptr);
-		const bool isFlying = hasJetpack && raccoonSuit->ReadyToFly();
+		const bool hasRaccoonSuit = (raccoonSuit != nullptr);
+		const bool isFlying = hasRaccoonSuit && raccoonSuit->ReadyToFly();
 
 		float currentMaxFall = MAX_FALL;
 		
-		if (hasJetpack && InputManager::GetInstance()->IsKeyDown('W') && velocity.y > 0.0f)
+		if (hasRaccoonSuit && InputManager::GetInstance()->IsKeyDown('W') && velocity.y > 0.0f)
 		{
 			currentMaxFall = RACCOON_MAX_FALL;
 		}

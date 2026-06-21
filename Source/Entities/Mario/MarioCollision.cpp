@@ -236,7 +236,7 @@ bool Mario::OnCollisionWithQuestionBlock(const CollisionEvent* e)
 		{
 			if (!questionBlock->HaveDrop())
 			{
-				if (power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig)
+				if (power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig || power == MarioPower::Raccoon)
 				{
 					questionBlock->SetState(QuestionBlockState::Break);
 				}

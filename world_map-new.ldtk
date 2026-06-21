@@ -2141,7 +2141,7 @@
 			]
 		},
 		{
-			"identifier": "Jetpack",
+			"identifier": "SuperLeaf",
 			"uid": 290,
 			"tags": ["entity"],
 			"exportToToc": false,
@@ -2163,9 +2163,9 @@
 			"color": "#124E89",
 			"renderMode": "Tile",
 			"showName": true,
-			"tilesetId": 49,
+			"tilesetId": 218,
 			"tileRenderMode": "FitInside",
-			"tileRect": { "tilesetUid": 49, "x": 128, "y": 192, "w": 16, "h": 16 },
+			"tileRect": { "tilesetUid": 218, "x": 16, "y": 48, "w": 16, "h": 16 },
 			"uiTileRect": null,
 			"nineSliceBorders": [],
 			"maxCount": 0,
@@ -2561,7 +2561,7 @@
 			"savedSelections": [],
 			"cachedPixelData": {
 				"opaqueTiles": "00000000000000000000",
-				"averageColors": "5d953c641ea63edd99819bb99bb99a9777607d927d927940ad970000000000008ded7ecc00000000"
+				"averageColors": "5d953c641ea63edd99819bb99bb99a9777607d927d927940ad977821000000008ded7ecc00000000"
 			}
 		},
 		{
@@ -4126,11 +4126,11 @@
 							]
 						},
 						{
-							"__identifier": "Jetpack",
+							"__identifier": "SuperLeaf",
 							"__grid": [5,11],
 							"__pivot": [0,0],
 							"__tags": ["entity"],
-							"__tile": { "tilesetUid": 49, "x": 128, "y": 192, "w": 16, "h": 16 },
+							"__tile": { "tilesetUid": 218, "x": 16, "y": 48, "w": 16, "h": 16 },
 							"__smartColor": "#124E89",
 							"iid": "34f25980-48b0-11f1-badc-4bf4c85361bf",
 							"width": 16,
@@ -11499,11 +11499,11 @@
 							}] }]
 						},
 						{
-							"__identifier": "Jetpack",
+							"__identifier": "SuperLeaf",
 							"__grid": [3,12],
 							"__pivot": [0,0],
 							"__tags": ["entity"],
-							"__tile": { "tilesetUid": 49, "x": 128, "y": 192, "w": 16, "h": 16 },
+							"__tile": { "tilesetUid": 218, "x": 16, "y": 48, "w": 16, "h": 16 },
 							"__smartColor": "#124E89",
 							"iid": "571de310-48b0-11f1-91d3-af54bc353f55",
 							"width": 16,

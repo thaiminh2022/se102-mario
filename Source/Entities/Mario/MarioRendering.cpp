@@ -28,13 +28,7 @@ void Mario::Render()
 	Animations::GetInstance()
 		->Get(animId)
 		->Render(round(renderX), round(renderY), !isFacingRight, false);
-
-	if (raccoonSuit != nullptr)
-	{
-		raccoonSuit->RenderCrownAt(position);
-	}
 }
-
 
 int Mario::GetMarioAnimId() const
 {
@@ -181,7 +175,7 @@ int Mario::GetMarioAnimId() const
 			case MarioState::ForceMoving:
 				return RACCOON_WALK_ANIM_ID;
 			case MarioState::Running:
-				return RACCOON_RUN_ANIM_ID;
+				return (raccoonSuit!= nullptr && raccoonSuit->ReadyToFly()) ? RACCOON_PREFLY_ANIM_ID : RACCOON_RUN_ANIM_ID;
 			case MarioState::Skidding:
 				return RACCOON_SKID_ANIM_ID;
 			case MarioState::Idle:
@@ -192,6 +186,8 @@ int Mario::GetMarioAnimId() const
 				return RACCOON_DUCK_ANIM_ID;
 			case MarioState::Flying:
 				return RACCOON_FLY_ANIM_ID;
+			case MarioState::PullingFlag:
+				return RACCOON_FLAGPULL_ANIM_ID;
 			default:
 				DebugOut(L"[Error] No handling for state: %d\n", state);
 		}

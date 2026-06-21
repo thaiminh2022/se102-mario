@@ -498,11 +498,8 @@ constexpr AssetID FLAG_IDLE_ANIM_ID = AssetID("FLAG_IDLE_ANIM_ID");
 constexpr AssetID FLAG_IDLE_SPRITE_1 = AssetID("FLAG_IDLE_SPRITE_1");
 
 // Superleaf/ Raccoon suit (T = 6) -> Idle (A = 100)
-constexpr AssetID SUPERLEAF_TEX_ID = AssetID("CROWN_TEX_ID");
-constexpr AssetID SUPERLEAF_IDLE_ANIM_ID = AssetID("CROWN_IDLE_ANIM_ID");
-constexpr AssetID SUPERLEAF_WEAR_ANIM_ID = AssetID("CROWN_WEAR_ANIM_ID");
-constexpr AssetID SUPERLEAF_BIG_SPRITE = AssetID("CROWN_BIG_SPRITE");
-constexpr AssetID SUPERLEAF_SMALL_SPRITE = AssetID("CROWN_SMALL_SPRITE");
+constexpr AssetID SUPERLEAF_IDLE_ANIM_ID = AssetID("SUPERLEAF_IDLE_ANIM_ID");
+constexpr AssetID SUPERLEAF_IDLE_SPRITE_1 = AssetID("SUPERLEAF_IDLE_SPRITE_1");
 //Axe (T = 7) 
 constexpr AssetID AXE_ANIM_ID = AssetID("AXE_ANIM_ID");
 constexpr AssetID AXE_SPRITE_1 = AssetID("AXE_SPRITE_1");

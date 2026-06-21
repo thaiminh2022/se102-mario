@@ -1,4 +1,4 @@
-#include "SuperLeaf.h"
+#include "RaccoonSuit.h"
 
 #include <algorithm>
 
@@ -24,20 +24,15 @@ RaccoonSuit::RaccoonSuit(Vector2Int startPos) : GameObject(startPos)
 	auto anims = Animations::GetInstance();
 	state = RaccoonSuitState::Idle;
 
-	if (!anims->Contains(CROWN_IDLE_ANIM_ID))
+	if (!anims->Contains(SUPERLEAF_IDLE_ANIM_ID))
 	{
-		auto t = Textures::GetInstance()->Get(CROWN_TEX_ID);
+		auto t = Textures::GetInstance()->Get(OVERWORLD_ITEMS_TEX_ID);
 		auto sp = Sprites::GetInstance();
-		sp->Add(CROWN_BIG_SPRITE, 0, 0, 15, 15, t);
-		sp->Add(CROWN_SMALL_SPRITE, 16, 0, 31, 15, t);
+		sp->Add(SUPERLEAF_IDLE_SPRITE_1, 16, 48, 31, 63, t);
 
-		auto worldCrownAnim = new Animation;
-		worldCrownAnim->Add(CROWN_BIG_SPRITE, 180);
-		anims->Add(CROWN_IDLE_ANIM_ID, worldCrownAnim);
-
-		auto wearCrownAnim = new Animation;
-		wearCrownAnim->Add(CROWN_SMALL_SPRITE, 180);
-		anims->Add(CROWN_WEAR_ANIM_ID, wearCrownAnim);
+		auto anim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
+		anim->Add(SUPERLEAF_IDLE_SPRITE_1);
+		anims->Add(SUPERLEAF_IDLE_ANIM_ID, anim);
 	}
 }
 
@@ -99,7 +94,7 @@ void RaccoonSuit::Render()
 	{
 		float  renderX, renderY;
 		Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
-		Animations::GetInstance()->Get(CROWN_IDLE_ANIM_ID)->Render(round(renderX), round(renderY), false, false);
+		Animations::GetInstance()->Get(SUPERLEAF_IDLE_ANIM_ID)->Render(round(renderX), round(renderY), false, false);
 		return;
 	}
 
@@ -112,13 +107,6 @@ void RaccoonSuit::Render()
 	const auto str = std::format(L"P: {}%", static_cast<int>(std::round(pMeter)));
 	
 	FontManager::GetInstance()->Draw(STATS_FONT, Vector2Int(0, drawY), str.c_str() , Colors::WHITE);
-}
-
-void RaccoonSuit::RenderCrownAt(const Vector2& marioPosition) const
-{
-	float renderX, renderY;
-	Game::GetInstance()->GetCamera()->WorldToScreen(marioPosition.x, marioPosition.y - 12.0f, renderX, renderY);
-	Animations::GetInstance()->Get(CROWN_WEAR_ANIM_ID)->Render(round(renderX), round(renderY), false, false);
 }
 
 bool RaccoonSuit::IsBlocking()

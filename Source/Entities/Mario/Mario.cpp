@@ -340,12 +340,18 @@ Rect Mario::GetBoundingBox()
 		r.bottom = position.y + 16;
 		r.right = position.x + 14;
 	}
-	else if (power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanBig || power == MarioPower::Raccoon)
+	else if (power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanBig)
 	{
 		r.top = position.y;
 		r.left = position.x + 2;
 		r.bottom = position.y + 32;
 		r.right = position.x + 14;
+	} else if (power == MarioPower::Raccoon)
+	{
+		r.top = position.y;
+		r.left = position.x + 2;
+		r.bottom = position.y + 32;
+		r.right = position.x + 22;
 	}
 	return r;
 }
