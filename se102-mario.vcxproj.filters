@@ -446,6 +446,9 @@
     <ClInclude Include="Source\Core\Vector2.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="AssetID.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -177,7 +177,7 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 				return;
 			this->isExploded = true;
 			goomba->SetState(GoombaState::Dead);
-			sm->AddScore(GOOMBA_FIREBALL_SCORE, this->position);
+			sm->AddScoreWithPopup(GOOMBA_FIREBALL_SCORE, this->position);
 			if (currentContext != nullptr && currentContext->addPointPopup != nullptr)
 			{
 				currentContext->addPointPopup(goomba->position, GOOMBA_FIREBALL_SCORE);
@@ -194,7 +194,7 @@ void Fireball::OnCollisionWith(CollisionEvent* e)
 				return;
 			this->isExploded = true;
 			koopa->SetState(KoopaState::Dead);
-			sm->AddScore(200, this->position);
+			sm->AddScoreWithPopup(200, this->position);
 			Explode();
 			return;
 		}

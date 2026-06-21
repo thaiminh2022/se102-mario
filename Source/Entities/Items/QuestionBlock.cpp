@@ -106,7 +106,7 @@ void QuestionBlock::Update(float dt, vector<GameObject*>& coObjects, SceneContex
 
 			if (drop == BlockDropType::Coin)
 			{
-				sm->AddScore(200, this->position);
+				sm->AddScoreWithPopup(200, this->position);
 				if (ctx->addPointPopup != nullptr)
 				{
 					ctx->addPointPopup(Vector2(startPosition.x, startPosition.y - 16.0f), 200);

@@ -53,3 +53,8 @@ inline AnimationFrame::AnimationFrame(Sprite *sprite, int timeMs)
 inline DWORD AnimationFrame::GetTime() const { return time; }
 
 inline Sprite *AnimationFrame::GetSprite() const { return sprite; }
+
+Animation* Animation::Clone()
+{
+	return new Animation(*this);
+}

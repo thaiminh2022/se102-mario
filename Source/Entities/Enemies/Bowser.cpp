@@ -34,7 +34,7 @@ Bowser::Bowser(Vector2Int start, Rect arena, Mario* mario) : GameObject(start), 
 
 	if (!anims->Contains(BOWSER_WALK_ANIM_ID))
 	{
-		auto walkAnim = new Animation(100);
+		auto walkAnim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 		walkAnim->Add(BOWSER_WALK_SPRITE_1);
 		walkAnim->Add(BOWSER_WALK_SPRITE_2);
 		anims->Add(BOWSER_WALK_ANIM_ID, walkAnim);
@@ -42,7 +42,7 @@ Bowser::Bowser(Vector2Int start, Rect arena, Mario* mario) : GameObject(start), 
 
 	if (!anims->Contains(BOWSER_FIRE_BREATH_ANIM_ID))
 	{
-		auto fireBreathAnim = new Animation(50);
+		auto fireBreathAnim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 		fireBreathAnim->Add(BOWSER_FIRE_BREATH_SPRITE_1);
 		fireBreathAnim->Add(BOWSER_FIRE_BREATH_SPRITE_2);
 		anims->Add(BOWSER_FIRE_BREATH_ANIM_ID, fireBreathAnim);
@@ -50,19 +50,19 @@ Bowser::Bowser(Vector2Int start, Rect arena, Mario* mario) : GameObject(start), 
 
 	if (!anims->Contains(BOWSER_HAMMER_THROW_ANIM_ID))
 	{
-		auto hammerThrowLeftAnim = new Animation(100);
+		auto hammerThrowLeftAnim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 		hammerThrowLeftAnim->Add(BOWSER_HAMMER_THROW_SPRITE);
 		anims->Add(BOWSER_HAMMER_THROW_ANIM_ID, hammerThrowLeftAnim);
 	}
 	if (!anims->Contains(BOWSER_DEATH_ANIM_ID))
 	{
-		auto deathAnim = new Animation(100);
+		auto deathAnim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 		deathAnim->Add(BOWSER_DEATH_SPRITE_1);
 		anims->Add(BOWSER_DEATH_ANIM_ID, deathAnim);
 	}
 	if (!anims->Contains(BOWSER_FALL_ANIM_ID))
 	{
-		auto fallAnim = new Animation(30);
+		auto fallAnim = new Animation(ANIMATION_DEFAULT_FRAMETIME);
 		fallAnim->Add(BOWSER_FALL_SPRITE_1);
 		fallAnim->Add(BOWSER_FALL_SPRITE_2);
 		anims->Add(BOWSER_FALL_ANIM_ID, fallAnim);
@@ -147,7 +147,7 @@ void Bowser::HandleHeathDecrease(int amount)
 		{
 			SetState(BowserState::Dead);
 			auto sm = StatManager::GetInstance();
-			sm->AddScore(5000, position); //only award points if Bowser died of fireballs
+			sm->AddScoreWithPopup(5000, position); //only award points if Bowser died of fireballs
 		}
 	}
 }

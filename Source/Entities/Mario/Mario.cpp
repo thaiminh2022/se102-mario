@@ -29,7 +29,6 @@ int Mario::GetFireBallCount(const vector<GameObject*>& coObjects) const
 }
 
 Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), static_cast<float>(startY))
-
 {
 	isInWater = false;
 	isRendering = true;
@@ -42,6 +41,7 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 	state = MarioState::Idle;
+	lastState = MarioState::Idle;
 	power = MarioPower::Normal;
 	lastPower = MarioPower::Normal;
 	fireCooldownTimer = Timer(MARIO_FIRE_INTERVAL);
@@ -53,6 +53,8 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	breathingTimer = Timer(2.5);
 	waitToBowserTimer = Timer(2.0f);
 	LoadSpriteAndAnimation();
+
+	starmanPaletteSwapTimer = Timer(STARMAN_PALETTE_SWAP_TIME);
 }
 
 bool Mario::IsInStarman() const
@@ -62,12 +64,14 @@ bool Mario::IsInStarman() const
 
 void Mario::SetEnterPipe(const PipeData& pipe)
 {
+	lastState = state;
 	state = MarioState::EnteringPipe;
 	pipeData = pipe;
 }
 
 void Mario::SetExitPipe(const MarioPipeCtx& returnPipeData)
 {
+	lastState = state;
 	state = MarioState::ExitingPipe;
 	AudioManager::GetInstance()->ResumeMusic();
 	AudioManager::GetInstance()->PlaySFX(PIPE_ENTER);
@@ -159,12 +163,14 @@ void Mario::ClampMario()
 	if (position.x < cam->GetX())
 	{
 		velocity.x = 0;
+		lastState = state;
 		state = MarioState::Idle;
 		position.x = cam->GetX();
 	}
 	if (position.y < cam->GetY())
 	{
 		velocity.y = 0;
+		lastState = state;
 		state = MarioState::Idle;
 		position.y = cam->GetY();
 	}
@@ -229,7 +235,18 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		if (starmanTimer.IsFinished())
 		{
 			starmanTimer.SetIdle();
+			starmanPaletteSwapTimer.SetIdle();
 			power = lastPower;//currently reset to normal. Will change later
+		}
+	}
+	if (starmanPaletteSwapTimer.IsTicking())
+	{
+		starmanPaletteSwapTimer.ProcessTimer(dt);
+		if (starmanPaletteSwapTimer.IsFinished())
+		{
+			currentStarmanAnimPalette = (currentStarmanAnimPalette + 1) % 3;
+			LoadStarmanPalette(currentStarmanAnimPalette);
+			starmanPaletteSwapTimer.Start();
 		}
 	}
 

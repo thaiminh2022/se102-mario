@@ -10082,20 +10082,6 @@
 							]
 						},
 						{
-							"__identifier": "PlayerStart",
-							"__grid": [104,10],
-							"__pivot": [0,0],
-							"__tags": ["entity"],
-							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
-							"__smartColor": "#63C74D",
-							"iid": "fc4b3de0-48b0-11f1-87a0-cf06e109ffaf",
-							"width": 16,
-							"height": 16,
-							"defUid": 31,
-							"px": [1664,160],
-							"fieldInstances": []
-						},
-						{
 							"__identifier": "NextLevel",
 							"__grid": [148,10],
 							"__pivot": [0,0],
@@ -10209,6 +10195,20 @@
 									"params": [ true ]
 								}] }
 							]
+						},
+						{
+							"__identifier": "PlayerStart",
+							"__grid": [1,5],
+							"__pivot": [0,0],
+							"__tags": ["entity"],
+							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
+							"__smartColor": "#63C74D",
+							"iid": "43b982e0-48b0-11f1-81fc-3167a0bf6bb3",
+							"width": 16,
+							"height": 16,
+							"defUid": 31,
+							"px": [16,80],
+							"fieldInstances": []
 						}
 					]
 				},

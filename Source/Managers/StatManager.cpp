@@ -51,8 +51,11 @@ void StatManager::Reset()
 	currentLevel = 0;
 	lastLevel = 0;
 }
-
-void StatManager::AddScore(int addingScore, Vector2 pos)
+void StatManager::AddScore(int addingScore)
+{
+	score += addingScore;
+}
+void StatManager::AddScoreWithPopup(int addingScore, Vector2 pos)
 {
 	score += addingScore;
 	PointPopup* popup = new PointPopup(pos, addingScore);
@@ -67,7 +70,12 @@ void StatManager::AddCoin(int addingCoin)
 	coinCount += addingCoin;
 }
 
-void StatManager::AddLife(int addingLife, Vector2 pos)
+void StatManager::AddLife(int addingLife)
+{
+	lifeCount += addingLife;
+}
+
+void StatManager::AddLifeWithPopup(int addingLife, Vector2 pos)
 {
 	lifeCount += addingLife;
 	PointPopup* popup = new PointPopup(pos, addingLife); // 1up popup
@@ -92,10 +100,10 @@ void StatManager::AddEnemyKillScore(int sequenceCount, Vector2 pos)
 		return;
 	else if (sequenceCount >= 0 && sequenceCount < 10) {
 		int score = enemyKillScoreList[sequenceCount];
-		AddScore(score, pos);
+		AddScoreWithPopup(score, pos);
 	}
 	else
-		AddLife(1, pos);//currently no popup for 1up, will change later
+		AddLifeWithPopup(1, pos);
 }
 
 void StatManager::AddShellKillScore(int sequenceCount, Vector2 pos)
@@ -104,10 +112,10 @@ void StatManager::AddShellKillScore(int sequenceCount, Vector2 pos)
 		return;
 	else if (sequenceCount >= 0 && sequenceCount < 7) {
 		int score = shellKillScoreList[sequenceCount];
-		AddScore(score, pos);
+		AddScoreWithPopup(score, pos);
 	}
 	else
-		AddLife(1, pos);
+		AddLifeWithPopup(1, pos);
 }
 
 void StatManager::AddShellKickScore(int sequenceCount, Vector2 pos)
@@ -116,11 +124,11 @@ void StatManager::AddShellKickScore(int sequenceCount, Vector2 pos)
 		return;
 	else if (sequenceCount >= 0 && sequenceCount < 3) {
 		int score = shellKickScoreList[sequenceCount];
-		AddScore(score, pos);
+		AddScoreWithPopup(score, pos);
 	}
 	else {
 		int score = shellKickScoreList[2];
-		AddScore(score, pos);
+		AddScoreWithPopup(score, pos);
 	}
 }
 

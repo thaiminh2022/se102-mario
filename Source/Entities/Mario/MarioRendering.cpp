@@ -24,6 +24,7 @@ void Mario::Render()
 		->WorldToScreen(position.x, position.y, renderX, renderY);
 
 	auto animId = GetMarioAnimId();
+
 	Animations::GetInstance()
 		->Get(animId)
 		->Render(round(renderX), round(renderY), !isFacingRight, false);
@@ -46,10 +47,11 @@ int Mario::GetMarioAnimId() const
 		case MarioState::Growing:
 			return MARIO_GROWBIG_ANIM_ID;
 		case MarioState::Walking:
-		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
 		case MarioState::ForceMoving:
+			return MARIO_WALK_ANIM_ID;
+		case MarioState::Running:
 			return MARIO_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return MARIO_SKID_ANIM_ID;
@@ -72,13 +74,13 @@ int Mario::GetMarioAnimId() const
 		switch (state)
 		{
 		case MarioState::Walking:
-		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
 		case MarioState::ForceMoving:
+			return MARIO_BIG_WALK_ANIM_ID;
+		case MarioState::Running:
 			return MARIO_BIG_RUN_ANIM_ID;
 		case MarioState::Skidding:
-
 			return MARIO_BIG_SKID_ANIM_ID;
 		case MarioState::Idle:
 			return MARIO_BIG_IDLE_ANIM_ID;
@@ -99,10 +101,11 @@ int Mario::GetMarioAnimId() const
 		switch (state)
 		{
 		case MarioState::Walking:
-		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
 		case MarioState::ForceMoving:
+			return MARIO_FIRE_WALK_ANIM_ID;
+		case MarioState::Running:
 			return MARIO_FIRE_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return MARIO_FIRE_SKID_ANIM_ID;
@@ -126,21 +129,22 @@ int Mario::GetMarioAnimId() const
 		switch (state)
 		{
 		case MarioState::Walking:
-		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
 		case MarioState::ForceMoving:
-			return STARMAN_BIG_RUN_ANIM_ID;
+			return STARMAN_BIG1_WALK_ANIM_ID;
+		case MarioState::Running:
+			return STARMAN_BIG1_RUN_ANIM_ID;
 		case MarioState::Skidding:
-			return STARMAN_BIG_SKID_ANIM_ID;
+			return STARMAN_BIG1_SKID_ANIM_ID;
 		case MarioState::Idle:
-			return STARMAN_BIG_IDLE_ANIM_ID;
+			return STARMAN_BIG1_IDLE_ANIM_ID;
 		case MarioState::Jumping:
-			return isInWater ? STARMAN_BIG_SWIM_ANIM_ID : STARMAN_BIG_JUMP_ANIM_ID;
+			return isInWater ? STARMAN_BIG1_SWIM_ANIM_ID : STARMAN_BIG1_JUMP_ANIM_ID;
 		case MarioState::Ducking:
-			return STARMAN_BIG_DUCK_ANIM_ID;
+			return STARMAN_BIG1_DUCK_ANIM_ID;
 		case MarioState::PullingFlag:
-			return STARMAN_BIG_FLAG_PULL_ANIM_ID;
+			return STARMAN_BIG1_FLAG_PULL_ANIM_ID;
 		default:
 			DebugOut(L"[Error] No handling for state: %d\n", state);
 		}
@@ -149,19 +153,20 @@ int Mario::GetMarioAnimId() const
 		switch (state)
 		{
 		case MarioState::Walking:
-		case MarioState::Running:
 		case MarioState::WalkingToCastle:
 		case MarioState::EnteringPipe:
 		case MarioState::ForceMoving:
-			return STARMAN_SMALL_RUN_ANIM_ID;
+			return STARMAN_SMALL1_WALK_ANIM_ID;
+		case MarioState::Running:
+			return STARMAN_SMALL1_RUN_ANIM_ID;
 		case MarioState::Skidding:
-			return STARMAN_SMALL_SKID_ANIM_ID;
+			return STARMAN_SMALL1_SKID_ANIM_ID;
 		case MarioState::Idle:
-			return STARMAN_SMALL_IDLE_ANIM_ID;
+			return STARMAN_SMALL1_IDLE_ANIM_ID;
 		case MarioState::Jumping:
-			return isInWater ? STARMAN_SWIM_ANIM_ID :  STARMAN_SMALL_JUMP_ANIM_ID;
+			return isInWater ? STARMAN_SMALL1_SWIM_ANIM_ID :  STARMAN_SMALL1_JUMP_ANIM_ID;
 		case MarioState::PullingFlag:
-			return STARMAN_SMALL_FLAG_PULL_ANIM_ID;
+			return STARMAN_SMALL1_FLAG_PULL_ANIM_ID;
 		default:
 			DebugOut(L"[Error] No handling for state: %d\n", state);
 		}
@@ -175,16 +180,19 @@ void Mario::RouteAnimationState()
 	const InputManager* input = InputManager::GetInstance();
 	if (!isGrounded)
 	{
+		lastState = state;
 		state = MarioState::Jumping;
 	}
 	else
 	{
-		if ((power == MarioPower::Big || power == MarioPower::Fire) && input->IsKeyDown('S'))
+		if ((power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanBig) && input->IsKeyDown('S'))
 		{
+			lastState = state;
 			state = MarioState::Ducking;
 		}
 		else if (abs(velocity.x) > MAX_WALK)
 		{
+			lastState = state;
 			state = MarioState::Running;
 		}
 		else if (abs(velocity.x) >= MIN_WALK)
@@ -192,15 +200,18 @@ void Mario::RouteAnimationState()
 			// Detect Skidding: Moving right but pressing left (or vice versa)
 			if ((velocity.x > 0 && input->IsKeyDown('A')) || (velocity.x < 0 && input->IsKeyDown('D')))
 			{
+				lastState = state;
 				state = MarioState::Skidding;
 			}
 			else
 			{
+				lastState = state;
 				state = MarioState::Walking;
 			}
 		}
 		else
 		{
+			lastState = state;
 			state = MarioState::Idle;
 		}
 	}

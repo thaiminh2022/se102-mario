@@ -200,6 +200,7 @@
     <ClCompile Include="Source\UI\UILabel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AssetID.h" />
     <ClInclude Include="Source\Scenes\AboutScene.h" />
     <ClInclude Include="Source\Scenes\GameOverScene.h" />
     <ClInclude Include="Source\Rendering\Animation.h" />
