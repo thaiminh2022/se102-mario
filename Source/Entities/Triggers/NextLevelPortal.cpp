@@ -40,10 +40,6 @@ void NextLevelPortal::Update(float dt, vector<GameObject*>& coObjects, SceneCont
 		{
 			power = MarioPower::Normal;
 		}
-		else if (power == MarioPower::Raccoon)
-		{
-			power = MarioPower::Big;
-		}
 
 		auto sceneCtx = SceneSwitchContext::NormalTransition(power);
 		Game::GetInstance()->IndicateSceneSwitch(levelToLoad, sceneCtx);

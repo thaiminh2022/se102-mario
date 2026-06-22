@@ -75,7 +75,7 @@ void Mario::MarioPullingFlag(float dt)
 			flagPoleFlipWaitTimer.Start();
 			position.y = slidingToYWinning;
 			isFacingRight = false;
-			position.x += (power == MarioPower::Raccoon) ? 24 : 16;
+			position.x += 16;
 		}
 
 		flagPoleFlipWaitTimer.ProcessTimer(dt);

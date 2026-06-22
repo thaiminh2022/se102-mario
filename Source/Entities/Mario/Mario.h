@@ -41,6 +41,7 @@ enum class MarioPower
 	Raccoon //flying
 };
 
+const float MARIO_FIRE_INTERVAL = 0.15f;
 const float MARIO_GROW_TIME = 0.7f;
 const float MARIO_SHRINK_TIME = 0.75f;
 const float MARIO_INVINCIBLE_TIME = 2.0f;
@@ -54,8 +55,6 @@ const float MAX_RUN = 153.75f;
 //ACCELERATION
 const float ACC_WALK = 133.59375f;
 const float ACC_RUN = 200.390625f;
-
-const float RACCOON_ONAIR_ACC = 300.0F;
 
 //Deceleration when no input
 const float DEC_REL = 182.8125f;
@@ -78,11 +77,10 @@ const int MAX_FIREBALL_COUNT = 2;
 const float SWIM_UP_SPEED = -150.0f;   // Upward impulse/speed when pressing swim
 const float WATER_GRAVITY = 180.0f;    // Slow underwater downward acceleration
 const float WATER_MAX_FALL = 90.0f;    // Slow sinking cap
-const float MAX_SWIM = 100.0f;     // horizontal cap
+const float MAX_SWIM = 100.0f;         // horizontal cap
 
 // Having raccoon suit = lower gravity, or falling slower
-// Full P meter raccoon suit mean being able to FLY
-
+// Full P meter raccoon suit mean being able to fly
 const float PMETER_MIN_RUN_SPEED = MAX_WALK;
 const float RACCOON_MAX_FALL = 120.0f; // Maximum falling speed with raccoon suit (when holding jump or flying), should be lower than normal max fall to give player more control
 const float RACCOON_MAX_RISE = -240.0f; // Maximum rising speed with raccoon suit (when holding jump), should be same as normal jump speed to allow player to reach same height, but with more control
@@ -100,7 +98,7 @@ class Mario : public GameObject
 
 	float fallAcc = 562.5f;
 	int GetFireBallCount(const vector<GameObject*>& coObjects) const;
-
+	Timer fireCooldownTimer;
 	Timer invincibleTimer; //used for invincibility after getting hit
 	Timer starmanTimer; //used for starman power
 	Timer transformTimer; //used for growing and shrinking
@@ -111,7 +109,7 @@ class Mario : public GameObject
 	MarioState state;
 	MarioState lastState;
 	MarioPower power;
-	MarioPower lastPower; // used to store power before transfroming to Starman for correct power restoration after starman ends
+	MarioPower lastPower; // used to store power before transformation for correct animation during transformation
 
 	RaccoonSuit* raccoonSuit = nullptr;
 
@@ -194,7 +192,7 @@ public:
 	Mario(int startX, int startY);
 	bool IsInStarman() const;
 	MarioPower GetPowerLevel() const { return power; }
-	void SetPowerLevel(const MarioPower newPower);
+	void SetPowerLevel(const MarioPower newPower) { power = newPower; }
 	
 	void SetEnterPipe(const PipeData& pipe);
 	void SetExitPipe(const MarioPipeCtx& returnPipeData);

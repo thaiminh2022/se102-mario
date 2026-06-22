@@ -40,12 +40,12 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	isFacingRight = true;
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
-
 	state = MarioState::Idle;
 	lastState = MarioState::Idle;
 	power = MarioPower::Normal;
 	lastPower = MarioPower::Normal;
-
+	fireCooldownTimer = Timer(MARIO_FIRE_INTERVAL);
+	fireCooldownTimer.Start();
 	transformTimer = Timer(MARIO_GROW_TIME);
 	starmanTimer = Timer(STARMAN_INVINCIBLE_TIME);
 	invincibleTimer = Timer(MARIO_INVINCIBLE_TIME);
@@ -53,23 +53,14 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	breathingTimer = Timer(2.5);
 	waitToBowserTimer = Timer(2.0f);
 	twirlSFXTimer = Timer(TWIRL_SFX_INTERVAL);
-	starmanPaletteSwapTimer = Timer(STARMAN_PALETTE_SWAP_TIME);
-
 	LoadSpriteAndAnimation();
+
+	starmanPaletteSwapTimer = Timer(STARMAN_PALETTE_SWAP_TIME);
 }
 
 bool Mario::IsInStarman() const
 {
 	return power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig;
-}
-
-void Mario::SetPowerLevel(const MarioPower newPower)
-{
-	if (newPower == MarioPower::StarmanSmall || newPower == MarioPower::StarmanBig)
-	{
-		lastPower = power;
-	}
-	power = newPower;
 }
 
 void Mario::SetEnterPipe(const PipeData& pipe)
@@ -240,13 +231,14 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			isInvincible = false;
 		}
 	}
-	if (IsInStarman()) {
+	if (power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig) {
 		starmanTimer.ProcessTimer(dt);
 		if (starmanTimer.IsFinished())
 		{
 			starmanTimer.SetIdle();
 			starmanPaletteSwapTimer.SetIdle();
-			power = lastPower; //have to make sure lastPower is never Starman
+			power = (lastPower == MarioPower::StarmanBig || lastPower == MarioPower::StarmanSmall)? 
+				MarioPower::Normal : lastPower;
 		}
 	}
 	if (starmanPaletteSwapTimer.IsTicking())
@@ -277,6 +269,19 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	HandleShootFireball(dt, coObjects, ctx);
 	ApplyGravityAndClamp(dt);
 	UpdateFacingDirection();
+
+	if (power == MarioPower::Raccoon && state == MarioState::Flying)
+	{
+		raccoonFlyingTimer.ProcessTimer(dt);
+		if (raccoonFlyingTimer.IsFinished())
+		{
+			raccoonFlyingTimer.SetIdle();
+			power = (lastPower == MarioPower::StarmanBig || lastPower == MarioPower::StarmanSmall) ?
+				MarioPower::Normal : lastPower;
+			raccoonSuit = nullptr;
+			velocity.y = 0;
+		}
+	}
 
 	ClampMario();
 	RouteAnimationState();

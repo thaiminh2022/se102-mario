@@ -11200,7 +11200,7 @@
 							"__tile": { "tilesetUid": 49, "x": 160, "y": 16, "w": 16, "h": 16 },
 							"__smartColor": "#0099DB",
 							"iid": "aa1bd2e0-48b0-11f1-8122-3bf2f457832d",
-							"width": 208,
+							"width": 192,
 							"height": 48,
 							"defUid": 291,
 							"px": [2336,96],
@@ -12542,9 +12542,9 @@
 							"defUid": 291,
 							"px": [48,32],
 							"fieldInstances": [
-								{ "__identifier": "Content", "__type": "String", "__value": "Run to Gain PMeter", "__tile": null, "defUid": 292, "realEditorValues": [{
+								{ "__identifier": "Content", "__type": "String", "__value": "RUN TO GAIN PMETER", "__tile": null, "defUid": 292, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["Run to Gain PMeter"]
+									"params": ["RUN TO GAIN PMETER"]
 								}] },
 								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Before", "__tile": null, "defUid": 294, "realEditorValues": [] },
 								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Before", "__tile": null, "defUid": 295, "realEditorValues": [] },
@@ -12565,9 +12565,9 @@
 							"defUid": 291,
 							"px": [208,64],
 							"fieldInstances": [
-								{ "__identifier": "Content", "__type": "String", "__value": "Hold W to Fly", "__tile": null, "defUid": 292, "realEditorValues": [{
+								{ "__identifier": "Content", "__type": "String", "__value": "HOLD JUMP TO FLY", "__tile": null, "defUid": 292, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["Hold W to Fly"]
+									"params": ["HOLD JUMP TO FLY"]
 								}] },
 								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Before", "__tile": null, "defUid": 294, "realEditorValues": [] },
 								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Before", "__tile": null, "defUid": 295, "realEditorValues": [] },
@@ -12593,26 +12593,6 @@
 									"params": ["Assets/Audio/Soundtracks/smb3_world1.wav"]
 								}] },
 								{ "__identifier": "is_trigger", "__type": "Bool", "__value": false, "__tile": null, "defUid": 260, "realEditorValues": [] }
-							]
-						},
-						{
-							"__identifier": "TextRender",
-							"__grid": [60,12],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": { "tilesetUid": 49, "x": 160, "y": 16, "w": 16, "h": 16 },
-							"__smartColor": "#0099DB",
-							"iid": "7d61e1e0-48b0-11f1-a0d8-1b265d2f7e9b",
-							"width": 16,
-							"height": 16,
-							"defUid": 291,
-							"px": [960,192],
-							"fieldInstances": [
-								{ "__identifier": "Content", "__type": "String", "__value": "Empty String", "__tile": null, "defUid": 292, "realEditorValues": [] },
-								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Before", "__tile": null, "defUid": 294, "realEditorValues": [] },
-								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Before", "__tile": null, "defUid": 295, "realEditorValues": [] },
-								{ "__identifier": "italic", "__type": "Bool", "__value": false, "__tile": null, "defUid": 296, "realEditorValues": [] },
-								{ "__identifier": "bold", "__type": "Bool", "__value": false, "__tile": null, "defUid": 297, "realEditorValues": [] }
 							]
 						}
 					]
