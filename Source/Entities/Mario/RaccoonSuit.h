@@ -11,7 +11,7 @@ const float PMETER_MAX = 100.0f;
 const float PMETER_CHARGE_RATE = 100.0f;
 const float PMETER_DECAY_RATE = 55.0f; // the pmeter will become 0 after PMETER_MAX / PMETER_DECAY_RATE seconds of not charging
 const float PMETER_FLIGHT_DRAIN_RATE = 5.0f;
-const float RACCOON_FLYING_TIME_LIMIT = 6.0f;
+const float RACCOON_FLYING_TIME_LIMIT = 4.5f;
 
 class RaccoonSuit : public GameObject
 {
@@ -31,6 +31,7 @@ public:
 	void DrainFlight(float dt);
 
 	float GetPMeter() const { return pMeter; }
+	void SetPMeter(float newPMeter) { pMeter = newPMeter; }
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void SetState(RaccoonSuitState s);
 	void Render() override;

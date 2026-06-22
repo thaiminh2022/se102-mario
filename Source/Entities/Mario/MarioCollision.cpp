@@ -72,7 +72,7 @@ bool Mario::OnCollisionWithCheepCheeps(const CollisionEvent* e)
 		auto sm = StatManager::GetInstance();
 		if (power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig)
 		{
-			// kill goomba by touch
+			// kill CheepCheep by touch
 			cc->SetState(CheepCheepsState::Dead);
 			sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
@@ -96,7 +96,7 @@ bool Mario::OnCollisionWithBloopers(const CollisionEvent* e)
 		auto sm = StatManager::GetInstance();
 		if (power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig)
 		{
-			// kill goomba by touch
+			// kill Blooper by touch
 			blooper->SetState(BlooperState::Dead);
 			sm->AddEnemyKillScore(enemySequenceKilledCount, this->position);
 			AudioManager::GetInstance()->PlaySFX(GOOMBA_STOMP);
@@ -305,6 +305,19 @@ bool Mario::OnCollisionWithFlower(CollisionEvent* e)
 		else if (power == MarioPower::Big)
 		{
 			power = MarioPower::Fire; // Instantly power up to Fire if already Big
+		} else if (power == MarioPower::Raccoon)
+		{
+			raccoonSuit->SetState(RaccoonSuitState::Removed);
+			raccoonSuit = nullptr;
+			power = MarioPower::Fire; // Instantly power up to Fire if already Raccoon
+		}
+		else if (power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig)
+		{
+			StatManager::GetInstance()->AddScoreWithPopup(1000, this->position);
+		}
+		else if (power == MarioPower::Fire)
+		{
+			StatManager::GetInstance()->AddScoreWithPopup(1000, this->position);
 		}
 
 		flower->SetState(CollectableItemState::Collected);
@@ -325,18 +338,17 @@ bool Mario::OnCollisionWithStar(const CollisionEvent* e)
 
 		if (power == MarioPower::StarmanBig || power == MarioPower::StarmanSmall)
 		{
-			return true;
+			//if already in starman power, refresh timer and do not change power or play sfx again
 		}
-		if (lastPower != MarioPower::StarmanBig && lastPower != MarioPower::StarmanSmall) {
-			lastPower = MarioPower::Normal;
-		}
-		lastPower = power;
-		if (power == MarioPower::Normal)
+		if (power == MarioPower::Normal) {
+			position.y -= 17;// add some pushback so player won't fall off the ground
+			lastPower = power;
 			power = MarioPower::StarmanSmall;
+		}
+			
 		else if (power == MarioPower::Big || power == MarioPower::Fire) {
-			power = MarioPower::StarmanBig;
-			// add some pushback so player won't fall off the ground
-			position.y -= 17;
+			lastPower = power;
+			power = MarioPower::StarmanBig;	
 		}
 		starmanTimer = Timer(STARMAN_INVINCIBLE_TIME);
 		starmanTimer.Start();
@@ -363,7 +375,13 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 
 	int score = 0;
 	float bottom = static_cast<float>(flagPole->GetBoundingBox().bottom);
-	float touchingPoint = position.y + (power == MarioPower::Normal ? 16.0f : 32.0f); // Mario's feet position
+	float touchingPoint;
+	if (power == MarioPower::Normal || power == MarioPower::StarmanSmall) {
+		touchingPoint = position.y + 16.0f; // Mario's feet position when small
+	}
+	else {
+		touchingPoint = position.y + 32.0f; // Mario's feet position when big or with powerup
+	}
 	float touchingHeight = bottom - touchingPoint;
 
 	score = GetFlagBonusScore(touchingHeight);
@@ -389,7 +407,13 @@ bool Mario::OnCollisionWithFlagPole(const CollisionEvent* collisionEvent)
 	position.x = snapPosition.x;
 	position.y = max(position.y, static_cast<float>(snapPosition.y));
 
-	float offset = power == MarioPower::Normal ? 16.0f : 32.0f;
+	float offset;
+	if (power == MarioPower::StarmanSmall || power == MarioPower::Normal) {
+		offset = 16.0f; // small mario's offset from feet to center
+	}
+	else {
+		offset = 32.0f; // big mario's offset from feet to center
+	}
 
 	slidingToYWinning = static_cast<float>(flagPole->GetBoundingBox().bottom) - offset;
 	marioWinningMoveToPosition = flagPole->GetMoveToPosition();

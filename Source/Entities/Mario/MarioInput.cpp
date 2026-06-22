@@ -79,7 +79,7 @@ void Mario::WhileOnAir(float dt)
 	if (input->IsKeyDown('A'))
 	{
 		if (power == MarioPower::Raccoon && raccoonSuit) {
-			velocity.x -= ACC_RUN * dt; //faster acceleration in air for raccoon mario with raccoon suit
+			velocity.x -= RACCOON_ONAIR_ACC * dt; //faster acceleration in air for raccoon mario with raccoon suit
 
 		}
 		else {
@@ -91,7 +91,7 @@ void Mario::WhileOnAir(float dt)
 	{
 
 		if (power == MarioPower::Raccoon && raccoonSuit) {
-			velocity.x += ACC_RUN * dt; //faster acceleration in air for raccoon mario with raccoon suit
+			velocity.x += RACCOON_ONAIR_ACC * dt; //faster acceleration in air for raccoon mario with raccoon suit
 		}
 		else {
 			// normal jumping
@@ -205,9 +205,8 @@ void Mario::HandleRaccoonSuit(float dt)
 				if (raccoonFlyingTimer.IsFinished())
 				{
 					raccoonFlyingTimer.SetIdle();
-					power = (lastPower == MarioPower::StarmanBig || lastPower == MarioPower::StarmanSmall) ?
-						MarioPower::Normal : lastPower;
-					raccoonSuit = nullptr;
+					
+					raccoonSuit->SetPMeter(0);
 					velocity.y = 0;
 				}
 			}
@@ -252,7 +251,6 @@ void Mario::HandleShootFireball(const float dt, const vector<GameObject*>& coObj
 		if (InputManager::GetInstance()->IsKeyPressed(VK_CONTROL)
 			&& state != MarioState::Ducking
 			&& fireBallCount < MAX_FIREBALL_COUNT
-			&& fireCooldownTimer.IsFinished()
 			)
 		{
 			float offsetX = isFacingRight ? 16.0f : -16.0f; // Spawn fireball slightly in front of Mario
@@ -260,13 +258,8 @@ void Mario::HandleShootFireball(const float dt, const vector<GameObject*>& coObj
 			auto f = new Fireball(position.x + offsetX, position.y + offsetY, isFacingRight);
 			ctx->addObject(f);
 			AudioManager::GetInstance()->PlaySFX(FIREBALL);
-			fireCooldownTimer.Start();
+			state = MarioState::Firing;
 		}
-	}
-	fireCooldownTimer.ProcessTimer(dt);
-	if (!fireCooldownTimer.IsFinished())
-	{
-		state = MarioState::Firing;
 	}
 }
 
