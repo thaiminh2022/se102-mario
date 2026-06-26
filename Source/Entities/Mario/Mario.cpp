@@ -52,7 +52,9 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	enemySequenceKilledCount = 0;
 	breathingTimer = Timer(2.5);
 	waitToBowserTimer = Timer(2.0f);
-	twirlSFXTimer = Timer(TWIRL_SFX_INTERVAL);
+	tailSFXTimer = Timer(TAIL_SFX_INTERVAL);
+	skidTimer = Timer(SKID_SFX_TIME);
+
 	LoadSpriteAndAnimation();
 
 	starmanPaletteSwapTimer = Timer(STARMAN_PALETTE_SWAP_TIME);
@@ -251,7 +253,15 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 			starmanPaletteSwapTimer.Start();
 		}
 	}
-	
+	if (skidTimer.IsTicking())
+	{
+		skidTimer.ProcessTimer(dt);
+		if (skidTimer.IsFinished())
+		{
+			skidTimer.SetIdle();
+		}
+	}
+
 	auto input = InputManager::GetInstance();
 	if (isGrounded)
 	{

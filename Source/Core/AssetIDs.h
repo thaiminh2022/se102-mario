@@ -666,6 +666,7 @@ enum AUDIOS : std::int8_t
     FIREWORK = 15,
     GAMEOVER = 16,
 	TWIRL = 17,
+    TAIL = 18,
 };
 
 /// FONT

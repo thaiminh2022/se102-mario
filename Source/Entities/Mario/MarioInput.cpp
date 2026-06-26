@@ -39,6 +39,11 @@ void Mario::WhileGrounded(float dt)
 			{
 				//Skidding
 				velocity.x -= DEC_SKID * dt;
+				if (!skidTimer.IsTicking())
+				{
+					AudioManager::GetInstance()->PlaySFX(TWIRL);
+					skidTimer.Start();
+				}
 			}
 			else
 			{
@@ -58,6 +63,11 @@ void Mario::WhileGrounded(float dt)
 			{
 				// Skidding
 				velocity.x += DEC_SKID * dt;
+				if (!skidTimer.IsTicking())
+				{
+					AudioManager::GetInstance()->PlaySFX(TWIRL);
+					skidTimer.Start();
+				}
 			}
 			else
 			{
@@ -192,9 +202,9 @@ void Mario::HandleRaccoonSuit(float dt)
 
 	if (raccoonSuit->ReadyToFly())
 	{
-		state = MarioState::Flying;
 		
 		if (input->IsKeyDown('W')) {
+			state = MarioState::Flying;
 			if (!raccoonFlyingTimer.IsTicking())
 			{
 				raccoonFlyingTimer = Timer(RACCOON_FLYING_TIME_LIMIT);
@@ -202,6 +212,19 @@ void Mario::HandleRaccoonSuit(float dt)
 			}
 			else {
 				raccoonFlyingTimer.ProcessTimer(dt);
+
+				if (raccoonFlyingTimer.GetTimeLeft() / raccoonFlyingTimer.GetStartTime() <= LOW_FLYING_TIME_PERCENT) {
+					//SFX
+					if (!tailSFXTimer.IsTicking() || tailSFXTimer.IsFinished()) {
+						AudioManager::GetInstance()->PlaySFX(TAIL);
+						tailSFXTimer = Timer(TAIL_SFX_INTERVAL);
+						tailSFXTimer.Start();
+					}
+					else {
+						tailSFXTimer.ProcessTimer(dt);
+					}
+				}
+
 				if (raccoonFlyingTimer.IsFinished())
 				{
 					raccoonFlyingTimer.SetIdle();
@@ -210,30 +233,14 @@ void Mario::HandleRaccoonSuit(float dt)
 			}
 			
 			velocity.y -= RACCOON_LIFT_ACCELERATION * dt;
-			//SFX
-			if (!twirlSFXTimer.IsTicking() || twirlSFXTimer.IsFinished()) {
-				AudioManager::GetInstance()->PlaySFX(TWIRL);
-				twirlSFXTimer = Timer(TWIRL_SFX_INTERVAL);
-				twirlSFXTimer.Start();
-			}
-			else {
-				twirlSFXTimer.ProcessTimer(dt);
-			}
+				
 		}
 	}
 	else if (velocity.y > 0.0f) {
 		if (input->IsKeyDown('W'))
 		{
 			velocity.y = RACCOON_WAG_VELOCITY;
-			//SFX
-			if (!twirlSFXTimer.IsTicking() || twirlSFXTimer.IsFinished()) {
-				AudioManager::GetInstance()->PlaySFX(TWIRL);
-				twirlSFXTimer = Timer(TWIRL_SFX_INTERVAL);
-				twirlSFXTimer.Start();
-			}
-			else {
-				twirlSFXTimer.ProcessTimer(dt);
-			}
+			
 		}
 		if (input->IsKeyPressed('W')) {
 			velocity.y = RACCOON_WAG_VELOCITY;

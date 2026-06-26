@@ -28,6 +28,7 @@ enum class MarioState : std::uint8_t
 	Shrinking,
 	StopToWaitBowser,
 	ForceMoving,
+	PreFly, // raccoon pre-flying state
 	Flying, // raccoon flying state
 };
 
@@ -79,6 +80,8 @@ const float WATER_GRAVITY = 180.0f;    // Slow underwater downward acceleration
 const float WATER_MAX_FALL = 90.0f;    // Slow sinking cap
 const float MAX_SWIM = 100.0f;         // horizontal cap
 
+const float SKID_SFX_TIME = 0.5f;
+
 // Having raccoon suit = lower gravity, or falling slower
 // Full P meter raccoon suit mean being able to fly
 const float PMETER_MIN_RUN_SPEED = MAX_WALK;
@@ -86,7 +89,8 @@ const float RACCOON_MAX_FALL = 120.0f; // Maximum falling speed with raccoon sui
 const float RACCOON_MAX_RISE = -240.0f; // Maximum rising speed with raccoon suit (when holding jump), should be same as normal jump speed to allow player to reach same height, but with more control
 const float RACCOON_LIFT_ACCELERATION = 4000.0f;
 const float RACCOON_WAG_VELOCITY = 60.0f;
-const float TWIRL_SFX_INTERVAL = 0.1f; //how often the twirl sfx can be played when flying with raccoon suit
+const float TAIL_SFX_INTERVAL = 0.3f; //how often the twirl sfx can be played when flying with raccoon suit
+const float LOW_FLYING_TIME_PERCENT = 0.5f; // how much of the flying time is considered low flying, which will play a different sfx
 
 class Mario : public GameObject
 {
@@ -104,7 +108,7 @@ class Mario : public GameObject
 	Timer transformTimer; //used for growing and shrinking
 	Timer breathingTimer;
 
-	Timer twirlSFXTimer;
+	Timer tailSFXTimer;
 
 	MarioState state;
 	MarioState lastState;
@@ -129,6 +133,8 @@ class Mario : public GameObject
 	Timer starmanPaletteSwapTimer;
 	int currentStarmanAnimPalette = 0;
 	Timer raccoonFlyingTimer;
+
+	Timer skidTimer;
 	std::unordered_map<int, Animation*> starmanBlueprints[3];
 
 
