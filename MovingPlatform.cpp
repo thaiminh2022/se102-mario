@@ -44,7 +44,7 @@ void MovingPlatform::Update(float dt, vector<GameObject*>& coObjects, SceneConte
 	if (data.movingPoints.size() <= 1)
 		return;
 
-	constexpr float minCheck = 0.001;
+	constexpr float minCheck = 0.1f;
 	if (position.Distance(data.movingPoints[targetPointIndex]) < minCheck)
 	{
 		if (isIncreasing) {
@@ -59,6 +59,7 @@ void MovingPlatform::Update(float dt, vector<GameObject*>& coObjects, SceneConte
 				if (data.loop)
 				{
 					targetPointIndex = 0;
+					position = data.movingPoints[targetPointIndex];
 				}else if (data.loopPingPong)
 				{
 					isIncreasing = false;
@@ -76,6 +77,7 @@ void MovingPlatform::Update(float dt, vector<GameObject*>& coObjects, SceneConte
 				if (data.loop)
 				{
 					targetPointIndex = data.movingPoints.size() - 1;
+					position = data.movingPoints[targetPointIndex];
 				}
 				else if (data.loopPingPong)
 				{
@@ -100,6 +102,9 @@ void MovingPlatform::Render()
 	float renderX, renderY;
 
 	Game::GetInstance()->GetCamera()->WorldToScreen(position.x, position.y, renderX, renderY);
+	
+	renderX = round(renderX);
+	renderY = round(renderY);
 	switch (internalWidth)
 	{
 		case 2:
