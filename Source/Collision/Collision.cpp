@@ -4,6 +4,7 @@
 
 #include "GameObject.h"
 #include "BowserHammer.h"	
+#include "MovingPlatform.h"
 
 #include "Mario.h"
 #include "Rect.h"
@@ -92,6 +93,14 @@ void Collision::Filter(
 			// We only care if the player is landing on the TOP.
 			// If the collision normal is anything else (Side or Bottom), 
 			// we ignore it entirely so the player passes through.
+			if (v.normalizedDir.y != -1)
+			{
+				continue;
+			}
+		}
+
+		if (v.IsObjectCollision() && dynamic_cast<MovingPlatform*>(v.otherObject) != nullptr)
+		{
 			if (v.normalizedDir.y != -1)
 			{
 				continue;
