@@ -17,20 +17,6 @@ bool IsStandingOn(const Rect& rider, const Rect& platform)
 	return overlapsX && onTop;
 }
 
-void MoveRiderWithPlatform(GameObject* rider, const Vector2& delta, const Rect& platformBounds)
-{
-	rider->position += delta;
-
-	if (delta.y == 0.0f)
-		return;
-
-	const auto riderBounds = rider->GetBoundingBox();
-	if (riderBounds.bottom >= platformBounds.top)
-	{
-		rider->position.y -= static_cast<float>(riderBounds.bottom - platformBounds.top + 1);
-	}
-}
-
 MovingPlatform::MovingPlatform(MovingPlatformData data, BiomeType biome) : GameObject(data.zone.left, data.zone.top), data(std::move(data))
 {
 	auto t = Textures::GetInstance()->Get(ChooseTilesetId(biome));
@@ -144,7 +130,7 @@ void MovingPlatform::Update(float dt, vector<GameObject*>& coObjects, SceneConte
 		auto mario = dynamic_cast<Mario*>(other);
 		if (mario != nullptr && IsStandingOn(mario->GetBoundingBox(), oldBounds))
 		{
-			MoveRiderWithPlatform(mario, frameDelta, newBounds);
+			mario->MoveWithPlatform(frameDelta, newBounds);
 		}
 	}
 }

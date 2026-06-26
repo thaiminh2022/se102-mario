@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "AssetIDs.h"
 #include "AudioManager.h"
 #include "Bloopers.h"
@@ -474,6 +476,25 @@ bool Mario::OnCollisionWithMovingPlatform(const CollisionEvent* e)
 	}
 
 	return true;
+}
+
+void Mario::MoveWithPlatform(const Vector2& delta, const Rect& platformBounds)
+{
+	position += delta;
+
+	if (delta.y != 0.0f)
+	{
+		const auto bounds = GetBoundingBox();
+		if (bounds.bottom >= platformBounds.top)
+		{
+			position.y -= static_cast<float>(bounds.bottom - platformBounds.top + 1);
+		}
+
+		velocity.y = min(velocity.y, 0.0f);
+	}
+
+	isGrounded = true;
+	enemySequenceKilledCount = 0;
 }
 
 void Mario::OnCollisionWith(CollisionEvent* e)
