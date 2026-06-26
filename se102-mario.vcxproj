@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="Source\Scenes\AboutScene.cpp" />
     <ClCompile Include="Source\Scenes\GameOverScene.cpp" />
     <ClCompile Include="Source\Rendering\Animation.cpp" />
@@ -201,6 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetID.h" />
+    <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="Source\Scenes\AboutScene.h" />
     <ClInclude Include="Source\Scenes\GameOverScene.h" />
     <ClInclude Include="Source\Rendering\Animation.h" />

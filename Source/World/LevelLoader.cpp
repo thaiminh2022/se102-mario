@@ -1011,6 +1011,45 @@ void LevelLoader::ParseTextRender(SceneEntityData& sceneEntities, vector<EntityI
 	}
 }
 
+void LevelLoader::ParseMovingPlatform(SceneEntityData& sceneEntities, vector<EntityInstance>& entities)
+{
+	const auto movingPlatformData = GetEntityDataWithIdentifier(entities, "MovingPlatform");
+
+	for (const auto mvDataRaw: movingPlatformData)
+	{
+		auto loopModeJson = GetFieldValueWithIdentifier(mvDataRaw->fieldInstances, "loop_mode");
+		auto moveSpeedJson = GetFieldValueWithIdentifier(mvDataRaw->fieldInstances, "move_speed");
+		auto movingPointsJson = GetFieldValueWithIdentifier(mvDataRaw->fieldInstances, "moving_points");
+
+		if (!loopModeJson.has_value() || !moveSpeedJson.has_value() || !movingPointsJson.has_value())
+			continue;
+		
+		auto loopModeString = loopModeJson->get<string>();
+		const auto moveSpeed = moveSpeedJson->get<float>();
+		auto movingPointsLdtk = movingPointsJson->get<vector<LDTKPoint>>();
+
+		MovingPlatformData mvData;
+		mvData.moveSpeed = moveSpeed;
+		
+		if (loopModeString == "Loop")
+		{
+			mvData.loop = true;
+		}else if (loopModeString == "PingPong")
+		{
+			mvData.loopPingPong = true;
+		}
+		mvData.zone = Rect::FromXYWH(mvDataRaw->px[0], mvDataRaw->px[1], mvDataRaw->width, mvDataRaw->height);
+
+		mvData.movingPoints.emplace_back(mvData.zone.left, mvData.zone.top);
+		for (auto [cx, cy] : movingPointsLdtk)
+		{
+			mvData.movingPoints.emplace_back(cx * 16, cy * 16);
+		}
+
+		sceneEntities.movingPlatforms.push_back(mvData);
+	}
+}
+
 void LevelLoader::RebuildCacheForLevel(vector<EntityInstance>& entities)
 {
 	levelEntitiesCache.clear();
@@ -1044,6 +1083,7 @@ SceneEntityData LevelLoader::ParseEntityLayer(const int level, vector<LayerInsta
 	ParseBowsers(sceneEntities, entities);
 	ParseFireballTrap(sceneEntities, entities);
 	ParseSuperLeaf(sceneEntities, entities);
+	ParseMovingPlatform(sceneEntities, entities);
 
 	
 	// collectables

@@ -33,6 +33,7 @@
 #include "LevelTextRender.h"
 #include "RaccoonSuit.h"
 #include "StatManager.h"
+#include "../../MovingPlatform.h"
 
 
 using std::priority_queue;
@@ -235,6 +236,11 @@ void PlayableScene::Load(const Optional<SceneSwitchContext>& ctx)
 	{
 		const auto flag = config->entityData.flagPole.value();
 		objects.push_back(std::make_unique<FlagPole>(flag.zone, flag.moveToPosition));
+	}
+	// fire trap
+	for (const auto& mvData : config->entityData.movingPlatforms)
+	{
+		objects.push_back(std::make_unique<MovingPlatform>(mvData, config->biome));
 	}
 
 

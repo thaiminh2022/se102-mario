@@ -11,7 +11,7 @@
 	"iid": "542e4d40-21a0-11f1-b547-3f7639dce03c",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 303,
+	"nextUid": 311,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "LinearVertical",
@@ -2477,17 +2477,167 @@
 					"tilesetUid": null
 				}
 			]
+		},
+		{
+			"identifier": "MovingPlatform",
+			"uid": 303,
+			"tags": ["entity"],
+			"exportToToc": false,
+			"allowOutOfBounds": false,
+			"doc": null,
+			"width": 16,
+			"height": 8,
+			"resizableX": true,
+			"resizableY": true,
+			"minWidth": 16,
+			"maxWidth": 48,
+			"minHeight": 8,
+			"maxHeight": 8,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 0.08,
+			"lineOpacity": 0,
+			"hollow": false,
+			"color": "#8B9BB4",
+			"renderMode": "Tile",
+			"showName": true,
+			"tilesetId": 49,
+			"tileRenderMode": "Stretch",
+			"tileRect": { "tilesetUid": 49, "x": 272, "y": 32, "w": 16, "h": 16 },
+			"uiTileRect": null,
+			"nineSliceBorders": [],
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": [
+				{
+					"identifier": "moving_points",
+					"doc": null,
+					"__type": "Array<Point>",
+					"uid": 304,
+					"type": "F_Point",
+					"isArray": true,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "PointPath",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "loop_mode",
+					"doc": null,
+					"__type": "LocalEnum.LoopMode",
+					"uid": 309,
+					"type": "F_Enum(308)",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": {
+						"id": "V_String",
+						"params": ["Loop"]
+					},
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "move_speed",
+					"doc": null,
+					"__type": "Float",
+					"uid": 310,
+					"type": "F_Float",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": 0,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": { "id": "V_Float", "params": [1] },
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				}
+			]
 		}
 	], "tilesets": [
 		{
 			"__cWid": 9,
-			"__cHei": 8,
+			"__cHei": 9,
 			"identifier": "Tileset_overworld",
 			"uid": 2,
 			"relPath": "Assets/Sprites/tileset_overworld.png",
 			"embedAtlas": null,
 			"pxWid": 144,
-			"pxHei": 128,
+			"pxHei": 136,
 			"tileGridSize": 16,
 			"spacing": 0,
 			"padding": 0,
@@ -2497,8 +2647,8 @@
 			"customData": [],
 			"savedSelections": [],
 			"cachedPixelData": {
-				"opaqueTiles": "101001101110111101100010010000010000010010000000110000000000000011100000",
-				"averageColors": "fa65f843f730f840c964f954f310e977f8bffa77f9407b87f520f730f520f000e966f6affa764c982fcc4c98febafca90000f4330000ba657b99ab872fccfebbfa750000f490f6a0e7b0f8c0e7b0e6a0f6a0f6a0b7b0f6a0f49037b0d8c037b0f380f99f97a0d7b0d7b0d4a036a025a0216000000000f6a0e7b0f7b032708180f180f190f1808180f490e490f6b028d0"
+				"opaqueTiles": "101001101110111101100010010000010000010010000000110000000000000011100000111111111",
+				"averageColors": "fa65f843f730f840c964f954f310e977f8bffa77f9407b87f520f730f520f000e966f6affa764c982fcc4c98febafca90000f4330000ba657b99ab872fccfebbfa750000f490f6a0e7b0f8c0e7b0e6a0f6a0f6a0b7b0f6a0f49037b0d8c037b0f380f99f97a0d7b0d7b0d4a036a025a0216000000000f6a0e7b0f7b032708180f180f190f1808180f490e490f6b028d0000000000000000000000000000000000000"
 			}
 		},
 		{
@@ -2566,13 +2716,13 @@
 		},
 		{
 			"__cWid": 9,
-			"__cHei": 8,
+			"__cHei": 9,
 			"identifier": "Tileset_underground",
 			"uid": 228,
 			"relPath": "Assets/Sprites/tileset_underground.png",
 			"embedAtlas": null,
 			"pxWid": 144,
-			"pxHei": 128,
+			"pxHei": 136,
 			"tileGridSize": 16,
 			"spacing": 0,
 			"padding": 0,
@@ -2582,19 +2732,19 @@
 			"customData": [],
 			"savedSelections": [],
 			"cachedPixelData": {
-				"opaqueTiles": "111001100110111100100010010000010000010010000000100000000000000011100000",
-				"averageColors": "f589f377f067f067c488f488f022e6990000f699f07877aaf045f067f045f000e5880000f59947bb2bee47bbfaddf8bb0000f3440000b58978bba6aa2beefaddf599336700000000e7c0f8c0e7c0e6a0f6a0f6a0b7c0f6a0f49037b0d8c037b0f490000097b0d7b0d7b0d4a036a025a0217000000000f6b0e7b0f7b032808180f180f190f1808180f490e4a0f6b028d0"
+				"opaqueTiles": "111001100110111100100010010000010000010010000000100000000000000011100000111111111",
+				"averageColors": "f589f377f067f067c488f488f022e6990000f699f07877aaf045f067f045f000e5880000f59947bb2bee47bbfaddf8bb0000f3440000b58978bba6aa2beefaddf599336700000000e7c0f8c0e7c0e6a0f6a0f6a0b7c0f6a0f49037b0d8c037b0f490000097b0d7b0d7b0d4a036a025a0217000000000f6b0e7b0f7b032808180f180f190f1808180f490e4a0f6b028d0000000000000000000000000000000000000"
 			}
 		},
 		{
 			"__cWid": 9,
-			"__cHei": 8,
+			"__cHei": 9,
 			"identifier": "Tileset_castle",
 			"uid": 229,
 			"relPath": "Assets/Sprites/tileset_castle.png",
 			"embedAtlas": null,
 			"pxWid": 144,
-			"pxHei": 128,
+			"pxHei": 136,
 			"tileGridSize": 16,
 			"spacing": 0,
 			"padding": 0,
@@ -2604,19 +2754,19 @@
 			"customData": [],
 			"savedSelections": [],
 			"cachedPixelData": {
-				"opaqueTiles": "111000100110110100100010010000010000010010000000100000000000000011100000",
-				"averageColors": "fbbbf999f999f999caaaeaaaf666eaaaf840fbbbfaaa7cccf888f999e888f666eaaa0000fbbb4ccc2fff4cccfeeeeddd0000f7770000bbbb7cccaccc2ffffeeeebbb399900000000eeeefeeeeeeeecccfcccfcccbeeefcccfbbb3eeedeee3dddfaaa00009ddddddddeeedbbb3ccc2ccc288800000000fdddeeeefddd39998aaafaaafaaafaaa8aaafbbbebbbfddd2fff"
+				"opaqueTiles": "111000100110110100100010010000010000010010000000100000000000000011100000111111111",
+				"averageColors": "fbbbf999f999f999caaaeaaaf666eaaaf840fbbbfaaa7cccf888f999e888f666eaaa0000fbbb4ccc2fff4cccfeeeeddd0000f7770000bbbb7cccaccc2ffffeeeebbb399900000000eeeefeeeeeeeecccfcccfcccbeeefcccfbbb3eeedeee3dddfaaa00009ddddddddeeedbbb3ccc2ccc288800000000fdddeeeefddd39998aaafaaafaaafaaa8aaafbbbebbbfddd2fff000000000000000000000000000000000000"
 			}
 		},
 		{
 			"__cWid": 9,
-			"__cHei": 8,
+			"__cHei": 9,
 			"identifier": "Tileset_water",
 			"uid": 247,
 			"relPath": "Assets/Sprites/tileset_water.png",
 			"embedAtlas": null,
 			"pxWid": 144,
-			"pxHei": 128,
+			"pxHei": 136,
 			"tileGridSize": 16,
 			"spacing": 0,
 			"padding": 0,
@@ -2626,8 +2776,8 @@
 			"customData": [],
 			"savedSelections": [],
 			"cachedPixelData": {
-				"opaqueTiles": "111001101110111101100010010000010000010010000000000000000000000011100000",
-				"averageColors": "f594f383f170f180c494f493f020e796f77ff7a6f18077a6f150f170f150f000e595f44ff6a548c72bea48c7fad9f9c80000f343f6b0b59578b8a7b62beafae9f59533720000f490ec38fb38eb38ea4bf94bfa4bbb38fb4af94d3c38db383c496d5a00009c49dc39da3ad74d3c49273d2b5e00000000fb4aea3afa3a3a5e864ff64ff44ff64f864ff94de74df93b2b27"
+				"opaqueTiles": "111001101110111101100010010000010000010010000000000000000000000011100000111111111",
+				"averageColors": "f594f383f170f180c494f493f020e796f77ff7a6f18077a6f150f170f150f000e595f44ff6a548c72bea48c7fad9f9c80000f343f6b0b59578b8a7b62beafae9f59533720000f490ec38fb38eb38ea4bf94bfa4bbb38fb4af94d3c38db383c496d5a00009c49dc39da3ad74d3c49273d2b5e00000000fb4aea3afa3a3a5e864ff64ff44ff64f864ff94de74df93b2b27000000000000000000000000000000000000"
 			}
 		},
 		{
@@ -2675,7 +2825,8 @@
 			{ "id": "Center", "tileRect": null, "color": 12470831 },
 			{ "id": "Before", "tileRect": null, "color": 14120515 },
 			{ "id": "After", "tileRect": null, "color": 15389866 }
-		], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] }
+		], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] },
+		{ "identifier": "LoopMode", "uid": 308, "values": [ { "id": "PingPong", "tileRect": null, "color": 12470831 }, { "id": "Loop", "tileRect": null, "color": 14120515 } ], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] }
 	], "externalEnums": [], "levelFields": [
 		{
 			"identifier": "Biome",
@@ -4138,6 +4289,27 @@
 							"defUid": 290,
 							"px": [80,176],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "MovingPlatform",
+							"__grid": [8,10],
+							"__pivot": [0,0],
+							"__tags": ["entity"],
+							"__tile": { "tilesetUid": 49, "x": 272, "y": 32, "w": 16, "h": 16 },
+							"__smartColor": "#8B9BB4",
+							"iid": "40f97b80-6fc0-11f1-8a22-05b6fa71b36b",
+							"width": 48,
+							"height": 8,
+							"defUid": 303,
+							"px": [128,160],
+							"fieldInstances": [
+								{ "__identifier": "moving_points", "__type": "Array<Point>", "__value": [{ "cx": 8, "cy": 2 }], "__tile": null, "defUid": 304, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["8,2"]
+								}] },
+								{ "__identifier": "loop_mode", "__type": "LocalEnum.LoopMode", "__value": "Loop", "__tile": null, "defUid": 309, "realEditorValues": [] },
+								{ "__identifier": "move_speed", "__type": "Float", "__value": 10, "__tile": null, "defUid": 310, "realEditorValues": [{ "id": "V_Float", "params": [10] }] }
+							]
 						}
 					]
 				},

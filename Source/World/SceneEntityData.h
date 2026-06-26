@@ -223,6 +223,15 @@ struct ForceVelocityTriggerData
 	Vector2Int moveTo;
 };
 
+struct MovingPlatformData
+{
+	Rect zone;
+	vector<Vector2Int> movingPoints;
+	float moveSpeed;
+	bool loop;
+	bool loopPingPong;
+};
+
 struct SceneEntityData
 {
 	// entities
@@ -241,6 +250,7 @@ struct SceneEntityData
 	vector<NextLevelData> nextLevelsData;
 	vector<Vector2Int> fireballTraps;
 	vector<FireShooterData> fireShooters;
+	vector<MovingPlatformData> movingPlatforms;
 
 	vector<Vector2Int> superLeafStart;
 	vector<WorldTextData> worldTextData;
