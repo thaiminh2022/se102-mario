@@ -33,7 +33,7 @@
 #include "LevelTextRender.h"
 #include "RaccoonSuit.h"
 #include "StatManager.h"
-#include "../../MovingPlatform.h"
+#include "MovingPlatform.h"
 
 
 using std::priority_queue;

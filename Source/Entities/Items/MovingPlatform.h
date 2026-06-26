@@ -6,6 +6,7 @@ class MovingPlatform : public GameObject
 	int internalWidth;
 	int targetPointIndex;
 	bool isIncreasing;
+	Vector2 frameDelta;
 
 public:
 	explicit MovingPlatform(MovingPlatformData data, BiomeType biome);

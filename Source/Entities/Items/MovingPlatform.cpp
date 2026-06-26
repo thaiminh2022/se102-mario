@@ -1,13 +1,23 @@
 #include "MovingPlatform.h"
 
-#include "Collision.h"
+#include <cmath>
+
 #include "Game.h"
 #include "Helper.h"
+#include "Mario.h"
 #include "Sprites.h"
 #include "Textures.h"
 
 
-MovingPlatform::MovingPlatform(MovingPlatformData data, BiomeType biome) : GameObject(data.zone.left, data.zone.top), data(std::move(data)) 
+bool IsStandingOn(const Rect& rider, const Rect& platform)
+{
+	constexpr int topSlack = 2;
+	const bool overlapsX = rider.right >= platform.left && rider.left <= platform.right;
+	const bool onTop = std::abs(rider.bottom - platform.top) <= topSlack;
+	return overlapsX && onTop;
+}
+
+MovingPlatform::MovingPlatform(MovingPlatformData data, BiomeType biome) : GameObject(data.zone.left, data.zone.top), data(std::move(data))
 {
 	auto t = Textures::GetInstance()->Get(ChooseTilesetId(biome));
 	auto sp = Sprites::GetInstance();
@@ -41,14 +51,20 @@ MovingPlatform::MovingPlatform(MovingPlatformData data, BiomeType biome) : GameO
 
 void MovingPlatform::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
-	if (data.movingPoints.size() <= 1)
+	if (data.movingPoints.size() <= 1 || dt <= 0.0f)
+	{
+		frameDelta = Vector2::Zero();
 		return;
+	}
 
+	const auto oldPosition = position;
+	const auto oldBounds = GetBoundingBox();
 	constexpr float minCheck = 0.1f;
 	if (position.Distance(data.movingPoints[targetPointIndex]) < minCheck)
 	{
+		velocity = Vector2::Zero();
 		if (isIncreasing) {
-			
+
 			// still have point
 			if (data.movingPoints.size() > targetPointIndex + 1)
 			{
@@ -60,6 +76,7 @@ void MovingPlatform::Update(float dt, vector<GameObject*>& coObjects, SceneConte
 				{
 					targetPointIndex = 0;
 					position = data.movingPoints[targetPointIndex];
+					frameDelta = position - oldPosition;
 				}else if (data.loopPingPong)
 				{
 					isIncreasing = false;
@@ -78,6 +95,7 @@ void MovingPlatform::Update(float dt, vector<GameObject*>& coObjects, SceneConte
 				{
 					targetPointIndex = data.movingPoints.size() - 1;
 					position = data.movingPoints[targetPointIndex];
+					frameDelta = position - oldPosition;
 				}
 				else if (data.loopPingPong)
 				{
@@ -88,12 +106,32 @@ void MovingPlatform::Update(float dt, vector<GameObject*>& coObjects, SceneConte
 
 	}else
 	{
-		auto dir = static_cast<Vector2>(data.movingPoints[targetPointIndex]) - position;
-		dir = dir.Normalized();
-		velocity = dir * data.moveSpeed;
+		const auto target = static_cast<Vector2>(data.movingPoints[targetPointIndex]);
+		const auto toTarget = target - position;
+		const auto maxDistance = data.moveSpeed * dt;
+		if (toTarget.Length() <= maxDistance)
+		{
+			velocity = toTarget / dt;
+			position = target;
+			frameDelta = position - oldPosition;
+		}
+		else
+		{
+			auto dir = toTarget.Normalized();
+			velocity = dir * data.moveSpeed;
+			position += velocity * dt;
+		}
 	}
-	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
+	frameDelta = position - oldPosition;
 
+	for (auto other : coObjects)
+	{
+		auto mario = dynamic_cast<Mario*>(other);
+		if (mario != nullptr && IsStandingOn(mario->GetBoundingBox(), oldBounds))
+		{
+			mario->position += frameDelta;
+		}
+	}
 }
 
 void MovingPlatform::Render()
@@ -107,13 +145,13 @@ void MovingPlatform::Render()
 	renderY = round(renderY);
 	switch (internalWidth)
 	{
-		case 2:
+		case 16:
 			sp->Get(MOVING_PLATFORM_SIZE_2)->Draw(renderX, renderY, false, false);
 			break;
-		case 3:
+		case 24:
 			sp->Get(MOVING_PLATFORM_SIZE_3)->Draw(renderX, renderY, false, false);
 			break;
-		case 4:
+		case 32:
 			sp->Get(MOVING_PLATFORM_SIZE_4)->Draw(renderX, renderY, false, false);
 			break;
 		default:

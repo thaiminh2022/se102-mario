@@ -161,6 +161,7 @@ class Mario : public GameObject
 	bool OnCollisionWithFlagPole(const CollisionEvent* collisionEvent);
 	bool OnCollisionWithBridge(const CollisionEvent* e);
 	bool OnCollisionWithAxeBridge(const CollisionEvent* e);
+	bool OnCollisionWithMovingPlatform(const CollisionEvent* e);
 	bool OnCollisionWithRaccoonSuit(const CollisionEvent* e);
 
 

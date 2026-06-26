@@ -227,9 +227,9 @@ struct MovingPlatformData
 {
 	Rect zone;
 	vector<Vector2Int> movingPoints;
-	float moveSpeed;
-	bool loop;
-	bool loopPingPong;
+	float moveSpeed = 0.0f;
+	bool loop = false;
+	bool loopPingPong = false;
 };
 
 struct SceneEntityData

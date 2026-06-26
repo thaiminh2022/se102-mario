@@ -4292,7 +4292,7 @@
 						},
 						{
 							"__identifier": "MovingPlatform",
-							"__grid": [8,12],
+							"__grid": [7,11],
 							"__pivot": [0,0],
 							"__tags": ["entity"],
 							"__tile": { "tilesetUid": 49, "x": 272, "y": 32, "w": 16, "h": 16 },
@@ -4301,13 +4301,19 @@
 							"width": 48,
 							"height": 8,
 							"defUid": 303,
-							"px": [128,192],
+							"px": [112,176],
 							"fieldInstances": [
-								{ "__identifier": "moving_points", "__type": "Array<Point>", "__value": [{ "cx": 8, "cy": 2 }], "__tile": null, "defUid": 304, "realEditorValues": [{
+								{ "__identifier": "moving_points", "__type": "Array<Point>", "__value": [ { "cx": 14, "cy": 11 }, { "cx": 14, "cy": 4 } ], "__tile": null, "defUid": 304, "realEditorValues": [ {
 									"id": "V_String",
-									"params": ["8,2"]
+									"params": ["14,11"]
+								}, {
+									"id": "V_String",
+									"params": ["14,4"]
+								} ] },
+								{ "__identifier": "loop_mode", "__type": "LocalEnum.LoopMode", "__value": "PingPong", "__tile": null, "defUid": 309, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["PingPong"]
 								}] },
-								{ "__identifier": "loop_mode", "__type": "LocalEnum.LoopMode", "__value": "Loop", "__tile": null, "defUid": 309, "realEditorValues": [] },
 								{ "__identifier": "move_speed", "__type": "Float", "__value": 20, "__tile": null, "defUid": 310, "realEditorValues": [{ "id": "V_Float", "params": [20] }] }
 							]
 						}

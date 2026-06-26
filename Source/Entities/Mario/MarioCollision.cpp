@@ -14,6 +14,7 @@
 #include "Koopa.h"
 #include "Mario.h"
 #include "Mushroom.h"
+#include "MovingPlatform.h"
 #include "NextLevelPortal.h"
 #include "QuestionBlock.h"
 #include "Star.h"
@@ -460,6 +461,20 @@ bool Mario::OnCollisionWithAxeBridge(const CollisionEvent* e)
 	return false;
 }
 
+bool Mario::OnCollisionWithMovingPlatform(const CollisionEvent* e)
+{
+	auto platform = dynamic_cast<MovingPlatform*>(e->otherObject);
+	if (platform == nullptr)
+		return false;
+
+	if (e->normalizedDir.y == -1)
+	{
+		isGrounded = true;
+		enemySequenceKilledCount = 0;
+	}
+
+	return true;
+}
 
 void Mario::OnCollisionWith(CollisionEvent* e)
 {
@@ -495,6 +510,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		if (OnCollisionWithMushroom(e)) return;
 		if (OnCollisionWithFlower(e)) return;
 		if (OnCollisionWithStar(e)) return;
+		if (OnCollisionWithMovingPlatform(e)) return;
 		if (OnCollisionWithBridge(e)) return;
 		if (OnCollisionWithAxeBridge(e)) return;
 		if (OnCollisionWithFlagPole(e)) return;

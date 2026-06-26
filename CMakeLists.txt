@@ -53,6 +53,8 @@ set(SOURCES
     Source/Entities/Items/Flower.h
     Source/Entities/Items/Mushroom.cpp
     Source/Entities/Items/Mushroom.h
+    Source/Entities/Items/MovingPlatform.cpp
+    Source/Entities/Items/MovingPlatform.h
     Source/Entities/Items/PointPopup.cpp
     Source/Entities/Items/PointPopup.h
     Source/Entities/Items/QuestionBlock.cpp

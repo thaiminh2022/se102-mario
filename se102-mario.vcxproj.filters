@@ -231,7 +231,7 @@
     <ClCompile Include="Source\UI\UILabel.cpp">
       <Filter>Source\UI</Filter>
     </ClCompile>
-    <ClCompile Include="MovingPlatform.cpp">
+    <ClCompile Include="Source\Entities\Items\MovingPlatform.cpp">
       <Filter>Source\Entities\Items</Filter>
     </ClCompile>
   </ItemGroup>
@@ -452,7 +452,7 @@
     <ClInclude Include="AssetID.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="MovingPlatform.h">
+    <ClInclude Include="Source\Entities\Items\MovingPlatform.h">
       <Filter>Source\Entities\Items</Filter>
     </ClInclude>
   </ItemGroup>
