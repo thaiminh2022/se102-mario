@@ -241,6 +241,7 @@ static void LoadResource()
 	audioManager->LoadWAV(GAMEOVER, L"Assets\\Audio\\Soundtracks\\09.GameOverTheme.wav");
 	audioManager->LoadWAV(TWIRL, L"Assets\\Audio\\SFX\\twirl.wav");
 	audioManager->LoadWAV(TAIL, L"Assets\\Audio\\SFX\\smb3_tail.wav");
+	audioManager->LoadWAV(RACCOON_READY_TO_FLY, L"Assets\\Audio\\SFX\\smb3_pmeter.wav");
 
 	// Fonts
 	FontManager::GetInstance()->AddFontCustom(

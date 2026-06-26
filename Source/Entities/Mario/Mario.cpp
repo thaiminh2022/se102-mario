@@ -49,11 +49,13 @@ Mario::Mario(int startX, int startY) : GameObject(static_cast<float>(startX), st
 	transformTimer = Timer(MARIO_GROW_TIME);
 	starmanTimer = Timer(STARMAN_INVINCIBLE_TIME);
 	invincibleTimer = Timer(MARIO_INVINCIBLE_TIME);
+	raccoonFlyingTimer = Timer(RACCOON_FLOATING_TIME);
 	enemySequenceKilledCount = 0;
 	breathingTimer = Timer(2.5);
 	waitToBowserTimer = Timer(2.0f);
 	tailSFXTimer = Timer(TAIL_SFX_INTERVAL);
 	skidTimer = Timer(SKID_SFX_TIME);
+	raccoonPreflySFXTimer = Timer(RACCOON_PREFLY_SFX_INTERVAL);
 
 	LoadSpriteAndAnimation();
 
@@ -216,10 +218,19 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	case MarioState::Idle:
 	case MarioState::Walking:
 	case MarioState::Running:
+		if (raccoonSuit && raccoonSuit->ReadyToFly())
+		{
+			if (!raccoonPreflySFXTimer.IsTicking() || raccoonPreflySFXTimer.IsFinished())
+			{
+				AudioManager::GetInstance()->Play(RACCOON_READY_TO_FLY);
+				raccoonPreflySFXTimer.Start();
+			}
+		}
 	case MarioState::Skidding:
 	case MarioState::Jumping:
 	case MarioState::Ducking:
 	case MarioState::Firing:
+	case MarioState::Flying:
 		break;
 	}
 
@@ -239,7 +250,7 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		{
 			starmanTimer.SetIdle();
 			starmanPaletteSwapTimer.SetIdle();
-			power = (lastPower == MarioPower::StarmanBig || lastPower == MarioPower::StarmanSmall)? 
+			power = (lastPower == MarioPower::StarmanBig || lastPower == MarioPower::StarmanSmall) ?
 				MarioPower::Normal : lastPower;
 		}
 	}
@@ -259,6 +270,35 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		if (skidTimer.IsFinished())
 		{
 			skidTimer.SetIdle();
+		}
+	}
+	if (raccoonFloatingTimer.IsTicking())
+	{
+		raccoonFloatingTimer.ProcessTimer(dt);
+		if (raccoonFloatingTimer.IsFinished())
+		{
+			if (abs(velocity.x) < 16.0f)
+			{
+				fallAcc = STOP_FALL; // Heavy gravity
+			}
+			else if (abs(velocity.x) < 40.0f)
+			{
+				fallAcc = WALK_FALL; // Very heavy gravity
+			}
+			else
+			{
+				fallAcc = RUN_FALL; // Extremely heavy gravity
+			}
+			raccoonFloatingTimer.SetIdle();
+		}
+	}
+
+	if (raccoonPreflySFXTimer.IsTicking())
+	{
+		raccoonPreflySFXTimer.ProcessTimer(dt);
+		if (raccoonPreflySFXTimer.IsFinished())
+		{
+			raccoonPreflySFXTimer.SetIdle();
 		}
 	}
 
@@ -342,7 +382,8 @@ Rect Mario::GetBoundingBox()
 		r.left = position.x + 2;
 		r.bottom = position.y + 32;
 		r.right = position.x + 14;
-	} else if (power == MarioPower::Raccoon)
+	}
+	else if (power == MarioPower::Raccoon)
 	{
 		r.top = position.y;
 		r.left = position.x + 2;

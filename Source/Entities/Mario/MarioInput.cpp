@@ -39,7 +39,7 @@ void Mario::WhileGrounded(float dt)
 			{
 				//Skidding
 				velocity.x -= DEC_SKID * dt;
-				if (!skidTimer.IsTicking())
+				if (!skidTimer.IsTicking() && power == MarioPower::Raccoon)
 				{
 					AudioManager::GetInstance()->PlaySFX(TWIRL);
 					skidTimer.Start();
@@ -63,7 +63,7 @@ void Mario::WhileGrounded(float dt)
 			{
 				// Skidding
 				velocity.x += DEC_SKID * dt;
-				if (!skidTimer.IsTicking())
+				if (!skidTimer.IsTicking() && power == MarioPower:: Raccoon)
 				{
 					AudioManager::GetInstance()->PlaySFX(TWIRL);
 					skidTimer.Start();
@@ -200,50 +200,82 @@ void Mario::HandleRaccoonSuit(float dt)
 		return;
 	}
 
+	// Process SFX timer globally so it ticks properly independent of key presses
+	if (tailSFXTimer.IsTicking())
+	{
+		tailSFXTimer.ProcessTimer(dt);
+	}
+	
+	// FLYING STATE (P-Meter is full)
 	if (raccoonSuit->ReadyToFly())
 	{
-		
-		if (input->IsKeyDown('W')) {
-			state = MarioState::Flying;
-			if (!raccoonFlyingTimer.IsTicking())
+		state = MarioState::Flying;
+
+		// Process flight timer continuously regardless of input
+		if (!raccoonFlyingTimer.IsTicking())
+		{
+			raccoonFlyingTimer = Timer(RACCOON_FLYING_TIME_LIMIT);
+			raccoonFlyingTimer.Start();
+		}
+		else
+		{
+			raccoonFlyingTimer.ProcessTimer(dt);
+
+			// Check if flight time is over
+			if (raccoonFlyingTimer.IsFinished())
 			{
-				raccoonFlyingTimer = Timer(RACCOON_FLYING_TIME_LIMIT);
-				raccoonFlyingTimer.Start();
+				raccoonFlyingTimer.SetIdle();
+				raccoonSuit->SetPMeter(0); // Reset P-Meter, falling begins
 			}
-			else {
-				raccoonFlyingTimer.ProcessTimer(dt);
+		}
 
-				if (raccoonFlyingTimer.GetTimeLeft() / raccoonFlyingTimer.GetStartTime() <= LOW_FLYING_TIME_PERCENT) {
-					//SFX
-					if (!tailSFXTimer.IsTicking() || tailSFXTimer.IsFinished()) {
-						AudioManager::GetInstance()->PlaySFX(TAIL);
-						tailSFXTimer = Timer(TAIL_SFX_INTERVAL);
-						tailSFXTimer.Start();
-					}
-					else {
-						tailSFXTimer.ProcessTimer(dt);
-					}
+		// Handle flapping input (Impulse logic)
+		if (input->IsKeyPressed('W'))
+		{
+			// Apply a strong upward impulse to lift Mario
+			velocity.y = RACCOON_FLY_IMPULSE;
+			// Handle SFX based on remaining flight time
+			if (!tailSFXTimer.IsTicking() || tailSFXTimer.IsFinished())
+			{
+				float timeRatio = raccoonFlyingTimer.GetTimeLeft() / raccoonFlyingTimer.GetStartTime();
+
+				if (timeRatio <= LOW_FLYING_TIME_PERCENT) {
+					AudioManager::GetInstance()->PlaySFX(TAIL);
 				}
 
-				if (raccoonFlyingTimer.IsFinished())
-				{
-					raccoonFlyingTimer.SetIdle();
-					raccoonSuit->SetPMeter(0); // reset p-meter when flying time is up
-				}
+				tailSFXTimer = Timer(TAIL_SFX_INTERVAL);
+				tailSFXTimer.Start();
 			}
-			
-			velocity.y -= RACCOON_LIFT_ACCELERATION * dt;
-				
+			if (!raccoonFloatingTimer.IsTicking())
+			{
+				fallAcc = RACCOON_FLYING_GRAVITY; // Lower gravity while flying
+				raccoonFloatingTimer = Timer(RACCOON_FLOATING_TIME);
+				raccoonFloatingTimer.Start();
+			}
 		}
 	}
-	else if (velocity.y > 0.0f) {
-		if (input->IsKeyDown('W'))
+	// FLOATING STATE (Falling and P-Meter is NOT full)
+	else if (velocity.y > 0.0f)
+	{
+		// Pressing 'W' repeatedly stalls the fall but won't lift Mario up
+		if (input->IsKeyPressed('W'))
 		{
+			// Setting velocity to a small positive number limits downward momentum instantly
 			velocity.y = RACCOON_WAG_VELOCITY;
-			
-		}
-		if (input->IsKeyPressed('W')) {
-			velocity.y = RACCOON_WAG_VELOCITY;
+
+			if (!tailSFXTimer.IsTicking() || tailSFXTimer.IsFinished())
+			{
+				AudioManager::GetInstance()->PlaySFX(TAIL);
+				tailSFXTimer = Timer(TAIL_SFX_INTERVAL);
+				tailSFXTimer.Start();
+			}
+
+			if (!raccoonFloatingTimer.IsTicking())
+			{
+				fallAcc = RACCOON_FLYING_GRAVITY; // Lower gravity while flying
+				raccoonFloatingTimer = Timer(RACCOON_FLOATING_TIME);
+				raccoonFloatingTimer.Start();
+			}
 		}
 	}
 }
@@ -290,8 +322,10 @@ void Mario::ApplyGravityAndClamp(float dt)
 {
 	const auto input = InputManager::GetInstance();
 
+	// Normal gravity always applies. Wagging resets this built-up velocity.
 	velocity.y += fallAcc * dt;
 
+	
 
 	if (isInWater)
 	{
@@ -302,21 +336,23 @@ void Mario::ApplyGravityAndClamp(float dt)
 	}
 	else
 	{
-		velocity.x = min(velocity.x, MAX_RUN);
-		velocity.x = max(velocity.x, -MAX_RUN);
-
 		const bool hasRaccoonSuit = (raccoonSuit != nullptr);
-		const bool isFlying = hasRaccoonSuit && raccoonSuit->ReadyToFly();
 
-		float currentMaxFall = MAX_FALL;
-		
-		if (hasRaccoonSuit && InputManager::GetInstance()->IsKeyDown('W') && velocity.y > 0.0f)
+		float currentMaxSpeed = MAX_RUN;
+		if (hasRaccoonSuit && raccoonSuit->ReadyToFly())
 		{
-			currentMaxFall = RACCOON_MAX_FALL;
+			currentMaxSpeed = MAX_RACCOON_RUN; // Higher max speed when running with fully charged P-Meter raccoon suit
 		}
 
-		velocity.y = min(velocity.y, currentMaxFall);
-		
+		velocity.x = min(velocity.x, currentMaxSpeed);
+		velocity.x = max(velocity.x, -currentMaxSpeed);
+
+		const bool isFlying = hasRaccoonSuit && raccoonSuit->ReadyToFly();
+
+		// If no button is pressed, Mario falls at normal MAX_FALL speed.
+		// Slow floating is achieved dynamically by assigning RACCOON_WAG_VELOCITY on 'W' press.
+		velocity.y = min(velocity.y, MAX_FALL);
+
 		if (isFlying) {
 			velocity.y = max(velocity.y, RACCOON_MAX_RISE);
 		}
@@ -325,10 +361,10 @@ void Mario::ApplyGravityAndClamp(float dt)
 		}
 	}
 
-
 	if (isGrounded)
 	{
 		if (velocity.x > MAX_WALK && !input->IsKeyDown(VK_SHIFT)) velocity.x = MAX_WALK;
 		if (velocity.x < -MAX_WALK && !input->IsKeyDown(VK_SHIFT)) velocity.x = -MAX_WALK;
 	}
+	DebugOutTitle(L"Velocity: %.2f, %.2f\n", velocity.x, velocity.y);
 }

@@ -28,7 +28,6 @@ enum class MarioState : std::uint8_t
 	Shrinking,
 	StopToWaitBowser,
 	ForceMoving,
-	PreFly, // raccoon pre-flying state
 	Flying, // raccoon flying state
 };
 
@@ -52,6 +51,7 @@ const float STARMAN_PALETTE_SWAP_TIME = 0.1f;
 const float MIN_WALK = 4.453125f; // Minimum speed to be considered walking, otherwise it's idle
 const float MAX_WALK = 93.75f;
 const float MAX_RUN = 153.75f;
+const float MAX_RACCOON_RUN = 200.390625f; //wtf is this number?
 
 //ACCELERATION
 const float ACC_WALK = 133.59375f;
@@ -85,12 +85,22 @@ const float SKID_SFX_TIME = 0.5f;
 // Having raccoon suit = lower gravity, or falling slower
 // Full P meter raccoon suit mean being able to fly
 const float PMETER_MIN_RUN_SPEED = MAX_WALK;
-const float RACCOON_MAX_FALL = 120.0f; // Maximum falling speed with raccoon suit (when holding jump or flying), should be lower than normal max fall to give player more control
-const float RACCOON_MAX_RISE = -240.0f; // Maximum rising speed with raccoon suit (when holding jump), should be same as normal jump speed to allow player to reach same height, but with more control
-const float RACCOON_LIFT_ACCELERATION = 4000.0f;
-const float RACCOON_WAG_VELOCITY = 60.0f;
-const float TAIL_SFX_INTERVAL = 0.3f; //how often the twirl sfx can be played when flying with raccoon suit
-const float LOW_FLYING_TIME_PERCENT = 0.5f; // how much of the flying time is considered low flying, which will play a different sfx
+
+// RACCOON PHYSICS CONSTANTS
+// Instead of acceleration, we use an instant velocity impulse for Flappy Bird mechanics
+const float RACCOON_FLY_IMPULSE = -100.0f; 
+// Small positive velocity to stall falling (Floating)
+const float RACCOON_WAG_VELOCITY = 10.0f;  
+// Maximum rising speed limit
+const float RACCOON_MAX_RISE = -240.0f; 
+// Applying a lower gravity for mario for a short time after pressing 'W'
+const float RACCOON_FLOATING_TIME = 0.5f;
+// Lower gravity while flying
+const float RACCOON_FLYING_GRAVITY = 112.5f; 
+
+const float TAIL_SFX_INTERVAL = 0.3f;
+const float LOW_FLYING_TIME_PERCENT = 0.5f;
+const float RACCOON_PREFLY_SFX_INTERVAL = 2.0f;
 
 class Mario : public GameObject
 {
@@ -132,7 +142,11 @@ class Mario : public GameObject
 
 	Timer starmanPaletteSwapTimer;
 	int currentStarmanAnimPalette = 0;
+
 	Timer raccoonFlyingTimer;
+	Timer raccoonFloatingTimer;
+
+	Timer raccoonPreflySFXTimer;
 
 	Timer skidTimer;
 	std::unordered_map<int, Animation*> starmanBlueprints[3];

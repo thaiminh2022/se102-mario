@@ -667,6 +667,7 @@ enum AUDIOS : std::int8_t
     GAMEOVER = 16,
 	TWIRL = 17,
     TAIL = 18,
+    RACCOON_READY_TO_FLY = 19,
 };
 
 /// FONT

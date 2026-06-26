@@ -6411,7 +6411,10 @@
 							"px": [944,384],
 							"fieldInstances": [
 								{ "__identifier": "BrickBlockDropType", "__type": "LocalEnum.BlockDropType", "__value": "None", "__tile": null, "defUid": 53, "realEditorValues": [] },
-								{ "__identifier": "is_hidden", "__type": "Bool", "__value": false, "__tile": null, "defUid": 222, "realEditorValues": [] }
+								{ "__identifier": "is_hidden", "__type": "Bool", "__value": false, "__tile": null, "defUid": 222, "realEditorValues": [{
+									"id": "V_Bool",
+									"params": [ false ]
+								}] }
 							]
 						},
 						{
