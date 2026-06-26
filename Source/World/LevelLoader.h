@@ -49,7 +49,7 @@ class LevelLoader
 	void ParseFireShooter(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseSuperLeaf(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 	void ParseTextRender(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
-
+	void ParseMovingPlatform(SceneEntityData& sceneEntities, vector<EntityInstance>& entities);
 
 
 	// triggers

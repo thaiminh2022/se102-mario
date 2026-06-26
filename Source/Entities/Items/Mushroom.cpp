@@ -81,7 +81,7 @@ void Mushroom::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ct
 	if (state == CollectableItemState::Collectable)
 	{
 		// default to move left
-		velocity.x = moveLeft ? -20.0f : 20.0f;
+		velocity.x = moveLeft ? -40.0f : 40.0f;
 		velocity.y += 900.0f * dt;
 	}
 	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);

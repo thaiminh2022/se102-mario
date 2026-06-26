@@ -624,6 +624,14 @@ constexpr AssetID ONEUP_ANIM_ID = AssetID("ONEUP_ANIM_ID");
 constexpr AssetID ONEUP_SPRITE_1 = AssetID("ONEUP_SPRITE_1");
 
 
+constexpr AssetID MOVING_PLATFORM_SIZE_2 = AssetID("MOVING_PLATFORM_SIZE_2");
+constexpr AssetID MOVING_PLATFORM_SIZE_3 = AssetID("MOVING_PLATFORM_SIZE_3");
+constexpr AssetID MOVING_PLATFORM_SIZE_4 = AssetID("MOVING_PLATFORM_SIZE_4");
+constexpr AssetID MOVING_PLATFORM_SIZE_6 = AssetID("MOVING_PLATFORM_SIZE_6");
+
+
+
+
 // ==========================================
 // SCENES & AUDIO
 // ==========================================

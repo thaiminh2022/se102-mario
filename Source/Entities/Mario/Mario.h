@@ -161,6 +161,7 @@ class Mario : public GameObject
 	bool OnCollisionWithFlagPole(const CollisionEvent* collisionEvent);
 	bool OnCollisionWithBridge(const CollisionEvent* e);
 	bool OnCollisionWithAxeBridge(const CollisionEvent* e);
+	bool OnCollisionWithMovingPlatform(const CollisionEvent* e);
 	bool OnCollisionWithRaccoonSuit(const CollisionEvent* e);
 
 
@@ -199,6 +200,7 @@ public:
 	void SetExitPipe(const MarioPipeCtx& returnPipeData);
 	void SetForceMove(const Vector2Int& moveTo);
 	void SetIsInWater(bool newIsInWater);
+	void MoveWithPlatform(const Vector2& delta, const Rect& platformBounds);
 	void SetPosition(const Vector2 newPosition) {
 		position = newPosition;
 	}

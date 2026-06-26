@@ -3,6 +3,7 @@
 #include "Animations.h"
 #include "AssetIDs.h"
 #include "AudioManager.h"
+#include "Collision.h"
 #include "Game.h"
 #include "Sprites.h"
 #include "Textures.h"
@@ -43,7 +44,8 @@ Star::Star(Vector2 startPos) : GameObject(startPos.x, startPos.y)
 		anims->Add(STAR_IDLE_ANIM_ID, anim);
 	}
 
-
+	jumpTimer = Timer(2.0f);
+	
 	AudioManager::GetInstance()->PlaySFX(POWERUP_APPEARS);
 }
 
@@ -59,11 +61,28 @@ void Star::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 		}
 		else
 		{
+			velocity.y = -250.0f;
 			state = CollectableItemState::Collectable;
 			isCollidable = true;
 			position.y = preferPos.y;
+			jumpTimer.Start();
 		}
 	}
+
+	if (state == CollectableItemState::Collectable)
+	{
+		// default to move left
+		velocity.x =  50.0f;
+		velocity.y += 900.0f * dt;
+
+		jumpTimer.ProcessTimer(dt);
+		if (jumpTimer.IsFinished())
+		{
+			velocity.y = -250.0f;
+			jumpTimer.Start();
+		}
+	}
+	Collision::GetInstance()->ProcessCollision(this, coObjects, ctx->tilemap, dt);
 }
 
 void Star::Render()
@@ -78,4 +97,9 @@ void Star::Render()
 Rect Star::GetBoundingBox()
 {
 	return Rect::FromXYWH(position.x, position.y, 16, 16);
+}
+
+void Star::OnNoCollision(float dt)
+{
+	position += velocity * dt;
 }

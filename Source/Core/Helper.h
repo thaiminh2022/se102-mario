@@ -34,3 +34,8 @@ inline int ChooseEnemyId(const BiomeType biome)
 {
 	return ChooseIdBaseOnBiome(biome, OVERWORLD_ENEMY_TEX_ID, UNDERGROUND_ENEMY_TEX_ID, CASTLE_ENEMY_TEX_ID, UNDERWATER_ENEMY_TEX_ID);
 }
+
+inline int ChooseTilesetId(const BiomeType biome)
+{
+	return ChooseIdBaseOnBiome(biome, -1, -2, -3, -4);
+}

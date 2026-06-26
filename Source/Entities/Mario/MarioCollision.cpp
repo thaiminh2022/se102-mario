@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "AssetIDs.h"
 #include "AudioManager.h"
 #include "Bloopers.h"
@@ -14,6 +16,7 @@
 #include "Koopa.h"
 #include "Mario.h"
 #include "Mushroom.h"
+#include "MovingPlatform.h"
 #include "NextLevelPortal.h"
 #include "QuestionBlock.h"
 #include "Star.h"
@@ -460,6 +463,39 @@ bool Mario::OnCollisionWithAxeBridge(const CollisionEvent* e)
 	return false;
 }
 
+bool Mario::OnCollisionWithMovingPlatform(const CollisionEvent* e)
+{
+	auto platform = dynamic_cast<MovingPlatform*>(e->otherObject);
+	if (platform == nullptr)
+		return false;
+
+	if (e->normalizedDir.y == -1)
+	{
+		isGrounded = true;
+		enemySequenceKilledCount = 0;
+	}
+
+	return true;
+}
+
+void Mario::MoveWithPlatform(const Vector2& delta, const Rect& platformBounds)
+{
+	position += delta;
+
+	if (delta.y != 0.0f)
+	{
+		const auto bounds = GetBoundingBox();
+		if (bounds.bottom >= platformBounds.top)
+		{
+			position.y -= static_cast<float>(bounds.bottom - platformBounds.top + 1);
+		}
+
+		velocity.y = min(velocity.y, 0.0f);
+	}
+
+	isGrounded = true;
+	enemySequenceKilledCount = 0;
+}
 
 void Mario::OnCollisionWith(CollisionEvent* e)
 {
@@ -495,6 +531,7 @@ void Mario::OnCollisionWith(CollisionEvent* e)
 		if (OnCollisionWithMushroom(e)) return;
 		if (OnCollisionWithFlower(e)) return;
 		if (OnCollisionWithStar(e)) return;
+		if (OnCollisionWithMovingPlatform(e)) return;
 		if (OnCollisionWithBridge(e)) return;
 		if (OnCollisionWithAxeBridge(e)) return;
 		if (OnCollisionWithFlagPole(e)) return;
