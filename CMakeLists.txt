@@ -120,6 +120,8 @@ set(SOURCES
     Source/Scenes/MainMenu.h
     Source/Scenes/PlayableScene.cpp
     Source/Scenes/PlayableScene.h
+    Source/Scenes/AboutScene.h
+    Source/Scenes/AboutScene.cpp
     Source/UI/HUD.cpp
     Source/UI/HUD.h
     Source/UI/UIElement.cpp

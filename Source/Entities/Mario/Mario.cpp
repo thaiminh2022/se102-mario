@@ -270,19 +270,6 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	ApplyGravityAndClamp(dt);
 	UpdateFacingDirection();
 
-	if (power == MarioPower::Raccoon && state == MarioState::Flying)
-	{
-		raccoonFlyingTimer.ProcessTimer(dt);
-		if (raccoonFlyingTimer.IsFinished())
-		{
-			raccoonFlyingTimer.SetIdle();
-			power = (lastPower == MarioPower::StarmanBig || lastPower == MarioPower::StarmanSmall) ?
-				MarioPower::Normal : lastPower;
-			raccoonSuit = nullptr;
-			velocity.y = 0;
-		}
-	}
-
 	ClampMario();
 	RouteAnimationState();
 

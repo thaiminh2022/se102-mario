@@ -74,6 +74,13 @@ void RaccoonSuit::DrainFlight(float dt)
 	}
 }
 
+void RaccoonSuit::SetPMeter(float newMeter)
+{
+	if (newMeter < 0 || newMeter > PMETER_MAX)
+		newMeter = 0;
+	pMeter = newMeter;
+}
+
 void RaccoonSuit::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 {
 	if (state == RaccoonSuitState::Removed)

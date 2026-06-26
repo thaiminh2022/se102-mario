@@ -31,6 +31,7 @@ public:
 	void DrainFlight(float dt);
 
 	float GetPMeter() const { return pMeter; }
+	void SetPMeter(float newMeter);
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void SetState(RaccoonSuitState s);
 	void Render() override;

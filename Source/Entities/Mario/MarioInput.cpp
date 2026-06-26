@@ -205,10 +205,7 @@ void Mario::HandleRaccoonSuit(float dt)
 				if (raccoonFlyingTimer.IsFinished())
 				{
 					raccoonFlyingTimer.SetIdle();
-					power = (lastPower == MarioPower::StarmanBig || lastPower == MarioPower::StarmanSmall) ?
-						MarioPower::Normal : lastPower;
-					raccoonSuit = nullptr;
-					velocity.y = 0;
+					raccoonSuit->SetPMeter(0); // reset p-meter when flying time is up
 				}
 			}
 			
