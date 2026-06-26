@@ -653,6 +653,7 @@ enum AUDIOS : std::int8_t
     UNDERGROUND_THEME = -2,
     CASTLE_THEME = -1,
     UNDERWATER_THEME = 0,
+    SMB3_WORLD1 = -5,
 
 
     // SFX 
@@ -673,6 +674,8 @@ enum AUDIOS : std::int8_t
     FIREWORK = 15,
     GAMEOVER = 16,
 	TWIRL = 17,
+    TAIL = 18,
+    RACCOON_READY_TO_FLY = 19,
 };
 
 /// FONT

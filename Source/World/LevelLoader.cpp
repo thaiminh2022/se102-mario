@@ -103,6 +103,7 @@ void LevelLoader::Init()
 	audio->LoadWAV(UNDERWATER_THEME, L"Assets/Audio/Soundtracks/03.UnderwaterTheme.wav");
 	audio->LoadWAV(CASTLE_THEME, L"Assets/Audio/Soundtracks/04.CastleTheme.wav");
 	audio->LoadWAV(WORLD_CLEAR, L"Assets/Audio/SFX/world_clear.wav");
+	audio->LoadWAV(SMB3_WORLD1, L"Assets/Audio/Soundtracks/smb3_world1.wav");
 
 
 
