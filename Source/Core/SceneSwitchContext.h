@@ -3,6 +3,7 @@
 #include "Vector2.h"
 #include "Rect.h"
 
+
 enum class MarioPower;
 
 struct MarioPipeCtx
@@ -22,7 +23,10 @@ struct SceneSwitchContext
     {
         SceneSwitchContext ctx;
         ctx.useTransitionScene = true;
-        ctx.marioPower = power;
+		if (power != (MarioPower)3 && power != (MarioPower)4 && power != (MarioPower)5)
+            ctx.marioPower = power;
+        else 
+			ctx.marioPower = (MarioPower)0;
         return ctx;
     }
 

@@ -49,6 +49,7 @@ int Mario::GetMarioAnimId() const
 			return MARIO_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return MARIO_SKID_ANIM_ID;
+		case MarioState::ExitingPipe:
 		case MarioState::Idle:
 			return MARIO_IDLE_ANIM_ID;
 		case MarioState::Jumping:
@@ -76,6 +77,7 @@ int Mario::GetMarioAnimId() const
 			return MARIO_BIG_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return MARIO_BIG_SKID_ANIM_ID;
+		case MarioState::ExitingPipe:
 		case MarioState::Idle:
 			return MARIO_BIG_IDLE_ANIM_ID;
 		case MarioState::Jumping:
@@ -103,6 +105,7 @@ int Mario::GetMarioAnimId() const
 			return MARIO_FIRE_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return MARIO_FIRE_SKID_ANIM_ID;
+		case MarioState::ExitingPipe:
 		case MarioState::Idle:
 			return MARIO_FIRE_IDLE_ANIM_ID;
 		case MarioState::Jumping:
@@ -131,6 +134,7 @@ int Mario::GetMarioAnimId() const
 			return STARMAN_BIG1_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return STARMAN_BIG1_SKID_ANIM_ID;
+		case MarioState::ExitingPipe:
 		case MarioState::Idle:
 			return STARMAN_BIG1_IDLE_ANIM_ID;
 		case MarioState::Jumping:
@@ -155,6 +159,7 @@ int Mario::GetMarioAnimId() const
 			return STARMAN_SMALL1_RUN_ANIM_ID;
 		case MarioState::Skidding:
 			return STARMAN_SMALL1_SKID_ANIM_ID;
+		case MarioState::ExitingPipe:
 		case MarioState::Idle:
 			return STARMAN_SMALL1_IDLE_ANIM_ID;
 		case MarioState::Jumping:
@@ -178,6 +183,7 @@ int Mario::GetMarioAnimId() const
 				return (raccoonSuit!= nullptr && raccoonSuit->ReadyToFly()) ? RACCOON_PREFLY_ANIM_ID : RACCOON_RUN_ANIM_ID;
 			case MarioState::Skidding:
 				return RACCOON_SKID_ANIM_ID;
+			case MarioState::ExitingPipe:
 			case MarioState::Idle:
 				return RACCOON_IDLE_ANIM_ID;
 			case MarioState::Jumping:

@@ -246,6 +246,8 @@ void Mario::Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx)
 	}
 	if (power == MarioPower::StarmanSmall || power == MarioPower::StarmanBig) {
 		starmanTimer.ProcessTimer(dt);
+		auto audio = AudioManager::GetInstance();
+		audio->PauseMusic();
 		if (starmanTimer.IsFinished())
 		{
 			starmanTimer.SetIdle();
@@ -378,6 +380,20 @@ Rect Mario::GetBoundingBox()
 	}
 	else if (power == MarioPower::Big || power == MarioPower::Fire || power == MarioPower::StarmanBig)
 	{
+		if (state == MarioState::Ducking)
+		{
+			r.top = position.y;
+			r.left = position.x + 1;
+			r.bottom = position.y + 16;
+			r.right = position.x + 14;
+		}
+		else
+		{
+			r.top = position.y;
+			r.left = position.x + 2;
+			r.bottom = position.y + 32;
+			r.right = position.x + 14;
+		}
 		r.top = position.y;
 		r.left = position.x + 2;
 		r.bottom = position.y + 32;
@@ -385,10 +401,20 @@ Rect Mario::GetBoundingBox()
 	}
 	else if (power == MarioPower::Raccoon)
 	{
-		r.top = position.y;
-		r.left = position.x + 2;
-		r.bottom = position.y + 32;
-		r.right = position.x + 22;
+		if (state == MarioState::Ducking)
+		{
+			r.top = position.y;
+			r.left = position.x + 2;
+			r.bottom = position.y + 16;
+			r.right = position.x + 22;
+		}
+		else {
+			r.top = position.y;
+			r.left = position.x + 2;
+			r.bottom = position.y + 32;
+			r.right = position.x + 22;
+		}
+
 	}
 	return r;
 }
