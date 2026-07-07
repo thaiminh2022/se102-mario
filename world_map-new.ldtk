@@ -4081,6 +4081,171 @@
 									"params": ["Down"]
 								}] }
 							]
+						},
+						{
+							"__identifier": "Pipe",
+							"__grid": [28,10],
+							"__pivot": [0,0],
+							"__tags": ["gameplay"],
+							"__tile": null,
+							"__smartColor": "#00FF86",
+							"iid": "bb279f50-6fc0-11f1-b25a-814cd1e71b0b",
+							"width": 32,
+							"height": 16,
+							"defUid": 230,
+							"px": [448,160],
+							"fieldInstances": [
+								{ "__identifier": "is_return_pipe", "__type": "Bool", "__value": false, "__tile": null, "defUid": 238, "realEditorValues": [] },
+								{ "__identifier": "level_to_load", "__type": "Int", "__value": 7, "__tile": null, "defUid": 239, "realEditorValues": [{ "id": "V_Int", "params": [7] }] },
+								{ "__identifier": "return_pipe_ref", "__type": "EntityRef", "__value": null, "__tile": null, "defUid": 243, "realEditorValues": [] },
+								{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 28, "cy": 12 }, "__tile": null, "defUid": 244, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["28,12"]
+								}] },
+								{ "__identifier": "pipe_direction", "__type": "LocalEnum.Direction", "__value": "Down", "__tile": null, "defUid": 245, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Down"]
+								}] }
+							]
+						},
+						{
+							"__identifier": "Pipe",
+							"__grid": [38,9],
+							"__pivot": [0,0],
+							"__tags": ["gameplay"],
+							"__tile": null,
+							"__smartColor": "#00FF86",
+							"iid": "d76aec70-6fc0-11f1-b25a-bb82ba4c7f84",
+							"width": 32,
+							"height": 16,
+							"defUid": 230,
+							"px": [608,144],
+							"fieldInstances": [
+								{ "__identifier": "is_return_pipe", "__type": "Bool", "__value": false, "__tile": null, "defUid": 238, "realEditorValues": [] },
+								{ "__identifier": "level_to_load", "__type": "Int", "__value": 9, "__tile": null, "defUid": 239, "realEditorValues": [{ "id": "V_Int", "params": [9] }] },
+								{ "__identifier": "return_pipe_ref", "__type": "EntityRef", "__value": null, "__tile": null, "defUid": 243, "realEditorValues": [] },
+								{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 38, "cy": 12 }, "__tile": null, "defUid": 244, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["38,12"]
+								}] },
+								{ "__identifier": "pipe_direction", "__type": "LocalEnum.Direction", "__value": "Down", "__tile": null, "defUid": 245, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Down"]
+								}] }
+							]
+						},
+						{
+							"__identifier": "Pipe",
+							"__grid": [46,8],
+							"__pivot": [0,0],
+							"__tags": ["gameplay"],
+							"__tile": null,
+							"__smartColor": "#00FF86",
+							"iid": "de8a5950-6fc0-11f1-b25a-4514e0fa2671",
+							"width": 32,
+							"height": 16,
+							"defUid": 230,
+							"px": [736,128],
+							"fieldInstances": [
+								{ "__identifier": "is_return_pipe", "__type": "Bool", "__value": false, "__tile": null, "defUid": 238, "realEditorValues": [] },
+								{ "__identifier": "level_to_load", "__type": "Int", "__value": 10, "__tile": null, "defUid": 239, "realEditorValues": [{ "id": "V_Int", "params": [10] }] },
+								{ "__identifier": "return_pipe_ref", "__type": "EntityRef", "__value": null, "__tile": null, "defUid": 243, "realEditorValues": [] },
+								{ "__identifier": "move_to", "__type": "Point", "__value": { "cx": 46, "cy": 11 }, "__tile": null, "defUid": 244, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["46,11"]
+								}] },
+								{ "__identifier": "pipe_direction", "__type": "LocalEnum.Direction", "__value": "Down", "__tile": null, "defUid": 245, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Down"]
+								}] }
+							]
+						},
+						{
+							"__identifier": "TextRender",
+							"__grid": [27,8],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 49, "x": 160, "y": 16, "w": 16, "h": 16 },
+							"__smartColor": "#0099DB",
+							"iid": "e5dc6ef0-6fc0-11f1-b25a-1d92fab19949",
+							"width": 64,
+							"height": 16,
+							"defUid": 291,
+							"px": [432,128],
+							"fieldInstances": [
+								{ "__identifier": "Content", "__type": "String", "__value": "Water", "__tile": null, "defUid": 292, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Water"]
+								}] },
+								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 294, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 295, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "italic", "__type": "Bool", "__value": false, "__tile": null, "defUid": 296, "realEditorValues": [] },
+								{ "__identifier": "bold", "__type": "Bool", "__value": false, "__tile": null, "defUid": 297, "realEditorValues": [] }
+							]
+						},
+						{
+							"__identifier": "TextRender",
+							"__grid": [37,7],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 49, "x": 160, "y": 16, "w": 16, "h": 16 },
+							"__smartColor": "#0099DB",
+							"iid": "f339c250-6fc0-11f1-b25a-ebd4ad5d6242",
+							"width": 64,
+							"height": 16,
+							"defUid": 291,
+							"px": [592,112],
+							"fieldInstances": [
+								{ "__identifier": "Content", "__type": "String", "__value": "Flying", "__tile": null, "defUid": 292, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Flying"]
+								}] },
+								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 294, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 295, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "italic", "__type": "Bool", "__value": false, "__tile": null, "defUid": 296, "realEditorValues": [] },
+								{ "__identifier": "bold", "__type": "Bool", "__value": false, "__tile": null, "defUid": 297, "realEditorValues": [] }
+							]
+						},
+						{
+							"__identifier": "TextRender",
+							"__grid": [45,6],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 49, "x": 160, "y": 16, "w": 16, "h": 16 },
+							"__smartColor": "#0099DB",
+							"iid": "ff2c6220-6fc0-11f1-b25a-8370f2e42e32",
+							"width": 64,
+							"height": 16,
+							"defUid": 291,
+							"px": [720,96],
+							"fieldInstances": [
+								{ "__identifier": "Content", "__type": "String", "__value": "Castle", "__tile": null, "defUid": 292, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Castle"]
+								}] },
+								{ "__identifier": "HorizontalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 294, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "VerticalAlign", "__type": "LocalEnum.TextAlignment", "__value": "Center", "__tile": null, "defUid": 295, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Center"]
+								}] },
+								{ "__identifier": "italic", "__type": "Bool", "__value": false, "__tile": null, "defUid": 296, "realEditorValues": [] },
+								{ "__identifier": "bold", "__type": "Bool", "__value": false, "__tile": null, "defUid": 297, "realEditorValues": [] }
+							]
 						}
 					]
 				},
@@ -8737,28 +8902,10 @@
 									"id": "V_String",
 									"params": ["140,14"]
 								}] },
-								{ "__identifier": "loop_mode", "__type": "LocalEnum.LoopMode", "__value": "Loop", "__tile": null, "defUid": 309, "realEditorValues": [] },
-								{ "__identifier": "move_speed", "__type": "Float", "__value": 30, "__tile": null, "defUid": 310, "realEditorValues": [{ "id": "V_Float", "params": [30] }] }
-							]
-						},
-						{
-							"__identifier": "MovingPlatform",
-							"__grid": [140,8],
-							"__pivot": [0,0],
-							"__tags": ["entity"],
-							"__tile": { "tilesetUid": 49, "x": 272, "y": 32, "w": 16, "h": 16 },
-							"__smartColor": "#8B9BB4",
-							"iid": "6a3ef520-6fc0-11f1-8177-3d4899ca2d52",
-							"width": 48,
-							"height": 8,
-							"defUid": 303,
-							"px": [2240,128],
-							"fieldInstances": [
-								{ "__identifier": "moving_points", "__type": "Array<Point>", "__value": [{ "cx": 140, "cy": 14 }], "__tile": null, "defUid": 304, "realEditorValues": [{
+								{ "__identifier": "loop_mode", "__type": "LocalEnum.LoopMode", "__value": "PingPong", "__tile": null, "defUid": 309, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["140,14"]
+									"params": ["PingPong"]
 								}] },
-								{ "__identifier": "loop_mode", "__type": "LocalEnum.LoopMode", "__value": "Loop", "__tile": null, "defUid": 309, "realEditorValues": [] },
 								{ "__identifier": "move_speed", "__type": "Float", "__value": 30, "__tile": null, "defUid": 310, "realEditorValues": [{ "id": "V_Float", "params": [30] }] }
 							]
 						},
@@ -8793,28 +8940,10 @@
 									"id": "V_String",
 									"params": ["155,0"]
 								}] },
-								{ "__identifier": "loop_mode", "__type": "LocalEnum.LoopMode", "__value": "Loop", "__tile": null, "defUid": 309, "realEditorValues": [] },
-								{ "__identifier": "move_speed", "__type": "Float", "__value": 40, "__tile": null, "defUid": 310, "realEditorValues": [{ "id": "V_Float", "params": [40] }] }
-							]
-						},
-						{
-							"__identifier": "MovingPlatform",
-							"__grid": [155,5],
-							"__pivot": [0,0],
-							"__tags": ["entity"],
-							"__tile": { "tilesetUid": 49, "x": 272, "y": 32, "w": 16, "h": 16 },
-							"__smartColor": "#8B9BB4",
-							"iid": "9c3b2170-6fc0-11f1-8177-bfa3f8c6d157",
-							"width": 48,
-							"height": 8,
-							"defUid": 303,
-							"px": [2480,80],
-							"fieldInstances": [
-								{ "__identifier": "moving_points", "__type": "Array<Point>", "__value": [{ "cx": 155, "cy": 0 }], "__tile": null, "defUid": 304, "realEditorValues": [{
+								{ "__identifier": "loop_mode", "__type": "LocalEnum.LoopMode", "__value": "PingPong", "__tile": null, "defUid": 309, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["155,0"]
+									"params": ["PingPong"]
 								}] },
-								{ "__identifier": "loop_mode", "__type": "LocalEnum.LoopMode", "__value": "Loop", "__tile": null, "defUid": 309, "realEditorValues": [] },
 								{ "__identifier": "move_speed", "__type": "Float", "__value": 40, "__tile": null, "defUid": 310, "realEditorValues": [{ "id": "V_Float", "params": [40] }] }
 							]
 						},
@@ -18706,20 +18835,6 @@
 							]
 						},
 						{
-							"__identifier": "PlayerStart",
-							"__grid": [1,5],
-							"__pivot": [0,0],
-							"__tags": ["entity"],
-							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
-							"__smartColor": "#63C74D",
-							"iid": "43b982e0-48b0-11f1-81fc-3167a0bf6bb3",
-							"width": 16,
-							"height": 16,
-							"defUid": 31,
-							"px": [16,80],
-							"fieldInstances": []
-						},
-						{
 							"__identifier": "MovingPlatform",
 							"__grid": [137,6],
 							"__pivot": [0,0],
@@ -18742,6 +18857,20 @@
 								}] },
 								{ "__identifier": "move_speed", "__type": "Float", "__value": 30, "__tile": null, "defUid": 310, "realEditorValues": [{ "id": "V_Float", "params": [30] }] }
 							]
+						},
+						{
+							"__identifier": "PlayerStart",
+							"__grid": [123,7],
+							"__pivot": [0,0],
+							"__tags": ["entity"],
+							"__tile": { "tilesetUid": 49, "x": 0, "y": 32, "w": 16, "h": 16 },
+							"__smartColor": "#63C74D",
+							"iid": "1d7a7360-6fc0-11f1-b25a-8dc96753dc0b",
+							"width": 16,
+							"height": 16,
+							"defUid": 31,
+							"px": [1968,112],
+							"fieldInstances": []
 						}
 					]
 				},
