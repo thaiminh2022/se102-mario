@@ -18,7 +18,7 @@ public:
 
 	void Update(float dt, vector<GameObject*>& coObjects, SceneContext* ctx) override;
 	void Render() override;
-
+	bool IsActive() override { return true; }
 	void OnNoCollision(float dt) override;
 
 };
